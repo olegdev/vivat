@@ -1,0 +1,4 @@
+VIVAT_SOURCES/
+node_modules/
+dist/
+.DS_Store

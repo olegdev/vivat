@@ -1,0 +1,184 @@
+/* ============================================================================
+   VIVAT — design system entry
+   Source of truth: Figma "VIVAT" › UI SYSTEM › FOUNDATIONS (variables).
+   All Figma tokens are exposed as Tailwind utilities via @theme (bg-*, text-*,
+   border-*, …). This is the single source of truth for pixel-perfect fidelity.
+   ============================================================================ */
+
+@import "tailwindcss";
+
+/* ---- Tailwind theme: full Figma token set → utilities --------------------- */
+@theme {
+  /* Fonts */
+  --font-sans: "Onest", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+
+  /* ---- Typography scale (Desktop). size / line-height / weight baked in ---- */
+  --text-display-l: 3.5rem;              /* 56 */
+  --text-display-l--line-height: 4rem;   /* 64 */
+  --text-display-l--font-weight: 600;
+
+  --text-h1: 2.125rem;                   /* 34 */
+  --text-h1--line-height: 2.5rem;        /* 40 */
+  --text-h1--font-weight: 600;
+
+  --text-h2: 1.875rem;                   /* 30 */
+  --text-h2--line-height: 2.25rem;       /* 36 */
+  --text-h2--font-weight: 600;
+
+  --text-h3: 1.5rem;                     /* 24 */
+  --text-h3--line-height: 1.75rem;       /* 28 */
+  --text-h3--font-weight: 600;
+
+  --text-h4: 1.25rem;                    /* 20 */
+  --text-h4--line-height: 1.5rem;        /* 24 */
+  --text-h4--font-weight: 600;
+
+  --text-h5: 1rem;                       /* 16 */
+  --text-h5--line-height: 1.5rem;        /* 24 */
+  --text-h5--font-weight: 600;
+
+  --text-body-xl: 1.5rem;                /* 24 */
+  --text-body-xl--line-height: 2rem;     /* 32 */
+  --text-body-xl--font-weight: 500;
+
+  --text-body-l: 1.25rem;                /* 20 */
+  --text-body-l--line-height: 2rem;      /* 32 */
+  --text-body-l--font-weight: 400;
+
+  --text-body-n: 1rem;                   /* 16 */
+  --text-body-n--line-height: 1.5rem;    /* 24 */
+  --text-body-n--font-weight: 400;
+
+  --text-body-s: 0.875rem;               /* 14 */
+  --text-body-s--line-height: 1.125rem;  /* 18 */
+  --text-body-s--font-weight: 400;
+
+  --text-body-s-accent: 0.875rem;        /* 14 */
+  --text-body-s-accent--line-height: 1.125rem;
+  --text-body-s-accent--font-weight: 500;
+
+  --text-body-xs: 0.75rem;               /* 12 */
+  --text-body-xs--line-height: 1rem;     /* 16 */
+  --text-body-xs--font-weight: 400;
+
+  --text-button-m: 1rem;                 /* 16 */
+  --text-button-m--line-height: 1.5rem;  /* 24 */
+  --text-button-m--font-weight: 500;
+
+  --text-link-m: 1rem;                   /* 16 */
+  --text-link-m--line-height: 1.5rem;    /* 24 */
+  --text-link-m--font-weight: 400;
+
+  /* ---- Semantic colors: text -------------------------------------------- */
+  --color-text-primary: #292929;
+  --color-text-secondary: #808080;
+  --color-text-muted: #acacac;
+  --color-text-disabled: #999999;
+  --color-text-hover: #151515;
+  --color-text-pressed: #141414;
+  --color-text-link-default: #292929;
+  --color-text-link-highlighted: #ff5546;
+  --color-text-inverse-primary: #ffffff;
+  --color-text-inverse-secondary: #cbcbcb;
+
+  /* ---- Semantic colors: bg / surface ------------------------------------ */
+  --color-bg-page: #ffffff;
+  --color-bg-subtle: #f8f8f8;
+  --color-surface-default: #f3f3f3;
+  --color-surface-raised: #cbcbcb;
+  --color-surface-strong: #292929;
+  --color-surface-inverted: #ffffff;
+  --color-surface-brand: #ff5546;
+  --color-surface-accent: #f8bb92;
+  --color-surface-accent-alt: #4a9b7d;
+  --color-surface-error: #d0493d;
+
+  /* ---- Semantic colors: components -------------------------------------- */
+  --color-components-strong: #292929;
+  --color-components-strong-hover: #151515;
+  --color-components-disabled: #e7e7e7;
+  --color-components-red: #ff5546;
+  --color-components-red-hover: #e64d3f;
+  --color-components-red-active: #ff5546;
+  --color-components-subtle: #f3f3f3;
+  --color-components-subtle-hover: #eeeeee;
+
+  /* ---- Semantic colors: borders ----------------------------------------- */
+  --color-border-default: #cbcbcb;
+  --color-border-subtle: #eeeeee;
+  --color-border-subtle-hover: #acacac;
+  --color-border-light: #e7e7e7;
+  --color-border-elevated: #707070;
+  --color-border-active: #414141;
+  --color-border-ring: #141414;
+  --color-border-ring-inversed: #ffffff;
+  --color-border-error: #d0493d;
+
+  /* ---- Semantic colors: icons ------------------------------------------- */
+  --color-icon-primary: #292929;
+  --color-icon-secondary: #808080;
+  --color-icon-muted: #acacac;
+  --color-icon-disabled: #999999;
+  --color-icon-hover: #151515;
+  --color-icon-pressed: #141414;
+  --color-icon-inverse-primary: #ffffff;
+  --color-icon-inverse-secondary: #cbcbcb;
+
+  /* ---- Semantic colors: divider / overlay ------------------------------- */
+  --color-divider-soft: #eeeeee;
+  --color-divider-light: #e7e7e7;
+  --color-divider-default: #cbcbcb;
+  --color-overlay-light: rgba(20, 20, 20, 0.1);
+  --color-overlay-strong: rgba(20, 20, 20, 0.9);
+
+  /* ---- Primitive palettes ----------------------------------------------- */
+  --color-brand-200: #f6aea6;
+  --color-brand-500: #fe9185;
+  --color-brand-600: #fe7a6d;
+  --color-brand-800: #ff5546;
+  --color-brand-900: #e64d3f;
+  --color-brand-1000: #d0493d;
+
+  --color-accent-yellow-200: #ffd6b9;
+  --color-accent-yellow-500: #f8bb92;
+  --color-accent-yellow-600: #f8a771;
+  --color-accent-yellow-800: #ef945c;
+  --color-accent-yellow-900: #d98755;
+  --color-accent-yellow-1000: #bd794f;
+
+  --color-accent-green-200: #a4cebf;
+  --color-accent-green-500: #8bc3ae;
+  --color-accent-green-600: #5eb494;
+  --color-accent-green-800: #4a9b7d;
+  --color-accent-green-900: #3d856a;
+  --color-accent-green-1000: #33765d;
+
+  --color-neutral-white: #ffffff;
+  --color-neutral-30: #f8f8f8;
+  --color-neutral-50: #f3f3f3;
+  --color-neutral-70: #eeeeee;
+  --color-neutral-100: #e7e7e7;
+  --color-neutral-150: #d9d9d9;
+  --color-neutral-220: #cbcbcb;
+  --color-neutral-350: #acacac;
+  --color-neutral-500: #808080;
+  --color-neutral-600: #707070;
+  --color-neutral-700: #585858;
+  --color-neutral-800: #414141;
+  --color-neutral-900: #292929;
+  --color-neutral-950: #151515;
+  --color-neutral-black: #141414;
+}
+
+/* ---- Base -------------------------------------------------------------- */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+  }
+  body {
+    background-color: var(--color-bg-page);
+    color: var(--color-text-primary);
+    -webkit-font-smoothing: antialiased;
+  }
+}

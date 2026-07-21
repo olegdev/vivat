@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Главная (customer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./main.js"></script>
+  </head>
+  <body class="bg-bg-page text-text-primary">
+    <!-- 1440px desktop canvas (matches Figma customer/Main). Header/footer are
+         inlined for now; extract to a partial when more pages are added. -->
+    <div class="mx-auto w-[1440px]">
+      <!-- ============================ SITE HEADER ======================== -->
+      <header class="flex flex-col gap-4 pb-3">
+        <div class="flex flex-col gap-3">
+          <!-- top utility bar -->
+          <div
+            class="flex h-11 w-[1440px] items-center justify-between border-b border-divider-soft px-10"
+          >
+            <div class="flex items-center gap-3">
+              <a class="flex items-center gap-1" href="#">
+                <span
+                  class="text-body-s text-text-primary underline decoration-dotted underline-offset-2"
+                  >Москва</span
+                >
+                <img src="../../assets/header/icon-pin.svg" alt="" class="size-4" />
+              </a>
+              <a class="text-body-s-accent text-text-primary" href="tel:+74951356565"
+                >+7 (495) 135-65-65</a
+              >
+            </div>
+            <div class="flex items-center gap-6">
+              <a class="text-body-s-accent text-text-link-highlighted" href="#"
+                >Стать дилером</a
+              >
+              <a class="text-body-s-accent text-text-primary" href="#">Для бизнеса</a>
+              <a class="flex items-center gap-1 text-body-s-accent text-text-primary" href="#"
+                >Войти в режим дилера
+                <img src="../../assets/header/icon-arrow-right.svg" alt="" class="size-4" />
+              </a>
+            </div>
+          </div>
+
+          <!-- main nav bar -->
+          <div class="flex items-center justify-between px-10">
+            <div class="flex items-center gap-16">
+              <div class="flex items-center gap-10">
+                <!-- logo -->
+                <a href="main.html" class="flex h-12 w-[169px] flex-col items-center justify-center gap-0.5">
+                  <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[34px] w-[153px]" />
+                  <span class="w-full text-center text-[8px] font-medium uppercase text-icon-primary"
+                    >фабрика мебели. Официальный сайт</span
+                  >
+                </a>
+                <!-- menu -->
+                <nav class="flex items-center gap-2">
+                  <button
+                    class="flex h-11 items-center gap-2 rounded-[24px] bg-components-red px-4"
+                  >
+                    <img src="../../assets/header/icon-burger.svg" alt="" class="size-6" />
+                    <span class="text-button-m text-text-inverse-primary">Весь каталог</span>
+                  </button>
+                  <a href="#" class="flex h-11 items-center rounded-[24px] px-4 text-button-m text-text-primary">Кухни</a>
+                  <a href="#" class="flex h-11 items-center rounded-[24px] px-4 text-button-m text-text-primary">Акции</a>
+                  <a href="#" class="flex h-11 items-center rounded-[24px] px-4 text-button-m text-text-primary">Где купить</a>
+                </nav>
+              </div>
+              <!-- search -->
+              <label
+                class="flex h-11 w-[303px] items-center gap-4 rounded-[24px] bg-components-subtle px-4 py-2"
+              >
+                <input
+                  type="text"
+                  placeholder="Найти на сайте"
+                  class="min-w-0 flex-1 bg-transparent text-body-s-accent text-text-primary placeholder:text-text-muted focus:outline-none"
+                />
+                <img src="../../assets/header/icon-search.svg" alt="Найти" class="size-6" />
+              </label>
+            </div>
+            <!-- order icon -->
+            <button
+              class="flex size-11 items-center justify-center rounded-[44px] bg-components-subtle"
+            >
+              <img src="../../assets/header/icon-order-dark.svg" alt="Корзина" class="size-6" />
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- ============================ ALERT ============================= -->
+      <div class="flex h-10 w-[1440px] items-center justify-center bg-accent-yellow-200 px-4">
+        <p class="text-center text-body-s text-text-primary">
+          Обращаем внимание покупателей, что 22.07.2026 мы работаем по сокращенному графику!
+          <a href="#" class="underline">Подробнее</a>
+        </p>
+      </div>
+
+      <!-- ============================ HERO SLIDER ======================== -->
+      <div data-hero></div>
+
+      <!-- spacing -->
+      <div class="h-10"></div>
+
+      <!-- ============================ CATEGORIES ========================= -->
+      <section class="flex flex-col items-center gap-6 px-10">
+        <!-- row 1 -->
+        <div class="flex h-[387px] w-[1360px] items-center gap-6">
+          <!-- kitchen (double width) -->
+          <article
+            class="relative h-full w-[668px] shrink-0 overflow-hidden rounded-[4px] bg-surface-default"
+          >
+            <video class="absolute max-w-none object-cover" style="left:-34.78px;top:-107px;width:1102px;height:620px" src="../../assets/home/cat-kitchen.mp4" poster="../../assets/home/cat-kitchen-poster.jpg" autoplay muted loop playsinline></video>
+            <div class="relative flex h-full flex-col justify-between px-6 py-4">
+              <div class="flex flex-col">
+                <h2 class="text-[56px] font-semibold leading-none text-text-primary">Кухни</h2>
+                <div class="flex items-center gap-[7px]">
+                  <span class="text-body-l text-text-primary">Скидки</span>
+                  <span class="flex h-8 items-center rounded-[24px] bg-accent-yellow-800 px-2 text-button-m text-text-inverse-primary">- 15%</span>
+                </div>
+              </div>
+              <a href="#" class="flex h-11 w-fit items-center gap-3 rounded-[24px] bg-surface-inverted px-4">
+                <span class="text-h3 text-text-primary">321 модель</span>
+                <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+              </a>
+            </div>
+          </article>
+
+          <!-- sink -->
+          <article class="relative h-full min-w-0 flex-1 overflow-hidden rounded-[4px] bg-surface-default">
+            <video class="absolute max-w-none object-cover" style="left:-35.05px;top:-273px;width:410.71px;height:730px" src="../../assets/home/cat-sink.mp4" poster="../../assets/home/cat-sink-poster.jpg" autoplay muted loop playsinline></video>
+            <div class="relative flex h-full flex-col gap-4 px-6 py-4">
+              <div class="flex flex-col gap-1">
+                <h2 class="text-h3 text-text-primary">Мойки</h2>
+                <div class="flex items-center gap-[7px]">
+                  <span class="text-[16px] font-medium leading-[22px] text-text-primary">Скидки</span>
+                  <span class="flex h-6 items-center rounded-[24px] bg-accent-yellow-800 px-2 pb-px text-body-s-accent text-text-inverse-primary">- 10%</span>
+                </div>
+              </div>
+              <a href="#" class="flex h-11 w-fit items-center gap-3 rounded-[24px] bg-surface-inverted px-4">
+                <span class="text-button-m text-text-primary">22 модели</span>
+                <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-5" />
+              </a>
+            </div>
+          </article>
+
+          <!-- appliances -->
+          <article class="relative h-full min-w-0 flex-1 overflow-hidden rounded-[4px] bg-surface-default">
+            <video class="absolute max-w-none object-cover" style="left:-42.99px;top:-237px;width:407.75px;height:724.74px" src="../../assets/home/cat-appliances.mp4" poster="../../assets/home/cat-appliances-poster.jpg" autoplay muted loop playsinline></video>
+            <div class="relative flex h-full flex-col justify-between px-6 py-4">
+              <h2 class="text-h3 text-text-primary">Бытовая техника</h2>
+              <a href="#" class="flex h-11 w-fit items-center gap-3 rounded-[24px] bg-surface-inverted px-4">
+                <span class="text-button-m text-text-primary">46 моделей</span>
+                <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-5" />
+              </a>
+            </div>
+          </article>
+        </div>
+
+        <!-- row 2 -->
+        <div class="flex h-[387px] w-[1360px] items-center gap-6">
+          <!-- tables -->
+          <article class="relative h-full min-w-0 flex-1 overflow-hidden rounded-[4px] bg-surface-default">
+            <video class="absolute max-w-none object-cover" style="left:-19px;top:-403px;width:478px;height:850px" src="../../assets/home/cat-tables.mp4" poster="../../assets/home/cat-tables-poster.jpg" autoplay muted loop playsinline></video>
+            <div class="relative flex h-full flex-col justify-between px-6 py-4">
+              <div class="flex flex-col gap-1">
+                <h2 class="text-h3 text-text-primary">Столы</h2>
+                <div class="flex items-center gap-[7px]">
+                  <span class="text-[16px] font-medium leading-[22px] text-text-primary">Скидки</span>
+                  <span class="flex h-6 items-center rounded-[24px] bg-accent-yellow-800 px-2 pb-px text-body-s-accent text-text-inverse-primary">- 10%</span>
+                </div>
+              </div>
+              <a href="#" class="flex h-11 w-fit items-center gap-3 rounded-[24px] bg-surface-inverted px-4">
+                <span class="text-button-m text-text-primary">26 моделей</span>
+                <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-5" />
+              </a>
+            </div>
+          </article>
+
+          <!-- chairs -->
+          <article class="relative h-full min-w-0 flex-1 overflow-hidden rounded-[4px] bg-surface-default">
+            <video class="absolute max-w-none object-cover" style="left:-18.6px;top:-192.9px;width:380.2px;height:675.78px" src="../../assets/home/cat-chairs.mp4" poster="../../assets/home/cat-chairs-poster.jpg" autoplay muted loop playsinline></video>
+            <div class="relative flex h-full flex-col justify-between px-6 py-4">
+              <div class="flex flex-col gap-1">
+                <h2 class="text-h3 text-text-primary">Стулья</h2>
+                <div class="flex items-center gap-[7px]">
+                  <span class="text-[16px] font-medium leading-[22px] text-text-primary">Скидки</span>
+                  <span class="flex h-6 items-center rounded-[24px] bg-accent-yellow-800 px-2 pb-px text-body-s-accent text-text-inverse-primary">- 5%</span>
+                </div>
+              </div>
+              <a href="#" class="flex h-11 w-fit items-center gap-3 rounded-[24px] bg-surface-inverted px-4">
+                <span class="text-button-m text-text-primary">16 моделей</span>
+                <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-5" />
+              </a>
+            </div>
+          </article>
+
+          <!-- worktops -->
+          <article class="relative h-full min-w-0 flex-1 overflow-hidden rounded-[4px] bg-surface-default">
+            <video class="absolute max-w-none object-cover" style="left:0px;top:-165px;width:326.25px;height:579.89px" src="../../assets/home/cat-worktops.mp4" poster="../../assets/home/cat-worktops-poster.jpg" autoplay muted loop playsinline></video>
+            <div class="relative flex h-full flex-col justify-between px-6 py-4">
+              <div class="flex flex-col gap-1">
+                <h2 class="text-h3 text-text-primary">Столешницы</h2>
+                <div class="flex items-center gap-[7px]">
+                  <span class="text-[16px] font-medium leading-[22px] text-text-primary">Скидки</span>
+                  <span class="flex h-6 items-center rounded-[24px] bg-accent-yellow-800 px-2 pb-px text-body-s-accent text-text-inverse-primary">- 8%</span>
+                </div>
+              </div>
+              <a href="#" class="flex h-11 w-fit items-center gap-3 rounded-[24px] bg-surface-inverted px-4">
+                <span class="text-button-m text-text-primary">34 модели</span>
+                <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-5" />
+              </a>
+            </div>
+          </article>
+
+          <!-- all catalog -->
+          <article class="flex h-full min-w-0 flex-1 items-center justify-center overflow-hidden rounded-[4px] border border-border-light bg-surface-inverted px-6 py-4">
+            <a href="#" class="flex h-11 items-center gap-3 rounded-[24px] bg-surface-inverted px-4">
+              <span class="text-button-m text-text-primary">56 моделей</span>
+              <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-5" />
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <!-- ==================== CAROUSEL: Модульные кухни ================== -->
+      <div data-section="modular"></div>
+
+      <!-- ==================== CAROUSEL: Популярные товары =============== -->
+      <div data-section="popular"></div>
+
+      <!-- ==================== PROMO: А как вам вот такое ================ -->
+      <div data-section="promo"></div>
+
+      <!-- ==================== CN: Подпишитесь на нас =================== -->
+      <section class="flex h-[316px] w-[1440px] items-center px-10">
+        <div class="flex w-full flex-col items-center gap-4 rounded-[24px] bg-accent-green-200 px-10 py-10">
+          <div class="flex flex-col items-center gap-1 text-center">
+            <p class="text-h4 text-text-primary">Подпишитесь на нас в соцсетях</p>
+            <p class="text-body-n text-text-primary">чтобы быть всегда в курсе!</p>
+          </div>
+          <img src="../../assets/home/social-cn.svg" alt="Мы в соцсетях" class="h-20" />
+        </div>
+      </section>
+
+      <!-- ==================== CAROUSEL: Акции и скидки ================= -->
+      <div data-section="akcii"></div>
+
+      <!-- 96px spacing -->
+      <div class="h-24"></div>
+
+      <!-- ==================== Наши салоны + карта ===================== -->
+      <section class="w-[1440px] bg-accent-yellow-200 px-10 py-16">
+        <h2 class="text-h2 text-text-primary">Наши салоны</h2>
+        <div class="h-2"></div>
+        <p class="max-w-[783px] text-body-n text-text-primary">
+          Наша продукция продается в сотнях городов России в наших официальных
+          магазинах и дилерских центрах.
+        </p>
+        <div class="h-6"></div>
+        <div class="flex overflow-hidden rounded-[24px] bg-bg-page">
+          <!-- left panel -->
+          <div class="flex w-[440px] shrink-0 flex-col">
+            <div class="flex flex-col gap-4 border-b border-border-light p-6">
+              <div class="flex items-center gap-2">
+                <span class="text-h4 text-text-primary underline underline-offset-2">Москва</span>
+                <img src="../../assets/header/icon-pin.svg" alt="" class="size-5" />
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-body-n text-text-primary">Только фирменные магазины</span>
+                <label class="relative inline-flex cursor-pointer items-center">
+                  <input type="checkbox" class="peer sr-only" />
+                  <span class="block h-6 w-11 rounded-full bg-border-default transition-colors peer-checked:bg-components-red"></span>
+                  <span class="pointer-events-none absolute left-0.5 top-0.5 size-5 rounded-full bg-bg-page shadow transition-transform peer-checked:translate-x-5"></span>
+                </label>
+              </div>
+            </div>
+            <div class="flex max-h-[560px] flex-col overflow-hidden">
+              <!-- store item ×5 -->
+              <div class="flex flex-col gap-2 border-b border-border-light px-6 py-4">
+                <p class="text-h5 text-text-primary">Фирменный магазин VIVAT</p>
+                <p class="text-body-s text-text-secondary">16-й км МКАД, 50 метров от внешней стороны, ул. Энергетиков, д. 22, корп. 3</p>
+                <div class="flex gap-3 text-body-s text-text-muted">
+                  <span class="flex items-center gap-1"><span class="grid size-4 place-items-center rounded-full bg-components-red text-[10px] font-semibold text-text-inverse-primary">М</span>Жулебино</span>
+                  <span class="flex items-center gap-1"><span class="grid size-4 place-items-center rounded-full bg-components-red text-[10px] font-semibold text-text-inverse-primary">М</span>Котельники</span>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2 border-b border-border-light px-6 py-4">
+                <p class="text-h5 text-text-primary">Фирменный магазин VIVAT</p>
+                <p class="text-body-s text-text-secondary">16-й км МКАД, 50 метров от внешней стороны, ул. Энергетиков, д. 22, корп. 3</p>
+                <div class="flex gap-3 text-body-s text-text-muted">
+                  <span class="flex items-center gap-1"><span class="grid size-4 place-items-center rounded-full bg-components-red text-[10px] font-semibold text-text-inverse-primary">М</span>Жулебино</span>
+                  <span class="flex items-center gap-1"><span class="grid size-4 place-items-center rounded-full bg-components-red text-[10px] font-semibold text-text-inverse-primary">М</span>Котельники</span>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2 border-b border-border-light px-6 py-4">
+                <p class="text-h5 text-text-primary">Фирменный магазин VIVAT</p>
+                <p class="text-body-s text-text-secondary">16-й км МКАД, 50 метров от внешней стороны, ул. Энергетиков, д. 22, корп. 3</p>
+                <div class="flex gap-3 text-body-s text-text-muted">
+                  <span class="flex items-center gap-1"><span class="grid size-4 place-items-center rounded-full bg-components-red text-[10px] font-semibold text-text-inverse-primary">М</span>Жулебино</span>
+                  <span class="flex items-center gap-1"><span class="grid size-4 place-items-center rounded-full bg-components-red text-[10px] font-semibold text-text-inverse-primary">М</span>Котельники</span>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2 border-b border-border-light px-6 py-4">
+                <p class="text-h5 text-text-primary">Фирменный магазин VIVAT</p>
+                <p class="text-body-s text-text-secondary">16-й км МКАД, 50 метров от внешней стороны, ул. Энергетиков, д. 22, корп. 3</p>
+                <div class="flex gap-3 text-body-s text-text-muted">
+                  <span class="flex items-center gap-1"><span class="grid size-4 place-items-center rounded-full bg-components-red text-[10px] font-semibold text-text-inverse-primary">М</span>Жулебино</span>
+                  <span class="flex items-center gap-1"><span class="grid size-4 place-items-center rounded-full bg-components-red text-[10px] font-semibold text-text-inverse-primary">М</span>Котельники</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- map -->
+          <img src="../../assets/home/map-src.png" alt="Карта салонов" class="h-[664px] w-full object-cover" />
+        </div>
+      </section>
+
+      <!-- ==================== Производство ============================ -->
+      <section class="relative h-[842px] w-[1440px] overflow-hidden">
+        <video
+          class="absolute inset-0 size-full object-cover"
+          src="../../assets/home/production.mp4"
+          poster="../../assets/home/production-poster.jpg"
+          autoplay muted loop playsinline
+        ></video>
+        <div class="absolute inset-0 bg-[rgba(20,20,20,0.45)]"></div>
+        <div class="relative flex h-full flex-col items-center justify-center gap-6 px-10 text-center">
+          <h2 class="text-display-l text-text-inverse-primary">Производство</h2>
+          <p class="max-w-[560px] text-body-l text-text-inverse-primary">
+            Фабрика мебели VIVAT — это современные технологии создания корпусной
+            мебели с акцентом на практичность, доступность и продуманную конструкцию.
+          </p>
+          <a href="#" class="flex h-14 items-center rounded-[24px] bg-surface-inverted px-6">
+            <span class="text-[20px] font-medium leading-6 text-text-primary">О конмпании</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- ==================== FOOTER ================================== -->
+      <footer class="w-[1440px] px-10 py-10">
+        <div class="flex items-start justify-between">
+          <div class="flex h-12 w-[169px] flex-col items-center justify-center gap-0.5">
+            <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[34px] w-[153px]" />
+            <span class="w-full text-center text-[8px] font-medium uppercase text-icon-primary">фабрика мебели. Официальный сайт</span>
+          </div>
+          <img src="../../assets/home/social-footer.svg" alt="Мы в соцсетях" class="h-10" />
+        </div>
+
+        <div class="mt-10 grid grid-cols-4 gap-6">
+          <div class="flex flex-col gap-4">
+            <p class="text-h5 text-text-primary">Каталог</p>
+            <a href="#" class="text-body-n text-text-primary">Кухни</a>
+            <a href="#" class="text-body-n text-text-primary">Техника для кухни</a>
+            <a href="#" class="text-body-n text-text-primary">Столешницы и фартуки</a>
+            <a href="#" class="text-body-n text-text-primary">Мойки и смесители</a>
+            <a href="#" class="text-body-n text-text-primary">Аксессуары для кухонь</a>
+            <a href="#" class="text-body-n text-text-primary">Столы и стулья</a>
+            <a href="#" class="text-body-n text-text-primary">Прихожие</a>
+            <a href="#" class="text-body-n text-text-primary">Для продавцов</a>
+          </div>
+          <div class="flex flex-col gap-4">
+            <p class="text-h5 text-text-primary">Компания</p>
+            <a href="#" class="text-body-n text-text-primary">О нас</a>
+            <a href="#" class="text-body-n text-text-primary">Наш адрес и телефоны</a>
+            <a href="#" class="text-body-n text-text-primary">Новости</a>
+          </div>
+          <div class="flex flex-col gap-4">
+            <p class="text-h5 text-text-primary">Полезная информация</p>
+            <a href="#" class="text-body-n text-text-primary">Сертификаты</a>
+            <a href="#" class="text-body-n text-text-primary">Схемы сборки</a>
+            <a href="#" class="text-body-n text-text-primary">Каталог мебели</a>
+            <a href="#" class="text-body-n text-text-primary">Каталог декоров</a>
+            <a href="#" class="text-body-n text-text-primary">Техническая информация</a>
+            <a href="#" class="text-body-n text-text-primary">Методические пособия</a>
+            <a href="#" class="text-body-n text-text-primary">3D-модели</a>
+          </div>
+          <div class="flex flex-col gap-4">
+            <p class="text-h5 text-text-primary">Для бизнеса</p>
+            <a href="#" class="text-body-n text-text-primary">Для интернет-магазинов</a>
+            <a href="#" class="text-body-n text-text-primary">Как с нами работать?</a>
+            <a href="#" class="text-body-n text-text-primary">Обучающие материалы</a>
+            <a href="#" class="text-body-n text-text-primary">Тренинг-кабинет</a>
+            <a href="#" class="text-body-n text-text-primary">Поставщикам</a>
+            <a href="#" class="text-body-n text-text-primary">Доставка</a>
+          </div>
+        </div>
+
+        <p class="mt-10 text-body-s text-text-muted">© 2026. Фабрика мебели VIVAT</p>
+        <p class="mt-4 text-body-xs text-text-muted">
+          Данный сайт носит исключительно информационный характер и не является
+          публичной офертой, определяемой положениями части 2 статьи 437 ГК РФ.
+          Цвет продукции, представленной на сайте может отличаться от реального, в
+          связи с различными настройками ваших устройств для просмотра.
+        </p>
+        <a href="#" class="mt-2 inline-block text-body-xs text-text-muted underline underline-offset-2">Политика конфиденциальности</a>
+      </footer>
+    </div>
+  </body>
+</html>
