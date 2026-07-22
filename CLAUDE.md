@@ -19,11 +19,8 @@ Everything else in `src/pages/` is a stub.
 
 ## Reading the design
 
-**The Figma MCP server does not work on this file** — it authenticates as an
-account the VIVAT file was never shared with, and every call fails with "you
-don't have edit access". Do not burn turns retrying it.
-
-Read the design from the local export instead:
+Two sources. **Reach for the local export first, fall back to the Figma MCP
+server for whatever it doesn't have.**
 
 ```
 node scripts/fig.mjs find <regex> [TYPE]   # search layer names
@@ -34,16 +31,26 @@ node scripts/fig.mjs raw  <id> [k1,k2]     # full node JSON, for fields the inde
 
 ids take either form: `1968:71551` or the `1968-71551` in Figma URLs.
 
-This is generally *better* than the MCP server, not just a fallback: it is
-offline, has no rate limits, returns exact numbers rather than a rendering, and
-can diff variants against each other — which is how the hover states and the
-coral tile's motion were derived. The MCP server is still the only way to get a
-rendered screenshot, so ask a human for one when the geometry is ambiguous.
+Local first because it is offline, unmetered, returns exact numbers rather than
+a rendering, and can diff component variants against each other — which is how
+the promo hover states and the coral tile's motion were derived.
+
+Go to the MCP server when:
+
+- you need a **rendered screenshot** — the export can't produce one;
+- the node **isn't in the export**, or a value looks wrong. `canvas.fig` is a
+  snapshot (see `VIVAT_SOURCES/meta.json` for its export date), so anything
+  designed since then only exists in Figma. On any disagreement Figma wins;
+- you need **prototype/motion data** the .fig doesn't carry.
+
+If MCP answers "you don't have edit access", the file isn't shared with the
+authenticated account — say so and carry on with the local export rather than
+retrying.
 
 `VIVAT_SOURCES/` (gitignored) holds `canvas.fig` plus `images/` and `videos/`
 keyed by content hash. `scripts/fig.mjs` builds `canvas.index.json` next to it on
 first run and reuses it while `canvas.fig` is unchanged — ~0.5s per query
-instead of ~2.7s. Delete it or pass `index --rebuild` after re-exporting.
+instead of ~2.7s. Re-export and run `index --rebuild` when Figma has moved on.
 
 Format note: block 0 is the kiwi schema (raw deflate), block 1 is the document
 (**ZSTD** in current exports). Off-the-shelf .fig parsers assume deflate for both
