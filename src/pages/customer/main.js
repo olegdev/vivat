@@ -1,6 +1,9 @@
 import "../../styles/app.css";
 import { renderCarousel, setIconBase } from "../../components/product-card.js";
 import { initHeroSlider } from "../../components/hero-slider.js";
+import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
+import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
+import { initMobileMenu, setMobileMenuBases } from "../../components/mobile-menu.js";
 
 // This page lives at dist/pages/customer/main.html — assets sit two levels up.
 const ASSET_ROOT = "../../assets";
@@ -9,22 +12,54 @@ const ICON = `${ASSET_ROOT}/header`;
 setIconBase(ICON);
 
 // ---- hero slider ------------------------------------------------------------
-// Only one hero slide is designed in Figma (the 3 dots there are a static mock).
-// Its background is a VIDEO fill, sourced from VIVAT_SOURCES. Add entries here to
-// make the slider rotate — the mechanics (autoplay/arrows/dots/swipe) are ready.
+// The Figma hero shows 3 dots. Slide 1 is the designed one — its video box
+// ("chair2 1", 607:29176) sits at left -1 / top -130, 1441x811 inside the
+// 1440x640 banner, so it is reproduced verbatim rather than object-cover'd.
+// Slides 2-3 are mock collections (only slide 1 exists in Figma).
+const HERO_VIDEO_FRAME = { left: -1, top: -130, width: 1441, height: 811 };
+
 const heroSlides = [
   {
     video: `${HOME}/hero-fusion.mp4`,
     poster: `${HOME}/hero-fusion-poster.jpg`,
-    objectPosition: "center 32%",
+    frame: HERO_VIDEO_FRAME,
+    sound: true,
     title: "Кухня Фьюжн<br>от 43 335₽",
     subtitle: "Самый темный графит",
+    cta: { label: "Смотреть коллекцию", href: "#" },
+  },
+  {
+    image: `${HOME}/hero-placeholder.svg`,
+    title: "Кухня Мальмо<br>от 58 900₽",
+    subtitle: "Скандинавский дуб",
+    cta: { label: "Смотреть коллекцию", href: "#" },
+  },
+  {
+    video: `${HOME}/hero-fusion.mp4`,
+    poster: `${HOME}/hero-fusion-poster.jpg`,
+    frame: HERO_VIDEO_FRAME,
+    sound: true,
+    title: "Кухня Ривьера<br>от 71 200₽",
+    subtitle: "Матовый терракот",
     cta: { label: "Смотреть коллекцию", href: "#" },
   },
 ];
 
 const heroEl = document.querySelector("[data-hero]");
 if (heroEl) initHeroSlider(heroEl, heroSlides, { iconBase: ICON, interval: 6000 });
+
+// ---- catalog mega-menu ("Весь каталог") -------------------------------------
+setCatalogIconBase(ICON);
+initCatalogMenu(document.querySelector("[data-catalog]"), {
+  toggle: document.querySelector("[data-catalog-toggle]"),
+});
+
+// ---- mobile burger menu (max-md only) ---------------------------------------
+setMobileMenuBases({ icons: ICON });
+initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
+  toggle: document.querySelector("[data-mobile-menu]"),
+  catalogToggle: document.querySelector("[data-mobile-catalog]"),
+});
 
 // ---- shared product-card data ------------------------------------------------
 const KITCHEN_TITLE = "Кухня Фьюжн-0, МДФ, 2000 х 2170 х 600 мм";
@@ -48,108 +83,324 @@ const modularItems = [
 }));
 
 // ---- tab chips (Популярные товары) ------------------------------------------
+// Mobile turns the row into a 56px edge-to-edge rail (Figma `segments`
+// 1968:201371); the negative margin lets it bleed past the section padding.
 function chips(tabs = []) {
   if (!tabs.length) return "";
   const items = tabs
     .map((t, i) =>
       i === 0
-        ? `<button class="flex h-10 items-center rounded-[24px] bg-surface-strong px-4 text-button-m text-text-inverse-primary">${t}</button>`
-        : `<button class="flex h-10 items-center rounded-[24px] bg-components-subtle px-4 text-button-m text-text-primary">${t}</button>`
+        ? `<button class="chip" aria-selected="true">${t}</button>`
+        : `<button class="chip">${t}</button>`
     )
     .join("");
-  const more = `<button class="flex h-10 items-center gap-1 rounded-[24px] border border-border-light bg-bg-page px-4 text-button-m text-text-muted">еще <span class="tracking-widest">···</span></button>`;
-  return `<div class="flex items-center gap-2 pt-6">${items}${more}</div>`;
+  const more = `<button class="chip gap-1 border border-border-light bg-bg-page text-text-muted">еще <span class="tracking-widest">···</span></button>`;
+  return `<div data-chips class="flex items-center gap-2 pt-6 max-md:scroll-rail max-md:-mx-4 max-md:h-14 max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:px-4 max-md:pt-0 *:max-md:snap-start">${items}${more}</div>`;
 }
 
 // ---- carousel section shell (title-block + arrows + track) ------------------
+// One shell, two behaviours. Desktop translates [data-track] behind the arrows;
+// below `md` the viewport scrolls natively and the arrows are replaced by the
+// progress bar + full-width action button the 360px sections carry instead
+// (Figma section / Скидки и акции 1968:71565).
 function carouselSection({ title, desc, action = "В раздел", tabs }) {
   return `
   <section class="flex flex-col">
-    <div class="px-10">
-      <div class="h-20"></div>
+    <div class="px-10 max-md:px-4">
+      <div class="h-20 max-md:h-10"></div>
       <div class="flex items-start justify-between">
-        <div class="flex w-[783px] flex-col">
-          <div class="flex min-h-11 items-center">
-            <h2 class="text-h2 text-text-primary">${title}</h2>
+        <div class="flex w-[783px] flex-col max-md:w-full">
+          <div class="flex min-h-11 items-center max-md:min-h-6">
+            <h2 class="text-h2 text-text-primary max-md:text-m-h2">${title}</h2>
           </div>
-          <div class="h-2"></div>
-          <p class="text-[16px] font-medium leading-[22px] text-text-primary">${desc}</p>
+          <div class="h-2 max-md:h-1"></div>
+          <p class="text-body-n-accent text-text-primary max-md:text-m-body-n">${desc}</p>
         </div>
-        <div class="flex h-11 items-start px-2">
-          <a href="#" class="flex h-11 items-center gap-2 rounded-[24px] bg-components-subtle px-4">
-            <span class="text-button-m text-text-primary">${action}</span>
+        <div class="flex h-11 items-start px-2 max-md:hidden">
+          <a href="#" class="btn btn-m btn-secondary">
+            <span>${action}</span>
             <img src="${ICON}/arrow-right-24.svg" alt="" class="size-6" />
           </a>
         </div>
       </div>
       ${chips(tabs)}
-      <div class="h-6"></div>
+      <div class="h-6 max-md:h-3"></div>
     </div>
-    <div class="relative w-[1440px] px-10">
-      <div class="flex gap-6 overflow-hidden" data-track></div>
-      <button class="absolute left-4 top-[139px] flex size-12 items-center justify-center rounded-[24px] border border-border-default bg-components-subtle">
-        <img src="${ICON}/chevron-left.svg" alt="Назад" class="size-6" />
+    <div class="relative w-[1440px] px-10 max-md:w-full max-md:px-4">
+      <div class="overflow-hidden max-md:scroll-rail max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto" data-viewport>
+        <div class="flex gap-6 transition-transform duration-500 ease-out will-change-transform max-md:gap-2" data-track></div>
+      </div>
+      <button data-prev aria-label="Назад" class="carousel-arrow absolute left-4 top-[139px] max-md:hidden">
+        <img src="${ICON}/chevron-left.svg" alt="" class="size-6" />
       </button>
-      <button class="absolute right-4 top-[139px] flex size-12 items-center justify-center rounded-[24px] border border-border-default bg-components-subtle">
-        <img src="${ICON}/chevron-right.svg" alt="Вперёд" class="size-6" />
+      <button data-next aria-label="Вперёд" class="carousel-arrow absolute right-4 top-[139px] max-md:hidden">
+        <img src="${ICON}/chevron-right.svg" alt="" class="size-6" />
       </button>
     </div>
-  </section>`;
-}
-
-// ---- promo tiles section (А как вам вот такое) ------------------------------
-function promoSection({ title, action = "Все акции", tiles }) {
-  const items = tiles
-    .map((t) => {
-      const media = t.video
-        ? `<video class="size-full object-cover" src="${t.video}" ${
-            t.poster ? `poster="${t.poster}"` : ""
-          } autoplay muted loop playsinline></video>`
-        : `<img src="${t.img}" alt="${t.caption}" class="size-full object-cover" ${
-            t.objectPosition ? `style="object-position:${t.objectPosition}"` : ""
-          } />`;
-      return `
-      <div class="flex w-[438px] shrink-0 flex-col gap-3">
-        <div class="h-[440px] w-full overflow-hidden rounded-[4px]">${media}</div>
-        <p class="text-body-xl text-text-primary">${t.caption}</p>
-      </div>`;
-    })
-    .join("");
-  return `
-  <section class="flex flex-col">
-    <div class="px-10">
-      <div class="h-20"></div>
-      <div class="flex items-start justify-between">
-        <h2 class="text-h2 text-text-primary">${title}</h2>
-        <a href="#" class="flex h-11 items-center gap-2 rounded-[24px] bg-components-subtle px-4">
-          <span class="text-button-m text-text-primary">${action}</span>
+    <div class="hidden max-md:block">
+      <div class="scroll-progress" data-progress><span><i></i></span></div>
+      <div class="px-4 pt-2">
+        <a href="#" class="btn btn-m btn-secondary w-full">
+          <span>${action}</span>
           <img src="${ICON}/arrow-right-24.svg" alt="" class="size-6" />
         </a>
       </div>
-      <div class="h-6"></div>
-    </div>
-    <div class="relative w-[1440px] px-10">
-      <div class="flex gap-6 overflow-hidden">${items}</div>
-      <button class="absolute left-4 top-[196px] flex size-12 items-center justify-center rounded-[24px] border border-border-default bg-components-subtle">
-        <img src="${ICON}/chevron-left.svg" alt="Назад" class="size-6" />
-      </button>
-      <button class="absolute right-4 top-[196px] flex size-12 items-center justify-center rounded-[24px] border border-border-default bg-components-subtle">
-        <img src="${ICON}/chevron-right.svg" alt="Вперёд" class="size-6" />
-      </button>
     </div>
   </section>`;
 }
 
-// Tile 2 is a VIDEO fill in Figma; tile 3 is a vector graphic (coral fill +
-// triangles) exported as SVG — neither has a raster source in VIVAT_SOURCES.
+const MOBILE = window.matchMedia("(max-width: 767px)");
+
+// Mobile rails scroll natively under a finger, but a mouse drag does nothing —
+// so on a narrow desktop window the card text, the chips and the promo tiles all
+// felt dead. This gives pointer devices the same grab-and-pull, anywhere on the
+// rail. `ignore` keeps the gesture off elements that run their own slider (the
+// card's inner gallery), and the capture-phase click guard stops the drag from
+// ending in a navigation.
+function enableDragScroll(el, { ignore } = {}) {
+  if (!el) return;
+  let startX = 0;
+  let startScroll = 0;
+  let dragging = false;
+  let moved = false;
+
+  el.addEventListener("pointerdown", (e) => {
+    if (!MOBILE.matches || e.pointerType === "touch") return;
+    if (ignore && e.target.closest?.(ignore)) return;
+    dragging = true;
+    moved = false;
+    startX = e.clientX;
+    startScroll = el.scrollLeft;
+    // Snap has to stand down while a drag is live: it re-snaps after every
+    // assignment to scrollLeft, so a short pull never escapes the point it
+    // started from. It comes back on release, which is what eases the rail onto
+    // the nearest card.
+    el.style.scrollSnapType = "none";
+    // Capture, so a flick that runs past the edge of the rail keeps scrolling
+    // instead of dying the moment the cursor leaves the element.
+    try {
+      el.setPointerCapture(e.pointerId);
+    } catch {
+      /* pointer already gone */
+    }
+  });
+
+  el.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const dx = e.clientX - startX;
+    if (!moved && Math.abs(dx) < 4) return;
+    moved = true;
+    el.scrollLeft = startScroll - dx;
+    e.preventDefault();
+  });
+
+  const end = (e) => {
+    if (!dragging) return;
+    dragging = false;
+    el.style.scrollSnapType = "";
+    try {
+      el.releasePointerCapture(e.pointerId);
+    } catch {
+      /* pointer already gone */
+    }
+  };
+  el.addEventListener("pointerup", end);
+  el.addEventListener("pointercancel", end);
+
+  el.addEventListener(
+    "click",
+    (e) => {
+      if (!moved) return;
+      e.preventDefault();
+      e.stopPropagation();
+      moved = false;
+    },
+    true
+  );
+}
+
+// Mirrors a natively-scrolling rail onto the 2px progress bar the mobile
+// sections use in place of arrows: thumb width = visible fraction, offset =
+// scroll position.
+function initScrollProgress(sectionEl) {
+  const viewport = sectionEl.querySelector("[data-viewport]");
+  const bar = sectionEl.querySelector("[data-progress] i");
+  if (!viewport || !bar) return;
+
+  const update = () => {
+    const max = viewport.scrollWidth - viewport.clientWidth;
+    const frac = max > 0 ? viewport.clientWidth / viewport.scrollWidth : 1;
+    const pos = max > 0 ? viewport.scrollLeft / max : 0;
+    // `translate` composes ahead of `scale`, so the offset is in the track's own
+    // (unscaled) width: the thumb travels across the 1 - frac it doesn't cover.
+    bar.style.scale = `${frac} 1`;
+    bar.style.translate = `${pos * (1 - frac) * 100}%`;
+  };
+
+  viewport.addEventListener("scroll", update, { passive: true });
+  window.addEventListener("resize", update);
+  update();
+}
+
+// Desktop centres the promo row so the outer tiles are clipped on both sides.
+// Mobile can't centre a scrolling rail, so it reproduces the same reading by
+// parking the rail one tile in — the leftmost tile starts out of view and is
+// reachable by scrolling back.
+function initPromoOffset(sectionEl) {
+  const viewport = sectionEl.querySelector("[data-viewport]");
+  const track = sectionEl.querySelector("[data-promo-track]");
+  const first = track?.firstElementChild;
+  if (!viewport || !first) return;
+
+  const park = () => {
+    if (!MOBILE.matches) return;
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    viewport.scrollLeft = first.offsetWidth + gap;
+  };
+
+  park();
+  // Tile widths settle once the media has laid out.
+  window.addEventListener("load", park, { once: true });
+  MOBILE.addEventListener("change", park);
+}
+
+// Wires prev/next arrows to slide the track. Works on any section built by
+// carouselSection(): [data-viewport] clips, [data-track] translates by one card.
+// Below `md` the viewport scrolls natively instead, so the transform is cleared.
+function initCarousel(sectionEl) {
+  const viewport = sectionEl.querySelector("[data-viewport]");
+  const track = sectionEl.querySelector("[data-track]");
+  const prev = sectionEl.querySelector("[data-prev]");
+  const next = sectionEl.querySelector("[data-next]");
+  if (!viewport || !track || !prev || !next) return;
+
+  initScrollProgress(sectionEl);
+  // The gallery inside a card runs its own gesture, so drags starting there are
+  // left alone; everywhere else on the card (price, title, footer) pulls the rail.
+  enableDragScroll(viewport, { ignore: "[data-card-gallery]" });
+  enableDragScroll(sectionEl.querySelector("[data-chips]"));
+
+  // Index-based, not pixel-based: clamping a raw pixel offset to maxOffset left a
+  // few-px remainder, so stepping back needed two clicks before "prev" disabled.
+  let index = 0;
+  const gap = parseFloat(getComputedStyle(track).columnGap) || 24;
+
+  const maxOffset = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
+  const step = () => {
+    const card = track.firstElementChild;
+    return card ? card.offsetWidth + gap : viewport.clientWidth;
+  };
+  const maxIndex = () => Math.ceil(maxOffset() / step());
+
+  function apply() {
+    if (MOBILE.matches) {
+      track.style.transform = "";
+      return;
+    }
+    index = Math.min(Math.max(index, 0), maxIndex());
+    track.style.transform = `translateX(${-Math.min(index * step(), maxOffset())}px)`;
+    prev.disabled = index <= 0;
+    next.disabled = index >= maxIndex();
+  }
+
+  prev.addEventListener("click", () => {
+    index -= 1;
+    apply();
+  });
+  next.addEventListener("click", () => {
+    index += 1;
+    apply();
+  });
+  window.addEventListener("resize", apply);
+  apply();
+}
+
+// ---- promo tiles section (А как вам вот такое) ------------------------------
+// Per the Figma design this is NOT a slider (no arrows): a static row of 5 square
+// tiles, centered so the middle three are fully visible and the edge two peek.
+// Coral tiles animate on hover; the girl photo zooms; the middle video letterboxes
+// (black bars) and the right tile replays the same video, time-shifted.
+function promoTile(t) {
+  let media;
+  if (t.type === "coral") {
+    media = `<img src="${t.img}" alt="" class="size-full object-cover" draggable="false" />`;
+  } else if (t.video) {
+    // Figma fills the 437 square with the video (no letterboxing).
+    media = `<video class="size-full object-cover"
+      src="${t.video}" ${t.poster ? `poster="${t.poster}"` : ""} ${
+      t.offset ? `data-offset="${t.offset}"` : ""
+    } autoplay muted loop playsinline></video>`;
+  } else {
+    // `crop` is the image fill's box in Figma, as % of the 437 square.
+    const c = t.crop;
+    media = `<img src="${t.img}" alt="${t.caption}" class="absolute max-w-none" draggable="false"
+      style="left:${c.left};top:${c.top};width:${c.width};height:${c.height}" />`;
+  }
+  return `
+    <div class="group flex w-[437px] shrink-0 flex-col gap-4 max-md:w-[320px] max-md:snap-start max-md:gap-3">
+      <div class="${
+        t.zoom ? "promo-zoom " : ""
+      }relative aspect-square w-full overflow-hidden rounded-n bg-bg-subtle">${media}</div>
+      <p class="text-center text-body-xl text-text-primary transition-colors group-hover:text-text-hover max-md:text-m-body-xl">${t.caption}</p>
+    </div>`;
+}
+
+// Desktop centres the row so the edge tiles peek; mobile scrolls the same tiles
+// as a rail with a progress bar and a full-width action underneath
+// (Figma section / А как вам 1968:71549).
+function promoSection({ title, action = "Все акции", tiles }) {
+  return `
+  <section class="flex flex-col">
+    <div class="px-10 max-md:px-4">
+      <div class="h-20 max-md:h-10"></div>
+      <div class="flex items-start justify-between">
+        <h2 class="text-h2 text-text-primary max-md:text-m-h2">${title}</h2>
+        <a href="#" class="btn btn-m btn-secondary max-md:hidden">
+          <span>${action}</span>
+          <img src="${ICON}/arrow-right-24.svg" alt="" class="size-6" />
+        </a>
+      </div>
+      <div class="h-6 max-md:h-3"></div>
+    </div>
+    <div class="w-[1440px] overflow-hidden max-md:scroll-rail max-md:w-full max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:px-4" data-viewport>
+      <div class="flex justify-center gap-6 max-md:justify-start max-md:gap-3" data-promo-track>${tiles
+        .map(promoTile)
+        .join("")}</div>
+    </div>
+    <div class="hidden max-md:block">
+      <div class="scroll-progress" data-progress><span><i></i></span></div>
+      <div class="px-4 pt-2">
+        <a href="#" class="btn btn-m btn-secondary w-full">
+          <span>В раздел</span>
+          <img src="${ICON}/arrow-right-24.svg" alt="" class="size-6" />
+        </a>
+      </div>
+    </div>
+  </section>`;
+}
+
+// The 5 Figma tiles, left→right. The coral tiles reuse promo-3.svg (the triangle
+// field); the middle + right tiles share promo-chair.mp4, the right one offset in
+// time so the two play out of sync.
+// Crop of the photo fill, read off the Figma news-card (635:5427): the image box
+// is 169.05% x 225.4% of the 437 square, offset by -12.67% / -39.82%.
+const PROMO_PHOTO_CROP = { left: "-12.67%", top: "-39.82%", width: "169.05%", height: "225.4%" };
+
 const promoTiles = [
-  { img: `${HOME}/promo-1-src.png`, objectPosition: "center 40%", caption: "Столешница в подарок к кухне!" },
+  { type: "coral", img: `${HOME}/promo-3.svg`, caption: "Столешница в подарок к кухне!" },
+  { img: `${HOME}/promo-1-src.png`, crop: PROMO_PHOTO_CROP, zoom: true, caption: "Столешница в подарок к кухне!" },
   {
     video: `${HOME}/promo-chair.mp4`,
     poster: `${HOME}/promo-chair-poster.jpg`,
     caption: "Скидка в 20% на каждый пятый стул",
   },
-  { img: `${HOME}/promo-3.svg`, caption: "Столешница в подарок к кухне!" },
+  { type: "coral", img: `${HOME}/promo-3.svg`, caption: "Столешница в подарок к кухне!" },
+  {
+    video: `${HOME}/promo-chair.mp4`,
+    poster: `${HOME}/promo-chair-poster.jpg`,
+    offset: 3,
+    caption: "Скидка в 20% на каждый пятый стул",
+  },
 ];
 
 const akciiItems = [
@@ -201,6 +452,26 @@ const popularItems = [
     title: "Табурет CHICO (SL1)",
     category: { label: "Уплотнитель для столешниц", count: 31 },
   },
+  {
+    image: `${HOME}/prod-mod-2-src.png`,
+    price: "8 470₽",
+    title: "Мойка Vivat Granite GR-52, кварц, песочный",
+    category: { label: "Мойки", count: 22 },
+  },
+  {
+    image: `${HOME}/prod-mod-3-src.png`,
+    price: "3 190₽",
+    oldPrice: "4 100₽",
+    badges: [{ text: "хит", tone: "hit" }],
+    title: "Смеситель для кухни VIVAT SM-11, хром",
+    category: { label: "Смесители", count: 18 },
+  },
+  {
+    image: `${HOME}/prod-mod-4-src.png`,
+    price: "15 640₽",
+    title: "Система выдвижения Tandembox, полное выдвижение",
+    category: { label: "Системы выдвижения", count: 9 },
+  },
 ];
 
 const sections = {
@@ -227,10 +498,129 @@ for (const [name, { cfg, items }] of Object.entries(sections)) {
   if (!anchor) continue;
   anchor.innerHTML = carouselSection(cfg);
   renderCarousel(anchor.querySelector("[data-track]"), items);
+  initCarousel(anchor);
 }
 
 // promo tiles (distinct layout)
 const promoAnchor = document.querySelector('[data-section="promo"]');
 if (promoAnchor) {
   promoAnchor.innerHTML = promoSection({ title: "А как вам вот такое", tiles: promoTiles });
+  initScrollProgress(promoAnchor);
+  initPromoOffset(promoAnchor);
+  enableDragScroll(promoAnchor.querySelector("[data-viewport]"));
+  // Offset the reused video so it plays out of sync with the middle one.
+  promoAnchor.querySelectorAll("video[data-offset]").forEach((v) => {
+    const seek = () => {
+      if (v.duration) v.currentTime = Number(v.dataset.offset) % v.duration;
+    };
+    v.readyState >= 1 ? seek() : v.addEventListener("loadedmetadata", seek, { once: true });
+  });
+}
+
+// ---- Наши салоны (Yandex Maps) ----------------------------------------------
+// Mock dealer network — 10 points around Moscow. `coords` is [lon, lat], the
+// order ymaps3 expects. `brand: true` = own VIVAT store, false = dealer centre;
+// the "Только фирменные магазины" toggle filters on it.
+const stores = [
+  {
+    name: "Фирменный магазин VIVAT",
+    brand: true,
+    address: "16-й км МКАД, 50 метров от внешней стороны, ул. Энергетиков, д. 22, корп. 3",
+    metro: ["Жулебино", "Котельники"],
+    coords: [37.8567, 55.6588],
+    hours: "Ежедневно, 10:00 — 21:00",
+    phone: "+7 (495) 120-45-01",
+  },
+  {
+    name: "Фирменный магазин VIVAT",
+    brand: true,
+    address: "г. Химки, Ленинградское ш., 5, ТЦ «Гранд», 2-й этаж",
+    metro: ["Планерная"],
+    coords: [37.4102, 55.8792],
+    hours: "Ежедневно, 10:00 — 22:00",
+    phone: "+7 (495) 120-45-02",
+  },
+  {
+    name: "Фирменный магазин VIVAT",
+    brand: true,
+    address: "Каширское ш., 61Г, ТЦ «Москворечье», 1-й этаж",
+    metro: ["Каширская", "Кантемировская"],
+    coords: [37.6510, 55.6432],
+    hours: "Ежедневно, 10:00 — 21:00",
+    phone: "+7 (495) 120-45-03",
+  },
+  {
+    name: "Дилерский центр «Мебель-Град»",
+    brand: false,
+    address: "Дмитровское ш., 163А, ТЦ «РИО», 3-й этаж",
+    metro: ["Алтуфьево"],
+    coords: [37.5661, 55.8891],
+    hours: "Пн — Вс, 10:00 — 22:00",
+    phone: "+7 (495) 771-16-40",
+  },
+  {
+    name: "Фирменный магазин VIVAT",
+    brand: true,
+    address: "Ленинградское ш., 16А, стр. 4, БЦ «Метрополис»",
+    metro: ["Войковская", "Сокол"],
+    coords: [37.4991, 55.8199],
+    hours: "Ежедневно, 10:00 — 21:00",
+    phone: "+7 (495) 120-45-05",
+  },
+  {
+    name: "Дилерский центр «Кухни Плюс»",
+    brand: false,
+    address: "ул. Профсоюзная, 61А, ТЦ «Калужский», 4-й этаж",
+    metro: ["Новые Черёмушки"],
+    coords: [37.5405, 55.6708],
+    hours: "Пн — Сб, 10:00 — 21:00 · Вс, 11:00 — 20:00",
+    phone: "+7 (495) 334-72-18",
+  },
+  {
+    name: "Фирменный магазин VIVAT",
+    brand: true,
+    address: "Варшавское ш., 87Б, ТЦ «Варшавский», 2-й этаж",
+    metro: ["Варшавская", "Нагатинская"],
+    coords: [37.6180, 55.6620],
+    hours: "Ежедневно, 10:00 — 21:00",
+    phone: "+7 (495) 120-45-07",
+  },
+  {
+    name: "Дилерский центр «ДомМебель»",
+    brand: false,
+    address: "Рязанский пр-т, 2, корп. 2, ТЦ «Город», 1-й этаж",
+    metro: ["Нижегородская"],
+    coords: [37.7350, 55.7280],
+    hours: "Пн — Вс, 10:00 — 22:00",
+    phone: "+7 (495) 660-09-33",
+  },
+  {
+    name: "Фирменный магазин VIVAT",
+    brand: true,
+    address: "Новорижское ш., 5-й км, МКЦ «Гранд», павильон 214",
+    metro: ["Мякинино"],
+    coords: [37.3893, 55.8258],
+    hours: "Ежедневно, 10:00 — 21:00",
+    phone: "+7 (495) 120-45-09",
+  },
+  {
+    name: "Дилерский центр «Интерьер-Холл»",
+    brand: false,
+    address: "г. Мытищи, Осташковское ш., 1, ТЦ «Красный Кит», 3-й этаж",
+    metro: ["Медведково"],
+    coords: [37.7370, 55.9040],
+    hours: "Пн — Вс, 10:00 — 21:00",
+    phone: "+7 (495) 419-55-06",
+  },
+];
+
+const storesAnchor = document.querySelector('[data-section="salony"]');
+if (storesAnchor) {
+  setStoresMapBases({ icon: ICON, home: HOME });
+  renderStoresMap(storesAnchor, {
+    stores,
+    apiKey: import.meta.env?.VITE_YANDEX_MAPS_KEY || "73abf802-7fa6-4da1-bc36-7dd3457e4673",
+    description:
+      "Наша продукция продается в сотнях городов России в наших официальных магазинах и дилерских центрах.",
+  });
 }

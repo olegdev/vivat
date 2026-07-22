@@ -62,75 +62,209 @@
   --text-body-xs--line-height: 1rem;     /* 16 */
   --text-body-xs--font-weight: 400;
 
+  --text-button-s: 0.875rem;             /* 14 */
+  --text-button-s--line-height: 1.125rem;/* 18 */
+  --text-button-s--font-weight: 500;
+
   --text-button-m: 1rem;                 /* 16 */
   --text-button-m--line-height: 1.5rem;  /* 24 */
   --text-button-m--font-weight: 500;
+
+  --text-button-l: 1.25rem;              /* 20 */
+  --text-button-l--line-height: 1.5rem;  /* 24 */
+  --text-button-l--font-weight: 500;
+
+  --text-body-l-semibold: 1.25rem;       /* 20 — BodyL-semibild (Medium) */
+  --text-body-l-semibold--line-height: 2rem;
+  --text-body-l-semibold--font-weight: 500;
+
+  --text-body-n-accent: 1rem;            /* 16/22 Medium */
+  --text-body-n-accent--line-height: 1.375rem;
+  --text-body-n-accent--font-weight: 500;
 
   --text-link-m: 1rem;                   /* 16 */
   --text-link-m--line-height: 1.5rem;    /* 24 */
   --text-link-m--font-weight: 400;
 
+  /* ---- Typography scale (Mobile, 360px). Same tokens prefixed `m-`, meant
+     for the `md:`-down breakpoint. Values from Figma Mobile/* text styles. ---- */
+  --text-m-display-l: 1.875rem;          /* 30/36 */
+  --text-m-display-l--line-height: 2.25rem;
+  --text-m-display-l--font-weight: 600;
+  --text-m-h1: 1.5rem;                   /* 24/30 */
+  --text-m-h1--line-height: 1.875rem;
+  --text-m-h1--font-weight: 600;
+  --text-m-h2: 1.375rem;                 /* 22/26 */
+  --text-m-h2--line-height: 1.625rem;
+  --text-m-h2--font-weight: 600;
+  --text-m-h3: 1.125rem;                 /* 18/24 */
+  --text-m-h3--line-height: 1.5rem;
+  --text-m-h3--font-weight: 600;
+  --text-m-h4: 1rem;                     /* 16/22 */
+  --text-m-h4--line-height: 1.375rem;
+  --text-m-h4--font-weight: 600;
+  --text-m-h5: 0.875rem;                 /* 14/20 */
+  --text-m-h5--line-height: 1.25rem;
+  --text-m-h5--font-weight: 600;
+  --text-m-body-xl: 1.125rem;            /* 18/26 Medium */
+  --text-m-body-xl--line-height: 1.625rem;
+  --text-m-body-xl--font-weight: 500;
+  --text-m-body-l: 1rem;                 /* 16/24 */
+  --text-m-body-l--line-height: 1.5rem;
+  --text-m-body-l--font-weight: 400;
+  --text-m-body-n: 0.875rem;             /* 14/20 */
+  --text-m-body-n--line-height: 1.25rem;
+  --text-m-body-n--font-weight: 400;
+  --text-m-body-n-accent: 0.875rem;      /* 14/20 Medium */
+  --text-m-body-n-accent--line-height: 1.25rem;
+  --text-m-body-n-accent--font-weight: 500;
+  --text-m-body-s-crossed: 0.75rem;      /* 12/16 — struck-through old price */
+  --text-m-body-s-crossed--line-height: 1rem;
+  --text-m-body-s-crossed--font-weight: 400;
+  --text-m-body-compact: 0.8125rem;      /* 13/20 */
+  --text-m-body-compact--line-height: 1.25rem;
+  --text-m-body-compact--font-weight: 400;
+  --text-m-body-s: 0.75rem;              /* 12/16 */
+  --text-m-body-s--line-height: 1rem;
+  --text-m-body-s--font-weight: 400;
+  --text-m-body-xs: 0.6875rem;           /* 11/14 */
+  --text-m-body-xs--line-height: 0.875rem;
+  --text-m-body-xs--font-weight: 400;
+  --text-m-button-l: 1rem;               /* 16/22 Medium */
+  --text-m-button-l--line-height: 1.375rem;
+  --text-m-button-l--font-weight: 500;
+  --text-m-button-m: 0.875rem;           /* 14/20 Medium */
+  --text-m-button-m--line-height: 1.25rem;
+  --text-m-button-m--font-weight: 500;
+  --text-m-button-s: 0.75rem;            /* 12/18 Medium */
+  --text-m-button-s--line-height: 1.125rem;
+  --text-m-button-s--font-weight: 500;
+
   /* ---- Semantic colors: text -------------------------------------------- */
   --color-text-primary: #292929;
+  --color-text-hover: #151515;
+  --color-text-pressed: #141414;
   --color-text-secondary: #808080;
   --color-text-muted: #acacac;
   --color-text-disabled: #999999;
-  --color-text-hover: #151515;
-  --color-text-pressed: #141414;
-  --color-text-link-default: #292929;
-  --color-text-link-highlighted: #ff5546;
   --color-text-inverse-primary: #ffffff;
   --color-text-inverse-secondary: #cbcbcb;
+  --color-text-inverse-muted: #acacac;
+  --color-text-inverse-disabled: #808080;
+  --color-text-link-default: #292929;
+  --color-text-link-highlighted: #ff5546;
+  --color-text-link-secondary: #808080;
 
   /* ---- Semantic colors: bg / surface ------------------------------------ */
   --color-bg-page: #ffffff;
   --color-bg-subtle: #f8f8f8;
+  --color-bg-inverse: #292929;
+  --color-surface-inverted: #ffffff;
+  --color-surface-subtle: #f8f8f8;
   --color-surface-default: #f3f3f3;
   --color-surface-raised: #cbcbcb;
   --color-surface-strong: #292929;
-  --color-surface-inverted: #ffffff;
   --color-surface-brand: #ff5546;
   --color-surface-accent: #f8bb92;
+  --color-surface-accent-subtle: #ffd6b9;
   --color-surface-accent-alt: #4a9b7d;
+  --color-surface-accent-alt-subtle: #a4cebf;
   --color-surface-error: #d0493d;
 
   /* ---- Semantic colors: components -------------------------------------- */
+  --color-components-subtle: #f3f3f3;
+  --color-components-subtle-hover: #eeeeee;
+  --color-components-light: #e7e7e7;
+  --color-components-light-hover: #d9d9d9;
+  --color-components-elevated: #d9d9d9;
+  --color-components-elevated-hover: #cbcbcb;
   --color-components-strong: #292929;
   --color-components-strong-hover: #151515;
+  --color-components-active-light: #808080;
+  --color-components-active-muted: #414141;
+  --color-components-active-default: #292929;
+  --color-components-active-extra: #141414;
   --color-components-disabled: #e7e7e7;
+  --color-components-disabled-inverted: #acacac;
+  --color-components-disabled-inverted-hover: #707070;
+  --color-components-white: #ffffff;
   --color-components-red: #ff5546;
   --color-components-red-hover: #e64d3f;
   --color-components-red-active: #ff5546;
-  --color-components-subtle: #f3f3f3;
-  --color-components-subtle-hover: #eeeeee;
+  --color-components-red-disabled: #ff5546;
+  --color-components-orange: #ef945c;
+  --color-components-orange-hover: #d98755;
+  --color-components-orange-active: #bd794f;
+  --color-components-green: #4a9b7d;
+  --color-components-green-hover: #3d856a;
+  --color-components-green-active: #33765d;
+  --color-components-error: #d0493d;
 
   /* ---- Semantic colors: borders ----------------------------------------- */
-  --color-border-default: #cbcbcb;
   --color-border-subtle: #eeeeee;
   --color-border-subtle-hover: #acacac;
   --color-border-light: #e7e7e7;
+  --color-border-light-hover: #cbcbcb;
+  --color-border-default: #cbcbcb;
+  --color-border-default-hover: #acacac;
   --color-border-elevated: #707070;
+  --color-border-elevated-hover: #414141;
   --color-border-active: #414141;
+  --color-border-error: #d0493d;
   --color-border-ring: #141414;
   --color-border-ring-inversed: #ffffff;
-  --color-border-error: #d0493d;
+  --color-border-alpha-default: rgba(20, 20, 20, 0.22);
+  --color-border-alpha-hover: rgba(20, 20, 20, 0.35);
+  --color-border-alpha-pressed: rgba(20, 20, 20, 0.6);
 
   /* ---- Semantic colors: icons ------------------------------------------- */
   --color-icon-primary: #292929;
+  --color-icon-hover: #151515;
+  --color-icon-pressed: #141414;
   --color-icon-secondary: #808080;
   --color-icon-muted: #acacac;
   --color-icon-disabled: #999999;
-  --color-icon-hover: #151515;
-  --color-icon-pressed: #141414;
   --color-icon-inverse-primary: #ffffff;
   --color-icon-inverse-secondary: #cbcbcb;
+  --color-icon-inverse-muted: #808080;
+  --color-icon-inverse-disabled: #808080;
 
   /* ---- Semantic colors: divider / overlay ------------------------------- */
   --color-divider-soft: #eeeeee;
   --color-divider-light: #e7e7e7;
   --color-divider-default: #cbcbcb;
+  --color-divider-dark: #585858;
   --color-overlay-light: rgba(20, 20, 20, 0.1);
+  --color-overlay-middle: rgba(20, 20, 20, 0.6);
   --color-overlay-strong: rgba(20, 20, 20, 0.9);
+
+  /* ---- Radius (Figma Semantic: radius/no · S · N · L · XL · rounded) ------
+     Spacing is deliberately NOT redefined: the Figma spacing scale
+     (0 1 2 4 6 8 10 12 16 24 32 40 44 48 56 64 80 96 112 148) is 4px-based and
+     already matches Tailwind's default scale 1:1 — p-4 = 16px, gap-6 = 24px, … */
+  --radius-no: 0px;
+  --radius-s: 2px;
+  --radius-n: 4px;
+  --radius-l: 8px;
+  --radius-xl: 12px;
+  --radius-pill: 24px;
+
+  /* ---- Borders (Figma thickness/*) --------------------------------------- */
+  --border-width-1: 1px;
+  --border-width-1_5: 1.5px;
+  --border-width-2: 2px;
+
+  /* ---- Shadows (Figma effect styles) ------------------------------------- */
+  --shadow-dropdown: 0 4px 17.6px rgba(0, 0, 0, 0.14);
+  --shadow-navbar: 0 -3px 5px rgba(0, 0, 0, 0.2);
+
+  /* ---- Layout grid (Figma grid styles) — reference values ----------------
+     desktop "12": 12 cols · gutter 24 (gap-6) · margin 40 (px-10)
+     mobile  "4" :  4 cols · gutter 16 (gap-4) · margin 16 (px-4)             */
+  --grid-gutter-desktop: 24px;
+  --grid-margin-desktop: 40px;
+  --grid-gutter-mobile: 16px;
+  --grid-margin-mobile: 16px;
 
   /* ---- Primitive palettes ----------------------------------------------- */
   --color-brand-200: #f6aea6;
@@ -162,6 +296,7 @@
   --color-neutral-150: #d9d9d9;
   --color-neutral-220: #cbcbcb;
   --color-neutral-350: #acacac;
+  --color-neutral-400: #999999;
   --color-neutral-500: #808080;
   --color-neutral-600: #707070;
   --color-neutral-700: #585858;
@@ -169,6 +304,15 @@
   --color-neutral-900: #292929;
   --color-neutral-950: #151515;
   --color-neutral-black: #141414;
+
+  /* alpha primitives (colors/Neutral/alpha-*) */
+  --color-alpha-white-0: rgba(255, 255, 255, 0);
+  --color-alpha-white-50: rgba(255, 255, 255, 0.5);
+  --color-alpha-black-100: rgba(20, 20, 20, 0.1);
+  --color-alpha-black-220: rgba(20, 20, 20, 0.22);
+  --color-alpha-black-350: rgba(20, 20, 20, 0.35);
+  --color-alpha-black-600: rgba(20, 20, 20, 0.6);
+  --color-alpha-black-800: rgba(20, 20, 20, 0.9);
 }
 
 /* ---- Base -------------------------------------------------------------- */
@@ -180,5 +324,334 @@
     background-color: var(--color-bg-page);
     color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
+  }
+  /* Tailwind v4 preflight leaves buttons with the default cursor. Restore the
+     pointer on anything interactive (buttons, links, role=button, dots). */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  a[href],
+  summary,
+  label:has(> input[type="checkbox"]),
+  label:has(> input[type="radio"]) {
+    cursor: pointer;
+  }
+  button:disabled,
+  [aria-disabled="true"] {
+    cursor: default;
+  }
+  /* Every slider here is drag-driven, and the browser's native "drag the image
+     out of the page" gesture hijacks that — the picture peels off instead of
+     the slide moving. Firefox needs the `draggable="false"` attribute too. */
+  img,
+  video {
+    -webkit-user-drag: none;
+  }
+}
+
+/* ============================================================================
+   Components — transcribed from Figma UI SYSTEM component sets.
+   Button spec comes from the `buttons` set (581:21622, 240 variants):
+   size s/m/l × value primary/secondary/accent/ghost × condition
+   default/hover/active/focus/disabled. Naming matches Figma: `primary` is the
+   DARK button, `accent` is the red one.
+   ============================================================================ */
+@layer components {
+  /* ---- Button ---------------------------------------------------------- */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-pill transition-colors;
+    @apply focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-border-ring;
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    @apply pointer-events-none bg-components-disabled text-text-disabled;
+  }
+
+  /* sizes */
+  .btn-s { @apply h-8 gap-1.5 px-3 text-button-s; }
+  .btn-m { @apply h-11 gap-2 px-4 text-button-m; }
+  .btn-l { @apply h-14 gap-2 px-6 text-button-l; }
+
+  /* values */
+  .btn-primary {
+    @apply bg-components-strong text-text-inverse-primary;
+    @apply hover:bg-components-strong-hover active:bg-components-strong-hover;
+  }
+  .btn-accent {
+    @apply bg-components-red text-text-inverse-primary;
+    @apply hover:bg-components-red-hover active:bg-components-red-active;
+  }
+  .btn-secondary {
+    @apply bg-components-subtle text-text-primary;
+    @apply hover:bg-components-subtle-hover active:bg-border-active active:text-text-inverse-primary;
+  }
+  .btn-ghost {
+    @apply bg-transparent text-text-primary;
+    @apply hover:bg-components-subtle-hover active:bg-border-active active:text-text-inverse-primary;
+  }
+  /* white pill used on category tiles / catalog actions */
+  .btn-white {
+    @apply bg-surface-inverted text-text-primary;
+    @apply hover:bg-components-subtle-hover;
+  }
+
+  /* ---- Icon button (circular) ------------------------------------------ */
+  .icon-btn {
+    @apply flex size-11 shrink-0 items-center justify-center rounded-full;
+    @apply bg-components-subtle transition-colors hover:bg-components-subtle-hover;
+  }
+
+  /* ---- Carousel arrow --------------------------------------------------- */
+  .carousel-arrow {
+    @apply flex size-12 items-center justify-center rounded-full transition-colors;
+    @apply border border-border-default bg-components-subtle;
+    @apply hover:border-border-subtle-hover hover:bg-components-subtle-hover;
+    @apply disabled:pointer-events-none disabled:opacity-40;
+  }
+
+  /* ---- Promo tiles (А как вам вот такое) --------------------------------
+     The photo tile zooms on hover. NOTE: the coral tile is animated in the
+     prototype, but the Figma node carries no keyframes (get_motion_context
+     returns nothing), so no animation is authored here yet. */
+  .promo-zoom img { @apply transition-transform duration-500 ease-out; }
+  .promo-zoom:hover img { scale: 1.08; }
+
+  /* ---- Carousel dot ----------------------------------------------------- */
+  .carousel-dot { @apply flex h-4 w-8 flex-col justify-center; }
+  .carousel-dot > span {
+    @apply h-0.5 w-full rounded-full bg-alpha-black-350 transition-colors;
+  }
+  .carousel-dot[aria-current="true"] > span { @apply bg-overlay-strong; }
+
+  /* ---- Social icon (social-icon, 878:105097…) ---------------------------
+     Six separate links (zen/vk/tg/yt/rt/max). The glyph is painted via a mask
+     so each icon can recolor on its own hover — an <img> could not. */
+  .social-icon {
+    @apply flex shrink-0 items-center justify-center overflow-hidden;
+  }
+  .social-icon > span {
+    @apply block bg-icon-primary transition-colors;
+    mask: var(--icon) no-repeat center / contain;
+    -webkit-mask: var(--icon) no-repeat center / contain;
+  }
+  .social-icon:hover > span { @apply bg-icon-hover; }
+
+  /* The six glyphs live next to this file rather than in `public/`, so Vite
+     resolves and inlines them; a `url()` pointing into `public/` can only be
+     resolved at runtime and made the build warn on every page. */
+  .social-zen { --icon: url("./social/zen.svg"); }
+  .social-vk  { --icon: url("./social/vk.svg"); }
+  .social-tg  { --icon: url("./social/tg.svg"); }
+  .social-yt  { --icon: url("./social/yt.svg"); }
+  .social-rt  { --icon: url("./social/rt.svg"); }
+  .social-max { --icon: url("./social/max.svg"); }
+
+  /* ---- Badge ------------------------------------------------------------ */
+  .badge {
+    @apply flex items-center rounded-pill px-2 text-text-inverse-primary;
+  }
+  /* Mobile shrinks every badge to the same 20px / 11px pill (Figma `badge`
+     device=mobile), so the size variants converge below `md`. */
+  .badge-l { @apply h-8 py-0.5 text-body-n-accent max-md:h-5 max-md:py-0 max-md:pb-px max-md:text-m-body-xs; }
+  .badge-s { @apply h-6 pb-px text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
+  .badge-new      { @apply bg-surface-accent-alt; }
+  .badge-hit      { @apply bg-components-red; }
+  .badge-discount { @apply bg-accent-yellow-800; }
+
+  /* ---- Stores map: dealer card ------------------------------------------
+     State lives in real CSS (like .carousel-dot above) rather than aria-*
+     Tailwind variants: the arbitrary `aria-[expanded=true]:` form is not
+     emitted by the v4 scanner from these template literals. */
+  .store-card {
+    @apply flex w-full flex-col border-b border-divider-light px-6 pb-3 pt-4;
+    @apply text-left transition-colors hover:bg-bg-subtle;
+  }
+  .store-card[aria-current="true"] { @apply bg-bg-subtle; }
+  .store-card [data-chevron] { @apply transition-transform; }
+  .store-card[aria-expanded="true"] [data-chevron] { rotate: 180deg; }
+
+  /* ---- Stores map: dealer-list scrollbar --------------------------------
+     Figma draws a bespoke 24px scroll column (641:18974): a 2px light track
+     inset by 8px, with a dark rounded thumb. Reproduced on the native
+     scrollbar so the list keeps real scrolling semantics. */
+  .stores-scroll {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-text-primary) var(--color-divider-light);
+  }
+  .stores-scroll::-webkit-scrollbar { width: 24px; }
+  .stores-scroll::-webkit-scrollbar-track,
+  .stores-scroll::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    border: 11px solid transparent;
+    border-radius: var(--radius-s);
+  }
+  .stores-scroll::-webkit-scrollbar-track { background-color: var(--color-divider-light); }
+  .stores-scroll::-webkit-scrollbar-thumb { background-color: var(--color-text-primary); }
+
+  /* ---- Stores map: marker ------------------------------------------------
+     Blue Yandex-style "9" pin traced from the Figma mock (pin-store.svg): thin
+     ring, large hollow centre, tail sweeping down-left. The selected pin swaps
+     to the VIVAT-red variant, enlarged. The artwork's tip sits at (10.6,49.5)
+     of a 30×50 box → 35% from left, 99% down, hence the translate/origin. */
+  .store-pin {
+    @apply absolute cursor-pointer;
+    width: 27px;
+    height: 45px;
+    translate: -35% -99%;
+  }
+  .store-pin__img {
+    @apply absolute inset-0 block size-full;
+    transform-origin: 35% 99%;
+    transition: scale 0.15s ease, opacity 0.12s ease;
+    filter: drop-shadow(0 2px 3px rgba(20, 20, 20, 0.35));
+  }
+  .store-pin__img--active { opacity: 0; }
+  .store-pin:hover .store-pin__img { scale: 1.08; }
+  .store-pin[aria-selected="true"] .store-pin__img { opacity: 0; }
+  .store-pin[aria-selected="true"] .store-pin__img--active {
+    opacity: 1;
+    scale: 1.2;
+  }
+
+  .store-pin__popup {
+    @apply pointer-events-none invisible absolute w-[240px] rounded-l bg-surface-inverted p-3 opacity-0 shadow-dropdown transition-opacity;
+    bottom: calc(100% + 4px);
+    left: 50%;
+    translate: -50% 0;
+  }
+  .store-pin[aria-selected="true"] .store-pin__popup { @apply visible opacity-100; }
+
+  /* ---- Stores map: zoom controls ---------------------------------------- */
+  .map-ctrl {
+    @apply flex size-10 items-center justify-center rounded-full bg-surface-inverted;
+    @apply text-h4 text-text-primary shadow-dropdown transition-colors;
+    @apply hover:bg-components-subtle-hover;
+  }
+
+  /* ---- Tab chip (Популярные товары) ------------------------------------- */
+  .chip {
+    @apply flex h-10 shrink-0 items-center rounded-pill px-4 text-button-m transition-colors max-md:text-m-button-m;
+    @apply bg-components-subtle text-text-primary hover:bg-components-subtle-hover;
+  }
+  .chip[aria-selected="true"] {
+    @apply bg-surface-strong text-text-inverse-primary hover:bg-components-strong-hover;
+  }
+
+  /* ---- Catalog mega-menu (from `menu` frames 882:119365 / 912:85445) -----
+     A 3-column flyout opened by the header "Весь каталог" button: categories →
+     subcategories + chips → collections. Each column is 300px wide; the white
+     panel hugs only the visible columns while a scrim dims the page. */
+  .catalog-menu-item {
+    @apply flex h-10 items-center gap-2 rounded-pill px-4 py-3 transition-colors;
+    @apply hover:bg-components-subtle-hover;
+  }
+  .catalog-menu-item[aria-current="true"] { @apply bg-components-subtle-hover; }
+
+  .catalog-chip {
+    @apply inline-flex h-8 items-center rounded-pill border border-border-light px-4 transition-colors;
+    @apply text-body-s text-text-secondary hover:border-border-default hover:text-text-primary;
+  }
+
+  /* ---- Mobile burger menu row (Figma `menu-item` 1859:335475, 328x44) -----
+     One 44px pill per row, used for every level of the drill-down panel. The
+     caption variant ("По коллекциям") is the same box with muted text and no
+     chevron, so it is a <p> rather than a link and never highlights. */
+  .mobile-menu-item {
+    @apply flex h-11 w-full items-center gap-2 rounded-pill px-4 py-3 text-left transition-colors;
+  }
+  a.mobile-menu-item:hover,
+  button.mobile-menu-item:hover {
+    @apply bg-components-subtle-hover;
+  }
+  /* No visible focus ring inside the menu, by design: opening the panel moves
+     focus programmatically, and the browser default drew a stray blue box on
+     the close button. The outline is kept but transparent, so focus order and
+     the trap are untouched — only the paint is gone. */
+  [data-mm-panel] :focus,
+  [data-mm-panel] :focus-visible {
+    outline-color: transparent;
+  }
+
+  /* ==========================================================================
+     Mobile (≤ md). The 360px frames (customer › body 1968:71493) reuse the
+     desktop components at a smaller scale, so most of the mobile design is
+     expressed with `max-md:` utilities at the call site. Only what utilities
+     cannot express lives here.
+     ========================================================================== */
+
+  /* Hero media. Desktop reproduces the Figma media box verbatim; the 360px
+     frame parks that box outside the canvas, so mobile just covers the banner
+     instead of inheriting a crop that would show nothing. */
+  .hero-media {
+    @apply absolute max-w-none object-cover;
+    left: var(--l);
+    top: var(--t);
+    width: var(--w);
+    height: var(--h);
+  }
+  @media (width < 48rem) {
+    .hero-media {
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  /* Category-tile media. Each tile crops its video to a hand-placed box that
+     differs between the 1440px and 360px frames, so both boxes travel as
+     custom properties on the element and the breakpoint picks one. */
+  .cat-media {
+    @apply absolute max-w-none object-cover;
+    left: var(--l);
+    top: var(--t);
+    width: var(--w);
+    height: var(--h);
+  }
+  @media (width < 48rem) {
+    .cat-media {
+      left: var(--ml);
+      top: var(--mt);
+      width: var(--mw);
+      height: var(--mh);
+    }
+  }
+
+  /* Horizontal rails. Desktop carousels translate a track behind arrows;
+     mobile scrolls natively instead, with position shown by .scroll-progress
+     (Figma `scroll` 1965:373920) rather than a scrollbar. */
+  .scroll-rail {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scroll-rail::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* 2px track inset 40px from the frame edges, with a dark thumb whose width
+     and offset mirror the rail's scroll position (set by JS). */
+  .scroll-progress {
+    @apply flex h-8 items-center px-10;
+  }
+  .scroll-progress > span {
+    @apply relative block h-0.5 w-full overflow-hidden rounded-full bg-components-light;
+  }
+  .scroll-progress > span > i {
+    @apply absolute inset-y-0 left-0 block w-full origin-left rounded-full bg-text-primary;
+  }
+}
+
+/* The 152px "other" cards ride two rows deep on mobile (Figma `rows`
+   1968:150236), filled row-major, so the column count is handed in as --cols by
+   whoever renders the track. This lives in `utilities`, not `components`,
+   because it has to beat the `flex` the same track carries for desktop. */
+@layer utilities {
+  @media (width < 48rem) {
+    .rail-2row {
+      display: grid;
+      grid-auto-flow: row;
+      grid-template-columns: repeat(var(--cols), 152px);
+      column-gap: 8px;
+      row-gap: 24px;
+    }
   }
 }

@@ -2,3 +2,6 @@ VIVAT_SOURCES/
 node_modules/
 dist/
 .DS_Store
+
+# Playwright MCP screenshots / traces from local verification runs
+.playwright-mcp/

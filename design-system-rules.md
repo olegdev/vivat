@@ -62,6 +62,12 @@ The full Figma export lives in [`VIVAT_SOURCES/`](VIVAT_SOURCES/) — `images/` 
   playsinline>` (autoplay needs `muted`), with an `ffmpeg`-extracted poster frame.
 - **Vector nodes** (social icons, the coral promo tile) have no raster source at
   all — export them with `download_assets` + `defaultFormat: "svg"`.
+- **CSS-referenced assets belong in `src/`, not `public/`.** A `url()` pointing
+  into `public/` can only be resolved at runtime, so every build warned
+  ("didn't resolve at build time"). The six social glyphs live in
+  [`src/styles/social/`](src/styles/social/) and are bound to `.social-<name>`
+  classes in `app.css`, which lets Vite hash and inline them. `public/` stays
+  for things referenced from markup by path (photos, video, icons in `<img>`).
 - Verified video fills on customer/Main:
   | Where | videoHash |
   | --- | --- |
@@ -143,18 +149,74 @@ The `text-*` utility already sets weight + line-height — don't re-add `leading
 
 ### Spacing
 
-Figma variables `gap/8`, `gap/16` → Tailwind default scale `gap-2`, `gap-4` (4px base).
-Layout dims (widths, paddings) are literal in Figma — read them from
-`get_design_context` and use arbitrary values where no scale step matches
-(e.g. `w-[1440px]`, content max width `max-w-[1360px]` with `px-10`).
+Figma's spacing scale (`0 1 2 4 6 8 10 12 16 24 32 40 44 48 56 64 80 96 112 148`)
+is 4px-based and **already matches Tailwind's default scale 1:1** — so no custom
+spacing tokens exist by design. Use the plain scale: `p-4` = 16px, `gap-6` = 24px,
+`px-10` = 40px, `h-11` = 44px. Reserve arbitrary values for true layout
+dimensions only (`w-[1440px]`, `h-[327px]`), never for spacing.
+
+### Radius (Figma `radius/*`)
+
+| Figma | Utility | Value |
+| ----- | ------- | ----- |
+| radius/no | `rounded-no` | 0 |
+| radius/S | `rounded-s` | 2px |
+| radius/N | `rounded-n` | 4px — cards, tiles, media |
+| radius/L | `rounded-l` | 8px |
+| radius/XL | `rounded-xl` | 12px |
+| radius/rounded | `rounded-pill` | 24px — buttons, chips, badges |
+
+### Borders & shadows
+
+Thickness: `--border-width-1 / -1_5 / -2` (1 / 1.5 / 2px).
+Shadows come from Figma effect styles — only two exist:
+`shadow-dropdown` (`0 4px 17.6px rgba(0,0,0,.14)`) and `shadow-navbar`
+(`0 -3px 5px rgba(0,0,0,.2)`). Don't invent others.
 
 ---
 
-## 4. Components (built on tokens, no framework)
+## 4. Components
 
-Interactive elements from the Figma UI SYSTEM (button, chips, tabs, badge, toggle,
-card, alert, modal, …) are composed directly from the token utilities — there is no
-component library to lean on. Two patterns are already extracted:
+Component classes live in `@layer components` in [`app.css`](src/styles/app.css),
+transcribed from the Figma UI SYSTEM component sets. **Use these instead of
+re-typing utility strings** — that is what keeps buttons from drifting.
+
+### Button — from set `buttons` (581:21622, 240 variants)
+
+`.btn` + one size + one value. **Figma naming: `primary` is the DARK button,
+`accent` is the red one** — don't swap them.
+
+| Size | h / px / gap / text |
+| ---- | ------------------- |
+| `.btn-s` | 32 / 12 / 6 / 14px |
+| `.btn-m` | 44 / 16 / 8 / 16px |
+| `.btn-l` | 56 / 24 / 8 / 20px |
+
+| Value | default → hover → active |
+| ----- | ------------------------ |
+| `.btn-primary` | `#292929` → `#151515` → `#151515` |
+| `.btn-accent` | `#ff5546` → `#e64d3f` → `#ff5546` |
+| `.btn-secondary` | `#f3f3f3` → `#eeeeee` → `#414141` + white text |
+| `.btn-ghost` | transparent → `#eeeeee` → `#414141` + white text |
+| `.btn-white` | `#ffffff` → `#eeeeee` (catalog pills on tiles) |
+
+`disabled` / `aria-disabled` → `#e7e7e7` bg + `#999999` text, automatically.
+
+### Other component classes
+
+| Class | Use |
+| ----- | --- |
+| `.icon-btn` | circular 44px icon button (cart, card action) |
+| `.carousel-arrow` | 48px bordered arrow — hero, product & promo carousels |
+| `.carousel-dot` + `aria-current="true"` | slider indicator line |
+| `.badge` + `.badge-l/-s` + `.badge-new/-hit/-discount` | product & tile badges |
+| `.chip` + `aria-selected="true"` | tab chips ("Популярные товары") |
+| `.mobile-menu-item` | 44px row of the mobile burger menu (see §7) |
+
+State is driven by ARIA attributes, not class juggling — so the JS just sets
+`aria-current` / `aria-selected` and CSS does the rest.
+
+### Extracted JS patterns
 
 - **Product card** — [`src/components/product-card.js`](src/components/product-card.js),
   data-driven, two footer variants (color swatches + comments / category link).
@@ -188,8 +250,126 @@ no scale step matches — fidelity beats convenience.
 ## 6. Conventions
 
 - Desktop canvas width **1440px**; content column **1360px** (`px-40` = 40px sides).
-- Mobile variants exist at **360px** — build responsive later, desktop-first for now.
+- Mobile canvas **360px**, margin 16 (`px-4`), gutter 8–12. One DOM serves both:
+  the breakpoint is Tailwind's **`md` (768px)** — desktop classes stay unprefixed,
+  mobile overrides use **`max-md:`**. Type switches to the `text-m-*` scale.
+  See §7.
 - No inline hex in markup — always a token utility. If a color is missing, add it to
   `@theme` in `app.css` first, then use it.
 - Keep class lists readable; extract repeated blocks (cards, tiles) into a documented
   pattern rather than copy-paste drift.
+
+---
+
+## 7. Mobile (360px frames)
+
+Source frame: **customer › body `1968:71493`** (and the components it instances).
+Implemented on `customer/main.html`; use it as the reference for other screens.
+
+**Rule: one DOM, `max-md:` overrides.** Add mobile classes next to the desktop
+ones rather than forking markup. Only two blocks are duplicated with
+`md:hidden` / `max-md:hidden` — the **site header** and the **footer** — because
+their mobile structure shares almost nothing with desktop.
+
+### What changes below `md`
+
+| Area | Desktop → Mobile |
+| --- | --- |
+| Canvas | `w-[1440px]` → `w-full` (`mx-auto w-full md:w-[1440px]`) |
+| Header | utility bar + nav + search → subtle strip (Москва / Стать дилером), then burger · centred logo · profile |
+| Hero | 640px, media + arrows → 508px, **no media** (Figma parks the video box at left 436, outside the frame), centred type at the top, dots at `bottom-2` |
+| Category tiles | two 387px rows → one 2-col grid, `contents` on the rows + `order-*` to reach the mobile sequence; "весь каталог" tile drops out |
+| Carousels | transform + arrows → native scroll (`.scroll-rail`) + `.scroll-progress` bar + full-width action button |
+| Product card | 438px → **320px** (swatch cards) or **152px** (category cards, two rows deep via `.rail-2row`, cart action becomes a "в корзину" pill) |
+| Наши салоны | dealer panel + peach backdrop → title block + 320px map with a centred "Где купить" button |
+| Bottom nav | — → fixed `nav-bar` (Figma 1739:218804), 72px, `shadow-navbar`; the page reserves `max-md:pb-[72px]` |
+| Burger menu | — → full-screen drill-down panel (see below) |
+
+### Burger menu
+
+[`src/components/mobile-menu.js`](src/components/mobile-menu.js), from the Figma
+section **`menu catalog / menu burger` 1997:254993** — four frames describing one
+panel: `burger-menu` 1997:254994 (root "Меню"), `burger-menu-step-2` 1997:255072
+and `catalog-menu` 1997:255145 ("Каталог"), `catalog-menu-step-2` 1997:255219
+(one category → "По коллекциям").
+
+- **`max-md:` only.** The root is `fixed inset-0 z-50 md:hidden`, so above `md`
+  it never renders and the desktop mega-menu (`data-catalog-toggle`) is
+  untouched. `z-50` is what lets it cover the `z-40` nav-bar — the panel is
+  full-bleed, so the scrim behind it is only a fallback.
+- **Structure.** 48px header (`chevron-left.svg` back · `text-m-h2` title ·
+  `icon-close-s.svg`), 44px search pill, a `.mobile-menu-item` list, and — root
+  view only — the social row pinned to the bottom by `justify-between`.
+- **Drill-down as a stack.** `stack` holds the views and `render()` paints the
+  top one; the back button is `hidden` at depth 1, which is what makes the
+  bottom-nav "Каталог" entry (`data-mobile-catalog`, opens straight at the
+  catalog view) match Figma's back-arrow-less `catalog-menu` frame for free.
+- **One catalog tree.** `categories` is exported from `catalog-menu.js` and
+  reused here, so the drill-down and the desktop mega-menu can never diverge.
+  The mobile mock lists a slightly different catalog (no "Мебельная фурнитура",
+  a longer collection list) — the shared tree wins on purpose; do **not** fork a
+  mobile copy. Fixing the data fixes both surfaces.
+- **A11y.** Focus trap on Tab, Esc + scrim close, `overflow-hidden` on `<html>`
+  while open, `aria-expanded` on both triggers, focus restored to the trigger on
+  close and pulled back into the panel after each drill-down re-render.
+  Focus *rings* inside the panel are deliberately transparent
+  (`[data-mm-panel] :focus` in `app.css`) — the outline still exists, only the
+  paint is gone, so focus order and the trap are unaffected.
+- Crossing the breakpoint with the panel open closes it — otherwise the document
+  scroll lock would survive on desktop.
+
+### Sliders
+
+- **Card gallery** (`[data-card-track]`) slides by translating the track — not a
+  cross-fade. Dots jump straight to an index.
+- **One element per gesture.** A drag moves the gallery by exactly one image,
+  however far it travels; the gesture is then spent (`handedOff`) until the
+  pointer lifts. Without this a single long pull flies through the whole gallery.
+- **End-of-gallery hand-off.** When a gesture has no inner image left in that
+  direction, it advances the *surrounding* carousel instead
+  (`advanceOuterCarousel`): scrolls the rail on mobile, clicks the arrow on
+  desktop.
+- **Drag the whole card, not just the picture.** Mobile rails scroll natively
+  under a finger, but a mouse drag does nothing — so `enableDragScroll` gives
+  pointer devices grab-and-pull anywhere on the rail (card text, chips, promo
+  captions). It skips `pointerType === "touch"` (native scrolling already
+  works), skips `[data-card-gallery]` (that runs its own slider), takes pointer
+  capture so a flick past the rail edge keeps going, and swallows the click that
+  ends a drag so the card doesn't navigate. Bails out above `md`, where the
+  arrows own the track.
+- **Snap must stand down during a drag.** `scroll-snap` re-snaps after every
+  assignment to `scrollLeft`, so a short pull never escapes the point it started
+  from. `enableDragScroll` sets `scroll-snap-type: none` on pointerdown and
+  restores it on release — which is also what produces the settle.
+- **Gentle settle.** Mobile rails use `snap-x snap-proximity` + `scroll-pl-4`,
+  never `snap-mandatory` — the rail should ease onto a card, not fight the
+  finger.
+- **Kill the native image drag.** Every slider here is drag-driven, and the
+  browser's "drag the image out of the page" gesture hijacks it — the picture
+  peels off instead of the slide moving. `img, video { -webkit-user-drag: none }`
+  in `@layer base` covers Chrome/Safari; Firefox also needs `draggable="false"`
+  on media inside a slider.
+- **Promo parking.** Desktop centres the promo row so both edge tiles clip.
+  A rail can't centre, so `initPromoOffset` parks it one tile in — the leftmost
+  tile starts out of view (matching the 360px frame's 16 / 348 / 680 tiles) and
+  is still reachable by scrolling back.
+- **Equal heights.** The card description is a *fixed* two-line box (`h-12`
+  desktop, `h-10` mobile), not `max-h-*` — otherwise a one-line title lifts the
+  footer and the row stops aligning (Figma 2237:99636).
+
+### Gotchas
+
+- **Layers.** A hand-written `.class` in `@layer components` **loses** to a Tailwind
+  utility on the same element (`utilities` sorts after `components`). `.rail-2row`
+  has to beat `flex`, so it lives in `@layer utilities`.
+- **Backticks in JS templates.** Don't write `` `md` `` inside an HTML comment in a
+  template literal — it terminates the string. Put the note in a `//` comment above.
+- **Per-breakpoint media crops.** Category tile videos carry both boxes as custom
+  properties (`--l/--t/--w/--h` desktop, `--ml/--mt/--mw/--mh` mobile); `.cat-media`
+  picks one.
+- Fixed heights taken from Figma are a trap where text reflows — the alert bar is
+  `min-h-12`, not `h-12`, because Onest wraps it to three lines at 360px.
+- **`translate` composes ahead of `scale`.** The `.scroll-progress` thumb is a
+  full-width bar squashed by `scale`, so its offset is expressed in the track's
+  *unscaled* width: `pos * (1 - frac)`, not `pos * (1/frac - 1)`. Getting this
+  backwards parks the thumb at the far end.
