@@ -1,4 +1,9 @@
 import "../../styles/app.css";
+// Inlined rather than <img src>: the hover animation transforms the three
+// triangle clusters individually, which only CSS-in-the-document can reach.
+// It lives in src/ (not public/) so Vite resolves and inlines it — same reason
+// the social glyphs do, see app.css.
+import CORAL_SVG from "../../components/promo-coral.svg?raw";
 import { renderCarousel, setIconBase } from "../../components/product-card.js";
 import { initHeroSlider } from "../../components/hero-slider.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
@@ -46,7 +51,7 @@ const heroSlides = [
 ];
 
 const heroEl = document.querySelector("[data-hero]");
-if (heroEl) initHeroSlider(heroEl, heroSlides, { iconBase: ICON, interval: 6000 });
+if (heroEl) initHeroSlider(heroEl, heroSlides, { iconBase: ICON });
 
 // ---- catalog mega-menu ("Весь каталог") -------------------------------------
 setCatalogIconBase(ICON);
@@ -242,26 +247,18 @@ function initScrollProgress(sectionEl) {
   update();
 }
 
-// Desktop centres the promo row so the outer tiles are clipped on both sides.
-// Mobile can't centre a scrolling rail, so it reproduces the same reading by
-// parking the rail one tile in — the leftmost tile starts out of view and is
-// reachable by scrolling back.
-function initPromoOffset(sectionEl) {
-  const viewport = sectionEl.querySelector("[data-viewport]");
-  const track = sectionEl.querySelector("[data-promo-track]");
-  const first = track?.firstElementChild;
-  if (!viewport || !first) return;
-
-  const park = () => {
-    if (!MOBILE.matches) return;
-    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
-    viewport.scrollLeft = first.offsetWidth + gap;
-  };
-
-  park();
-  // Tile widths settle once the media has laid out.
-  window.addEventListener("load", park, { once: true });
-  MOBILE.addEventListener("change", park);
+// Restarts a tile's video when the pointer enters it, the way the prototype
+// replays the clip on hover. Touch never fires this, so mobile keeps the plain
+// autoplay loop.
+function initPromoHoverVideo(sectionEl) {
+  sectionEl.querySelectorAll("video[data-restart]").forEach((v) => {
+    const tile = v.closest(".group");
+    tile?.addEventListener("pointerenter", (e) => {
+      if (e.pointerType === "touch") return;
+      v.currentTime = 0;
+      v.play().catch(() => {});
+    });
+  });
 }
 
 // Wires prev/next arrows to slide the track. Works on any section built by
@@ -283,12 +280,16 @@ function initCarousel(sectionEl) {
   // Index-based, not pixel-based: clamping a raw pixel offset to maxOffset left a
   // few-px remainder, so stepping back needed two clicks before "prev" disabled.
   let index = 0;
-  const gap = parseFloat(getComputedStyle(track).columnGap) || 24;
 
   const maxOffset = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
+  // The gap is read per step, not cached: it differs between breakpoints
+  // (gap-6 / max-md:gap-2), so a value captured at init survived a resize and
+  // left every step 16px short, drifting the cards off the frame edge.
   const step = () => {
     const card = track.firstElementChild;
-    return card ? card.offsetWidth + gap : viewport.clientWidth;
+    if (!card) return viewport.clientWidth;
+    const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+    return card.offsetWidth + gap;
   };
   const maxIndex = () => Math.ceil(maxOffset() / step());
 
@@ -318,30 +319,42 @@ function initCarousel(sectionEl) {
 // ---- promo tiles section (А как вам вот такое) ------------------------------
 // Per the Figma design this is NOT a slider (no arrows): a static row of 5 square
 // tiles, centered so the middle three are fully visible and the edge two peek.
-// Coral tiles animate on hover; the girl photo zooms; the middle video letterboxes
-// (black bars) and the right tile replays the same video, time-shifted.
+// Every tile is the same Figma `news-card`, whose hover variant (635:5551 /
+// 637:18208) greys the caption to #808080 and either zooms the media 5% or, on
+// the coral "animation" type, drifts the triangle clusters (see .promo-coral).
 function promoTile(t) {
   let media;
   if (t.type === "coral") {
-    media = `<img src="${t.img}" alt="" class="size-full object-cover" draggable="false" />`;
+    // The coral tile's SVG carries its own overlay rect, so it needs no extra.
+    media = CORAL_SVG;
   } else if (t.video) {
-    // Figma fills the 437 square with the video (no letterboxing).
+    // Figma fills the 437 square with the video. `data-restart` rewinds it on
+    // hover, matching the prototype's replay-from-the-top behaviour.
     media = `<video class="size-full object-cover"
       src="${t.video}" ${t.poster ? `poster="${t.poster}"` : ""} ${
       t.offset ? `data-offset="${t.offset}"` : ""
-    } autoplay muted loop playsinline></video>`;
+    } data-restart autoplay muted loop playsinline></video>`;
   } else {
     // `crop` is the image fill's box in Figma, as % of the 437 square.
     const c = t.crop;
     media = `<img src="${t.img}" alt="${t.caption}" class="absolute max-w-none" draggable="false"
       style="left:${c.left};top:${c.top};width:${c.width};height:${c.height}" />`;
   }
+  // Every news-card variant sits under a constant 10% #141414 wash (the
+  // `overlay` rect, e.g. 634:5416) — it is not a hover state, it is always on.
+  const overlay =
+    t.type === "coral"
+      ? ""
+      : `<span class="pointer-events-none absolute inset-0 bg-overlay-light"></span>`;
+  const box =
+    t.type === "coral" ? "promo-coral" : t.zoom || t.video ? "promo-zoom" : "";
+  // The two clipped edge tiles exist only to bleed off the 1440 canvas; the
+  // 360px frame (1968:71551) carries three whole tiles instead.
+  const scope = t.desktopOnly ? " max-md:hidden" : "";
   return `
-    <div class="group flex w-[437px] shrink-0 flex-col gap-4 max-md:w-[320px] max-md:snap-start max-md:gap-3">
-      <div class="${
-        t.zoom ? "promo-zoom " : ""
-      }relative aspect-square w-full overflow-hidden rounded-n bg-bg-subtle">${media}</div>
-      <p class="text-center text-body-xl text-text-primary transition-colors group-hover:text-text-hover max-md:text-m-body-xl">${t.caption}</p>
+    <div class="group flex w-[437px] shrink-0 flex-col gap-4 max-md:w-[320px] max-md:snap-start max-md:gap-3${scope}">
+      <div class="${box} relative aspect-square w-full overflow-hidden rounded-n bg-bg-subtle">${media}${overlay}</div>
+      <p class="text-center text-body-xl text-text-primary transition-colors group-hover:text-text-secondary max-md:text-m-body-xl">${t.caption}</p>
     </div>`;
 }
 
@@ -379,30 +392,36 @@ function promoSection({ title, action = "Все акции", tiles }) {
   </section>`;
 }
 
-// The 5 Figma tiles, left→right. The coral tiles reuse promo-3.svg (the triangle
-// field); the middle + right tiles share promo-chair.mp4, the right one offset in
-// time so the two play out of sync.
+// The 5 Figma tiles, left→right (Figma `news` 878:103592 — animation, image,
+// image, animation, image). The coral tiles are the "animation" variant; the
+// middle + right tiles share promo-chair.mp4, the right one offset in time so
+// the two play out of sync.
 // Crop of the photo fill, read off the Figma news-card (635:5427): the image box
 // is 169.05% x 225.4% of the 437 square, offset by -12.67% / -39.82%.
 const PROMO_PHOTO_CROP = { left: "-12.67%", top: "-39.82%", width: "169.05%", height: "225.4%" };
 
 const promoTiles = [
-  { type: "coral", img: `${HOME}/promo-3.svg`, caption: "Столешница в подарок к кухне!" },
+  { type: "coral", desktopOnly: true, caption: "Столешница в подарок к кухне!" },
   { img: `${HOME}/promo-1-src.png`, crop: PROMO_PHOTO_CROP, zoom: true, caption: "Столешница в подарок к кухне!" },
   {
     video: `${HOME}/promo-chair.mp4`,
     poster: `${HOME}/promo-chair-poster.jpg`,
     caption: "Скидка в 20% на каждый пятый стул",
   },
-  { type: "coral", img: `${HOME}/promo-3.svg`, caption: "Столешница в подарок к кухне!" },
+  { type: "coral", caption: "Столешница в подарок к кухне!" },
   {
     video: `${HOME}/promo-chair.mp4`,
     poster: `${HOME}/promo-chair-poster.jpg`,
     offset: 3,
+    desktopOnly: true,
     caption: "Скидка в 20% на каждый пятый стул",
   },
 ];
 
+// Ten items, because the 360px frames lay the 152px "other" cards out as two
+// rows of five (Figma `rows` 1968:150236). With fewer, the mobile rail has
+// nothing to scroll while still showing a scroll indicator, and the bottom row
+// ends up half empty.
 const akciiItems = [
   {
     image: `${HOME}/prod-pop-1-src.png`,
@@ -427,6 +446,62 @@ const akciiItems = [
     badges: [{ text: "- 10%", tone: "discount" }],
     title: "Табурет CHICO (SL1)",
     category: { label: "Уплотнитель для столешниц", count: 31 },
+  },
+  {
+    image: `${HOME}/prod-mod-2-src.png`,
+    price: "6 780₽",
+    oldPrice: "8 470₽",
+    badges: [{ text: "- 20%", tone: "discount" }],
+    title: "Мойка Vivat Granite GR-52, кварц, песочный",
+    category: { label: "Мойки", count: 22 },
+  },
+  {
+    image: `${HOME}/prod-mod-3-src.png`,
+    price: "2 870₽",
+    oldPrice: "4 100₽",
+    badges: [{ text: "- 30%", tone: "discount" }],
+    title: "Смеситель для кухни VIVAT SM-11, хром",
+    category: { label: "Смесители", count: 18 },
+  },
+  {
+    image: `${HOME}/prod-mod-4-src.png`,
+    price: "12 512₽",
+    oldPrice: "15 640₽",
+    badges: [{ text: "- 20%", tone: "discount" }],
+    title: "Система выдвижения Tandembox, полное выдвижение",
+    category: { label: "Системы выдвижения", count: 9 },
+  },
+  {
+    image: `${HOME}/prod-mod-1-src.png`,
+    price: "382 508₽",
+    oldPrice: "450 010₽",
+    badges: [{ text: "хит", tone: "hit" }, { text: "- 15%", tone: "discount" }],
+    title: "Кухня Фьюжн-0, МДФ, 2000 х 2170 х 600 мм",
+    category: { label: "Модульные кухни", count: 321 },
+  },
+  {
+    image: `${HOME}/prod-pop-1-src.png`,
+    price: "4 193₽",
+    oldPrice: "5 991₽",
+    badges: [{ text: "- 30%", tone: "discount" }],
+    title: "Столешница Hard-38 кромка с 2-х сторон Угловая",
+    category: { label: "Столешницы", count: 31 },
+  },
+  {
+    image: `${HOME}/prod-pop-3-src.png`,
+    price: "3 990₽",
+    oldPrice: "5 700₽",
+    badges: [{ text: "- 30%", tone: "discount" }],
+    title: "Стул VERONA, велюр, тёмно-серый",
+    category: { label: "Стулья", count: 16 },
+  },
+  {
+    image: `${HOME}/prod-pop-2-src.png`,
+    price: "17 990₽",
+    oldPrice: "22 490₽",
+    badges: [{ text: "- 20%", tone: "discount" }],
+    title: "Варочная панель индукционная EIP 640 BL",
+    category: { label: "Варочные панели", count: 24 },
   },
 ];
 
@@ -472,6 +547,31 @@ const popularItems = [
     title: "Система выдвижения Tandembox, полное выдвижение",
     category: { label: "Системы выдвижения", count: 9 },
   },
+  {
+    image: `${HOME}/prod-pop-1-src.png`,
+    price: "7 250₽",
+    title: "Столешница Hard-38 кромка с 2-х сторон Угловая",
+    category: { label: "Столешницы", count: 31 },
+  },
+  {
+    image: `${HOME}/prod-pop-3-src.png`,
+    price: "5 700₽",
+    badges: [{ text: "new", tone: "new" }],
+    title: "Стул VERONA, велюр, тёмно-серый",
+    category: { label: "Стулья", count: 16 },
+  },
+  {
+    image: `${HOME}/prod-pop-2-src.png`,
+    price: "22 490₽",
+    title: "Варочная панель индукционная EIP 640 BL",
+    category: { label: "Варочные панели", count: 24 },
+  },
+  {
+    image: `${HOME}/prod-mod-1-src.png`,
+    price: "1 890₽",
+    title: "Сушилка для посуды в шкаф, нержавеющая сталь",
+    category: { label: "Аксессуары", count: 47 },
+  },
 ];
 
 const sections = {
@@ -506,7 +606,7 @@ const promoAnchor = document.querySelector('[data-section="promo"]');
 if (promoAnchor) {
   promoAnchor.innerHTML = promoSection({ title: "А как вам вот такое", tiles: promoTiles });
   initScrollProgress(promoAnchor);
-  initPromoOffset(promoAnchor);
+  initPromoHoverVideo(promoAnchor);
   enableDragScroll(promoAnchor.querySelector("[data-viewport]"));
   // Offset the reused video so it plays out of sync with the middle one.
   promoAnchor.querySelectorAll("video[data-offset]").forEach((v) => {

@@ -131,24 +131,22 @@ export function productCard(p) {
   </article>`;
 }
 
-// Hands a swipe that ran off the end of a card's gallery to the product
-// carousel around it, so a continued drag keeps moving instead of dead-ending.
-// The carousel is either a natively scrolling rail (mobile) or the arrow-driven
-// track (desktop), so try the rail first and fall back to clicking the arrow.
+// Hands a swipe that ran off the end of a card's gallery to the rail around it,
+// so a continued swipe keeps moving instead of dead-ending.
+//
+// Mobile only. On desktop the outer carousel is driven by its arrows, and a
+// drag inside a card must never move it: the two sliders are separate controls
+// there, and chaining them made the row jump while the pointer was still on a
+// card. Below `md` the rail is one continuous scrolling surface under a finger,
+// so continuing the gesture into it is the expected behaviour.
 function advanceOuterCarousel(card, dir) {
   const section = card.closest("section");
-  if (!section) return;
+  const viewport = section?.querySelector("[data-viewport]");
+  if (!viewport || getComputedStyle(viewport).overflowX === "hidden") return;
 
-  const viewport = section.querySelector("[data-viewport]");
-  if (viewport && getComputedStyle(viewport).overflowX !== "hidden") {
-    const track = viewport.firstElementChild;
-    const gap = track ? parseFloat(getComputedStyle(track).columnGap) || 0 : 0;
-    viewport.scrollBy({ left: dir * (card.offsetWidth + gap), behavior: "smooth" });
-    return;
-  }
-
-  const arrow = section.querySelector(dir > 0 ? "[data-next]" : "[data-prev]");
-  if (arrow && !arrow.disabled) arrow.click();
+  const track = viewport.firstElementChild;
+  const gap = track ? parseFloat(getComputedStyle(track).columnGap) || 0 : 0;
+  viewport.scrollBy({ left: dir * (card.offsetWidth + gap), behavior: "smooth" });
 }
 
 // Wires each card's inner image gallery: drag/swipe across the image, or dots.

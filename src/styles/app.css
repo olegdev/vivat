@@ -409,11 +409,38 @@
   }
 
   /* ---- Promo tiles (А как вам вот такое) --------------------------------
-     The photo tile zooms on hover. NOTE: the coral tile is animated in the
-     prototype, but the Figma node carries no keyframes (get_motion_context
-     returns nothing), so no animation is authored here yet. */
-  .promo-zoom img { @apply transition-transform duration-500 ease-out; }
-  .promo-zoom:hover img { scale: 1.08; }
+     Two hover behaviours, both read off the Figma hover variants rather than
+     invented. */
+
+  /* Photo / video tiles: the media grows from 437 to 458.9 about the centre of
+     the square (news-card 635:5551), i.e. exactly 5%. */
+  .promo-zoom img,
+  .promo-zoom video {
+    @apply transition-transform duration-500 ease-out;
+  }
+  .promo-zoom:hover img,
+  .promo-zoom:hover video {
+    scale: 1.05;
+  }
+
+  /* Coral tile ("type=animation", 637:18202 → hover 637:18208): the backdrop
+     saturates and the three triangle clusters drift and contract. Each cluster
+     is nested under a rotated/mirrored parent frame in Figma, so the per-group
+     matrices below are the composed default→hover transform solved in the
+     SVG's own 437-unit space — hence `transform-box: view-box`. */
+  .promo-coral__svg { @apply size-full; }
+  .promo-coral__bg { fill: #fe7a6d; transition: fill 0.5s ease-out; }
+  .promo-coral:hover .promo-coral__bg { fill: #ff5546; }
+
+  .promo-coral__g {
+    fill: #f8bb92;
+    transform-box: view-box;
+    transform-origin: 0 0;
+    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .promo-coral:hover [data-g="03"] { transform: matrix(0.7479, 0, 0, 0.8533, 31.67, 21.75); }
+  .promo-coral:hover [data-g="02"] { transform: matrix(0.7479, 0, 0, 0.8533, 79.06, 33.93); }
+  .promo-coral:hover [data-g="01"] { transform: matrix(0.9488, 0.0271, 0.0271, 0.9801, 6.03, -2.15); }
 
   /* ---- Carousel dot ----------------------------------------------------- */
   .carousel-dot { @apply flex h-4 w-8 flex-col justify-center; }
@@ -616,27 +643,36 @@
     }
   }
 
-  /* Horizontal rails. Desktop carousels translate a track behind arrows;
-     mobile scrolls natively instead, with position shown by .scroll-progress
-     (Figma `scroll` 1965:373920) rather than a scrollbar. */
-  .scroll-rail {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  .scroll-rail::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* 2px track inset 40px from the frame edges, with a dark thumb whose width
-     and offset mirror the rail's scroll position (set by JS). */
+  /* Mobile scroll indicator, from Figma `scroll` 1965:373920 (device=mobile,
+     type=horisontal): a 32px box spanning the frame's 16px gutters, holding a
+     2px #e7e7e7 track and a 2px #808080 thumb. Square ends, not pills — the
+     Figma vector has no corner radius. The thumb's width and offset mirror the
+     rail's scroll position and are set by JS. */
   .scroll-progress {
-    @apply flex h-8 items-center px-10;
+    @apply flex h-8 items-center px-4;
   }
   .scroll-progress > span {
-    @apply relative block h-0.5 w-full overflow-hidden rounded-full bg-components-light;
+    @apply relative block h-0.5 w-full overflow-hidden bg-components-light;
   }
   .scroll-progress > span > i {
-    @apply absolute inset-y-0 left-0 block w-full origin-left rounded-full bg-text-primary;
+    @apply absolute inset-y-0 left-0 block w-full origin-left bg-components-active-light;
+  }
+}
+
+/* Horizontal rails. Desktop carousels translate a track behind arrows; mobile
+   scrolls natively instead, with position shown by .scroll-progress rather than
+   a scrollbar — so the native one is hidden.
+
+   This has to be a real `@utility`, not a `@layer components` rule: it is used
+   as `max-md:scroll-rail`, and Tailwind only generates variants of utilities it
+   owns. As a plain class the variant silently produced nothing, leaving the
+   native scrollbar visible under the designed indicator — the "double
+   scrollbar". */
+@utility scroll-rail {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 

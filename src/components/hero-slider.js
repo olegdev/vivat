@@ -1,7 +1,11 @@
 // Hero slider (top of customer/Main). Data-driven, so adding slides is just
 // pushing to the array. Each slide's background can be a video or an image.
-// Behaviour: autoplay, prev/next arrows, clickable dots, drag/swipe, keyboard
-// arrows, pause on hover, and it only plays the active slide's <video>.
+// Behaviour: prev/next arrows, clickable dots, drag/swipe, keyboard arrows, and
+// it only plays the active slide's <video>.
+//
+// Deliberately NOT auto-advancing. The Figma banner (607:29214 / 1821:327006)
+// carries no prototype interactions at all — the rotation that used to live
+// here was invented, and it moved the slide out from under people mid-read.
 
 // `frame` reproduces the Figma media box verbatim (left/top/width/height inside
 // the 1440x640 banner), the same pattern the category tiles use. Without it the
@@ -57,12 +61,14 @@ function slideCta(s) {
 }
 
 export function initHeroSlider(root, slides, opts = {}) {
-  const interval = opts.interval ?? 6000;
   const icon = opts.iconBase ?? "/assets/header";
-  const multi = slides.length > 1;
 
+  // `touch-pan-y` is what makes the swipe work on a phone: it leaves vertical
+  // panning to the browser but keeps horizontal gestures for us. Without it the
+  // browser claims the gesture and fires pointercancel, so the swipe that used
+  // to be wired here never completed on touch.
   root.innerHTML = `
-    <section class="relative h-[640px] w-[1440px] overflow-hidden bg-surface-default select-none max-md:h-[508px] max-md:w-full">
+    <section class="relative h-[640px] w-[1440px] touch-pan-y select-none overflow-hidden bg-surface-default max-md:h-[508px] max-md:w-full">
       <div data-track class="absolute inset-0">
         ${slides
           .map(
@@ -77,12 +83,15 @@ export function initHeroSlider(root, slides, opts = {}) {
           .join("")}
       </div>
 
+      <!-- Desktop parks the controls on the vertical centre line; the 360px
+           frame (1821:327514) drops them onto the dots row instead, one at each
+           edge of the 8px gutter. -->
       <button data-prev aria-label="Назад"
-        class="carousel-arrow absolute left-6 top-1/2 z-20 -translate-y-1/2 max-md:hidden">
+        class="carousel-arrow absolute left-6 top-1/2 z-20 -translate-y-1/2 max-md:bottom-1 max-md:left-2 max-md:top-auto max-md:translate-y-0">
         <img src="${icon}/chevron-left.svg" alt="" class="size-6" />
       </button>
       <button data-next aria-label="Вперёд"
-        class="carousel-arrow absolute right-6 top-1/2 z-20 -translate-y-1/2 max-md:hidden">
+        class="carousel-arrow absolute right-6 top-1/2 z-20 -translate-y-1/2 max-md:bottom-1 max-md:right-2 max-md:top-auto max-md:translate-y-0">
         <img src="${icon}/chevron-right.svg" alt="" class="size-6" />
       </button>
 
@@ -100,7 +109,6 @@ export function initHeroSlider(root, slides, opts = {}) {
   const dotEls = [...root.querySelectorAll("[data-dot]")];
   const videos = slideEls.map((el) => el.querySelector("video"));
   let index = 0;
-  let timer = null;
   // Autoplay policy blocks sound until the user interacts. We flip this on the
   // first gesture, then keep the active [data-sound] video audible.
   let soundUnlocked = false;
@@ -151,37 +159,13 @@ export function initHeroSlider(root, slides, opts = {}) {
   const next = () => show(index + 1);
   const prev = () => show(index - 1);
 
-  function startAuto() {
-    if (!multi) return;
-    stopAuto();
-    timer = setInterval(next, interval);
-  }
-  function stopAuto() {
-    if (timer) clearInterval(timer);
-    timer = null;
-  }
-
-  root.querySelector("[data-next]").addEventListener("click", () => {
-    next();
-    startAuto();
-  });
-  root.querySelector("[data-prev]").addEventListener("click", () => {
-    prev();
-    startAuto();
-  });
+  root.querySelector("[data-next]").addEventListener("click", next);
+  root.querySelector("[data-prev]").addEventListener("click", prev);
   root.querySelectorAll("[data-dot]").forEach((btn) =>
-    btn.addEventListener("click", () => {
-      show(Number(btn.dataset.dot));
-      startAuto();
-    })
+    btn.addEventListener("click", () => show(Number(btn.dataset.dot)))
   );
 
   const section = root.querySelector("section");
-  section.addEventListener("mouseenter", stopAuto);
-  section.addEventListener("mouseleave", startAuto);
-  document.addEventListener("visibilitychange", () =>
-    document.hidden ? stopAuto() : startAuto()
-  );
 
   // keyboard (when the hero is hovered/focused)
   section.tabIndex = 0;
@@ -190,16 +174,43 @@ export function initHeroSlider(root, slides, opts = {}) {
     if (e.key === "ArrowRight") next();
   });
 
-  // pointer swipe
+  // Swipe / drag. The slide is committed on pointermove, as soon as the gesture
+  // clears 50px, rather than waiting for pointerup: on touch the browser may
+  // still cancel the pointer mid-swipe, and a release-only handler then never
+  // fires. `spent` keeps one gesture to one slide.
   let startX = null;
-  section.addEventListener("pointerdown", (e) => (startX = e.clientX));
-  section.addEventListener("pointerup", (e) => {
-    if (startX === null) return;
-    const dx = e.clientX - startX;
-    if (Math.abs(dx) > 60) (dx < 0 ? next : prev)();
-    startX = null;
+  let spent = false;
+
+  section.addEventListener("pointerdown", (e) => {
+    // Let the controls handle their own clicks.
+    if (e.target.closest("[data-prev],[data-next],[data-dot],a,button")) return;
+    startX = e.clientX;
+    spent = false;
+    try {
+      section.setPointerCapture(e.pointerId);
+    } catch {
+      /* pointer already gone */
+    }
   });
 
+  section.addEventListener("pointermove", (e) => {
+    if (startX === null || spent) return;
+    const dx = e.clientX - startX;
+    if (Math.abs(dx) < 50) return;
+    spent = true;
+    (dx < 0 ? next : prev)();
+  });
+
+  const endSwipe = (e) => {
+    startX = null;
+    try {
+      section.releasePointerCapture(e.pointerId);
+    } catch {
+      /* pointer already gone */
+    }
+  };
+  section.addEventListener("pointerup", endSwipe);
+  section.addEventListener("pointercancel", endSwipe);
+
   playActiveVideo();
-  startAuto();
 }
