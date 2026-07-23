@@ -44,6 +44,38 @@ example, not the point itself.
 - **Fix baked-in artifacts (letterbox, wrong aspect) at the source asset**, with
   ffmpeg — don't paper over them in CSS. Check new video with `cropdetect` first.
 
+## Filters: form + request seam (prototype → AJAX)
+
+The catalog filters will ship as server-side filtering (AJAX) in the Blade
+build. Don't model that as either a dead open/close UI **or** a throwaway
+client-side filtering engine — model it as a **real form with one request
+seam**, so the port swaps one function and nothing else.
+
+- **The drawer is a real `<form>`; every field `name` is a future query
+  parameter** (`collection[]`, `facade[]`, `price_min`, …). This is the
+  portable artifact — in Blade the form ports 1:1 and the names become the
+  request params. Ref: `partials/catalog-filters.html`.
+- **Each product card prints the filterable attributes as `data-*`**
+  (`data-collection`, `data-price`, …) — the same values Blade prints from the
+  model. Ref: `buildCard()` in `catalog.js`.
+- **All filtering funnels through one function, `applyFilters()`** — *the seam*.
+  Today its body reads the form, shows/hides cards by their `data-*`, updates
+  the count/badge, and writes the URL. Later the body becomes
+  `fetch('/catalog?' + params)` → replace the grid with server HTML. The form
+  markup, field names and wiring don't change. The `params` it builds is
+  already the query string the server will receive. Ref: `applyFilters()`,
+  `catalog.js` — it's commented as the swap point.
+- **State lives in the URL** (`history.pushState` on apply, hydrate from
+  `location.search` on load + `popstate`), so refresh/share/back work now and
+  match how the server route will read the request. Ref: `hydrateFromURL()`.
+- **Quick-filter chips are shortcuts, not a second source of truth**: a chip
+  toggles the matching form input and re-runs the seam; chip active-state is
+  derived back from the form. Never let a chip hold state the form doesn't.
+
+The rule that generalises: when a prototype stands in for a future server
+round-trip, make the *inputs* real (form, field names, URL) and hide the fake
+part behind a single named function. The seam is the only throwaway code.
+
 ## Deriving states from the design
 
 - **`fig.mjs` diffs component variants** (default vs hover/pressed) — read the

@@ -10,10 +10,18 @@ npm run build    # one vite build per page → dist/ (inlines all JS/CSS)
 
 ## Where we stand
 
-`src/pages/customer/main.html` — the customer home page — is the only real page.
-Desktop (fixed 1440 canvas) and mobile (fluid, below `md`) are both done: header,
-catalog mega-menu, burger menu, hero, category tiles, three product carousels,
-promo tiles, socials, stores map (Yandex Maps v3), production block, footer.
+`src/pages/customer/main.html` — the customer home page. Desktop (fixed 1440
+canvas) and mobile (fluid, below `md`) are both done: header, catalog mega-menu,
+burger menu, hero, category tiles, three product carousels, promo tiles, socials,
+stores map (Yandex Maps v3), production block, footer.
+
+`src/pages/customer/catalog.html` — the catalog listing page (Figma
+Catalog-default 759:60482). **Desktop only so far — mobile is the next
+iteration.** Breadcrumbs, title, filters bar + sort, 4-col product grid, filter
+drawer, pagination, popular carousel, SEO block. The filter drawer is a real
+form wired through a single `applyFilters()` request seam — see SOLUTIONS.md ›
+"Filters: form + request seam" before touching it. The carousel machinery both
+pages share now lives in `src/components/carousel.js`.
 
 Everything else in `src/pages/` is a stub.
 
@@ -41,8 +49,9 @@ into pages at build time by `scripts/vite-plugin-includes.mjs` via
 `<!--#include partials/NAME.html -->` (SSI-style, resolves from the Vite root,
 works in both `npm run dev` and `npm run build`). One partial == one future
 Blade partial — the port to `@include('partials.name')` is mechanical. Current
-partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`. The
-last two are **shell only**: their static frame is the partial, while the lists
+partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
+`catalog-filters`. `catalog-menu` and `mobile-menu` are **shell only**: their
+static frame is the partial, while the lists
 and behaviour stay in the matching `src/components/*.js` (the shell now exists
 in the DOM, so the JS queries it instead of building it).
 

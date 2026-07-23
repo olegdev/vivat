@@ -1,0 +1,263 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Каталог: Кухни</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./catalog.js"></script>
+  </head>
+  <body class="bg-bg-page text-text-primary">
+    <!-- Catalog listing page (Figma Catalog-default 759:60482). Desktop only for
+         now — the mobile canvas is the next iteration. Shared chrome (header,
+         menus, footer) is spliced from src/partials/ exactly as on the home page;
+         see the PHP Blade note in CLAUDE.md. -->
+    <div class="mx-auto w-full md:w-[1440px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== BREADCRUMBS ============================== -->
+      <nav class="flex items-center gap-2 px-10 py-4 text-body-s text-text-secondary">
+        <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
+        <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
+        <a href="#" class="transition-colors hover:text-text-primary">Каталог</a>
+        <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
+        <span class="text-text-primary">Кухни VIVAT</span>
+      </nav>
+
+      <!-- ==================== TITLE BLOCK ============================== -->
+      <div class="flex items-center justify-between px-10 pt-2">
+        <h1 class="text-h1 text-text-primary">Кухни VIVAT</h1>
+        <div class="flex items-center gap-2">
+          <button class="icon-btn" aria-label="В избранное">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-icon-primary">
+              <path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0 1 12 8a3.5 3.5 0 0 1 7 2.5c0 5-7 9.5-7 9.5Z" stroke-linejoin="round" />
+            </svg>
+          </button>
+          <button class="icon-btn" aria-label="Поделиться">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-icon-primary">
+              <circle cx="6" cy="12" r="2.4" /><circle cx="18" cy="6" r="2.4" /><circle cx="18" cy="18" r="2.4" />
+              <path d="m8.1 10.9 7.8-3.8M8.1 13.1l7.8 3.8" stroke-linecap="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================== CATALOG SETTINGS (filters bar + sort) ====
+           Figma catalog-settings 882:89607. Every control here opens or drives
+           the same filter drawer / URL state; wiring is in catalog.js. -->
+      <div class="flex flex-col gap-3 px-10 py-6">
+        <div class="flex items-center justify-between">
+          <!-- filter openers -->
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              data-filter-open
+              class="relative flex size-11 shrink-0 items-center justify-center rounded-full bg-components-subtle transition-colors hover:bg-components-subtle-hover"
+              aria-label="Открыть фильтры"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" class="text-icon-primary">
+                <path d="M4 8h9M17 8h3M4 16h3M11 16h9" /><circle cx="15" cy="8" r="2.2" /><circle cx="9" cy="16" r="2.2" />
+              </svg>
+              <span
+                data-filter-badge
+                class="absolute -right-1 -top-1 hidden h-5 min-w-5 items-center justify-center rounded-full bg-components-strong px-1 text-m-body-xs text-text-inverse-primary"
+              >0</span>
+            </button>
+            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Коллекция</button>
+            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Форма кухни</button>
+            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Фасады</button>
+            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Цвет</button>
+            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Стиль</button>
+            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Цена</button>
+          </div>
+
+          <!-- sort dropdown -->
+          <div class="relative" data-sort>
+            <button
+              type="button"
+              data-sort-toggle
+              class="flex h-11 w-[280px] items-center justify-between gap-2 rounded-pill bg-components-subtle px-4 text-button-m text-text-primary transition-colors hover:bg-components-subtle-hover"
+              aria-expanded="false"
+            >
+              <span data-sort-label>Сначала популярные</span>
+              <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform" data-sort-chevron />
+            </button>
+            <div
+              data-sort-menu
+              class="absolute right-0 top-[calc(100%+8px)] z-30 hidden w-[280px] overflow-hidden rounded-l bg-surface-inverted py-2 shadow-dropdown"
+            >
+              <button type="button" class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle" data-sort-value="popular" aria-current="true">Сначала популярные</button>
+              <button type="button" class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle" data-sort-value="cheap">Сначала дешёвые</button>
+              <button type="button" class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle" data-sort-value="expensive">Сначала дорогие</button>
+              <button type="button" class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle" data-sort-value="new">По новизне</button>
+              <button type="button" class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle" data-sort-value="discount">По размеру скидки</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- quick-filter chips: shortcuts that toggle a drawer option + re-apply.
+             `data-quickfilter="param=value"` names the field it drives. -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button type="button" class="catalog-chip h-8" data-quickfilter="form=pryamaya">Прямые кухни</button>
+          <button type="button" class="catalog-chip h-8" data-quickfilter="form=uglovaya">Угловые кухни</button>
+          <button type="button" class="catalog-chip h-8" data-quickfilter="color=belyy">Белые кухни</button>
+          <button type="button" class="catalog-chip h-8" data-quickfilter="color=multicvet">Мультицвет</button>
+          <button type="button" class="catalog-chip h-8" data-quickfilter="facade=mdf">Фрезированые фасады</button>
+          <button type="button" class="catalog-chip h-8" data-quickfilter="facade=mdf">МДФ</button>
+          <button type="button" class="catalog-chip h-8" data-quickfilter="facade=mdf-steklo">Стекло</button>
+          <button type="button" class="catalog-chip h-8" data-quickfilter="style=klassika">Классика</button>
+          <button type="button" data-filter-open class="catalog-chip h-8">Больше <span class="tracking-widest">···</span></button>
+        </div>
+      </div>
+
+      <!-- ==================== PRODUCTS GRID ===========================
+           Figma products 2250:137837 — a 4-col grid of `cards-kitchen` size=m
+           (322px). One clean card unit lives in the <template> below (the future
+           Blade @foreach body); catalog.js clones it per product. -->
+      <template data-card-tpl>
+        <article class="flex flex-col" data-card>
+          <div class="relative overflow-hidden rounded-n bg-bg-subtle">
+            <div class="h-[242px] w-full overflow-hidden">
+              <img data-card-img alt="" draggable="false" class="size-full select-none object-cover mix-blend-multiply" />
+            </div>
+            <div data-card-badges class="absolute right-2 top-2 flex items-center gap-1"></div>
+            <div class="pointer-events-none absolute inset-x-0 bottom-2 flex items-center justify-center gap-2">
+              <span class="carousel-dot" aria-current="true"><span></span></span>
+              <span class="carousel-dot"><span></span></span>
+              <span class="carousel-dot"><span></span></span>
+            </div>
+          </div>
+          <div class="flex flex-col gap-1 px-1 py-3">
+            <div class="flex items-start gap-4">
+              <div class="flex min-w-0 flex-1 flex-col gap-0.5">
+                <div class="flex items-center gap-2">
+                  <span class="text-body-n-accent text-text-primary">от</span>
+                  <span data-card-price class="text-h3 font-medium text-text-primary"></span>
+                  <span data-card-oldprice class="text-body-n text-text-muted line-through empty:hidden"></span>
+                </div>
+                <p data-card-title class="line-clamp-2 h-12 text-body-n text-text-primary"></p>
+              </div>
+              <button class="icon-btn" aria-label="В корзину">
+                <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" />
+              </button>
+            </div>
+            <div class="flex items-center gap-4 py-1">
+              <div class="flex min-w-0 flex-1 items-center gap-2">
+                <div data-card-swatches class="flex items-center gap-2"></div>
+                <span data-card-more class="text-body-s text-text-secondary empty:hidden"></span>
+              </div>
+              <div class="flex items-center gap-1">
+                <span data-card-comments class="text-body-s text-text-secondary"></span>
+                <img src="../../assets/header/icon-comment.svg" alt="" class="size-4" />
+              </div>
+            </div>
+          </div>
+        </article>
+      </template>
+
+      <div data-grid class="grid grid-cols-4 gap-6 px-10"></div>
+
+      <!-- empty state (shown by catalog.js when a filter matches nothing) -->
+      <div data-grid-empty class="hidden px-10 py-24 text-center">
+        <p class="text-h4 text-text-primary">Ничего не найдено</p>
+        <p class="pt-2 text-body-n text-text-secondary">Попробуйте ослабить фильтры или сбросить их.</p>
+        <button type="button" data-filter-clear class="btn btn-m btn-secondary mt-6">Сбросить фильтры</button>
+      </div>
+
+      <!-- ==================== PAGINATION ==============================
+           Presentational in the prototype — real paging is a server concern
+           (part of the same request seam as the filters). -->
+      <section class="flex flex-col items-center gap-10 px-10 py-16">
+        <button type="button" class="btn btn-m btn-primary">
+          Показать еще 40 товаров из <span data-grid-total>123</span>
+        </button>
+        <nav class="flex items-center gap-6 text-body-n">
+          <a href="#" class="flex items-center gap-2 text-text-secondary transition-colors hover:text-text-primary">
+            <img src="../../assets/header/chevron-left.svg" alt="" class="size-5 opacity-60" />
+            В начало
+          </a>
+          <div class="flex items-center gap-1">
+            <button type="button" class="flex size-9 items-center justify-center rounded-full bg-components-subtle text-text-primary" aria-current="page">1</button>
+            <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">2</button>
+            <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">3</button>
+            <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">4</button>
+            <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">5</button>
+            <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">6</button>
+            <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">7</button>
+          </div>
+          <a href="#" class="flex items-center gap-2 text-text-primary transition-colors hover:text-text-secondary">
+            В конец
+            <img src="../../assets/header/chevron-right.svg" alt="" class="size-5" />
+          </a>
+        </nav>
+      </section>
+
+      <!-- ==================== CAROUSEL: Популярные товары ============= -->
+      <div data-section="popular"></div>
+
+      <div class="h-20"></div>
+
+      <!-- ==================== SEO / INFO BLOCK ========================
+           Figma Frame 2087325443 (759:60484) — green info band. -->
+      <section class="flex justify-center bg-surface-accent-alt px-10 py-16">
+        <div class="flex w-[896px] max-w-full flex-col gap-6 text-text-primary">
+          <h2 class="text-h2">Кухни VIVAT — сочетание стиля и функциональности</h2>
+          <p class="text-body-l">
+            Для всех, кто ищет современные, практичные и безупречно сконструированные
+            недорогие кухни, фабрика VIVAT подготовила множество вариантов.
+          </p>
+          <p class="text-body-l-semibold">
+            У мебели для кухни от Фабрики мебели VIVAT имеется целый ряд неоспоримых
+            достоинств:
+          </p>
+          <ol class="flex list-decimal flex-col gap-4 pl-6 text-body-n marker:text-text-primary">
+            <li>
+              Доступные цены. Благодаря отлично организованному современному
+              производству и продуманной логистике, покупка нашей кухни выгодна для
+              любого, кто умеет считать деньги. Выбирая кухни VIVAT, вы получаете
+              высшее качество по цене изготовителя.
+            </li>
+            <li>
+              Современный внешний вид. Даже недорогие кухни эконом класса торговой
+              марки VIVAT — это превосходный дизайн, современные тенденции в мебельной
+              моде и отличное качество. В них нет ничего лишнего, каждая линия создает
+              единый ансамбль, идеально вписывающийся в интерьер любой квартиры.
+            </li>
+            <li>
+              Модульная конструкция. Один гарнитур можно поставить как в маленькую
+              пятиметровую кухню в «хрущевке», так и в большую квартиру-студию, потому
+              что кухни VIVAT состоят из модулей: шкафов, пеналов, тумб, полок самого
+              разного вида и назначения.
+            </li>
+          </ol>
+          <p class="text-body-n">
+            Гармония ваших чувств и интерьера. Благодаря великому множеству
+            разнообразных стилевых решений, огромному выбору цветовых отделок, кухни
+            фабрики VIVAT отлично вписываются в любой интерьер.
+          </p>
+        </div>
+      </section>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- ==================== FILTER DRAWER (overlay) =================== -->
+    <!--#include partials/catalog-filters.html -->
+  </body>
+</html>
