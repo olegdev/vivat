@@ -15,13 +15,13 @@
      Each filter group is a <details> so collapse is native + Blade-trivial; the
      option lists are written out (one <label> each) so they map 1:1 onto a
      Blade @foreach over $collections / $colors / … -->
-<div data-filter-drawer class="fixed inset-0 z-50 hidden">
+<div data-filter-drawer class="filter-drawer fixed inset-0 z-50">
   <!-- scrim -->
-  <div data-filter-dismiss class="absolute inset-0 bg-overlay-strong"></div>
+  <div data-filter-dismiss class="filter-drawer__scrim absolute inset-0 bg-overlay-strong"></div>
 
   <!-- panel -->
   <aside
-    class="absolute left-0 top-0 flex h-full w-[478px] max-w-full flex-col bg-surface-inverted shadow-dropdown"
+    class="filter-drawer__panel absolute left-0 top-0 flex h-full w-[478px] max-w-full flex-col bg-surface-inverted shadow-dropdown"
   >
     <!-- header -->
     <div class="flex h-16 shrink-0 items-center justify-between px-10">
@@ -39,7 +39,7 @@
     <!-- form: the request payload. `name`s are the query contract. -->
     <form data-filter-form class="flex-1 overflow-y-auto px-10">
       <!-- ---- Коллекция ---- -->
-      <details open class="group border-t border-divider-soft">
+      <details data-filter-section="collection" open class="group border-t border-divider-soft">
         <summary
           class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
         >
@@ -81,7 +81,7 @@
       </details>
 
       <!-- ---- Фасад ---- -->
-      <details open class="group border-t border-divider-soft">
+      <details data-filter-section="facade" open class="group border-t border-divider-soft">
         <summary
           class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
         >
@@ -96,7 +96,7 @@
       </details>
 
       <!-- ---- Форма ---- -->
-      <details open class="group border-t border-divider-soft">
+      <details data-filter-section="form" open class="group border-t border-divider-soft">
         <summary
           class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
         >
@@ -110,7 +110,7 @@
       </details>
 
       <!-- ---- Цвет ---- -->
-      <details open class="group border-t border-divider-soft">
+      <details data-filter-section="color" open class="group border-t border-divider-soft">
         <summary
           class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
         >
@@ -140,7 +140,7 @@
       </details>
 
       <!-- ---- Стиль ---- -->
-      <details open class="group border-t border-divider-soft">
+      <details data-filter-section="style" open class="group border-t border-divider-soft">
         <summary
           class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
         >
@@ -154,7 +154,7 @@
       </details>
 
       <!-- ---- Цена ---- -->
-      <details open class="group border-y border-divider-soft">
+      <details data-filter-section="price" open class="group border-y border-divider-soft">
         <summary
           class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
         >

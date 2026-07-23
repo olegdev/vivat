@@ -568,20 +568,51 @@
      for accessibility + free form semantics, restyled to the Figma control:
      a 24px square that fills dark with a white tick when checked. `.filter-check`
      is used plain (no responsive variant), so `@layer components` is correct. */
+  /* Figma checkbox+radio (759:76634): a light rounded square/circle that, when
+     checked, keeps its light fill and gains a DARK tick / centre dot plus a dark
+     border — it does NOT fill dark. */
   .filter-check,
   .filter-radio {
     @apply size-6 shrink-0 appearance-none border border-border-default bg-surface-inverted transition-colors;
     @apply bg-center bg-no-repeat;
-    @apply checked:border-components-strong checked:bg-components-strong;
+    @apply checked:border-components-strong;
   }
   .filter-check { @apply rounded-n; }
   .filter-radio { @apply rounded-full; }
   .filter-check:checked {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-11'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23292929' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5 9-11'/%3E%3C/svg%3E");
   }
   .filter-radio:checked {
-    /* white centre dot */
-    background-image: radial-gradient(circle, #fff 0 4px, transparent 5px);
+    /* dark centre dot on the light fill */
+    background-image: radial-gradient(circle, #292929 0 5px, transparent 6px);
+  }
+
+  /* ---- Catalog filter drawer: slide-in ----------------------------------
+     Left panel eases in over a fading scrim. `visibility` is delayed on close
+     so the panel can slide back out before it's hidden (and stops intercepting
+     clicks while shut). JS toggles `.is-open`. */
+  .filter-drawer {
+    visibility: hidden;
+    transition: visibility 0s linear 300ms;
+  }
+  .filter-drawer.is-open {
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .filter-drawer__scrim {
+    @apply opacity-0;
+    transition: opacity 300ms ease;
+  }
+  .filter-drawer.is-open .filter-drawer__scrim {
+    @apply opacity-100;
+  }
+  .filter-drawer__panel {
+    transform: translateX(-100%);
+    transition: transform 300ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: transform;
+  }
+  .filter-drawer.is-open .filter-drawer__panel {
+    transform: translateX(0);
   }
 
   /* Colour swatch (Цвет block): the label wraps a visually-hidden checkbox

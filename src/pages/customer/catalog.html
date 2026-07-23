@@ -40,21 +40,8 @@
       </nav>
 
       <!-- ==================== TITLE BLOCK ============================== -->
-      <div class="flex items-center justify-between px-10 pt-2">
+      <div class="px-10 pt-2">
         <h1 class="text-h1 text-text-primary">Кухни VIVAT</h1>
-        <div class="flex items-center gap-2">
-          <button class="icon-btn" aria-label="В избранное">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-icon-primary">
-              <path d="M12 20s-7-4.5-7-9.5A3.5 3.5 0 0 1 12 8a3.5 3.5 0 0 1 7 2.5c0 5-7 9.5-7 9.5Z" stroke-linejoin="round" />
-            </svg>
-          </button>
-          <button class="icon-btn" aria-label="Поделиться">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="text-icon-primary">
-              <circle cx="6" cy="12" r="2.4" /><circle cx="18" cy="6" r="2.4" /><circle cx="18" cy="18" r="2.4" />
-              <path d="m8.1 10.9 7.8-3.8M8.1 13.1l7.8 3.8" stroke-linecap="round" />
-            </svg>
-          </button>
-        </div>
       </div>
 
       <!-- ==================== CATALOG SETTINGS (filters bar + sort) ====
@@ -78,12 +65,12 @@
                 class="absolute -right-1 -top-1 hidden h-5 min-w-5 items-center justify-center rounded-full bg-components-strong px-1 text-m-body-xs text-text-inverse-primary [&:not(.hidden)]:flex"
               >0</span>
             </button>
-            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Коллекция</button>
-            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Форма кухни</button>
-            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Фасады</button>
-            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Цвет</button>
-            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Стиль</button>
-            <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Цена</button>
+            <button type="button" data-filter-open="collection" class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Коллекция</button>
+            <button type="button" data-filter-open="form" class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Форма кухни</button>
+            <button type="button" data-filter-open="facade" class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Фасады</button>
+            <button type="button" data-filter-open="color" class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Цвет</button>
+            <button type="button" data-filter-open="style" class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Стиль</button>
+            <button type="button" data-filter-open="price" class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Цена</button>
           </div>
 
           <!-- sort dropdown -->

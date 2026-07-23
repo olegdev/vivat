@@ -268,19 +268,31 @@ function applyFilters({ pushURL = true } = {}) {
 // =============================================================================
 // Drawer open / close
 // =============================================================================
-function openDrawer() {
-  drawer.classList.remove("hidden");
+// A filter pill carries the section it opens (data-filter-open="price"); the
+// funnel button and "Больше" chip open with no section (scroll to top).
+function openDrawer(section) {
+  drawer.classList.add("is-open");
   document.body.classList.add("overflow-hidden");
+  const target = section && form.querySelector(`[data-filter-section="${section}"]`);
+  if (target) {
+    // panel is visible immediately (visibility, not display) — jump the form to
+    // the requested group rather than always landing at the top.
+    requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
+  } else {
+    form.scrollTop = 0;
+  }
 }
 function closeDrawer() {
-  drawer.classList.add("hidden");
+  drawer.classList.remove("is-open");
   document.body.classList.remove("overflow-hidden");
 }
-document.querySelectorAll("[data-filter-open]").forEach((b) => b.addEventListener("click", openDrawer));
+document.querySelectorAll("[data-filter-open]").forEach((b) =>
+  b.addEventListener("click", () => openDrawer(b.dataset.filterOpen || null))
+);
 document.querySelector("[data-filter-close]").addEventListener("click", closeDrawer);
 document.querySelector("[data-filter-dismiss]").addEventListener("click", closeDrawer);
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && !drawer.classList.contains("hidden")) closeDrawer();
+  if (e.key === "Escape" && drawer.classList.contains("is-open")) closeDrawer();
 });
 
 // Apply button just closes — filtering already ran live on every change. (When

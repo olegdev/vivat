@@ -130,6 +130,16 @@ and fail here; node's `zlib` handles both, so `kiwi-schema` is the only dep.
 - **Don't invent behaviour.** If the Figma node has no prototype interaction,
   the element doesn't animate or advance on its own. The hero used to
   auto-rotate purely because someone assumed a carousel should.
+- **Don't invent elements, and don't "fix" faithful ones.** Build only what the
+  design actually shows. If a node has hidden/empty children (e.g. the catalog
+  title's `buttons` frame renders empty), they are absent — don't fill them with
+  guessed icons (the invented like/share buttons were exactly this). And before
+  changing a value that "looks wrong", check the Figma node: if it matches
+  (the green SEO band is `#4a9b7d` = `surface-accent-alt`, distinct from the home
+  block's lighter `accent-green-200` on purpose), it's faithful — report that,
+  don't change it. When something genuinely is missing or ambiguous in the
+  design, **propose a solution and ask — never decide it silently** (that's how
+  the price min/max inputs were handled).
 - Tokens live in `@theme` in `src/styles/app.css` and are the single source of
   truth. Use `bg-overlay-light`, not `bg-[#141414]/10`.
 - Mobile is expressed with `max-md:` utilities at the call site. Only what
