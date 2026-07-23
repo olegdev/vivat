@@ -17,6 +17,19 @@ promo tiles, socials, stores map (Yandex Maps v3), production block, footer.
 
 Everything else in `src/pages/` is a stub.
 
+## Before building anything
+
+Read **`SOLUTIONS.md`** first — reusable techniques already worked out (the
+Tailwind variant gotcha, native scroll rails, touch gestures, faithful media,
+deriving states from Figma). Building the next page means reusing these, not
+re-deriving them.
+
+**Keep it current.** Whenever you come back to fix or rework something the first
+version got wrong — a separate task, not the original build — and the fix
+carries a lesson that generalises, add it to `SOLUTIONS.md`. That doc exists
+because these traps cost real time the first time; a fix that isn't written down
+gets re-hit on the next page.
+
 ## Reading the design
 
 Two sources. **Reach for the local export first, fall back to the Figma MCP
