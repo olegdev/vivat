@@ -4,7 +4,6 @@ import "../../styles/app.css";
 // It lives in src/ (not public/) so Vite resolves and inlines it — same reason
 // the social glyphs do, see app.css.
 import CORAL_SVG from "../../components/promo-coral.svg?raw";
-import { setIconBase } from "../../components/product-card.js";
 import {
   mountCarousel,
   setCarouselIconBase,
@@ -22,7 +21,6 @@ import { initMobileMenu, setMobileMenuBases } from "../../components/mobile-menu
 const ASSET_ROOT = "../../assets";
 const HOME = `${ASSET_ROOT}/home`;
 const ICON = `${ASSET_ROOT}/header`;
-setIconBase(ICON);
 setCarouselIconBase(ICON);
 
 // ---- hero slider ------------------------------------------------------------

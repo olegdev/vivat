@@ -1,0 +1,98 @@
+<!-- ==================== PRODUCT CARD templates ========================
+     Figma UI SYSTEM "cards-kitchen". Two variants, each a clean HTML unit the
+     carousel clones per product (components/product-card.js) — the future Blade
+     @foreach body / <x-product-card>. Behaviour (image gallery swipe, dots,
+     hand-off to the outer rail) is wired by initProductCards() over the data
+     hooks below; the JS never emits structure.
+
+     · data-pcard         — full card, swatches + comments footer
+                            (Модульные кухни / Акции)
+     · data-pcard-compact — the 152px "other" card, category-link footer + a
+                            full-width "в корзину" pill on mobile (Популярные)
+
+     The gallery track and dots are filled per image, badges/swatches per datum;
+     everything else is static markup. -->
+
+<!-- full / swatch card -->
+<template data-pcard>
+  <article class="flex w-[438px] shrink-0 flex-col max-md:w-[320px] max-md:snap-start" data-card>
+    <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
+      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
+        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+      </div>
+      <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto" data-card-dots></div>
+    </div>
+    <div class="flex flex-col gap-1 px-1 py-3">
+      <div class="flex items-start gap-4 max-md:gap-3">
+        <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
+          <div class="flex items-center gap-2">
+            <span class="text-body-n-accent text-text-primary max-md:text-m-body-n-accent">от</span>
+            <span class="text-h3 font-medium text-text-primary max-md:text-[18px] max-md:leading-[26px]" data-card-price></span>
+            <span class="text-body-n text-text-muted line-through empty:hidden" data-card-oldprice></span>
+          </div>
+          <p class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-n" data-card-title></p>
+        </div>
+        <button type="button" data-add-to-cart class="icon-btn">
+          <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" />
+        </button>
+      </div>
+      <div class="flex items-center gap-4 py-1">
+        <div class="flex min-w-0 flex-1 items-center gap-2">
+          <div class="flex items-center gap-2" data-card-swatches></div>
+          <span class="text-body-s text-text-secondary empty:hidden" data-card-more></span>
+        </div>
+        <div class="flex items-center gap-1">
+          <span class="text-body-s text-text-secondary" data-card-comments></span>
+          <img src="../../assets/header/icon-comment.svg" alt="" class="size-4" />
+        </div>
+      </div>
+    </div>
+  </article>
+</template>
+
+<!-- compact / category card -->
+<template data-pcard-compact>
+  <article class="flex w-[438px] shrink-0 flex-col max-md:w-[152px] max-md:snap-start" data-card>
+    <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
+      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[111px]" data-card-gallery>
+        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+      </div>
+      <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto max-md:gap-1" data-card-dots></div>
+    </div>
+    <div class="flex flex-col gap-1 px-1 py-3 max-md:gap-0 max-md:py-1.5">
+      <div class="flex items-start gap-4 max-md:gap-0">
+        <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
+          <div class="flex items-center gap-2 max-md:gap-1">
+            <span class="text-body-n-accent text-text-primary max-md:hidden">от</span>
+            <span class="text-h3 font-medium text-text-primary max-md:text-m-body-n-accent" data-card-price></span>
+            <span class="text-body-n text-text-muted line-through max-md:text-m-body-s-crossed max-md:text-text-secondary empty:hidden" data-card-oldprice></span>
+          </div>
+          <p class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-compact" data-card-title></p>
+        </div>
+        <button type="button" data-add-to-cart class="icon-btn max-md:hidden">
+          <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" />
+        </button>
+      </div>
+      <div class="flex items-center gap-4 py-1 max-md:gap-0.5">
+        <a href="#" class="text-body-s text-text-secondary underline decoration-from-font underline-offset-2 max-md:truncate max-md:text-m-body-xs" data-card-category></a>
+      </div>
+      <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:flex">
+        <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" />
+        <span class="text-m-button-s text-text-primary">в корзину</span>
+      </button>
+    </div>
+  </article>
+</template>
+
+<!-- one gallery image + one dot + one swatch, cloned per datum -->
+<template data-pcard-img>
+  <img alt="" draggable="false" data-card-img class="h-full w-full shrink-0 select-none object-cover mix-blend-multiply" />
+</template>
+<template data-pcard-dot>
+  <button type="button" data-card-dot class="carousel-dot" aria-current="false"><span></span></button>
+</template>
+<template data-pcard-swatch>
+  <span class="size-7 overflow-hidden rounded-full border border-alpha-default"></span>
+</template>

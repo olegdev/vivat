@@ -1,5 +1,4 @@
 import "../../styles/app.css";
-import { setIconBase } from "../../components/product-card.js";
 import { mountCarousel, setCarouselIconBase } from "../../components/carousel.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
 import { initMobileMenu, setMobileMenuBases } from "../../components/mobile-menu.js";
@@ -10,7 +9,6 @@ import { initCart } from "../../components/cart.js";
 const ASSET_ROOT = "../../assets";
 const HOME = `${ASSET_ROOT}/home`;
 const ICON = `${ASSET_ROOT}/header`;
-setIconBase(ICON);
 setCarouselIconBase(ICON);
 
 // ---- shared chrome (header mega-menu + burger), same wiring as main.js ------
