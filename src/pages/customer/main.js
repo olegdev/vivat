@@ -12,6 +12,7 @@ import {
   initScrollProgress,
 } from "../../components/carousel.js";
 import { initSearch } from "../../components/search.js";
+import { initCart } from "../../components/cart.js";
 import { initHeroSlider } from "../../components/hero-slider.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
@@ -77,16 +78,24 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
 // ---- header search (query contract + suggest seam) --------------------------
 initSearch();
 
+// ---- add to cart (badge + POST /cart seam) ----------------------------------
+initCart();
+
 // ---- shared product-card data ------------------------------------------------
 const KITCHEN_TITLE = "Кухня Фьюжн-0, МДФ, 2000 х 2170 х 600 мм";
 const SWATCHES = [{ img: `${HOME}/swatch-1-src.png` }, { color: "#d9d9d9" }, { color: "#ffffff" }];
+
+// Stamp a stable id on each product — the cart seam prints it as data-product-id
+// (the payload the server will get). Blade prints the model's real id here.
+const withId = (prefix, arr) => arr.map((p, i) => ({ id: `${prefix}-${i}`, ...p }));
 
 const modularItems = [
   { image: `${HOME}/prod-mod-1-src.png`, price: "450 010₽" },
   { image: `${HOME}/prod-mod-2-src.png`, price: "11 430₽" },
   { image: `${HOME}/prod-mod-3-src.png`, price: "32 544₽" },
   { image: `${HOME}/prod-mod-4-src.png`, price: "22 991₽" },
-].map((p) => ({
+].map((p, i) => ({
+  id: `mod-${i}`,
   ...p,
   title: KITCHEN_TITLE,
   badges: [
@@ -218,7 +227,7 @@ const promoTiles = [
 // rows of five (Figma `rows` 1968:150236). With fewer, the mobile rail has
 // nothing to scroll while still showing a scroll indicator, and the bottom row
 // ends up half empty.
-const akciiItems = [
+const akciiItems = withId("akcii", [
   {
     image: `${HOME}/prod-pop-1-src.png`,
     price: "22 991₽",
@@ -299,12 +308,12 @@ const akciiItems = [
     title: "Варочная панель индукционная EIP 640 BL",
     category: { label: "Варочные панели", count: 24 },
   },
-];
+]);
 
 // ---- hydrate anchors --------------------------------------------------------
 // `tab` = which carousel tab (below) the item belongs to; items without one show
 // only under "Все сразу". The carousel tab seam filters on it — see initTabs().
-const popularItems = [
+const popularItems = withId("pop", [
   {
     image: `${HOME}/prod-pop-1-src.png`,
     price: "5 991₽",
@@ -377,7 +386,7 @@ const popularItems = [
     title: "Сушилка для посуды в шкаф, нержавеющая сталь",
     category: { label: "Аксессуары", count: 47 },
   },
-];
+]);
 
 const sections = {
   modular: {

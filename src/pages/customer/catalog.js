@@ -4,6 +4,7 @@ import { mountCarousel, setCarouselIconBase } from "../../components/carousel.js
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
 import { initMobileMenu, setMobileMenuBases } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
+import { initCart } from "../../components/cart.js";
 
 // This page lives at dist/pages/customer/catalog.html — assets sit two levels up.
 const ASSET_ROOT = "../../assets";
@@ -23,6 +24,7 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
   catalogToggle: document.querySelector("[data-mobile-catalog]"),
 });
 initSearch();
+initCart();
 
 // =============================================================================
 // Product data (prototype stand-in for the server payload)
@@ -64,6 +66,7 @@ const PRODUCTS = Array.from({ length: 24 }, (_, i) => {
   if (i % 4 === 1) badges.push({ text: "хит", tone: "hit" });
   if (discounted) badges.push({ text: `- ${5 + (i % 4) * 5}%`, tone: "discount" });
   return {
+    id: `kitchen-${i}`, // cart-seam contract (printed as data-product-id)
     image: KITCHEN_IMAGES[i % KITCHEN_IMAGES.length],
     price: base,
     oldPrice: discounted ? Math.round(base * 1.18) : null,
@@ -121,6 +124,7 @@ function buildCard(p) {
   node.dataset.color = p.color;
   node.dataset.style = p.style;
   node.dataset.price = String(p.price);
+  node.querySelector("[data-add-to-cart]").dataset.productId = p.id;
 
   node.querySelector("[data-card-img]").src = p.image;
   node.querySelector("[data-card-img]").alt = p.title;

@@ -72,7 +72,7 @@
               </svg>
               <span
                 data-filter-badge
-                class="absolute -right-1 -top-1 hidden h-5 min-w-5 items-center justify-center rounded-full bg-components-strong px-1 text-m-body-xs text-text-inverse-primary"
+                class="absolute -right-1 -top-1 hidden h-5 min-w-5 items-center justify-center rounded-full bg-components-strong px-1 text-m-body-xs text-text-inverse-primary [&:not(.hidden)]:flex"
               >0</span>
             </button>
             <button type="button" data-filter-open class="btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover">Коллекция</button>
@@ -149,7 +149,7 @@
                 </div>
                 <p data-card-title class="line-clamp-2 h-12 text-body-n text-text-primary"></p>
               </div>
-              <button class="icon-btn" aria-label="В корзину">
+              <button type="button" data-add-to-cart class="icon-btn" aria-label="В корзину">
                 <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" />
               </button>
             </div>

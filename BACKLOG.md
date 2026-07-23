@@ -17,12 +17,7 @@ Only things that are actually open. Delete lines as they land.
 ## Seams to wire (form + request seam pattern — see SOLUTIONS.md)
 
 Places that will be a server round-trip in the Blade build. Done so far: catalog
-filter drawer, popular-carousel tabs, header search. Still open:
-
-- **Add to cart** (own thread). Card cart buttons + full-width "в корзину" pill
-  + header cart icon are inert (`product-card.js`, `header.html`). Seam:
-  `addToCart(id)` → optimistic header-badge bump, later `POST /cart`. Needs the
-  card to print `data-product-id` (the contract), which also sets up a cart page.
+filter drawer, popular-carousel tabs, header search, add-to-cart. Still open:
 
 - **Data authored in JS → server `@foreach`** (own thread; refactor, not a
   stub). `categories` (`catalog-menu.js`), `stores` (`stores-map.js`) and the

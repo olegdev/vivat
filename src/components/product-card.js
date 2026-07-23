@@ -114,7 +114,7 @@ export function productCard(p) {
             compact ? "max-md:h-10 max-md:text-m-body-compact" : "max-md:h-10 max-md:text-m-body-n"
           }">${p.title}</p>
         </div>
-        <button class="icon-btn ${compact ? "max-md:hidden" : ""}">
+        <button type="button" data-add-to-cart data-product-id="${p.id ?? ""}" class="icon-btn ${compact ? "max-md:hidden" : ""}">
           <img src="${ICON}/icon-order-dark.svg" alt="В корзину" class="size-6" />
         </button>
       </div>
@@ -122,7 +122,7 @@ export function productCard(p) {
     </div>
     ${
       compact
-        ? `<button class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:flex">
+        ? `<button type="button" data-add-to-cart data-product-id="${p.id ?? ""}" class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:flex">
              <img src="${ICON}/icon-order-dark.svg" alt="" class="size-4" />
              <span class="text-m-button-s text-text-primary">в корзину</span>
            </button>`

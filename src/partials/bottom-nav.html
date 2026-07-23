@@ -32,8 +32,9 @@
     <span class="relative flex size-8 items-center justify-center">
       <img src="../../assets/header/nav-cart.svg" alt="" class="size-6" />
       <span
-        class="absolute -right-2 top-0 flex size-5 items-center justify-center rounded-full bg-components-red text-body-xs text-text-inverse-primary"
-        >2</span
+        data-cart-count
+        class="absolute -right-2 top-0 hidden size-5 items-center justify-center rounded-full bg-components-red text-body-xs text-text-inverse-primary [&:not(.hidden)]:flex"
+        >0</span
       >
     </span>
     <span class="text-body-xs text-text-muted">Корзина</span>

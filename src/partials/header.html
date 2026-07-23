@@ -113,11 +113,13 @@
           </button>
         </form>
       </div>
-      <!-- order icon -->
-      <button
-        class="icon-btn"
-      >
-        <img src="../../assets/header/icon-order-dark.svg" alt="Корзина" class="size-6" />
+      <!-- order icon — count badge driven by components/cart.js -->
+      <button class="icon-btn relative" data-cart aria-label="Корзина">
+        <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" />
+        <span
+          data-cart-count
+          class="absolute -right-0.5 -top-0.5 hidden size-5 items-center justify-center rounded-full bg-components-red text-body-xs text-text-inverse-primary [&:not(.hidden)]:flex"
+        >0</span>
       </button>
     </div>
   </div>
