@@ -12,10 +12,10 @@
 // wants [lat, lon], so we flip once when building placemarks.
 
 // Relative to the consuming page; set once via setBases() before rendering.
-let ICON = "../../assets/header";
+// Only the map pin still needs a base (its glyphs live under HOME); every other
+// asset URL now lives in partials/stores.html.
 let HOME = "../../assets/home";
-export function setBases({ icon, home }) {
-  if (icon) ICON = icon;
+export function setBases({ home }) {
   if (home) HOME = home;
 }
 
@@ -39,98 +39,14 @@ function loadYmaps(apiKey) {
   return ymapsPromise;
 }
 
-// ---- markup -----------------------------------------------------------------
-function metro(name) {
-  return `
-    <span class="flex items-center gap-0.5">
-      <img src="${HOME}/icon-metro.svg" alt="" class="size-4 shrink-0" />
-      <span class="text-body-s text-text-secondary">${name}</span>
-    </span>`;
-}
-
-function storeCard(s) {
-  const metros = (s.metro || []).map(metro).join("");
-  return `
-  <button type="button" data-store="${s.id}" aria-expanded="false" class="store-card">
-    <div class="flex w-full flex-col gap-1">
-      <div class="flex w-full items-start justify-between gap-2">
-        <p class="pr-6 text-h5 text-text-primary">${s.name}</p>
-        <img src="${ICON}/chevron-down.svg" alt="" data-chevron class="size-6 shrink-0" />
-      </div>
-      <div class="flex flex-col gap-1.5">
-        <p class="text-body-n text-text-primary">${s.address}</p>
-        ${metros ? `<div class="flex flex-wrap gap-2">${metros}</div>` : ""}
-      </div>
-    </div>
-    <div data-details hidden class="flex flex-col gap-1 pt-3">
-      <span class="text-body-s text-text-secondary">${s.hours}</span>
-      <span class="text-body-s text-text-primary">${s.phone}</span>
-    </div>
-  </button>`;
-}
-
-// Below the md breakpoint the section keeps only the title block and a 320px
-// map with a centred "Где купить" call to action (Figma section / Наши салоны
-// 1968:71568): no dealer panel, no peach backdrop, no zoom controls.
-function shell({ title, description, city }) {
-  return `
-  <section class="flex w-[1440px] flex-col bg-surface-accent pb-16 max-md:w-full max-md:bg-bg-page max-md:pb-10">
-    <div class="px-10 max-md:px-4">
-      <div class="h-20 max-md:h-10"></div>
-      <div class="flex w-[783px] flex-col max-md:w-full">
-        <div class="flex min-h-11 items-center max-md:min-h-6">
-          <h2 class="text-h2 text-text-primary max-md:text-m-h2">${title}</h2>
-        </div>
-        <div class="h-2 max-md:h-1"></div>
-        <p class="text-body-n-accent text-text-primary max-md:text-m-body-n">${description}</p>
-      </div>
-      <div class="h-6 max-md:h-3"></div>
-    </div>
-
-    <div class="px-10 max-md:px-4">
-      <div class="flex overflow-hidden rounded-l shadow-dropdown max-md:shadow-none">
-        <!-- left panel -->
-        <aside class="flex h-[680px] w-[440px] shrink-0 flex-col bg-surface-inverted max-md:hidden">
-          <div class="flex flex-col gap-2 border-b border-divider-light pb-4 pl-10 pr-6 pt-6">
-            <div class="flex h-8 items-center gap-1">
-              <span class="text-h3 text-text-primary underline decoration-dotted underline-offset-4">${city}</span>
-              <img src="${ICON}/icon-pin.svg" alt="" class="size-6" />
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="text-body-n text-text-primary">Только фирменные магазины</span>
-              <label class="relative inline-flex cursor-pointer items-center">
-                <input type="checkbox" data-brand-only class="peer sr-only" />
-                <span class="block h-6 w-10 rounded-full bg-components-disabled transition-colors peer-checked:bg-components-red"></span>
-                <span class="pointer-events-none absolute left-0.5 top-0.5 size-5 rounded-full bg-surface-inverted transition-transform peer-checked:translate-x-4"></span>
-              </label>
-            </div>
-          </div>
-          <div data-store-list class="stores-scroll h-[580px] overflow-y-auto pl-4"></div>
-        </aside>
-
-        <!-- map -->
-        <div class="relative h-[680px] flex-1 max-md:h-80">
-          <div data-map class="size-full"></div>
-          <div class="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-10 bg-linear-to-b from-alpha-black-100 to-transparent max-md:block"></div>
-          <a href="#" class="btn btn-m btn-accent absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 px-6 max-md:flex">Где купить</a>
-          <div class="absolute bottom-6 right-6 z-10 flex flex-col gap-2 max-md:hidden">
-            <button type="button" data-zoom="1" class="map-ctrl" aria-label="Приблизить">+</button>
-            <button type="button" data-zoom="-1" class="map-ctrl" aria-label="Отдалить">−</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>`;
-}
-
 // ---- component --------------------------------------------------------------
+// The section shell + the dealer-card / metro-chip <template>s live in
+// partials/stores.html (spliced into the page); this only queries and fills
+// them. `opts.title/description/city` are now static content in the partial.
 export function renderStoresMap(anchor, opts) {
   const {
     stores,
     apiKey,
-    title = "Наши салоны",
-    description = "",
-    city = "Москва",
     center = [55.7558, 37.6173], // 2.1 takes [lat, lon]
     zoom = 9,
   } = opts;
@@ -142,10 +58,11 @@ export function renderStoresMap(anchor, opts) {
     ll: [s.coords[1], s.coords[0]],
   }));
 
-  anchor.innerHTML = shell({ title, description, city });
   const listEl = anchor.querySelector("[data-store-list]");
   const mapEl = anchor.querySelector("[data-map]");
   const toggleEl = anchor.querySelector("[data-brand-only]");
+  const cardTpl = anchor.querySelector("[data-store-card]");
+  const metroTpl = anchor.querySelector("[data-metro-chip]");
 
   let visible = items;
   let selectedId = null;
@@ -153,9 +70,26 @@ export function renderStoresMap(anchor, opts) {
   let currentZoom = zoom;
   const marks = new Map(); // store id -> { placemark, attached }
 
+  // Clone the card template and fill it — the future @foreach body.
+  function buildStoreCard(s) {
+    const node = cardTpl.content.firstElementChild.cloneNode(true);
+    node.dataset.store = s.id;
+    node.querySelector("[data-store-name]").textContent = s.name;
+    node.querySelector("[data-store-address]").textContent = s.address;
+    node.querySelector("[data-store-hours]").textContent = s.hours;
+    node.querySelector("[data-store-phone]").textContent = s.phone;
+    const metroWrap = node.querySelector("[data-store-metro]");
+    (s.metro || []).forEach((name) => {
+      const chip = metroTpl.content.firstElementChild.cloneNode(true);
+      chip.querySelector("[data-metro-name]").textContent = name;
+      metroWrap.append(chip);
+    });
+    return node;
+  }
+
   // -- list ------------------------------------------------------------------
   function paintList() {
-    listEl.innerHTML = visible.map(storeCard).join("");
+    listEl.replaceChildren(...visible.map(buildStoreCard));
     applySelection({ scroll: false });
   }
 
@@ -187,17 +121,29 @@ export function renderStoresMap(anchor, opts) {
     if (card) select(card.dataset.store, { fly: true });
   });
 
-  // -- filter ----------------------------------------------------------------
-  // "Только фирменные магазины": already the "form + request seam" method minus
-  // URL state — a control filters a client-side list. When the store list
-  // becomes a server fetch, make this a named seam (loadStores({ brandOnly }))
-  // and reflect the flag in the URL, like the catalog filters. Until then
-  // there's nothing to change here. See BACKLOG.md › "Seams to wire".
-  toggleEl.addEventListener("change", () => {
-    visible = toggleEl.checked ? items.filter((s) => s.brand) : items;
+  // -- filter (request seam) -------------------------------------------------
+  // "Только фирменные магазины" — same method as the catalog filters
+  // (SOLUTIONS.md › "Filters: form + request seam"). Today loadStores() filters
+  // the in-memory list; later its body becomes fetch(`/stores?brand=${…}`) →
+  // rebuild the list from the response. The `brand` flag lives in the URL so the
+  // state survives refresh/share (replaceState — a minor control, no history
+  // entry). Nothing above this changes when the fetch lands.
+  function loadStores({ brandOnly }) {
+    visible = brandOnly ? items.filter((s) => s.brand) : items;
     if (selectedId && !visible.some((s) => s.id === selectedId)) selectedId = null;
     paintList();
     syncMarkers();
+  }
+  function writeURL(brandOnly) {
+    const params = new URLSearchParams(location.search);
+    if (brandOnly) params.set("brand", "1");
+    else params.delete("brand");
+    const qs = params.toString();
+    history.replaceState(null, "", qs ? `?${qs}` : location.pathname);
+  }
+  toggleEl.addEventListener("change", () => {
+    loadStores({ brandOnly: toggleEl.checked });
+    writeURL(toggleEl.checked);
   });
 
   function syncMarkers() {
@@ -212,6 +158,11 @@ export function renderStoresMap(anchor, opts) {
     }
   }
 
+  // Hydrate the filter from the URL (?brand=1) so refresh/share restores it.
+  if (new URLSearchParams(location.search).get("brand") === "1") {
+    toggleEl.checked = true;
+    visible = items.filter((s) => s.brand);
+  }
   paintList();
 
   // -- zoom controls ---------------------------------------------------------

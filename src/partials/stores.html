@@ -1,0 +1,87 @@
+<!-- ==================== НАШИ САЛОНЫ (map + dealer list) ================
+     Figma customer/Main › map-general (878:103602). Shell is static HTML here
+     (one future Blade partial); the live Yandex map, selection and filtering are
+     wired by components/stores-map.js, which queries the hooks below. The dealer
+     card and metro chip are <template>s the script clones per store — the future
+     @foreach over $stores / $store->metro.
+
+     Below `md` the section keeps only the title block and a 320px map with a
+     centred "Где купить" CTA (Figma section / Наши салоны 1968:71568). -->
+<section class="flex w-[1440px] flex-col bg-surface-accent pb-16 max-md:w-full max-md:bg-bg-page max-md:pb-10">
+  <div class="px-10 max-md:px-4">
+    <div class="h-20 max-md:h-10"></div>
+    <div class="flex w-[783px] flex-col max-md:w-full">
+      <div class="flex min-h-11 items-center max-md:min-h-6">
+        <h2 class="text-h2 text-text-primary max-md:text-m-h2">Наши салоны</h2>
+      </div>
+      <div class="h-2 max-md:h-1"></div>
+      <p class="text-body-n-accent text-text-primary max-md:text-m-body-n">
+        Наша продукция продается в сотнях городов России в наших официальных
+        магазинах и дилерских центрах.
+      </p>
+    </div>
+    <div class="h-6 max-md:h-3"></div>
+  </div>
+
+  <div class="px-10 max-md:px-4">
+    <div class="flex overflow-hidden rounded-l shadow-dropdown max-md:shadow-none">
+      <!-- left panel -->
+      <aside class="flex h-[680px] w-[440px] shrink-0 flex-col bg-surface-inverted max-md:hidden">
+        <div class="flex flex-col gap-2 border-b border-divider-light pb-4 pl-10 pr-6 pt-6">
+          <div class="flex h-8 items-center gap-1">
+            <span class="text-h3 text-text-primary underline decoration-dotted underline-offset-4">Москва</span>
+            <img src="../../assets/header/icon-pin.svg" alt="" class="size-6" />
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-body-n text-text-primary">Только фирменные магазины</span>
+            <label class="relative inline-flex cursor-pointer items-center">
+              <input type="checkbox" data-brand-only class="peer sr-only" />
+              <span class="block h-6 w-10 rounded-full bg-components-disabled transition-colors peer-checked:bg-components-red"></span>
+              <span class="pointer-events-none absolute left-0.5 top-0.5 size-5 rounded-full bg-surface-inverted transition-transform peer-checked:translate-x-4"></span>
+            </label>
+          </div>
+        </div>
+        <div data-store-list class="stores-scroll h-[580px] overflow-y-auto pl-4"></div>
+      </aside>
+
+      <!-- map -->
+      <div class="relative h-[680px] flex-1 max-md:h-80">
+        <div data-map class="size-full"></div>
+        <div class="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-10 bg-linear-to-b from-alpha-black-100 to-transparent max-md:block"></div>
+        <a href="#" class="btn btn-m btn-accent absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 px-6 max-md:flex">Где купить</a>
+        <div class="absolute bottom-6 right-6 z-10 flex flex-col gap-2 max-md:hidden">
+          <button type="button" data-zoom="1" class="map-ctrl" aria-label="Приблизить">+</button>
+          <button type="button" data-zoom="-1" class="map-ctrl" aria-label="Отдалить">−</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- one dealer card (future @foreach($stores as $store)) -->
+  <template data-store-card>
+    <button type="button" data-store aria-expanded="false" class="store-card">
+      <div class="flex w-full flex-col gap-1">
+        <div class="flex w-full items-start justify-between gap-2">
+          <p data-store-name class="pr-6 text-h5 text-text-primary"></p>
+          <img src="../../assets/header/chevron-down.svg" alt="" data-chevron class="size-6 shrink-0" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <p data-store-address class="text-body-n text-text-primary"></p>
+          <div data-store-metro class="flex flex-wrap gap-2 empty:hidden"></div>
+        </div>
+      </div>
+      <div data-details hidden class="flex flex-col gap-1 pt-3">
+        <span data-store-hours class="text-body-s text-text-secondary"></span>
+        <span data-store-phone class="text-body-s text-text-primary"></span>
+      </div>
+    </button>
+  </template>
+
+  <!-- one metro chip (future @foreach($store->metro as $m)) -->
+  <template data-metro-chip>
+    <span class="flex items-center gap-0.5">
+      <img src="../../assets/home/icon-metro.svg" alt="" class="size-4 shrink-0" />
+      <span data-metro-name class="text-body-s text-text-secondary"></span>
+    </span>
+  </template>
+</section>

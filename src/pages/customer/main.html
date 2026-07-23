@@ -216,8 +216,9 @@
       <div class="h-24 max-md:hidden"></div>
 
       <!-- ==================== Наши салоны + карта ===================== -->
-      <!-- Hydrated by stores-map.js: dealer list + live Yandex Maps (v3). -->
-      <div data-section="salony"></div>
+      <!-- Shell is partials/stores.html; dealer list + live Yandex Maps and the
+           "только фирменные" filter are wired by stores-map.js. -->
+      <div data-section="salony"><!--#include partials/stores.html --></div>
 
 
       <!-- ==================== Производство ============================ -->

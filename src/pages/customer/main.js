@@ -527,11 +527,10 @@ const stores = [
 
 const storesAnchor = document.querySelector('[data-section="salony"]');
 if (storesAnchor) {
-  setStoresMapBases({ icon: ICON, home: HOME });
+  setStoresMapBases({ home: HOME });
+  // title/description/city are now static content in partials/stores.html.
   renderStoresMap(storesAnchor, {
     stores,
     apiKey: import.meta.env?.VITE_YANDEX_MAPS_KEY || "73abf802-7fa6-4da1-bc36-7dd3457e4673",
-    description:
-      "Наша продукция продается в сотнях городов России в наших официальных магазинах и дилерских центрах.",
   });
 }
