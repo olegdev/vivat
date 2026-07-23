@@ -62,24 +62,27 @@ export const categories = [
   { name: "Для продавцов" },
 ];
 
-// ---- markup helpers ---------------------------------------------------------
-const chevron = () =>
-  `<img src="${ICON}/chevron-right.svg" alt="" class="size-6 shrink-0" />`;
+// ---- template helpers -------------------------------------------------------
+// The menu-item / chip units are clean HTML <template>s in the partial; this
+// clones and fills them (the future @foreach body).
+const clone = (sel) => document.querySelector(sel).content.firstElementChild.cloneNode(true);
 
-function menuItem(label, { active = false } = {}) {
-  return `<a href="#" class="catalog-menu-item"${active ? ' aria-current="true"' : ""}>
-    <span class="min-w-0 flex-1 text-body-n-accent text-text-primary">${label}</span>
-    ${chevron()}
-  </a>`;
+function buildItem(label, { active = false } = {}) {
+  const el = clone("[data-menu-item]");
+  el.querySelector("[data-label]").textContent = label;
+  if (active) el.setAttribute("aria-current", "true");
+  return el;
 }
 
-function chip(label) {
-  return `<a href="#" class="catalog-chip">${label}</a>`;
+function buildChip(label) {
+  const el = clone("[data-menu-chip]");
+  el.textContent = label;
+  return el;
 }
 
 // ---- init -------------------------------------------------------------------
-// The overlay/scrim/three-column shell is static markup in
-// src/partials/catalog-menu.html. This only hydrates its slots (col1 from
+// The overlay/scrim/three-column shell + item templates are static markup in
+// src/partials/catalog-menu.html. This only fills the columns (col1 from
 // `categories`, col2/col3 swapped on hover) and drives open/close.
 export function initCatalogMenu(anchor, { toggle } = {}) {
   if (!anchor) return;
@@ -89,13 +92,15 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
   const col1 = anchor.querySelector("[data-cat-col1]");
   const col2 = anchor.querySelector("[data-cat-col2]");
   const col3 = anchor.querySelector("[data-cat-col3]");
+  const col2Sub = col2.querySelector("[data-col2-sub]");
+  const col2Chips = col2.querySelector("[data-col2-chips]");
   const toggleIcon = toggle?.querySelector("[data-catalog-icon]");
 
   // column 1 — categories (default active = first with detail data)
   const defaultIndex = categories.findIndex((c) => c.sub || c.collections);
-  col1.innerHTML = categories
-    .map((c, i) => menuItem(c.name, { active: i === defaultIndex }))
-    .join("");
+  col1.replaceChildren(
+    ...categories.map((c, i) => buildItem(c.name, { active: i === defaultIndex }))
+  );
   const col1Items = [...col1.children];
 
   function activate(index) {
@@ -106,22 +111,17 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
     const cat = categories[index];
 
     // column 2 — sub-tabs + chips
-    const hasCol2 = cat.sub?.length || cat.chips?.length;
-    if (hasCol2) {
-      col2.innerHTML = `
-        ${cat.sub?.length ? `<div class="flex flex-col">${cat.sub.map((s) => menuItem(s.label, { active: s.active })).join("")}</div>` : ""}
-        ${cat.chips?.length ? `<div class="flex flex-wrap gap-2">${cat.chips.map(chip).join("")}</div>` : ""}`;
-    }
+    col2Sub.replaceChildren(...(cat.sub || []).map((s) => buildItem(s.label, { active: s.active })));
+    col2Chips.replaceChildren(...(cat.chips || []).map(buildChip));
+    const hasCol2 = !!(cat.sub?.length || cat.chips?.length);
     col2.classList.toggle("hidden", !hasCol2);
-    col2.classList.toggle("flex", !!hasCol2);
+    col2.classList.toggle("flex", hasCol2);
 
     // column 3 — collections
-    const hasCol3 = cat.collections?.length;
-    if (hasCol3) {
-      col3.innerHTML = cat.collections.map((c) => menuItem(c)).join("");
-    }
+    const hasCol3 = !!cat.collections?.length;
+    col3.replaceChildren(...(cat.collections || []).map((c) => buildItem(c)));
     col3.classList.toggle("hidden", !hasCol3);
-    col3.classList.toggle("flex", !!hasCol3);
+    col3.classList.toggle("flex", hasCol3);
   }
 
   // hover or click a category to expand it
