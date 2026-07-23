@@ -8,6 +8,9 @@ npm run dev      # vite dev server → /pages/customer/main.html
 npm run build    # one vite build per page → dist/ (inlines all JS/CSS)
 ```
 
+`src/index.html` is a hand-kept screen index (→ `dist/index.html`). **Add every
+new page under `src/pages/` to it** — it isn't generated.
+
 ## Where we stand
 
 `src/pages/customer/main.html` — the customer home page. Desktop (fixed 1440

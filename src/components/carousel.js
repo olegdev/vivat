@@ -209,6 +209,13 @@ export function initCarousel(sectionEl) {
       track.style.transform = "";
       return;
     }
+    // When the cards fit the viewport there's nothing to scroll — hide both
+    // arrows rather than leave them disabled-but-visible. This matters after a
+    // tab filter trims the rail down to one or two cards.
+    const scrollable = maxOffset() > 1;
+    prev.classList.toggle("hidden", !scrollable);
+    next.classList.toggle("hidden", !scrollable);
+
     index = Math.min(Math.max(index, 0), maxIndex());
     track.style.transform = `translateX(${-Math.min(index * step(), maxOffset())}px)`;
     prev.disabled = index <= 0;

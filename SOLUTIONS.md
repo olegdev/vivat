@@ -27,6 +27,12 @@ example, not the point itself.
 - **Nested sliders must not chain by default.** Decide per breakpoint whether an
   inner gesture hands off to the outer rail — desktop usually no, touch usually
   yes. Ref: `advanceOuterCarousel()`, `product-card.js`.
+- **Hide the arrows when the track fits, don't just disable them.** A rail whose
+  cards all fit the viewport has nothing to scroll — leaving the arrows visible
+  (even greyed) looks broken. This is easy to miss until a filter/tab trims the
+  rail to one or two cards at runtime, so gate it on `maxOffset() > 0` inside the
+  same `apply()` that runs on every change, not once at init. Ref: `apply()` in
+  `carousel.js` (surfaced by the Популярные-товары tab filter).
 
 ## Touch gestures
 
