@@ -1,54 +1,56 @@
 # Solved once — reuse, don't re-derive
 
-Pointers to the tricky bits already worked out on the home page. Read the code
-at the reference before rebuilding any of this on the next page.
+General techniques worked out on the home page. Each is a trap or a pattern that
+will recur on the next page; the reference is just where to read a worked
+example, not the point itself.
 
-## Rails / carousels
+## Tailwind v4
 
-- **One rail pattern, two behaviours.** Desktop translates `[data-track]` behind
-  arrows; below `md` `[data-viewport]` scrolls natively. Both built by
-  `carouselSection()` → `initCarousel()`. — `src/pages/customer/main.js:267`
-- **Step by card pitch, read the gap per step** (not cached — it differs across
-  breakpoints, `gap-6` / `gap-2`). — `main.js:288`
-- **Inner card gallery must NOT drive the outer rail on desktop** (separate
-  controls); it only chains below `md` where the rail is one scroll surface. —
-  `src/components/product-card.js:142`
-- **Pointer drag on desktop** (native scroll only reacts to touch/trackpad):
-  `enableDragScroll()`, with `ignore` for anything running its own slider. —
-  `main.js:165`
+- **A custom class used with a variant MUST be `@utility`, never
+  `@layer components`.** Tailwind only generates variants (`max-md:`, `hover:`,
+  …) for utilities it owns; a component-layer class used as `max-md:foo` emits
+  *nothing*, silently — no error, no rule. This cost the "double scrollbar".
+  Ref: `.scroll-rail`, `app.css`.
 
-## Scrollbars / indicators
+## Native horizontal scroll rails
 
-- **Double scrollbar** = a rail class used as `max-md:scroll-rail` while defined
-  in `@layer components`. Variant-used custom classes MUST be `@utility` or
-  Tailwind emits nothing, silently. — `app.css:671`
-- **Mobile scroll indicator** (the 2px bar, not a native scrollbar): markup in
-  `carouselSection()`, driven by `initScrollProgress()`, styled `.scroll-progress`.
-  Figma `scroll` 1965:373920 — 16px gutters, `#808080` thumb, square ends. —
-  `main.js:230`, `app.css:651`
+- **One markup, two behaviours by breakpoint**: desktop translates a track
+  behind arrows; below `md` the viewport scrolls natively. Cleaner than two
+  separate components. Ref: `carouselSection()` / `initCarousel()`, `main.js`.
+- **Read layout constants (gap, card width) per interaction, not once at init** —
+  they change across breakpoints, and a cached value drifts after a resize.
+- **Native scroll reacts only to touch/trackpad; a mouse drag does nothing.**
+  Pointer devices need an explicit drag-to-scroll handler. Ref: `enableDragScroll()`.
+- **Draw the scroll position, don't style the native scrollbar.** Hide it
+  (`@utility scroll-rail`) and mirror `scrollLeft`/`scrollWidth` onto a bar.
+  Ref: `initScrollProgress()`.
+- **Nested sliders must not chain by default.** Decide per breakpoint whether an
+  inner gesture hands off to the outer rail — desktop usually no, touch usually
+  yes. Ref: `advanceOuterCarousel()`, `product-card.js`.
 
-## Hero slider
+## Touch gestures
 
-- **No auto-advance** — the Figma banner has no prototype interaction; don't add
-  one. — `src/components/hero-slider.js:6`
-- **Touch swipe** needs `touch-pan-y` + commit on `pointermove` (release-only
-  dies to pointercancel on touch). — `hero-slider.js:66,177`
+- **Swipe needs `touch-action` set** (`touch-pan-y` for a horizontal swipe) or
+  the browser claims the gesture and fires `pointercancel`.
+- **Commit on `pointermove` past a threshold, not on `pointerup`** — a
+  release-only handler never runs when touch cancels mid-gesture. Ref: hero swipe,
+  `hero-slider.js`.
 
-## Promo tiles (hover / animation)
+## Faithful-to-Figma media
 
-- Hover states came from **diffing the Figma default vs hover variants** with
-  `fig.mjs`, not guessing: caption `#808080`, media zoom `1.05`. — `app.css:417`
-- **Coral tile motion**: clusters sit under a rotated/mirrored parent, so the
-  per-group `matrix()` is the composed default→hover transform solved in the
-  SVG's 437-unit space (`transform-box: view-box`). — `app.css:435`
-- **Constant 10% #141414 wash** every news-card carries → `bg-overlay-light`. —
-  `main.js:346`
-- **`desktopOnly` tiles** (edge slivers) → `max-md:hidden`. — `main.js:353`
+- **Reproduce a Figma media box with CSS custom properties, one box per
+  breakpoint — not `object-cover`** — when the design hand-places a crop.
+  Ref: `.cat-media` / `.hero-media`, `app.css`.
+- **Fix baked-in artifacts (letterbox, wrong aspect) at the source asset**, with
+  ffmpeg — don't paper over them in CSS. Check new video with `cropdetect` first.
 
-## Media boxes
+## Deriving states from the design
 
-- Category tiles & hero reproduce the Figma media box verbatim via CSS vars, a
-  separate box per breakpoint — NOT `object-cover`. — `.cat-media` / `.hero-media`
-  `app.css:611,630`
-- **Baked-in letterbox** (promo video) is cropped at the source with ffmpeg, not
-  hidden in CSS — check new videos with `cropdetect` first.
+- **`fig.mjs` diffs component variants** (default vs hover/pressed) — read the
+  exact deltas instead of guessing. That's where hover colours, zoom factors and
+  the animated transforms came from. See `CLAUDE.md`.
+- **A constant overlay/wash a component always carries is a token, not a hover
+  effect** — check whether it's on the base variant. Ref: `bg-overlay-light` on
+  the promo tiles.
+- **No prototype interaction in Figma → no auto-motion in code.** Don't add
+  auto-advance/animation the design doesn't specify.
