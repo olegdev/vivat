@@ -15,7 +15,7 @@ import { initCart } from "../../components/cart.js";
 import { initHeroSlider } from "../../components/hero-slider.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
-import { initMobileMenu, setMobileMenuBases } from "../../components/mobile-menu.js";
+import { initMobileMenu } from "../../components/mobile-menu.js";
 
 // This page lives at dist/pages/customer/main.html — assets sit two levels up.
 const ASSET_ROOT = "../../assets";
@@ -67,7 +67,6 @@ initCatalogMenu(document.querySelector("[data-catalog]"), {
 });
 
 // ---- mobile burger menu (max-md only) ---------------------------------------
-setMobileMenuBases({ icons: ICON });
 initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
   toggle: document.querySelector("[data-mobile-menu]"),
   catalogToggle: document.querySelector("[data-mobile-catalog]"),

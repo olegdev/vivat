@@ -1,7 +1,7 @@
 import "../../styles/app.css";
 import { mountCarousel, setCarouselIconBase } from "../../components/carousel.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
-import { initMobileMenu, setMobileMenuBases } from "../../components/mobile-menu.js";
+import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 
@@ -16,7 +16,6 @@ setCatalogIconBase(ICON);
 initCatalogMenu(document.querySelector("[data-catalog]"), {
   toggle: document.querySelector("[data-catalog-toggle]"),
 });
-setMobileMenuBases({ icons: ICON });
 initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
   toggle: document.querySelector("[data-mobile-menu]"),
   catalogToggle: document.querySelector("[data-mobile-catalog]"),

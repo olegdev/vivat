@@ -15,11 +15,6 @@
 
 import { categories } from "./catalog-menu.js";
 
-let ICON = "../../assets/header";
-export function setMobileMenuBases({ icons } = {}) {
-  if (icons) ICON = icons;
-}
-
 // ---- data -------------------------------------------------------------------
 // Root level of the burger menu (Figma 1997:255059 "menu-main-block").
 const rootSections = [
@@ -50,23 +45,29 @@ const catalogItems = categories.map((cat) => {
     : { label: cat.name, href: "#" };
 });
 
-// ---- markup helpers ---------------------------------------------------------
-function row(item, index) {
+// ---- template helpers -------------------------------------------------------
+// The three row shapes (link / drill button / caption) are clean HTML
+// <template>s in the partial; this clones and fills them (the future @foreach).
+const clone = (sel) => document.querySelector(sel).content.firstElementChild.cloneNode(true);
+
+function buildRow(item, index) {
   if (item.caption) {
-    return `<p class="mobile-menu-item text-m-body-n-accent text-text-muted">${item.label}</p>`;
+    const el = clone("[data-mm-caption]");
+    el.textContent = item.label;
+    return el;
   }
-  const inner = `<span class="min-w-0 flex-1 text-m-body-n-accent text-text-primary">${item.label}</span>
-    <img src="${ICON}/chevron-right-s.svg" alt="" class="size-6 shrink-0" />`;
-  if (item.items || item.view) {
-    return `<button type="button" class="mobile-menu-item" data-menu-index="${index}" aria-haspopup="true">${inner}</button>`;
-  }
-  return `<a href="${item.href || "#"}" class="mobile-menu-item" data-menu-index="${index}">${inner}</a>`;
+  const drill = item.items || item.view;
+  const el = clone(drill ? "[data-mm-button]" : "[data-mm-link]");
+  el.querySelector("[data-label]").textContent = item.label;
+  el.dataset.menuIndex = String(index);
+  if (!drill) el.href = item.href || "#";
+  return el;
 }
 
 // ---- init -------------------------------------------------------------------
-// The panel shell (header, search, list slot, social row) is static markup in
-// src/partials/mobile-menu.html. This only fills the drill-down list
-// (data-mm-list) from the view stack and runs the open/close + focus-trap.
+// The panel shell (header, search, list slot, social row) + row templates are
+// static markup in src/partials/mobile-menu.html. This only fills the drill-down
+// list (data-mm-list) from the view stack and runs the open/close + focus-trap.
 export function initMobileMenu(anchor, { toggle, catalogToggle } = {}) {
   if (!anchor) return;
 
@@ -96,7 +97,7 @@ export function initMobileMenu(anchor, { toggle, catalogToggle } = {}) {
     titleEl.textContent = view.title;
     show(backBtn, stack.length > 1);
     show(socialEl, !!view.social);
-    listEl.innerHTML = view.items.map(row).join("");
+    listEl.replaceChildren(...view.items.map(buildRow));
     body.scrollTop = 0;
     // the row that triggered the drill-down is gone — keep focus inside
     if (isOpen() && !panel.contains(document.activeElement)) focusables()[0]?.focus();
