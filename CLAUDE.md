@@ -130,16 +130,20 @@ and fail here; node's `zlib` handles both, so `kiwi-schema` is the only dep.
 - **Don't invent behaviour.** If the Figma node has no prototype interaction,
   the element doesn't animate or advance on its own. The hero used to
   auto-rotate purely because someone assumed a carousel should.
-- **Don't invent elements, and don't "fix" faithful ones.** Build only what the
-  design actually shows. If a node has hidden/empty children (e.g. the catalog
-  title's `buttons` frame renders empty), they are absent — don't fill them with
-  guessed icons (the invented like/share buttons were exactly this). And before
-  changing a value that "looks wrong", check the Figma node: if it matches
-  (the green SEO band is `#4a9b7d` = `surface-accent-alt`, distinct from the home
-  block's lighter `accent-green-200` on purpose), it's faithful — report that,
-  don't change it. When something genuinely is missing or ambiguous in the
-  design, **propose a solution and ask — never decide it silently** (that's how
-  the price min/max inputs were handled).
+- **Don't invent elements; propose, don't decide, when something's missing.**
+  Build only what the design shows. If a node has hidden/empty children (the
+  catalog title's `buttons` frame renders empty), they are absent — don't fill
+  them with guessed icons (the invented like/share buttons were exactly this).
+  When something genuinely is missing or ambiguous, **propose a solution and ask
+  — never decide it silently** (that's how the price min/max inputs were handled).
+- **Verify colour against the live render, not a stale snapshot or your eye.**
+  The green SEO band's text is **white** — the `.fig` snapshot said `#292929`
+  (stale) and it's easy to mis-eyeball dark on a mid-green. `canvas.fig` lags the
+  live file, so for anything colour-critical (especially text on a coloured
+  fill) confirm with an MCP screenshot and, if unsure, sample the pixels. Figma
+  (live) wins over the snapshot. The band *background* is genuinely `#4a9b7d`
+  (`surface-accent-alt`) — a different, darker green from the home block's
+  `accent-green-200`, on purpose.
 - Tokens live in `@theme` in `src/styles/app.css` and are the single source of
   truth. Use `bg-overlay-light`, not `bg-[#141414]/10`.
 - Mobile is expressed with `max-md:` utilities at the call site. Only what
