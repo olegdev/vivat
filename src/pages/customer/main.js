@@ -11,6 +11,7 @@ import {
   enableDragScroll,
   initScrollProgress,
 } from "../../components/carousel.js";
+import { initSearch } from "../../components/search.js";
 import { initHeroSlider } from "../../components/hero-slider.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
@@ -72,6 +73,9 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
   toggle: document.querySelector("[data-mobile-menu]"),
   catalogToggle: document.querySelector("[data-mobile-catalog]"),
 });
+
+// ---- header search (query contract + suggest seam) --------------------------
+initSearch();
 
 // ---- shared product-card data ------------------------------------------------
 const KITCHEN_TITLE = "Кухня Фьюжн-0, МДФ, 2000 х 2170 х 600 мм";
@@ -298,18 +302,22 @@ const akciiItems = [
 ];
 
 // ---- hydrate anchors --------------------------------------------------------
+// `tab` = which carousel tab (below) the item belongs to; items without one show
+// only under "Все сразу". The carousel tab seam filters on it — see initTabs().
 const popularItems = [
   {
     image: `${HOME}/prod-pop-1-src.png`,
     price: "5 991₽",
     title: "Столешница Hard-38 кромка с 4-х сторон Прямая",
     category: { label: "Столешницы", count: 31 },
+    tab: "Столешницы",
   },
   {
     image: `${HOME}/prod-pop-2-src.png`,
     price: "22 120₽",
     title: "Электрический духовой шкаф EDM 045 BBL",
     category: { label: "Духовые шкафы", count: 12 },
+    tab: "Бытовая техника",
   },
   {
     image: `${HOME}/prod-pop-3-src.png`,
@@ -324,6 +332,7 @@ const popularItems = [
     price: "8 470₽",
     title: "Мойка Vivat Granite GR-52, кварц, песочный",
     category: { label: "Мойки", count: 22 },
+    tab: "Мойки",
   },
   {
     image: `${HOME}/prod-mod-3-src.png`,
@@ -332,18 +341,21 @@ const popularItems = [
     badges: [{ text: "хит", tone: "hit" }],
     title: "Смеситель для кухни VIVAT SM-11, хром",
     category: { label: "Смесители", count: 18 },
+    tab: "Смесители",
   },
   {
     image: `${HOME}/prod-mod-4-src.png`,
     price: "15 640₽",
     title: "Система выдвижения Tandembox, полное выдвижение",
     category: { label: "Системы выдвижения", count: 9 },
+    tab: "Системы выдвижения",
   },
   {
     image: `${HOME}/prod-pop-1-src.png`,
     price: "7 250₽",
     title: "Столешница Hard-38 кромка с 2-х сторон Угловая",
     category: { label: "Столешницы", count: 31 },
+    tab: "Столешницы",
   },
   {
     image: `${HOME}/prod-pop-3-src.png`,
@@ -357,6 +369,7 @@ const popularItems = [
     price: "22 490₽",
     title: "Варочная панель индукционная EIP 640 BL",
     category: { label: "Варочные панели", count: 24 },
+    tab: "Бытовая техника",
   },
   {
     image: `${HOME}/prod-mod-1-src.png`,
@@ -376,6 +389,7 @@ const sections = {
       title: "Популярные товары для кухни",
       desc: "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.",
       tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
+      endpoint: "/catalog/popular", // tab seam target (see carousel.js initTabs)
     },
     items: popularItems,
   },

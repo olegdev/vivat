@@ -180,7 +180,7 @@ export function initCarousel(sectionEl) {
   const track = sectionEl.querySelector("[data-track]");
   const prev = sectionEl.querySelector("[data-prev]");
   const next = sectionEl.querySelector("[data-next]");
-  if (!viewport || !track || !prev || !next) return;
+  if (!viewport || !track || !prev || !next) return { reset() {} };
 
   initScrollProgress(sectionEl);
   // The gallery inside a card runs its own gesture, so drags starting there are
@@ -225,14 +225,53 @@ export function initCarousel(sectionEl) {
   });
   window.addEventListener("resize", apply);
   apply();
+
+  // Handed back so a tab switch can snap the fresh track back to the start.
+  return {
+    reset() {
+      index = 0;
+      apply();
+    },
+  };
 }
 
 // Builds a carousel section into `anchor` and wires it. `cfg` is the
-// carouselSection() config (title / desc / action / tabs); `items` are
-// product-card descriptors.
+// carouselSection() config (title / desc / action / tabs / endpoint); `items`
+// are product-card descriptors.
 export function mountCarousel(anchor, cfg, items) {
   if (!anchor) return;
   anchor.innerHTML = carouselSection(cfg);
-  renderCarousel(anchor.querySelector("[data-track]"), items);
-  initCarousel(anchor);
+  const track = anchor.querySelector("[data-track]");
+  renderCarousel(track, items);
+  const carousel = initCarousel(anchor);
+  if (cfg.tabs?.length) initTabs(anchor, track, carousel, cfg, items);
+}
+
+// Category tabs over a carousel (e.g. Популярные товары). This is a REQUEST
+// SEAM in the same shape as the catalog filters (see SOLUTIONS.md › "Filters:
+// form + request seam"): a tab is a query parameter, and one function loads the
+// tab's products. Today it filters the already-rendered `items` by their `tab`
+// field; in the Blade build the body of the click handler becomes a fetch:
+//
+//     const res = await fetch(`${cfg.endpoint}?tab=${encodeURIComponent(label)}`);
+//     renderCarousel(track, await res.json());   // server-rendered/JSON cards
+//
+// The tab markup (chips) and the card markup don't change when that swap lands.
+function initTabs(anchor, track, carousel, cfg, items) {
+  const chipsRow = anchor.querySelector("[data-chips]");
+  if (!chipsRow) return;
+  // chips() also renders a trailing "еще" more-button — the tabs are the first
+  // cfg.tabs.length chips.
+  const tabChips = [...chipsRow.querySelectorAll(".chip")].slice(0, cfg.tabs.length);
+
+  tabChips.forEach((chip, i) => {
+    chip.addEventListener("click", () => {
+      tabChips.forEach((c) => c.setAttribute("aria-selected", String(c === chip)));
+      const label = cfg.tabs[i];
+      // --- SEAM: load this tab's products (swap the body for a fetch, above) ---
+      const shown = i === 0 ? items : items.filter((p) => p.tab === label);
+      renderCarousel(track, shown);
+      carousel.reset();
+    });
+  });
 }

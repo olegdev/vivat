@@ -188,6 +188,11 @@ export function renderStoresMap(anchor, opts) {
   });
 
   // -- filter ----------------------------------------------------------------
+  // "Только фирменные магазины": already the "form + request seam" method minus
+  // URL state — a control filters a client-side list. When the store list
+  // becomes a server fetch, make this a named seam (loadStores({ brandOnly }))
+  // and reflect the flag in the URL, like the catalog filters. Until then
+  // there's nothing to change here. See BACKLOG.md › "Seams to wire".
   toggleEl.addEventListener("change", () => {
     visible = toggleEl.checked ? items.filter((s) => s.brand) : items;
     if (selectedId && !visible.some((s) => s.id === selectedId)) selectedId = null;

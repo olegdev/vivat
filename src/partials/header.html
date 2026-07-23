@@ -91,17 +91,27 @@
             <a href="#" class="btn btn-m btn-ghost">Где купить</a>
           </nav>
         </div>
-        <!-- search -->
-        <label
+        <!-- search — a real GET form; `name="q"` is the query contract the Blade
+             /search route reads. Behaviour (submit + autocomplete seam) is in
+             components/search.js; see BACKLOG.md / SOLUTIONS.md. -->
+        <form
+          data-search
+          action="/search"
+          method="get"
+          role="search"
           class="flex h-11 w-[303px] items-center gap-4 rounded-pill bg-components-subtle px-4 py-2"
         >
           <input
-            type="text"
+            type="search"
+            name="q"
             placeholder="Найти на сайте"
+            autocomplete="off"
             class="min-w-0 flex-1 bg-transparent text-body-s-accent text-text-primary placeholder:text-text-muted focus:outline-none"
           />
-          <img src="../../assets/header/icon-search.svg" alt="Найти" class="size-6" />
-        </label>
+          <button type="submit" aria-label="Найти" class="flex size-6 shrink-0 items-center justify-center">
+            <img src="../../assets/header/icon-search.svg" alt="" class="size-6" />
+          </button>
+        </form>
       </div>
       <!-- order icon -->
       <button
