@@ -1,0 +1,44 @@
+<!-- Mobile burger-menu shell (Figma menu 1997:254993). Static frame only:
+     overlay, panel header (back / title / close), search, list slot and the
+     social row. The drill-down list (data-mm-list) and all stack/focus-trap
+     behaviour live in src/components/mobile-menu.js. Below md only. -->
+<div data-mm-overlay class="fixed inset-0 z-50 hidden md:hidden">
+  <div data-mm-scrim class="absolute inset-0 bg-overlay-middle"></div>
+  <div data-mm-panel class="absolute inset-0 flex flex-col bg-bg-page" role="dialog" aria-modal="true" aria-label="Меню">
+    <div class="flex h-12 shrink-0 flex-col border-b border-divider-light bg-surface-inverted px-4 pt-1">
+      <div class="flex h-10 items-center">
+        <button type="button" data-mm-back class="hidden size-10 shrink-0 items-center" aria-label="Назад">
+          <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
+        </button>
+        <span data-mm-title class="min-w-0 flex-1 truncate text-m-h2 text-text-primary"></span>
+        <button type="button" data-mm-close class="flex size-10 shrink-0 items-center justify-end" aria-label="Закрыть меню">
+          <img src="../../assets/header/icon-close-s.svg" alt="" class="size-6" />
+        </button>
+      </div>
+    </div>
+
+    <div data-mm-body class="flex min-h-0 flex-1 flex-col overflow-y-auto pb-10">
+      <div class="px-4 pt-4">
+        <form class="flex h-11 items-center gap-4 rounded-pill bg-components-subtle px-4" role="search" onsubmit="return false">
+          <input
+            type="search"
+            placeholder="Найти на сайте"
+            aria-label="Найти на сайте"
+            class="min-w-0 flex-1 bg-transparent text-body-s-accent text-text-primary outline-none placeholder:text-text-muted"
+          />
+          <img src="../../assets/header/icon-search.svg" alt="" class="size-6 shrink-0" />
+        </form>
+      </div>
+      <div class="mt-8 flex flex-1 flex-col justify-between px-4">
+        <nav data-mm-list class="flex flex-col"></nav>
+        <div data-mm-social class="mt-8 flex shrink-0 items-center gap-2">
+          <a href="#" aria-label="Дзен" class="social-icon size-10"><span class="size-8 social-zen"></span></a>
+          <a href="#" aria-label="ВКонтакте" class="social-icon size-10"><span class="size-8 social-vk"></span></a>
+          <a href="#" aria-label="Telegram" class="social-icon size-10"><span class="size-8 social-tg"></span></a>
+          <a href="#" aria-label="YouTube" class="social-icon size-10"><span class="size-8 social-yt"></span></a>
+          <a href="#" aria-label="Rutube" class="social-icon size-10"><span class="size-8 social-rt"></span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

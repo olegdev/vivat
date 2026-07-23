@@ -1,0 +1,114 @@
+<!-- ==================== SITE HEADER (mobile) ======================= -->
+<!-- Figma site-header 1720:160779, device "mobile v1": utility strip on a
+     subtle fill, then burger / centred logo / profile. -->
+<header class="md:hidden">
+  <div class="flex h-[38px] items-center justify-between bg-surface-subtle px-4">
+    <a class="flex items-center gap-1" href="#">
+      <span class="text-m-body-n text-text-primary underline decoration-dotted underline-offset-2"
+        >Москва</span
+      >
+      <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5" />
+    </a>
+    <a class="text-m-body-n text-text-primary underline decoration-from-font underline-offset-2" href="#"
+      >Стать дилером</a
+    >
+  </div>
+  <div class="flex h-[60px] items-center justify-between px-4">
+    <button
+      class="flex size-10 items-center justify-center rounded-pill"
+      data-mobile-menu
+      aria-label="Меню"
+      aria-expanded="false"
+    >
+      <img src="../../assets/header/icon-burger-bold.svg" alt="" class="size-6" />
+    </button>
+    <a href="main.html" class="flex h-10 flex-col items-center justify-center gap-[5px]">
+      <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[22px] w-[99px]" />
+      <span class="text-[9px] font-medium uppercase leading-none text-icon-primary"
+        >фабрика мебели. Официальный сайт</span
+      >
+    </a>
+    <button class="flex size-10 items-center justify-center rounded-pill" aria-label="Профиль">
+      <img src="../../assets/header/icon-profile.svg" alt="" class="size-6" />
+    </button>
+  </div>
+</header>
+
+<!-- ==================== SITE HEADER (desktop) ====================== -->
+<header class="flex flex-col gap-4 pb-3 max-md:hidden">
+  <div class="flex flex-col gap-3">
+    <!-- top utility bar -->
+    <div
+      class="flex h-11 w-[1440px] items-center justify-between border-b border-divider-soft px-10"
+    >
+      <div class="flex items-center gap-3">
+        <a class="flex items-center gap-1" href="#">
+          <span
+            class="text-body-s text-text-primary underline decoration-dotted underline-offset-2"
+            >Москва</span
+          >
+          <img src="../../assets/header/icon-pin.svg" alt="" class="size-4" />
+        </a>
+        <a class="text-body-s-accent text-text-primary" href="tel:+74951356565"
+          >+7 (495) 135-65-65</a
+        >
+      </div>
+      <div class="flex items-center gap-6">
+        <a class="text-body-s-accent text-text-link-highlighted" href="#"
+          >Стать дилером</a
+        >
+        <a class="text-body-s-accent text-text-primary" href="#">Для бизнеса</a>
+        <a class="flex items-center gap-1 text-body-s-accent text-text-primary" href="#"
+          >Войти в режим дилера
+          <img src="../../assets/header/icon-arrow-right.svg" alt="" class="size-4" />
+        </a>
+      </div>
+    </div>
+
+    <!-- main nav bar -->
+    <div class="flex items-center justify-between px-10">
+      <div class="flex items-center gap-16">
+        <div class="flex items-center gap-10">
+          <!-- logo -->
+          <a href="main.html" class="flex h-12 w-[169px] flex-col items-center justify-center gap-0.5">
+            <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[34px] w-[153px]" />
+            <span class="w-full text-center text-[8px] font-medium uppercase text-icon-primary"
+              >фабрика мебели. Официальный сайт</span
+            >
+          </a>
+          <!-- menu -->
+          <nav class="flex items-center gap-2">
+            <button
+              class="btn btn-m btn-accent"
+              data-catalog-toggle
+              aria-expanded="false"
+            >
+              <img src="../../assets/header/icon-burger.svg" alt="" class="size-6" data-catalog-icon />
+              <span class="text-button-m text-text-inverse-primary">Весь каталог</span>
+            </button>
+            <a href="#" class="btn btn-m btn-ghost">Кухни</a>
+            <a href="#" class="btn btn-m btn-ghost">Акции</a>
+            <a href="#" class="btn btn-m btn-ghost">Где купить</a>
+          </nav>
+        </div>
+        <!-- search -->
+        <label
+          class="flex h-11 w-[303px] items-center gap-4 rounded-pill bg-components-subtle px-4 py-2"
+        >
+          <input
+            type="text"
+            placeholder="Найти на сайте"
+            class="min-w-0 flex-1 bg-transparent text-body-s-accent text-text-primary placeholder:text-text-muted focus:outline-none"
+          />
+          <img src="../../assets/header/icon-search.svg" alt="Найти" class="size-6" />
+        </label>
+      </div>
+      <!-- order icon -->
+      <button
+        class="icon-btn"
+      >
+        <img src="../../assets/header/icon-order-dark.svg" alt="Корзина" class="size-6" />
+      </button>
+    </div>
+  </div>
+</header>

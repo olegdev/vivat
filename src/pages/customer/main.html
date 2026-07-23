@@ -15,132 +15,23 @@
   <body class="bg-bg-page text-text-primary">
     <!-- Two canvases, one DOM: fluid below `md` (Figma customer/body, 360px)
          and the fixed 1440px desktop canvas (Figma customer/Main) at and above
-         it. Header/footer are inlined for now; extract to a partial when more
-         pages are added. -->
+         it. Shared chrome (header, menus, bottom-nav, footer) lives in
+         src/partials/ and is spliced in at build time by the html-includes
+         plugin — see the PHP Blade note in CLAUDE.md. -->
     <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
-      <!-- ==================== SITE HEADER (mobile) ======================= -->
-      <!-- Figma site-header 1720:160779, device "mobile v1": utility strip on a
-           subtle fill, then burger / centred logo / profile. -->
-      <header class="md:hidden">
-        <div class="flex h-[38px] items-center justify-between bg-surface-subtle px-4">
-          <a class="flex items-center gap-1" href="#">
-            <span class="text-m-body-n text-text-primary underline decoration-dotted underline-offset-2"
-              >Москва</span
-            >
-            <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5" />
-          </a>
-          <a class="text-m-body-n text-text-primary underline decoration-from-font underline-offset-2" href="#"
-            >Стать дилером</a
-          >
-        </div>
-        <div class="flex h-[60px] items-center justify-between px-4">
-          <button
-            class="flex size-10 items-center justify-center rounded-pill"
-            data-mobile-menu
-            aria-label="Меню"
-            aria-expanded="false"
-          >
-            <img src="../../assets/header/icon-burger-bold.svg" alt="" class="size-6" />
-          </button>
-          <a href="main.html" class="flex h-10 flex-col items-center justify-center gap-[5px]">
-            <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[22px] w-[99px]" />
-            <span class="text-[9px] font-medium uppercase leading-none text-icon-primary"
-              >фабрика мебели. Официальный сайт</span
-            >
-          </a>
-          <button class="flex size-10 items-center justify-center rounded-pill" aria-label="Профиль">
-            <img src="../../assets/header/icon-profile.svg" alt="" class="size-6" />
-          </button>
-        </div>
-      </header>
-
-      <!-- ==================== SITE HEADER (desktop) ====================== -->
-      <header class="flex flex-col gap-4 pb-3 max-md:hidden">
-        <div class="flex flex-col gap-3">
-          <!-- top utility bar -->
-          <div
-            class="flex h-11 w-[1440px] items-center justify-between border-b border-divider-soft px-10"
-          >
-            <div class="flex items-center gap-3">
-              <a class="flex items-center gap-1" href="#">
-                <span
-                  class="text-body-s text-text-primary underline decoration-dotted underline-offset-2"
-                  >Москва</span
-                >
-                <img src="../../assets/header/icon-pin.svg" alt="" class="size-4" />
-              </a>
-              <a class="text-body-s-accent text-text-primary" href="tel:+74951356565"
-                >+7 (495) 135-65-65</a
-              >
-            </div>
-            <div class="flex items-center gap-6">
-              <a class="text-body-s-accent text-text-link-highlighted" href="#"
-                >Стать дилером</a
-              >
-              <a class="text-body-s-accent text-text-primary" href="#">Для бизнеса</a>
-              <a class="flex items-center gap-1 text-body-s-accent text-text-primary" href="#"
-                >Войти в режим дилера
-                <img src="../../assets/header/icon-arrow-right.svg" alt="" class="size-4" />
-              </a>
-            </div>
-          </div>
-
-          <!-- main nav bar -->
-          <div class="flex items-center justify-between px-10">
-            <div class="flex items-center gap-16">
-              <div class="flex items-center gap-10">
-                <!-- logo -->
-                <a href="main.html" class="flex h-12 w-[169px] flex-col items-center justify-center gap-0.5">
-                  <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[34px] w-[153px]" />
-                  <span class="w-full text-center text-[8px] font-medium uppercase text-icon-primary"
-                    >фабрика мебели. Официальный сайт</span
-                  >
-                </a>
-                <!-- menu -->
-                <nav class="flex items-center gap-2">
-                  <button
-                    class="btn btn-m btn-accent"
-                    data-catalog-toggle
-                    aria-expanded="false"
-                  >
-                    <img src="../../assets/header/icon-burger.svg" alt="" class="size-6" data-catalog-icon />
-                    <span class="text-button-m text-text-inverse-primary">Весь каталог</span>
-                  </button>
-                  <a href="#" class="btn btn-m btn-ghost">Кухни</a>
-                  <a href="#" class="btn btn-m btn-ghost">Акции</a>
-                  <a href="#" class="btn btn-m btn-ghost">Где купить</a>
-                </nav>
-              </div>
-              <!-- search -->
-              <label
-                class="flex h-11 w-[303px] items-center gap-4 rounded-pill bg-components-subtle px-4 py-2"
-              >
-                <input
-                  type="text"
-                  placeholder="Найти на сайте"
-                  class="min-w-0 flex-1 bg-transparent text-body-s-accent text-text-primary placeholder:text-text-muted focus:outline-none"
-                />
-                <img src="../../assets/header/icon-search.svg" alt="Найти" class="size-6" />
-              </label>
-            </div>
-            <!-- order icon -->
-            <button
-              class="icon-btn"
-            >
-              <img src="../../assets/header/icon-order-dark.svg" alt="Корзина" class="size-6" />
-            </button>
-          </div>
-        </div>
-      </header>
+      <!-- ==================== SITE HEADER (mobile + desktop) ============ -->
+      <!--#include partials/header.html -->
 
       <!-- ==================== CATALOG MEGA-MENU ========================= -->
-      <!-- Hydrated by catalog-menu.js; opened by the "Весь каталог" button. -->
-      <div data-catalog></div>
+      <!-- Shell is partials/catalog-menu.html; col1/col2/col3 filled and swapped
+           by catalog-menu.js, opened by the "Весь каталог" button. -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
 
       <!-- ==================== MOBILE BURGER MENU ======================== -->
-      <!-- Hydrated by mobile-menu.js (Figma 1997:254993); below `md` only,
-           opened by the header burger and by the nav-bar "Каталог" item. -->
-      <div data-mobile-menu-root></div>
+      <!-- Shell is partials/mobile-menu.html; drill-down list + behaviour in
+           mobile-menu.js. Below `md` only; opened by the header burger and by
+           the bottom-nav "Каталог" item. -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
 
       <!-- ============================ ALERT ============================= -->
       <div
@@ -354,202 +245,11 @@
         </div>
       </section>
 
-      <!-- ==================== FOOTER ================================== -->
       <!-- ==================== BOTTOM NAV (mobile) ====================== -->
-      <!-- Figma nav-bar 1739:218804 (b2c): five equal items, 24px icon in a
-           32px box over a 12px muted label. Pinned to the viewport — hence the
-           upward `shadow-navbar` — with the page reserving 72px for it. -->
-      <nav
-        class="fixed inset-x-0 bottom-0 z-40 flex h-[72px] items-center bg-surface-inverted shadow-navbar md:hidden"
-        aria-label="Основная навигация"
-      >
-        <a
-          href="#"
-          class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1"
-          data-mobile-catalog
-          aria-expanded="false"
-        >
-          <span class="flex size-8 items-center justify-center">
-            <img src="../../assets/header/nav-catalog.svg" alt="" class="size-6" />
-          </span>
-          <span class="text-body-xs text-text-muted">Каталог</span>
-        </a>
-        <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
-          <span class="flex size-8 items-center justify-center">
-            <img src="../../assets/header/nav-contacts.svg" alt="" class="size-6" />
-          </span>
-          <span class="text-body-xs text-text-muted">Контакты</span>
-        </a>
-        <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
-          <span class="flex size-8 items-center justify-center">
-            <img src="../../assets/header/nav-action.svg" alt="" class="size-6" />
-          </span>
-          <span class="text-body-xs text-text-muted">Акции</span>
-        </a>
-        <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
-          <span class="relative flex size-8 items-center justify-center">
-            <img src="../../assets/header/nav-cart.svg" alt="" class="size-6" />
-            <span
-              class="absolute -right-2 top-0 flex size-5 items-center justify-center rounded-full bg-components-red text-body-xs text-text-inverse-primary"
-              >2</span
-            >
-          </span>
-          <span class="text-body-xs text-text-muted">Корзина</span>
-        </a>
-        <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
-          <span class="flex size-8 items-center justify-center">
-            <img src="../../assets/header/nav-profile.svg" alt="" class="size-6" />
-          </span>
-          <span class="text-body-xs text-text-muted">Кабинет</span>
-        </a>
-      </nav>
+      <!--#include partials/bottom-nav.html -->
 
-      <!-- ==================== FOOTER (mobile) ========================== -->
-      <!-- Figma footer 1821:327818: centred logo + 5 socials over a divider,
-           then the same four link groups reflowed as wrapping inline rows. -->
-      <footer class="bg-bg-subtle px-4 py-6 md:hidden">
-        <div class="flex flex-col items-center gap-4 border-b border-divider-light pb-4">
-          <div class="flex h-10 flex-col items-center justify-center gap-[5px]">
-            <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[22px] w-[99px]" />
-            <span class="text-[9px] font-medium uppercase leading-none text-icon-primary"
-              >фабрика мебели. Официальный сайт</span
-            >
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="#" aria-label="Дзен" class="social-icon size-10"><span class="size-8 social-zen"></span></a>
-            <a href="#" aria-label="ВКонтакте" class="social-icon size-10"><span class="size-8 social-vk"></span></a>
-            <a href="#" aria-label="Telegram" class="social-icon size-10"><span class="size-8 social-tg"></span></a>
-            <a href="#" aria-label="YouTube" class="social-icon size-10"><span class="size-8 social-yt"></span></a>
-            <a href="#" aria-label="Rutube" class="social-icon size-10"><span class="size-8 social-rt"></span></a>
-          </div>
-        </div>
-
-        <div class="mt-4 flex flex-col gap-4 text-text-primary">
-          <div class="flex flex-col justify-center gap-2 py-2">
-            <p class="text-m-h5">Каталог</p>
-            <div class="flex flex-wrap gap-x-3 gap-y-3 text-m-body-s">
-              <a href="#" class="whitespace-nowrap">Кухни</a>
-              <a href="#" class="whitespace-nowrap">Техника для кухни</a>
-              <a href="#" class="whitespace-nowrap">Столешницы и фартуки</a>
-              <a href="#" class="whitespace-nowrap">Мойки и смесители</a>
-              <a href="#" class="whitespace-nowrap">Аксессуары для кухонь</a>
-              <a href="#" class="whitespace-nowrap">Столы и стулья</a>
-              <a href="#" class="whitespace-nowrap">Прихожие</a>
-              <a href="#" class="whitespace-nowrap">Для продавцов</a>
-            </div>
-          </div>
-          <div class="flex flex-col justify-center gap-2 py-2">
-            <p class="text-m-h5">Компания</p>
-            <div class="flex flex-wrap gap-x-3 gap-y-3 text-m-body-s">
-              <a href="#" class="whitespace-nowrap">О нас</a>
-              <a href="#" class="whitespace-nowrap">Наш адрес и телефоны</a>
-              <a href="#" class="whitespace-nowrap">Новости</a>
-            </div>
-          </div>
-          <div class="flex flex-col justify-center gap-2 py-2">
-            <p class="text-m-h5">Полезная информация</p>
-            <div class="flex flex-wrap gap-x-3 gap-y-3 text-m-body-s">
-              <a href="#" class="whitespace-nowrap">Сертификаты</a>
-              <a href="#" class="whitespace-nowrap">Схемы сборки</a>
-              <a href="#" class="whitespace-nowrap">Каталог мебели</a>
-              <a href="#" class="whitespace-nowrap">Каталог декоров</a>
-              <a href="#" class="whitespace-nowrap">Техническая информация</a>
-              <a href="#" class="whitespace-nowrap">Методические пособия</a>
-              <a href="#" class="whitespace-nowrap">3D-модели</a>
-            </div>
-          </div>
-          <div class="flex flex-col justify-center gap-2 py-2">
-            <p class="text-m-h5">Для бизнеса</p>
-            <div class="flex flex-wrap gap-x-3 gap-y-3 text-m-body-s">
-              <a href="#" class="whitespace-nowrap">Для интернет-магазинов</a>
-              <a href="#" class="whitespace-nowrap">Как с нами работать?</a>
-              <a href="#" class="whitespace-nowrap">Обучающие материалы</a>
-              <a href="#" class="whitespace-nowrap">Тренинг-кабинет</a>
-              <a href="#" class="whitespace-nowrap">Поставщикам</a>
-              <a href="#" class="whitespace-nowrap">Доставка</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-4 flex flex-col gap-[14px] text-m-body-xs text-text-secondary">
-          <p>© 2026. Фабрика мебели VIVAT</p>
-          <p>
-            Данный сайт носит исключительно информационный характер и не является
-            публичной офертой, определяемой положениями части 2 статьи 437 ГК РФ.
-            Цвет продукции, представленной на сайте может отличаться от реального, в
-            связи с различными настройками ваших устройств для просмотра.
-          </p>
-          <a href="#" class="underline decoration-from-font underline-offset-2"
-            >Политика конфиденциальности</a
-          >
-        </div>
-      </footer>
-
-      <!-- ==================== FOOTER (desktop) ========================= -->
-      <footer class="w-[1440px] px-10 py-10 max-md:hidden">
-        <div class="flex items-start justify-between">
-          <div class="flex h-12 w-[169px] flex-col items-center justify-center gap-0.5">
-            <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[34px] w-[153px]" />
-            <span class="w-full text-center text-[8px] font-medium uppercase text-icon-primary">фабрика мебели. Официальный сайт</span>
-          </div>
-          <div class="flex items-center gap-2">
-            <a href="#" aria-label="Дзен" class="social-icon size-10"><span class="size-8 social-zen"></span></a>
-            <a href="#" aria-label="ВКонтакте" class="social-icon size-10"><span class="size-8 social-vk"></span></a>
-            <a href="#" aria-label="Telegram" class="social-icon size-10"><span class="size-8 social-tg"></span></a>
-            <a href="#" aria-label="YouTube" class="social-icon size-10"><span class="size-8 social-yt"></span></a>
-            <a href="#" aria-label="Rutube" class="social-icon size-10"><span class="size-8 social-rt"></span></a>
-            <a href="#" aria-label="MAX" class="social-icon size-10"><span class="size-8 social-max"></span></a>
-          </div>
-        </div>
-
-        <div class="mt-10 grid grid-cols-4 gap-6">
-          <div class="flex flex-col gap-4">
-            <p class="text-h5 text-text-primary">Каталог</p>
-            <a href="#" class="text-body-n text-text-primary">Кухни</a>
-            <a href="#" class="text-body-n text-text-primary">Техника для кухни</a>
-            <a href="#" class="text-body-n text-text-primary">Столешницы и фартуки</a>
-            <a href="#" class="text-body-n text-text-primary">Мойки и смесители</a>
-            <a href="#" class="text-body-n text-text-primary">Аксессуары для кухонь</a>
-            <a href="#" class="text-body-n text-text-primary">Столы и стулья</a>
-            <a href="#" class="text-body-n text-text-primary">Прихожие</a>
-            <a href="#" class="text-body-n text-text-primary">Для продавцов</a>
-          </div>
-          <div class="flex flex-col gap-4">
-            <p class="text-h5 text-text-primary">Компания</p>
-            <a href="#" class="text-body-n text-text-primary">О нас</a>
-            <a href="#" class="text-body-n text-text-primary">Наш адрес и телефоны</a>
-            <a href="#" class="text-body-n text-text-primary">Новости</a>
-          </div>
-          <div class="flex flex-col gap-4">
-            <p class="text-h5 text-text-primary">Полезная информация</p>
-            <a href="#" class="text-body-n text-text-primary">Сертификаты</a>
-            <a href="#" class="text-body-n text-text-primary">Схемы сборки</a>
-            <a href="#" class="text-body-n text-text-primary">Каталог мебели</a>
-            <a href="#" class="text-body-n text-text-primary">Каталог декоров</a>
-            <a href="#" class="text-body-n text-text-primary">Техническая информация</a>
-            <a href="#" class="text-body-n text-text-primary">Методические пособия</a>
-            <a href="#" class="text-body-n text-text-primary">3D-модели</a>
-          </div>
-          <div class="flex flex-col gap-4">
-            <p class="text-h5 text-text-primary">Для бизнеса</p>
-            <a href="#" class="text-body-n text-text-primary">Для интернет-магазинов</a>
-            <a href="#" class="text-body-n text-text-primary">Как с нами работать?</a>
-            <a href="#" class="text-body-n text-text-primary">Обучающие материалы</a>
-            <a href="#" class="text-body-n text-text-primary">Тренинг-кабинет</a>
-            <a href="#" class="text-body-n text-text-primary">Поставщикам</a>
-            <a href="#" class="text-body-n text-text-primary">Доставка</a>
-          </div>
-        </div>
-
-        <p class="mt-10 text-body-s text-text-muted">© 2026. Фабрика мебели VIVAT</p>
-        <p class="mt-4 text-body-xs text-text-muted">
-          Данный сайт носит исключительно информационный характер и не является
-          публичной офертой, определяемой положениями части 2 статьи 437 ГК РФ.
-          Цвет продукции, представленной на сайте может отличаться от реального, в
-          связи с различными настройками ваших устройств для просмотра.
-        </p>
-        <a href="#" class="mt-2 inline-block text-body-xs text-text-muted underline underline-offset-2">Политика конфиденциальности</a>
-      </footer>
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
     </div>
   </body>
 </html>

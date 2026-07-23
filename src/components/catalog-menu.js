@@ -77,24 +77,12 @@ function chip(label) {
   return `<a href="#" class="catalog-chip">${label}</a>`;
 }
 
-function panelHTML() {
-  return `
-  <div data-catalog-overlay class="fixed inset-x-0 bottom-0 top-[116px] z-40 hidden">
-    <div data-catalog-scrim class="absolute inset-0 bg-overlay-middle"></div>
-    <div class="pointer-events-none absolute inset-y-0 left-1/2 w-[1440px] -translate-x-1/2">
-      <div class="pointer-events-auto flex h-full w-fit bg-bg-page shadow-dropdown">
-        <nav data-cat-col1 class="w-[300px] shrink-0 overflow-y-auto pb-6 pl-6 pr-3 pt-4"></nav>
-        <div data-cat-col2 class="hidden w-[300px] shrink-0 flex-col gap-10 overflow-y-auto px-3 pb-10 pt-4"></div>
-        <div data-cat-col3 class="hidden w-[300px] shrink-0 flex-col overflow-y-auto px-3 pb-10 pt-4"></div>
-      </div>
-    </div>
-  </div>`;
-}
-
 // ---- init -------------------------------------------------------------------
+// The overlay/scrim/three-column shell is static markup in
+// src/partials/catalog-menu.html. This only hydrates its slots (col1 from
+// `categories`, col2/col3 swapped on hover) and drives open/close.
 export function initCatalogMenu(anchor, { toggle } = {}) {
   if (!anchor) return;
-  anchor.innerHTML = panelHTML();
 
   const overlay = anchor.querySelector("[data-catalog-overlay]");
   const scrim = anchor.querySelector("[data-catalog-scrim]");

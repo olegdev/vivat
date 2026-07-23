@@ -17,6 +17,39 @@ promo tiles, socials, stores map (Yandex Maps v3), production block, footer.
 
 Everything else in `src/pages/` is a stub.
 
+## Where this is heading — PHP Blade
+
+This static build is a **prototype for a PHP Blade theme**: the markup will be
+ported to `.blade.php` templates and rendered server-side. That target sets one
+architectural rule — **structure is HTML, behaviour is JS.**
+
+- Anything shared across pages (header, footer, and other chrome) lives as a
+  plain **HTML fragment**, one file per future Blade partial, so the port to
+  `@include('partials.header')` / `<x-header/>` is mechanical.
+- Do **not** author shared structure as JS render functions. The current
+  `catalog-menu.js` / `mobile-menu.js` build their markup in JS strings — that
+  predates this decision and is debt to unwind at port time; new pages must not
+  add more of it. JS is for behaviour (open/close, carousels, drag), not for
+  emitting the page's structure.
+- Repeated, data-driven blocks (product cards, filter groups) become Blade
+  `@foreach` loops. Keep each single-unit's markup a clean, self-contained HTML
+  block even when a script fills the list in the prototype, so the loop maps
+  straight onto `@foreach`.
+
+**Include mechanism.** Shared chrome lives in `src/partials/*.html`, spliced
+into pages at build time by `scripts/vite-plugin-includes.mjs` via
+`<!--#include partials/NAME.html -->` (SSI-style, resolves from the Vite root,
+works in both `npm run dev` and `npm run build`). One partial == one future
+Blade partial — the port to `@include('partials.name')` is mechanical. Current
+partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`. The
+last two are **shell only**: their static frame is the partial, while the lists
+and behaviour stay in the matching `src/components/*.js` (the shell now exists
+in the DOM, so the JS queries it instead of building it).
+
+Partials are a raw text splice, so asset URLs written inside them are relative
+to the **including page**, not the partial — every customer page sits at
+`src/pages/customer/`, so `../../assets/...` is uniform.
+
 ## Before building anything
 
 Read **`SOLUTIONS.md`** first — reusable techniques already worked out (the
@@ -31,6 +64,12 @@ because these traps cost real time the first time; a fix that isn't written down
 gets re-hit on the next page.
 
 ## Reading the design
+
+The canonical Figma file is **`9d9EunlGqwIMf5hPZI3kmf`**
+(https://www.figma.com/design/9d9EunlGqwIMf5hPZI3kmf/VIVAT) — pass this fileKey
+to the MCP tools. Top-level pages: `Design` (189:10790), `UI SYSTEM`
+(922:83156). An older copy `J5GoY36VJIg79HSzfDVn3f` also exists but isn't shared
+with the authenticated account — ignore it; its node ids don't apply here.
 
 Two sources. **Reach for the local export first, fall back to the Figma MCP
 server for whatever it doesn't have.**

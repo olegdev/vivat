@@ -31,14 +31,6 @@ const rootSections = [
   { label: "Стать дилером", href: "#" },
 ];
 
-const socials = [
-  { name: "zen", label: "Дзен" },
-  { name: "vk", label: "ВКонтакте" },
-  { name: "tg", label: "Telegram" },
-  { name: "yt", label: "YouTube" },
-  { name: "rt", label: "Rutube" },
-];
-
 // A category becomes drillable only when the shared catalog tree actually has
 // something below it — "Все кухни" plus the "По коллекциям" caption and list.
 function categoryChildren(cat) {
@@ -71,57 +63,12 @@ function row(item, index) {
   return `<a href="${item.href || "#"}" class="mobile-menu-item" data-menu-index="${index}">${inner}</a>`;
 }
 
-function socialHTML() {
-  return socials
-    .map(
-      (s) =>
-        `<a href="#" aria-label="${s.label}" class="social-icon size-10"><span class="size-8 social-${s.name}"></span></a>`,
-    )
-    .join("");
-}
-
-function panelHTML() {
-  return `
-  <div data-mm-overlay class="fixed inset-0 z-50 hidden md:hidden">
-    <div data-mm-scrim class="absolute inset-0 bg-overlay-middle"></div>
-    <div data-mm-panel class="absolute inset-0 flex flex-col bg-bg-page" role="dialog" aria-modal="true" aria-label="Меню">
-      <div class="flex h-12 shrink-0 flex-col border-b border-divider-light bg-surface-inverted px-4 pt-1">
-        <div class="flex h-10 items-center">
-          <button type="button" data-mm-back class="hidden size-10 shrink-0 items-center" aria-label="Назад">
-            <img src="${ICON}/chevron-left.svg" alt="" class="size-6" />
-          </button>
-          <span data-mm-title class="min-w-0 flex-1 truncate text-m-h2 text-text-primary"></span>
-          <button type="button" data-mm-close class="flex size-10 shrink-0 items-center justify-end" aria-label="Закрыть меню">
-            <img src="${ICON}/icon-close-s.svg" alt="" class="size-6" />
-          </button>
-        </div>
-      </div>
-
-      <div data-mm-body class="flex min-h-0 flex-1 flex-col overflow-y-auto pb-10">
-        <div class="px-4 pt-4">
-          <form class="flex h-11 items-center gap-4 rounded-pill bg-components-subtle px-4" role="search" onsubmit="return false">
-            <input
-              type="search"
-              placeholder="Найти на сайте"
-              aria-label="Найти на сайте"
-              class="min-w-0 flex-1 bg-transparent text-body-s-accent text-text-primary outline-none placeholder:text-text-muted"
-            />
-            <img src="${ICON}/icon-search.svg" alt="" class="size-6 shrink-0" />
-          </form>
-        </div>
-        <div class="mt-8 flex flex-1 flex-col justify-between px-4">
-          <nav data-mm-list class="flex flex-col"></nav>
-          <div data-mm-social class="mt-8 flex shrink-0 items-center gap-2">${socialHTML()}</div>
-        </div>
-      </div>
-    </div>
-  </div>`;
-}
-
 // ---- init -------------------------------------------------------------------
+// The panel shell (header, search, list slot, social row) is static markup in
+// src/partials/mobile-menu.html. This only fills the drill-down list
+// (data-mm-list) from the view stack and runs the open/close + focus-trap.
 export function initMobileMenu(anchor, { toggle, catalogToggle } = {}) {
   if (!anchor) return;
-  anchor.innerHTML = panelHTML();
 
   const overlay = anchor.querySelector("[data-mm-overlay]");
   const scrim = anchor.querySelector("[data-mm-scrim]");

@@ -1,0 +1,47 @@
+<!-- Figma nav-bar 1739:218804 (b2c): five equal items, 24px icon in a
+     32px box over a 12px muted label. Pinned to the viewport — hence the
+     upward `shadow-navbar` — with the page reserving 72px for it. -->
+<nav
+  class="fixed inset-x-0 bottom-0 z-40 flex h-[72px] items-center bg-surface-inverted shadow-navbar md:hidden"
+  aria-label="Основная навигация"
+>
+  <a
+    href="#"
+    class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1"
+    data-mobile-catalog
+    aria-expanded="false"
+  >
+    <span class="flex size-8 items-center justify-center">
+      <img src="../../assets/header/nav-catalog.svg" alt="" class="size-6" />
+    </span>
+    <span class="text-body-xs text-text-muted">Каталог</span>
+  </a>
+  <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
+    <span class="flex size-8 items-center justify-center">
+      <img src="../../assets/header/nav-contacts.svg" alt="" class="size-6" />
+    </span>
+    <span class="text-body-xs text-text-muted">Контакты</span>
+  </a>
+  <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
+    <span class="flex size-8 items-center justify-center">
+      <img src="../../assets/header/nav-action.svg" alt="" class="size-6" />
+    </span>
+    <span class="text-body-xs text-text-muted">Акции</span>
+  </a>
+  <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
+    <span class="relative flex size-8 items-center justify-center">
+      <img src="../../assets/header/nav-cart.svg" alt="" class="size-6" />
+      <span
+        class="absolute -right-2 top-0 flex size-5 items-center justify-center rounded-full bg-components-red text-body-xs text-text-inverse-primary"
+        >2</span
+      >
+    </span>
+    <span class="text-body-xs text-text-muted">Корзина</span>
+  </a>
+  <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
+    <span class="flex size-8 items-center justify-center">
+      <img src="../../assets/header/nav-profile.svg" alt="" class="size-6" />
+    </span>
+    <span class="text-body-xs text-text-muted">Кабинет</span>
+  </a>
+</nav>

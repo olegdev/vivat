@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import { resolve } from "node:path";
 import { globSync } from "glob";
+import { htmlIncludes } from "./scripts/vite-plugin-includes.mjs";
 
 // This config powers `vite` (dev server) and the optional chunked `vite build`.
 // The static, double-click-able build (one self-contained HTML per page) is
@@ -22,7 +23,7 @@ export default defineConfig({
   root: "src",
   base: "./", // relative asset URLs so the build opens straight from disk (file://)
   publicDir: resolve(process.cwd(), "public"),
-  plugins: [tailwindcss()],
+  plugins: [htmlIncludes(), tailwindcss()],
   build: {
     outDir: resolve(process.cwd(), "dist"),
     emptyOutDir: true,

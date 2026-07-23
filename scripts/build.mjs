@@ -4,6 +4,7 @@
 import { build } from "vite";
 import tailwindcss from "@tailwindcss/vite";
 import { viteSingleFile } from "vite-plugin-singlefile";
+import { htmlIncludes } from "./vite-plugin-includes.mjs";
 import { resolve } from "node:path";
 import { globSync } from "glob";
 import { rmSync } from "node:fs";
@@ -21,7 +22,7 @@ for (const entry of entries) {
     root: "src",
     base: "./",
     publicDir: resolve(root, "public"),
-    plugins: [tailwindcss(), viteSingleFile()],
+    plugins: [htmlIncludes(), tailwindcss(), viteSingleFile()],
     build: {
       outDir,
       emptyOutDir: false, // we cleared it once above; keep prior pages' output
