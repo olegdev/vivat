@@ -17,18 +17,18 @@ Only things that are actually open. Delete lines as they land.
 ## Seams to wire (form + request seam pattern — see SOLUTIONS.md)
 
 Places that will be a server round-trip in the Blade build. Done so far: catalog
-filter drawer, popular-carousel tabs, header search, add-to-cart. Still open:
+filter drawer, popular-carousel tabs, header search, add-to-cart, stores filter.
 
-- **Data authored in JS → server `@foreach`** (own thread; refactor, not a
-  stub). `categories` (`catalog-menu.js`), `stores` (`stores-map.js`) and the
-  product arrays in `main.js` / `catalog.js` are hard-coded. In Blade they come
-  from the model; each single-unit's markup should be a clean HTML block filled
-  from data (see CLAUDE.md). Bigger than a seam — schedule deliberately.
+The JS-string structure debt is unwound: every repeated unit is now a clean HTML
+`<template>` in its partial that the component clones (product-card, catalog-menu,
+mobile-menu, stores). What stays in JS is only the mock *data* arrays
+(`categories`, `stores`, the product lists) — in Blade those come from the model
+and are printed into the same templates; nothing structural remains to convert.
 
-- **"Только фирменные магазины" toggle** (part of the refactor thread). Already
-  filters the store list client-side (`stores-map.js`, commented there) — it's
-  effectively our method minus URL state. Low priority: align it to a named seam
-  + URL param only when the store list becomes a server fetch.
+- The mobile burger-menu search field is still an inert `<form onsubmit="return
+  false">` (partials/mobile-menu.html) — not wired to components/search.js. Give
+  it `data-search`/`name="q"` and run initSearch() over it when mobile search
+  lands.
 
 ## Not started
 

@@ -34,15 +34,16 @@ architectural rule — **structure is HTML, behaviour is JS.**
 - Anything shared across pages (header, footer, and other chrome) lives as a
   plain **HTML fragment**, one file per future Blade partial, so the port to
   `@include('partials.header')` / `<x-header/>` is mechanical.
-- Do **not** author shared structure as JS render functions. The current
-  `catalog-menu.js` / `mobile-menu.js` build their markup in JS strings — that
-  predates this decision and is debt to unwind at port time; new pages must not
-  add more of it. JS is for behaviour (open/close, carousels, drag), not for
-  emitting the page's structure.
-- Repeated, data-driven blocks (product cards, filter groups) become Blade
-  `@foreach` loops. Keep each single-unit's markup a clean, self-contained HTML
-  block even when a script fills the list in the prototype, so the loop maps
-  straight onto `@foreach`.
+- Do **not** author shared structure as JS render functions. JS is for
+  behaviour (open/close, carousels, drag), not for emitting the page's
+  structure. Every component now follows this — where a script fills a list, the
+  single-unit markup is a clean HTML `<template>` in the partial that the script
+  clones and fills; it never builds markup from strings.
+- Repeated, data-driven blocks (product cards, filter groups, menu rows, dealer
+  cards) become Blade `@foreach` loops. Their unit lives as a `<template>` in the
+  owning partial (`product-card`, `catalog-menu`, `mobile-menu`, `stores`); the
+  component clones it per datum, so the loop maps straight onto `@foreach`. Copy
+  that pattern for new lists — do not go back to JS string templates.
 
 **Include mechanism.** Shared chrome lives in `src/partials/*.html`, spliced
 into pages at build time by `scripts/vite-plugin-includes.mjs` via
@@ -50,10 +51,11 @@ into pages at build time by `scripts/vite-plugin-includes.mjs` via
 works in both `npm run dev` and `npm run build`). One partial == one future
 Blade partial — the port to `@include('partials.name')` is mechanical. Current
 partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
-`catalog-filters`. `catalog-menu` and `mobile-menu` are **shell only**: their
-static frame is the partial, while the lists
-and behaviour stay in the matching `src/components/*.js` (the shell now exists
-in the DOM, so the JS queries it instead of building it).
+`catalog-filters`, `stores`, `product-card`. Several carry both a static shell
+and the `<template>` unit(s) their component clones (`catalog-menu`,
+`mobile-menu`, `stores`); `product-card` is templates only. The matching
+`src/components/*.js` queries the shell and clones the templates — it never
+builds markup.
 
 Partials are a raw text splice, so asset URLs written inside them are relative
 to the **including page**, not the partial — every customer page sits at
