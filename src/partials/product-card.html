@@ -19,6 +19,7 @@
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
         <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="card-zones" data-card-zones></div>
       </div>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto" data-card-dots></div>
@@ -57,6 +58,7 @@
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[111px]" data-card-gallery>
         <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="card-zones" data-card-zones></div>
       </div>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto max-md:gap-1" data-card-dots></div>
@@ -86,9 +88,135 @@
   </article>
 </template>
 
-<!-- one gallery image + one dot + one swatch, cloned per datum -->
+<!-- compact / category card, large on mobile ------------------------------
+     Same desktop card as above; below `md` it is the 320px `cards-other`
+     device=mobile size=l tile (Figma 1968:237927) instead of the 152px one — a
+     single-row rail, so the image keeps its 238px box, the price stays at 18/26
+     and the cart action stays an icon button (no full-width pill). Used by the
+     Акции page's "Популярные товары на акции" rail. -->
+<template data-pcard-compact-l>
+  <article class="flex w-[438px] shrink-0 flex-col max-md:w-[320px] max-md:snap-start" data-card>
+    <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
+      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
+        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="card-zones" data-card-zones></div>
+      </div>
+      <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto" data-card-dots></div>
+    </div>
+    <div class="flex flex-col gap-1 px-1 py-3">
+      <div class="flex items-start gap-4 max-md:gap-3">
+        <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
+          <div class="flex items-center gap-2">
+            <span class="text-body-n-accent text-text-primary max-md:hidden">от</span>
+            <span class="text-h3 font-medium text-text-primary max-md:text-[18px] max-md:leading-[26px]" data-card-price></span>
+            <span class="text-body-n text-text-muted line-through max-md:text-m-body-s-crossed max-md:text-text-secondary empty:hidden" data-card-oldprice></span>
+          </div>
+          <p class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-n" data-card-title></p>
+        </div>
+        <button type="button" data-add-to-cart class="icon-btn">
+          <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" />
+        </button>
+      </div>
+      <div class="flex items-center gap-4 py-1">
+        <a href="#" class="text-body-s text-text-secondary underline decoration-from-font underline-offset-2 max-md:truncate max-md:text-m-body-xs" data-card-category></a>
+      </div>
+    </div>
+  </article>
+</template>
+
+<!-- module card (cards-modul, Figma desktop 632:28371 / mobile 1821:292085) ---
+     The PDP's "Модули" rail. 322px wide against the 438px kitchen card, a
+     242px image box, and an info block the other cards don't have: price + cart
+     on one row, a two-line description, then a labelled size line
+     ("Размер (В*Ш*Г), мм:" over the value), and the swatches/comments footer.
+     Below `md` it is the 320px tile every PDP rail uses, with the same 238px
+     image box as the other mobile cards. Sizes come from the Figma frames, not
+     from scaling the 438px card. -->
+<template data-pcard-modul>
+  <article class="flex w-[322px] shrink-0 flex-col max-md:w-[320px] max-md:snap-start" data-card>
+    <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
+      <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
+        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="card-zones" data-card-zones></div>
+      </div>
+      <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto" data-card-dots></div>
+    </div>
+    <div class="flex flex-col gap-2 px-1 py-3 max-md:gap-1">
+      <div class="flex items-start gap-4 max-md:gap-3">
+        <div class="flex min-w-0 flex-1 flex-col">
+          <div class="flex h-8 items-center gap-2">
+            <span class="text-h3 font-medium text-text-primary max-md:text-[18px] max-md:leading-[26px]" data-card-price></span>
+            <span class="text-body-n text-text-muted line-through empty:hidden max-md:text-m-body-s-crossed" data-card-oldprice></span>
+          </div>
+          <p class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-n" data-card-title></p>
+          <div class="flex flex-col pt-1 max-md:pt-0.5">
+            <span class="text-body-n text-text-secondary max-md:text-m-body-n" data-card-speclabel></span>
+            <span class="text-body-n text-text-primary max-md:text-m-body-n" data-card-specvalue></span>
+          </div>
+        </div>
+        <button type="button" data-add-to-cart class="icon-btn">
+          <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" />
+        </button>
+      </div>
+      <div class="flex items-center gap-4 py-1">
+        <div class="flex min-w-0 flex-1 items-center gap-2">
+          <div class="flex items-center gap-2" data-card-swatches></div>
+          <span class="text-body-s text-text-secondary empty:hidden max-md:text-m-body-xs" data-card-more></span>
+        </div>
+        <div class="flex items-center gap-1">
+          <span class="text-body-s text-text-secondary max-md:text-m-body-xs" data-card-comments></span>
+          <img src="../../assets/header/icon-comment.svg" alt="" class="size-4" />
+        </div>
+      </div>
+    </div>
+  </article>
+</template>
+
+<!-- compact / category card, 322px desktop (cards-other size=s, 632:27760) ---
+     Same unit as `data-pcard-compact`, at the narrower Figma size the PDP's
+     "Добавьте в корзину" rail lays out four-up (322 + 24 gutters = 1360). Its
+     image box is 242px rather than 327px, so it is a second template, not a
+     width override — see SOLUTIONS.md › "One component, two mobile shapes".
+     Below `md` it is the same 320px / 238px tile as `data-pcard-compact-l`
+     (1821:291701): a single-row rail, cart stays an icon button. -->
+<template data-pcard-other-s>
+  <article class="flex w-[322px] shrink-0 flex-col max-md:w-[320px] max-md:snap-start" data-card>
+    <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
+      <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
+        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="card-zones" data-card-zones></div>
+      </div>
+      <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto" data-card-dots></div>
+    </div>
+    <div class="flex flex-col gap-1 px-1 py-3">
+      <div class="flex items-start gap-4 max-md:gap-3">
+        <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
+          <div class="flex items-center gap-2">
+            <span class="text-h3 font-medium text-text-primary max-md:text-[18px] max-md:leading-[26px]" data-card-price></span>
+            <span class="text-body-n text-text-muted line-through empty:hidden max-md:text-m-body-s-crossed max-md:text-text-secondary" data-card-oldprice></span>
+          </div>
+          <p class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-n" data-card-title></p>
+        </div>
+        <button type="button" data-add-to-cart class="icon-btn">
+          <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" />
+        </button>
+      </div>
+      <div class="flex items-center gap-4 py-1">
+        <a href="#" class="text-body-s text-text-secondary underline decoration-from-font underline-offset-2 max-md:truncate max-md:text-m-body-xs" data-card-category></a>
+      </div>
+    </div>
+  </article>
+</template>
+
+<!-- one gallery image + one hover zone + one dot + one swatch, per datum -->
 <template data-pcard-img>
   <img alt="" draggable="false" data-card-img class="h-full w-full shrink-0 select-none object-cover mix-blend-multiply" />
+</template>
+<template data-pcard-zone>
+  <span class="card-zone" data-card-zone></span>
 </template>
 <template data-pcard-dot>
   <button type="button" data-card-dot class="carousel-dot" aria-current="false"><span></span></button>

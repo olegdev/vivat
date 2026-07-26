@@ -449,6 +449,19 @@
   }
   .carousel-dot[aria-current="true"] > span { @apply bg-overlay-strong; }
 
+  /* ---- Card gallery hover zones ----------------------------------------
+     N transparent strips over a product card's photo, one per image: with a
+     real mouse the pointer scrubs the gallery (Ozon/WB convention), on touch
+     they are inert and the swipe in product-card.js keeps the gallery. The
+     gate is the input device, not the viewport — a touch laptop is wide and
+     still has no hover. They sit inside the gallery, so the dot row (a later
+     sibling) paints above them and stays clickable. */
+  .card-zones { @apply pointer-events-none absolute inset-0 flex; }
+  @media (hover: hover) and (pointer: fine) {
+    .card-zones { @apply pointer-events-auto; }
+  }
+  .card-zone { @apply h-full flex-1; }
+
   /* ---- Social icon (social-icon, 878:105097…) ---------------------------
      Six separate links (zen/vk/tg/yt/rt/max). The glyph is painted via a mask
      so each icon can recolor on its own hover — an <img> could not. */
@@ -540,7 +553,7 @@
   }
 
   .store-pin__popup {
-    @apply pointer-events-none invisible absolute w-[240px] rounded-l bg-surface-inverted p-3 opacity-0 shadow-dropdown transition-opacity;
+    @apply pointer-events-none invisible absolute w-[240px] rounded-[var(--radius-l)] bg-surface-inverted p-3 opacity-0 shadow-dropdown transition-opacity;
     bottom: calc(100% + 4px);
     left: 50%;
     translate: -50% 0;
@@ -632,9 +645,155 @@
   }
   .catalog-menu-item[aria-current="true"] { @apply bg-components-subtle-hover; }
 
+  /* ---- Catalog chips (`chips` set 632:31633, size=s) ----------------------
+     Four conditions, all 32px pills with 16px side padding and #808080 text:
+       default      border #e7e7e7, no fill
+       hover        border #acacac
+       active       fill #eeeeee, NO border      (a selected parameter)
+       active-hover border #eeeeee, no fill      (i.e. "click to release")
+     The trailing 16px icon is part of the component in every condition — a
+     `more` (···) glyph by default, `close-s` (×) once the chip is active. */
   .catalog-chip {
-    @apply inline-flex h-8 items-center rounded-pill border border-border-light px-4 transition-colors;
-    @apply text-body-s text-text-secondary hover:border-border-default hover:text-text-primary;
+    @apply inline-flex h-8 items-center gap-2 rounded-pill border border-border-light px-4 transition-colors;
+    @apply text-body-s text-text-secondary hover:border-border-default;
+  }
+  .catalog-chip--active {
+    @apply border-transparent bg-components-subtle-hover;
+    @apply hover:border-border-subtle hover:bg-transparent hover:text-text-muted;
+  }
+  /* the × rides along in the markup but only shows once the chip carries a
+     parameter to release (or on the permanent "Очистить все" chip). */
+  .catalog-chip .chip-x { @apply hidden; }
+  .catalog-chip--active .chip-x,
+  .catalog-chip--dismiss .chip-x { @apply block; }
+
+  /* ---- Catalog settings bar, "parameters selected" state -------------------
+     Figma Catalog-selected-parameters 913:92082 / 1997:301160. A named filter
+     pill whose group has a selection takes `filters condition=active`
+     (752:63467): the same white pill with a #414141 border. The funnel takes
+     the dark `icon-button` (881:51240) and its badge inverts to white-on-dark.
+     Both are class-driven so the JS only toggles `is-active`. */
+  .filter-pill.is-active { @apply border-border-active; }
+
+  /* `icon-button` 881:51240 is a horizontal auto-layout row [circle 44][badge
+     20] at gap -12 — the badge is a SIBLING that occupies width, not an overlay
+     on the circle. Hence the flex row + `-ml-3` + `self-start` below: hiding the
+     badge collapses the control back to 44, showing it widens it to 52 and the
+     pills after it move right by 8, exactly as in the mock. */
+  .filter-funnel__circle {
+    @apply flex size-11 items-center justify-center rounded-full transition-colors;
+    @apply bg-components-subtle text-icon-primary;
+  }
+  .filter-funnel:hover .filter-funnel__circle { @apply bg-components-subtle-hover; }
+  .filter-funnel.is-active .filter-funnel__circle {
+    @apply bg-components-active-muted text-icon-inverse-primary;
+  }
+  .filter-funnel.is-active:hover .filter-funnel__circle { @apply bg-components-active-default; }
+
+  /* ---- Count badge (`badge-number` set 758:59031) -------------------------
+     One 20px pill, four `design` variants. Shape only — *placement is the call
+     site's job*, because Figma places it two different ways and both are
+     deliberate (see SOLUTIONS.md › "Badges are layout, not overlay"):
+       · on `icon-button` (881:51240) it is an in-flow sibling in a row with
+         `gap: -12` → `-ml-3 self-start`, and the control grows 44 → 52;
+       · on `nav-item` (1739:218769) the 32px box is fixed and the badge is an
+         absolutely-positioned child at (20, 0) → `absolute -right-2 top-0`.
+     Hiding: add `hidden` — the utilities layer wins over this one. */
+  .badge-number {
+    @apply flex h-5 min-w-5 shrink-0 items-center justify-center rounded-pill px-1;
+    @apply text-body-xs; /* 12/16 in every variant */
+  }
+  .badge-number--dark { @apply bg-components-strong text-text-inverse-primary; }
+  .badge-number--red { @apply bg-components-red text-text-inverse-primary; }
+  .badge-number--outline {
+    @apply border border-border-active bg-components-white text-text-primary;
+  }
+
+  /* ==========================================================================
+     PDP (product page, Figma 914:101099)
+     ========================================================================== */
+
+  /* ---- Section / panel tab (`tab` 759:86853, mobile 1806:236476) -----------
+     24px SemiBold, 16/24 below `md`. The bar over the photos and the
+     Характеристики bar are the same component; the current one goes dark and
+     underlined. Both faces are driven off `aria-selected`, which the anchor bar
+     derives from the scroll position and the panel bar sets on click. */
+  .pdp-tab {
+    @apply shrink-0 text-h3 text-text-secondary transition-colors hover:text-text-primary;
+    @apply max-md:text-h5;
+  }
+  .pdp-tab[aria-selected="true"] {
+    @apply text-text-primary underline decoration-from-font underline-offset-4;
+  }
+
+  /* The mobile tab row is 636px of labels in a 360px frame, so it scrolls; the
+     design covers the right edge with a white gradient to show there is more
+     (`Rectangle 221`, a 63px linear fade). Desktop has no overflow, hence the
+     `max-md:` gate on the pseudo-element rather than on the row. */
+  .pdp-tab-row::after {
+    content: "";
+    @apply pointer-events-none absolute inset-y-0 right-0 hidden w-16 max-md:block;
+    background: linear-gradient(
+      to right,
+      rgb(255 255 255 / 0),
+      var(--color-surface-inverted)
+    );
+  }
+
+  /* ---- Geometry control (`segments` size=l outline=on, 922:91710) ---------
+     32px outlined pill. The chosen one takes the `border-active` outline and
+     dark text; the rest stay on `border-default` with muted text. */
+  .pdp-segment {
+    @apply flex h-8 items-center rounded-pill border px-4 text-body-s-accent transition-colors;
+    @apply border-border-default text-text-secondary hover:border-border-default-hover;
+  }
+  .pdp-segment[aria-checked="true"] {
+    @apply border-border-active text-text-primary;
+  }
+
+  /* ---- Colour swatch (`color-swatch` 629:26578) ---------------------------
+     28px circle; the chosen one gains the same offset ring the filter drawer's
+     swatches use, so the two controls read as one component. */
+  .pdp-swatch {
+    @apply size-7 shrink-0 overflow-hidden rounded-full border border-border-alpha-default transition-shadow;
+  }
+  .pdp-swatch[aria-checked="true"] {
+    @apply ring-2 ring-components-strong ring-offset-2;
+  }
+
+  /* ---- Spec table leader (`line-dotted` 766:14631) ------------------------
+     Figma draws a 1px #808080 dash pattern of [0.5, 3] — a mark every 3.5px,
+     not the ~3px pitch `border-dotted` would give. Painted as a repeating
+     linear gradient so the pitch is exact. (A radial gradient was the first
+     try: at a 0.5px dot diameter it antialiases to nothing and the leader
+     never appeared.) */
+  .spec-leader {
+    height: 1px;
+    background-image: linear-gradient(
+      to right,
+      var(--color-text-secondary) 1px,
+      transparent 1px
+    );
+    background-size: 3.5px 1px;
+    background-repeat: repeat-x;
+  }
+
+  /* ---- Alert (`alert` size=l accent=yes, 922:126604; mobile 1997:313656) --- */
+  .pdp-alert {
+    @apply flex h-10 items-center gap-4 rounded-n bg-surface-accent-subtle px-4;
+    @apply max-md:h-[34px] max-md:gap-2;
+  }
+
+  /* ---- Sticky price bar (`sticky-price` 1884:366292) -----------------------
+     Hidden until the summary panel's order button has scrolled past; pdp.js
+     toggles `is-visible`. Translated rather than display-toggled so it slides
+     in instead of appearing under the cursor. */
+  .pdp-sticky {
+    @apply pointer-events-none translate-y-full opacity-0;
+    transition: translate 250ms ease, opacity 250ms ease;
+  }
+  .pdp-sticky.is-visible {
+    @apply pointer-events-auto translate-y-0 opacity-100;
   }
 
   /* ---- Mobile burger menu row (Figma `menu-item` 1859:335475, 328x44) -----

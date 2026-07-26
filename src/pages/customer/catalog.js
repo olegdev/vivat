@@ -4,6 +4,7 @@ import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-me
 import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
+import { fillGallery, initProductCards } from "../../components/product-card.js";
 
 // This page lives at dist/pages/customer/catalog.html — assets sit two levels up.
 const ASSET_ROOT = "../../assets";
@@ -95,7 +96,7 @@ function badgeEl(b) {
 }
 function swatchEl(s) {
   const wrap = document.createElement("span");
-  wrap.className = "size-7 overflow-hidden rounded-full border border-alpha-default";
+  wrap.className = "size-7 overflow-hidden rounded-full border border-alpha-default max-md:size-[18px]";
   if (s.img) {
     const img = document.createElement("img");
     img.src = s.img;
@@ -121,10 +122,13 @@ function buildCard(p) {
   node.dataset.color = p.color;
   node.dataset.style = p.style;
   node.dataset.price = String(p.price);
-  node.querySelector("[data-add-to-cart]").dataset.productId = p.id;
+  // Two add-to-cart hooks per card (desktop icon-btn + mobile pill); both need
+  // the id so the cart seam works at either breakpoint.
+  node.querySelectorAll("[data-add-to-cart]").forEach((b) => (b.dataset.productId = p.id));
 
-  node.querySelector("[data-card-img]").src = p.image;
-  node.querySelector("[data-card-img]").alt = p.title;
+  // Same gallery as every other card on the site (photos + hover zones + dots),
+  // filled by the shared component; only the unit around it is this page's own.
+  fillGallery(node, p, { smallDots: true });
   node.querySelector("[data-card-price]").textContent = rub(p.price);
   node.querySelector("[data-card-oldprice]").textContent = p.oldPrice ? rub(p.oldPrice) : "";
   node.querySelector("[data-card-title]").textContent = p.title;
@@ -145,6 +149,9 @@ const cards = PRODUCTS.map((p) => {
   grid.append(el);
   return { p, el };
 });
+// Filtering reshuffles these nodes rather than re-rendering them, so the gallery
+// is wired once, here, over the whole grid.
+initProductCards(grid);
 
 // =============================================================================
 // FILTERS — form + request seam
@@ -254,8 +261,10 @@ function applyFilters({ pushURL = true } = {}) {
   grid.classList.toggle("hidden", visible === 0);
   badge.textContent = String(activeGroups);
   badge.classList.toggle("hidden", activeGroups === 0);
+  funnel.classList.toggle("is-active", activeGroups > 0);
 
-  syncChips(state);
+  syncChips(state, activeGroups > 0);
+  syncPills(state);
 
   const params = toParams(state);
   if (pushURL) {
@@ -325,7 +334,20 @@ document.querySelectorAll("[data-filter-clear]").forEach((b) => b.addEventListen
 // =============================================================================
 // Quick-filter chips — shortcuts that toggle a single drawer field, then apply
 // =============================================================================
-const CHIP_ACTIVE = ["border-transparent", "bg-components-strong", "text-text-inverse-primary"];
+// The row has two faces (Figma Catalog-default 882:89752 vs
+// Catalog-selected-parameters 882:88832 / 1806:237553):
+//
+//   nothing selected → the full shortcut list, last chip "Больше ···"
+//   something on     → *only* the active chips (grey fill + ×, click to
+//                      release) followed by "Очистить все"
+//
+// so the row always reads as "the parameters you have selected". Chips cover
+// the shortcut set only; groups picked inside the drawer surface as the count
+// on their pill, not as a chip.
+const chipRow = document.querySelector("[data-chips]");
+const chipMore = document.querySelector("[data-chip-more]");
+const chipClear = document.querySelector("[data-chip-clear]");
+
 function inputFor(param, value) {
   return form.querySelector(`input[name="${param}[]"][value="${value}"]`);
 }
@@ -338,14 +360,37 @@ document.querySelectorAll("[data-quickfilter]").forEach((chip) => {
     applyFilters();
   });
 });
+
 // Reflect form state back onto the chips (also covers URL hydration).
-function syncChips(state) {
+// `anyFilter` — not just "a shortcut is on" — decides which face to show, so a
+// drawer-only selection still gets its "Очистить все".
+function syncChips(state, anyFilter) {
   document.querySelectorAll("[data-quickfilter]").forEach((chip) => {
     const [param, value] = chip.dataset.quickfilter.split("=");
     const on = (state[param] || []).includes(value);
-    chip.classList.toggle(CHIP_ACTIVE[0], on);
-    chip.classList.toggle(CHIP_ACTIVE[1], on);
-    chip.classList.toggle(CHIP_ACTIVE[2], on);
+    chip.classList.toggle("catalog-chip--active", on);
+    chip.classList.toggle("hidden", anyFilter && !on);
+  });
+  chipMore.classList.toggle("hidden", anyFilter);
+  chipClear.classList.toggle("hidden", !anyFilter);
+  // the selected row wraps on mobile; the shortcut list stays a scroll rail
+  chipRow.toggleAttribute("data-selected", anyFilter);
+}
+
+// Pills + funnel: a group with a selection gets the dark-bordered pill and a
+// muted count; the funnel goes dark with a white badge (Figma 882:88362).
+const funnel = document.querySelector(".filter-funnel");
+function syncPills(state) {
+  document.querySelectorAll("[data-filter-pill]").forEach((pill) => {
+    const group = pill.dataset.filterPill;
+    const n =
+      group === "price"
+        ? Number(state.price !== "any" || !!state.price_min || !!state.price_max)
+        : (state[group] || []).length;
+    const countEl = pill.querySelector("[data-pill-count]");
+    pill.classList.toggle("is-active", n > 0);
+    countEl.textContent = n > 0 ? String(n) : "";
+    countEl.classList.toggle("hidden", n === 0);
   });
 }
 

@@ -11,6 +11,13 @@ example, not the point itself.
   …) for utilities it owns; a component-layer class used as `max-md:foo` emits
   *nothing*, silently — no error, no rule. This cost the "double scrollbar".
   Ref: `.scroll-rail`, `app.css`.
+- **A theme token whose name collides with a built-in *side* utility loses
+  silently.** `--radius-l` reads as `rounded-l`, which is also Tailwind's
+  left-side radius: both rules are emitted and the built-in wins on the left, so
+  every `rounded-l` box was 8px on the right and 4px on the left. It looks like a
+  rendering quirk, not a class bug. Write such tokens explicitly —
+  `rounded-[var(--radius-l)]` — for any token named after a side (`l r t b s e`).
+  Ref: the socials block, the sort dropdown, the stores card, `.store-pin__popup`.
 
 ## Native horizontal scroll rails
 
@@ -34,6 +41,72 @@ example, not the point itself.
   same `apply()` that runs on every change, not once at init. Ref: `apply()` in
   `carousel.js` (surfaced by the Популярные-товары tab filter).
 
+## Mobile chrome: every page carries the bottom nav
+
+- **Every customer page includes the bottom nav below `md`** — it's the primary
+  mobile navigation (Каталог / Контакты / Акции / Корзина / Кабинет), pinned to
+  the viewport, not a per-page decision. Splice `partials/bottom-nav.html` right
+  before the footer, and reserve its height on the page container with
+  `max-md:pb-[72px]` so the last section isn't hidden behind it. Its "Каталог"
+  item opens the burger menu, wired via `data-mobile-catalog` (pass it as
+  `catalogToggle` to `initMobileMenu`). Ref: `main.html`, `catalog.html`.
+
+- **Never take pointer capture on `pointerdown` — take it on the first real
+  move.** With capture live, the browser dispatches the following `click` on the
+  *capturing* element, so nothing inside the rail ever sees its own click: the
+  tab chips were dead for every mouse user below `md` (a real finger was fine —
+  the handler skips `pointerType === "touch"`), and it looked like a filter bug,
+  not a gesture bug. Capture is only needed once a drag is actually under way, to
+  keep a flick alive past the edge of the element, so move it into the branch
+  where the pointer has passed the threshold. Ref: `enableDragScroll()`,
+  `carousel.js`.
+
+## One component, two mobile shapes
+
+- **When the design gives a component a second mobile layout, add a second
+  `<template>` — don't rewrite classes from JS.** The compact product card is a
+  152px tile in the home/catalog two-row rail and a 320px tile in the Акции
+  single-row rail (Figma `cards-other` device=mobile size=s / size=l): same
+  desktop card, different `max-md:` sizes and a cart icon instead of the
+  full-width pill. Each shape is its own template in the owning partial, picked
+  by one option (`mobileCard: "l"` → `renderCarousel(el, items, { mobile })`).
+  Class surgery in JS would have hidden the difference from the markup and from
+  the Blade port, and moving the 152px specifics into a `.rail-2row` CSS scope
+  would have contradicted "mobile lives at the call site".
+- The same option gates the layout that goes with the shape: `.rail-2row` is
+  applied only for the 152px tile, because the 320px one is a plain flex rail.
+- **The same holds on the desktop axis.** The PDP rails use `cards-other
+  size=s` (322px, 242px image) where the home page uses `size=m` (438px, 327px
+  image), and `cards-modul` adds a labelled size line no other card has. Those
+  are separate `<template>`s picked by one `variant` option — not the 438px card
+  with its width overridden, which would have left the image box wrong.
+- **Fill the hooks the chosen template has, don't branch on the variant.**
+  `buildCard()` asks `node.querySelector("[data-card-…]")` and fills what it
+  finds, so a new template can gain or drop a field without a new `if`. The
+  earlier `if (compact) … else …` had to be rewritten for every new shape.
+
+## When mobile re-orders a block: `order-*` over a second copy
+
+The PDP summary panel reads title → colours → size → geometry → price on
+desktop and title → size → geometry → colours → price on mobile. Two copies of
+the panel behind `md:hidden` / `max-md:hidden` would have been two things to
+keep in step, and two Blade partials at the port. Instead the DOM is authored in
+**desktop** order and `max-md:order-*` re-sequences it.
+
+Two things make that work:
+
+- **The wrapper has to get out of the way.** The blocks sat in an inner padded
+  `div`, so their `order` only sorted them against each other — never against
+  the price block, which is the panel's other child. `max-md:contents` drops the
+  wrapper's box below `md` so all five become siblings in one flex context; its
+  padding moves onto each block, since a `contents` element has none.
+- **Author the DOM in the breakpoint that has NO order classes.** Written the
+  other way round (mobile order in the DOM, `md:order-*` for desktop) it works
+  too — but the first version here was authored in mobile order *and* only
+  carried `max-md:order-*`, so desktop silently rendered the mobile sequence.
+  The default order is whatever the DOM says; make that the face you didn't
+  write classes for.
+
 ## Touch gestures
 
 - **Swipe needs `touch-action` set** (`touch-pan-y` for a horizontal swipe) or
@@ -41,6 +114,50 @@ example, not the point itself.
 - **Commit on `pointermove` past a threshold, not on `pointerup`** — a
   release-only handler never runs when touch cancels mid-gesture. Ref: hero swipe,
   `hero-slider.js`.
+
+## Two inputs, one slider: hover zones next to the swipe
+
+The product card's gallery is scrubbed with a mouse (N invisible strips over the
+photo, one per frame — the Ozon/WB convention) and swiped with a finger.
+`product-card.js` runs both; four things make them coexist.
+
+- **Gate on the input device, not the viewport.** `(hover: hover) and (pointer:
+  fine)` — a touch laptop is wide and still has no hover, and a hybrid switches
+  mid-session, so the check is `e.pointerType === "mouse" && FINE_POINTER.matches`
+  at event time rather than a branch taken once at init. The zones' own
+  `pointer-events` are gated by the same query in CSS (`.card-zones`), so on
+  touch they are inert and the swipe keeps the image.
+- **Scrub on `pointermove`, never on the zones' `enter`.** The outer carousel
+  slides cards sideways under a still cursor: with `pointerenter` alone, every
+  card that passes beneath the pointer flips its image, un-asked. Requiring real
+  pointer movement makes that impossible — the zones stay as hit targets
+  (`e.target.closest("[data-card-zone]")`), which beats `offsetX` math that has
+  to re-read the box on every move.
+- **A scrub can't be animated.** The 300ms track transition lags a zone or two
+  behind the cursor; `show()` takes an `instant` flag that zeroes
+  `transitionDuration` for hover and leaves it for dots and swipes.
+- **Reset to frame 0 on leave, and listen on the media box, not the gallery.**
+  The dots and badges overlay the gallery without being *inside* it, so hovering
+  a dot fires `pointerleave` on the gallery — the parent is the real boundary.
+
+**A gallery needs a gallery's worth of photos.** The fixtures carry one photo per
+product, and the first version padded that to three by repeating it — dots and
+scrub both moved, and nothing on screen changed, which reads as "broken", not as
+"one photo". `data/product-photos.js` pads out of the asset set instead, staying
+inside the product's category (a kitchen card never shows a worktop) and starting
+each card at its own photo so neighbours don't march in step. Placeholder media
+still has to *demonstrate* the behaviour it stands in for.
+
+The gallery's parts are filled in one place, `fillGallery()` — the catalog grid
+keeps its own card unit (the filter attributes ride on it) but calls the same
+function. Its three dots used to be static decoration under a single `<img>`;
+the design draws dots because there is a gallery behind them.
+
+Two side effects worth keeping: frames 2..n are `loading="lazy"` and promoted to
+`eager` by the first pointer that reaches the card (both inputs are one event
+away from the frame they reveal), and the mouse drag on the gallery is gone —
+scrub and drag would fight, and a drag would land on whatever zone it was
+released over.
 
 ## Faithful-to-Figma media
 
@@ -77,6 +194,13 @@ seam**, so the port swaps one function and nothing else.
 - **Quick-filter chips are shortcuts, not a second source of truth**: a chip
   toggles the matching form input and re-runs the seam; chip active-state is
   derived back from the form. Never let a chip hold state the form doesn't.
+- **The bar has a second face once anything is selected** (Figma
+  `Catalog-selected-parameters`): the chip row stops being the shortcut list and
+  becomes the *selected parameters* — only the active chips (grey fill + ×,
+  click to release) plus "Очистить все"; each named pill with a selection takes
+  the `condition=active` border and a muted count; the funnel flips to the dark
+  `icon-button` with a white badge. All of it is derived in `syncChips()` /
+  `syncPills()` from the same state object — no extra flags.
 
 The rule that generalises: when a prototype stands in for a future server
 round-trip, make the *inputs* real (form, field names, URL) and hide the fake
@@ -92,3 +216,148 @@ part behind a single named function. The seam is the only throwaway code.
   the promo tiles.
 - **No prototype interaction in Figma → no auto-motion in code.** Don't add
   auto-advance/animation the design doesn't specify.
+- **A frame named after a *state* is a second face of a block you already
+  built** — open it before calling the block done. `Catalog-selected-parameters`
+  defines what the settings bar looks like with filters applied; without it we
+  had invented a dark "selected" chip, when the component set already carries
+  `condition=active` (fill `#eeeeee`, text stays `#808080`, × icon swapped in
+  for the `···`). Read the variant set, don't design the state yourself.
+
+## A "sticky bar" can be two different components at two breakpoints
+
+The PDP has a bottom bar at both widths, and the reflex is to build one and
+restyle it. They are not the same control:
+
+| | desktop `sticky-price` | mobile `modal-button-container` |
+|---|---|---|
+| trigger | revealed once the summary's order button scrolls past | **always visible** |
+| contents | two links + title + price + dark button | one link + red CTA carrying the price |
+| position | bottom of the viewport | stacked on top of the 72px bottom nav |
+
+The reason mobile's is permanent is structural: **the mobile summary has no
+order button at all** — the design moved it into the bar, so the bar is the only
+way to order. Reveal-on-scroll would hide the page's primary action.
+
+Two consequences worth copying: the page reserves `72 + 60` at the bottom, not
+72; and the price text is filled across *both* bars
+(`querySelectorAll("[data-sticky-price-value]")`) while only the desktop one
+gets the IntersectionObserver. The observer's anchor is `max-md:hidden`, so it
+never fires below `md` — which is correct, not a bug to work around.
+
+## A mobile table that wraps drops its dotted leader
+
+The комплектация rows are `name · dotted leader · value · qty`. At 360 the
+module names need two lines, so the mobile frame gives the name a fixed 170px
+column that wraps — **and removes the leader**, because there is no longer a gap
+to lead across. Carrying the desktop row over with just smaller type pushed the
+value and quantity off-screen; carrying it over with a wrapping name *and* a
+leader would have drawn dots next to a two-line label, which the design never
+does. Check whether a leader still has a job before keeping it.
+
+(The spec table next door keeps its leader on mobile — its labels fit one line.
+Same component, different answer, because the content differs.)
+
+## Anchor navigation: wire it after whatever emits its targets
+
+The PDP's bar over the photos (Фото / Характеристики / Модули / Отзывы / Где
+купить) resolves each link to `document.querySelector(a.getAttribute("href"))`
+once, at init. Two of those sections — `#modules`, `#reviews` — are emitted by
+`mountCarousel()` further down the page script, so calling `initSectionNav()`
+with the rest of the page's chrome silently dropped them: the bar worked, and
+the highlight simply stopped moving past Характеристики. Nothing threw.
+
+**The rule: anything that resolves selectors at init runs after the code that
+creates those elements.** If that ordering is easy to get wrong again, say so at
+the call site — `initSectionNav()` sits at the bottom of `pdp.js` with a comment
+explaining why, not next to the other `init*` calls.
+
+The related habit: **derive the active state from scroll position, not from the
+click.** The highlight then follows a plain wheel scroll too, and a click needs
+no special case.
+
+## Figma padding is not always symmetric — check the child, not `padH`
+
+`fig.mjs tree` prints one `padH` per frame, which reads as "40px on both sides".
+The PDP's spec table sits in `container 941x312 [padH=40]` whose only child is
+`table-container 901x312 @40,0` — 40 + 901 = 941, so there is **no right
+padding**, and the table runs to the same right edge as the 900px photo column
+above it. Building it as `px-10` made the block 40px narrower than the photos,
+which looks like a sloppy margin rather than a bug.
+
+**Check `child.x + child.width` against `parent.width` before trusting `padH`.**
+Here it meant `pl-10` with no `pr`.
+
+## A hairline needs a dot big enough to paint
+
+Figma's `line-dotted` (766:14631) is a 1px stroke with `dashPattern [0.5, 3]` —
+a mark every 3.5px, finer than `border-dotted`'s ~3px pitch. Reproducing it as a
+`radial-gradient(circle, … 0.25px, transparent 0.3px)` on a 1px-tall element
+produced a 0.5px dot that antialiased to nothing: the leader lines were simply
+absent, with no error and no visible cause. `linear-gradient(to right, … 1px,
+transparent 1px)` at `background-size: 3.5px 1px` gives the same pitch and a
+mark the rasteriser can actually draw. **Sub-pixel gradient stops are a silent
+no-op; keep the painted part ≥ 1px.**
+
+## A tab bar can be part panels, part anchors — read which labels have frames
+
+The PDP's Характеристики bar draws six labels but Figma only carries panels for
+three of them, and two of the remaining labels name sections that already exist
+further down the page. Building all six as panels would have invented three
+screens; building only three would have dropped labels the design draws.
+
+**Before wiring a tab set, check each label for a frame of its own.** Labels
+with one are panels; labels that match an existing section are anchors; a label
+with neither is a question for the client, not a decision to make quietly (this
+one produced a `Состав` panel in Описание's row shape, marked TODO in the
+markup). And when two frames disagree — `PDP-package`'s *name* says "состав"
+while its *render* underlines "Модули" — **the render is what the client
+approved**; ask, then follow it.
+
+## Badges are layout, not overlay (negative `stackSpacing`)
+
+The catalog funnel's count badge was built as `absolute -right-1 -top-1` — the
+reflex any "badge on a button" triggers in CSS. It was wrong on every axis, and
+the reason is one Figma fact nobody looked up: **`icon-button` (881:51240) is a
+horizontal auto-layout row `[circle 44][badge 20]` with `stackSpacing: -12`**.
+The badge is a *sibling that occupies width*, not an overlay:
+
+- it sits at x=32, y=**0** — flush with the circle's top, overhanging 8px right;
+  the guessed offsets floated it 4px above and only 4px out;
+- the whole control is therefore **52 wide, not 44** — with the badge shown the
+  pills after it shift right by 8. An absolutely-positioned badge reserves
+  nothing, so the badge collided with the next pill;
+- the variant is `badge-number design=outline` (881:24493) — white fill **plus a
+  1px `#414141` border**, which the eyeballed version dropped entirely.
+
+**The rule: a negative `stackSpacing` on a Figma frame means the overlap is
+layout.** Check `stackMode` / `stackSpacing` on the parent (`fig.mjs raw <id>
+stackMode,stackSpacing` — the `tree` output prints it as `gap=-12`) before
+reaching for `absolute`. Reproduce it as a flex row with a negative margin
+(`-ml-3`) and `self-start`, so the overhang still takes up width and hiding the
+badge collapses the control back to its bare size — which is exactly the
+default/selected width delta the mock shows.
+
+**But `absolute` isn't always wrong — the same badge is placed two ways, and
+both are in the file.** On `nav-item` (1739:218769, the bottom-nav cart) the
+32px icon box is fixed and the badge *is* an absolutely-positioned child at
+(20, 0), precisely so the icon doesn't shift. So the rule isn't "never absolute",
+it's **read the parent's layout instead of guessing which one it is**.
+
+The tell that nobody had: the same 20px badge appeared three times with three
+hand-picked offsets (`-right-0.5 -top-0.5` header, `-right-2 top-0` bottom-nav,
+`-right-1 -top-1` catalog). Re-derived, one of the three happened to be right —
+which is what guessing gets you. Two were not: the catalog funnel as above, and
+the header cart, which was also the wrong *variant* — `design=dark` (#292929 on
+white text), not red; red belongs to the bottom-nav instance only.
+
+All three now share `.badge-number` (+ `--dark` / `--red` / `--outline`, the
+Figma `design` prop), which carries shape and colour only. **Placement stays at
+the call site** because it genuinely differs per host. Hiding is a plain
+`hidden`: the utilities layer beats the components layer, so the control
+collapses back to its bare width — the 52 → 44 delta the mock encodes.
+
+Same lesson, smaller: don't hand-draw an icon that exists in the file. The
+funnel glyph was redrawn from memory as two strokes + circles and came out
+mirrored (knobs on the wrong rows) at the wrong weight. `download_assets` with
+`defaultFormat: "svg"` returns the real path data; inline it with
+`fill="currentColor"` so it inverts with its host instead of shipping two files.

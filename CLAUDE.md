@@ -18,13 +18,80 @@ canvas) and mobile (fluid, below `md`) are both done: header, catalog mega-menu,
 burger menu, hero, category tiles, three product carousels, promo tiles, socials,
 stores map (Yandex Maps v3), production block, footer.
 
-`src/pages/customer/catalog.html` — the catalog listing page (Figma
-Catalog-default 759:60482). **Desktop only so far — mobile is the next
-iteration.** Breadcrumbs, title, filters bar + sort, 4-col product grid, filter
-drawer, pagination, popular carousel, SEO block. The filter drawer is a real
+`src/pages/customer/catalog.html` — the catalog listing page. Desktop (Figma
+Catalog-default 759:60482) and mobile (Figma catalog 1997:267656 — "малая
+плитка") are both done. Breadcrumbs, title, filters bar + sort, product grid
+(4-col desktop / 2-col mobile), filter drawer, pagination, popular carousel, SEO
+block. Below `md` the named filter pills collapse to a single funnel that opens
+the drawer, the sort fills the row, chips scroll, cards gain a full-width "в
+корзину" pill, and the page carries the bottom nav. The filter drawer is a real
 form wired through a single `applyFilters()` request seam — see SOLUTIONS.md ›
-"Filters: form + request seam" before touching it. The carousel machinery both
-pages share now lives in `src/components/carousel.js`.
+"Filters: form + request seam" before touching it. The settings bar also has its
+selected state (Figma Catalog-selected-parameters 913:92082 / 1997:301160): the
+chip row becomes the selected parameters + "Очистить все", pills gain a count,
+the funnel goes dark. The carousel machinery both pages share now lives in
+`src/components/carousel.js`.
+
+`src/pages/customer/action.html` — the Акции listing page. Desktop (Figma Action
+2248:97191) and mobile (Figma 2248:110193) are both done, and it is assembled
+almost entirely from parts the other two pages already own: breadcrumbs + H1, a
+wrapping 3-col grid of the home page's promo tiles (`partials/promo-card.html`,
+hover and all), the socials block in its own Figma variant, the shared carousel
+rail, and the green SEO band (`partials/seo-kitchens.html`, shared with the
+catalog). Two things are specific to it, both read off the design: the rail's
+title-block has an empty `buttons` frame, so it takes `desktopAction: false`, and
+below `md` its cards are the 320px `cards-other` tile in one row rather than the
+152px two-row layout, so it takes `mobileCard: "l"`. The 360 frame (a partial
+copy — it is still named "catalog") has no socials block; below `md` that section
+follows the home page's mobile block instead, by decision, not from the frame.
+
+`src/pages/customer/pdp.html` — the product page. Desktop (Figma PDP
+914:101099) and mobile (Figma 1997:305719) are both done. Several more Figma
+frames are states of it, not screens of their own: `sticky price` 1884:366246
+and `DPD` 2027:83602 (the desktop and mobile bottom bars), `PDP-package`
+922:126723 / 2028:114053 and `PDP-docs` 942:34310 / 2029:116633 (two panels of
+the Характеристики tab bar, at both widths).
+
+Its own parts are the anchor bar over the photos, the 900px photo column, the
+412px summary panel (`partials/pdp-summary.html`), the Характеристики block
+(`partials/pdp-specs.html`) and the bottom bars
+(`partials/sticky-price.html`); everything below is reuse — four carousel rails,
+the stores map under this page's heading, the green SEO band, footer.
+
+Mobile is not a narrower desktop — four things genuinely change:
+
+- **The photo column becomes one swipeable rail.** Three stacked 900×671 shots
+  turn into full-width 256px slides that snap, with the badges and the share
+  action drawn on each slide (`partials/pdp-photo-overlay.html`) and a dot per
+  photo below. Same DOM: the flex column becomes a scrolling row.
+- **The summary re-orders.** Desktop reads title → colours → size → geometry →
+  price; mobile reads title → size → geometry → colours → price. The DOM is
+  authored in desktop order and `max-md:order-*` re-sequences it, which is the
+  one place `order-*` is used in this project — see SOLUTIONS.md.
+- **The order button moves out of the summary into the bottom bar**, and that
+  bar is a different component from the desktop one: `modal-button-container`
+  (2027:89990) is *always* visible and stacks on the bottom nav, where the
+  desktop `sticky-price` bar is revealed by scroll. Both live in
+  `partials/sticky-price.html`; the page reserves 132px (72 nav + 60 bar).
+- **The anchor bar over the photos is gone**, and the Характеристики tab bar
+  becomes a horizontally scrolling row with a white fade over its right edge.
+
+Two design decisions worth not re-litigating, both confirmed with the client:
+
+- The Характеристики bar mixes **four panels and two anchors**. Описание /
+  Модули / Состав / Документы switch the panel; Отзывы and Где купить scroll to
+  the sections further down. Figma draws panels for only three of the four —
+  **Состав has no frame** and carries placeholder rows marked TODO in
+  `partials/pdp-specs.html`; replace them when the design lands.
+- `PDP-package` underlines **Модули**, and that is the tab its комплектация list
+  belongs to, even though the frame's name says otherwise. The Модули *carousel*
+  further down the page is a separate section.
+
+One deliberate deviation: the mobile frame titles the stores block **"Наши
+салоны"** while desktop titles it **"Где купить"**. Both pages use "Где купить"
+— the desktop frame overrides the title on purpose and the tab bar has a label
+pointing at it, whereas the mobile instance only overrides the *description*,
+which reads as a component that was never re-titled. Say so if it comes up.
 
 Everything else in `src/pages/` is a stub.
 
@@ -42,11 +109,16 @@ architectural rule — **structure is HTML, behaviour is JS.**
   structure. Every component now follows this — where a script fills a list, the
   single-unit markup is a clean HTML `<template>` in the partial that the script
   clones and fills; it never builds markup from strings.
-- Repeated, data-driven blocks (product cards, filter groups, menu rows, dealer
-  cards) become Blade `@foreach` loops. Their unit lives as a `<template>` in the
-  owning partial (`product-card`, `catalog-menu`, `mobile-menu`, `stores`); the
-  component clones it per datum, so the loop maps straight onto `@foreach`. Copy
-  that pattern for new lists — do not go back to JS string templates.
+- Repeated, data-driven blocks (product cards, promo tiles, filter groups, menu
+  rows, dealer cards) become Blade `@foreach` loops. Their unit lives as a
+  `<template>` in the owning partial (`product-card`, `promo-card`,
+  `catalog-menu`, `mobile-menu`, `stores`); the component clones it per datum, so
+  the loop maps straight onto `@foreach`. Copy that pattern for new lists — do
+  not go back to JS string templates.
+- A unit whose **container** differs per page carries no width of its own: the
+  promo tile is the same `<template>` in the home page's centred rail and in the
+  Акции grid, and each container sizes its own children (`*:w-[437px]` on the
+  rail, grid columns on the page).
 
 **Include mechanism.** Shared chrome lives in `src/partials/*.html`, spliced
 into pages at build time by `scripts/vite-plugin-includes.mjs` via
@@ -54,11 +126,22 @@ into pages at build time by `scripts/vite-plugin-includes.mjs` via
 works in both `npm run dev` and `npm run build`). One partial == one future
 Blade partial — the port to `@include('partials.name')` is mechanical. Current
 partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
-`catalog-filters`, `stores`, `product-card`. Several carry both a static shell
-and the `<template>` unit(s) their component clones (`catalog-menu`,
-`mobile-menu`, `stores`); `product-card` is templates only. The matching
+`catalog-filters`, `chip-close`, `stores`, `product-card`, `promo-card`,
+`review-card`, `pdp-summary`, `pdp-specs`, `sticky-price`, `seo-kitchens`.
+Several carry both a static shell and the `<template>` unit(s) their component
+clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`);
+`product-card`, `promo-card` and `review-card` are templates only, and
+`seo-kitchens` is plain shared content. The matching
 `src/components/*.js` queries the shell and clones the templates — it never
 builds markup.
+
+**A partial that two pages mount under different copy takes data hooks, not a
+copy.** `stores` is the home page's "Наши салоны" and the PDP's "Где купить" —
+the heading and the lead paragraph carry `data-stores-title` /
+`data-stores-desc`, and `renderStoresMap()` overrides them from the call site.
+In Blade that becomes `@include('partials.stores', ['title' => …])`. Fixture
+data two pages share lives in `src/data/` (the dealer network, the product photo
+pool) rather than being pasted into both page scripts.
 
 Partials are a raw text splice, so asset URLs written inside them are relative
 to the **including page**, not the partial — every customer page sits at
@@ -79,11 +162,12 @@ gets re-hit on the next page.
 
 ## Reading the design
 
-The canonical Figma file is **`9d9EunlGqwIMf5hPZI3kmf`**
-(https://www.figma.com/design/9d9EunlGqwIMf5hPZI3kmf/VIVAT) — pass this fileKey
+The canonical Figma file is **`odPx3t2xUNTnIx09J9DpIS`**
+(https://www.figma.com/design/odPx3t2xUNTnIx09J9DpIS/VIVAT) — pass this fileKey
 to the MCP tools. Top-level pages: `Design` (189:10790), `UI SYSTEM`
-(922:83156). An older copy `J5GoY36VJIg79HSzfDVn3f` also exists but isn't shared
-with the authenticated account — ignore it; its node ids don't apply here.
+(922:83156). Older copies `9d9EunlGqwIMf5hPZI3kmf` and `J5GoY36VJIg79HSzfDVn3f`
+also exist — ignore them. Node ids are unchanged across the move, so ids quoted
+anywhere in these docs still resolve.
 
 Two sources. **Reach for the local export first, fall back to the Figma MCP
 server for whatever it doesn't have.**
