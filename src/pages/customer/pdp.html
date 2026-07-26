@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Кухня Фьюжн-05</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./pdp.js"></script>
+  </head>
+  <body class="bg-bg-page text-text-primary">
+    <!-- Product page (PDP). Desktop = Figma PDP 914:101099 (fixed 1440 canvas),
+         plus three frames that are states of it rather than separate screens:
+         sticky price 1884:366246, PDP-package 922:126723 and PDP-docs 942:34310
+         — the last two are panels of the Характеристики tab bar.
+
+         Mobile is Figma 1997:305719 (the full 360 page) plus the DPD viewport
+         frame 2027:83602, which is where the always-on CTA bar comes from, and
+         2028:114053 / 2029:116633, the Модули and Документы panels at 360.
+
+         Almost every section below is a component the other pages already own:
+         the carousel rail, the product cards, the stores map, the green SEO
+         band and the shared chrome from src/partials/.
+
+         Below `md` the page reserves 132px: the 72px bottom nav plus the 60px
+         CTA bar stacked on top of it. -->
+    <div class="mx-auto w-full max-md:pb-[132px] md:w-[1440px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- <template>s cloned by the sections below (inert markup) -->
+      <!--#include partials/product-card.html -->
+      <!--#include partials/review-card.html -->
+
+      <!-- ==================== BREADCRUMBS ============================== -->
+      <nav class="flex items-center gap-2 px-10 py-4 text-body-s text-text-secondary max-md:px-4 max-md:py-2 max-md:text-m-body-s">
+        <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
+        <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
+        <a href="catalog.html" class="transition-colors hover:text-text-primary">Кухни VIVAT</a>
+        <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
+        <span class="text-text-primary">Кухня Фьюжн-05</span>
+      </nav>
+
+      <!-- ==================== SECTION ANCHOR BAR ======================
+           Figma Tab 914:103288 — five labels over the photo column, each
+           jumping to a section of the page. It sits in the flow, not pinned:
+           the "sticky price" frame shows the page scrolled well past it with
+           no bar in sight. The design's sixth `tab` instance renders empty, so
+           it is absent here (CLAUDE.md › don't invent elements). -->
+      <div class="flex h-[50px] w-[940px] items-center gap-6 px-10 max-md:hidden" data-section-nav>
+        <a href="#photos" class="pdp-tab" aria-selected="true">Фото</a>
+        <a href="#specs" class="pdp-tab">Характеристики</a>
+        <a href="#modules" class="pdp-tab">Модули</a>
+        <a href="#reviews" class="pdp-tab">Отзывы</a>
+        <a href="#where" class="pdp-tab">Где купить</a>
+      </div>
+
+      <!-- ==================== MEDIA (photos + summary) =================
+           Figma media 914:103305 — a 1360 content row: the 900px photo column
+           (three 671px shots, 14px apart) and the 412px summary card. The
+           summary is `self-start`, so it stays at the top of a much taller
+           photo column exactly as the frame draws it.
+
+           Below `md` the same three shots become one swipeable rail of 344×256
+           slides (Figma 1997:308027), with the badges and the share action on
+           each slide and a dot per photo underneath — one DOM, the column just
+           turns into a snapping row. -->
+      <section class="flex justify-between px-10 max-md:flex-col max-md:px-0" id="photos">
+        <div
+          class="flex w-[900px] flex-col gap-3.5 max-md:w-full max-md:snap-x max-md:snap-mandatory max-md:scroll-pl-2 max-md:flex-row max-md:gap-2 max-md:overflow-x-auto max-md:px-2 max-md:scroll-rail"
+          data-photo-rail
+        >
+          <div class="h-[671px] overflow-hidden rounded-n max-md:relative max-md:h-64 max-md:w-full max-md:shrink-0 max-md:snap-start max-md:bg-bg-subtle">
+            <img src="../../assets/pdp/photo-1-src.png" alt="Кухня Фьюжн-05" class="size-full object-cover" />
+            <!--#include partials/pdp-photo-overlay.html -->
+          </div>
+          <div class="h-[671px] overflow-hidden rounded-n max-md:relative max-md:h-64 max-md:w-full max-md:shrink-0 max-md:snap-start max-md:bg-bg-subtle">
+            <img src="../../assets/pdp/photo-3-src.png" alt="Кухня Фьюжн-05, открытые фасады" class="size-full object-cover" />
+            <!--#include partials/pdp-photo-overlay.html -->
+          </div>
+          <div class="h-[671px] overflow-hidden rounded-n max-md:relative max-md:h-64 max-md:w-full max-md:shrink-0 max-md:snap-start max-md:bg-bg-subtle">
+            <img src="../../assets/pdp/photo-2-src.png" alt="Кухня Фьюжн-05, ящик с органайзером" class="size-full object-cover" />
+            <!--#include partials/pdp-photo-overlay.html -->
+          </div>
+        </div>
+
+        <!-- one dot per photo, mobile only; pdp.js mirrors the rail's scroll -->
+        <div class="hidden items-center justify-center gap-2 pt-0 max-md:flex" data-photo-dots></div>
+
+        <!--#include partials/pdp-summary.html -->
+      </section>
+
+      <!-- ==================== ХАРАКТЕРИСТИКИ ========================== -->
+      <!--#include partials/pdp-specs.html -->
+
+      <!-- ==================== CAROUSEL: Модули ======================== -->
+      <div data-section="modules"></div>
+
+      <!-- ==================== CAROUSEL: Добавьте в корзину ============ -->
+      <div data-section="add-to-cart"></div>
+
+      <!-- ==================== CAROUSEL: Отзывы ======================== -->
+      <div data-section="reviews"></div>
+
+      <!-- ==================== CAROUSEL: Вся коллекция Фьюжн =========== -->
+      <div data-section="collection"></div>
+
+      <div class="h-20 max-md:h-10"></div>
+
+      <!-- ==================== ГДЕ КУПИТЬ (map + dealers) ==============
+           Figma map-general 1686:58697 — the home page's stores block on its
+           own `surface-accent` band, under this page's heading. -->
+      <div data-section="salony"><!--#include partials/stores.html --></div>
+
+      <!-- ==================== SEO / INFO BLOCK ======================== -->
+      <!--#include partials/seo-kitchens.html -->
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- ==================== STICKY PRICE BAR (overlay) ================ -->
+    <!--#include partials/sticky-price.html -->
+  </body>
+</html>

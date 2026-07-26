@@ -1,0 +1,128 @@
+<!-- ==================== ХАРАКТЕРИСТИКИ (tabbed panels) ==================
+     Figma `Characteristics` 1686:58453 — the block under the photo column, the
+     same 940px width as the photos (Figma's 941 is a rounding artefact of the
+     40px padding).
+
+     Six labels, two kinds. Описание / Модули / Состав / Документы switch the
+     panel below; Отзывы and Где купить are anchors into sections further down
+     the page — the design draws no panel for them, and both sections exist.
+     Состав has no Figma frame either: it borrows Описание's row shape and
+     carries placeholder rows until the design lands (marked TODO below).
+
+     Panels, left to right:
+       Описание  → the dotted-leader spec table, two column groups (1686:58549)
+       Модули    → the комплектация list: name · value · quantity (PDP-package
+                   922:126723 — the frame underlines "Модули", which is the tab
+                   this content belongs to)
+       Состав    → same row shape, placeholder — TODO: no design yet
+       Документы → file links on `bg-subtle` (PDP-docs 942:34310)
+
+     Rows are <template>s cloned by components/pdp.js per datum (the future
+     Blade @foreach); the shell below is static structure. -->
+<!-- Figma's `container` 1686:58457 has 40px padding on the LEFT only, so the
+     901px table runs to the same right edge as the 900px photo column above it
+     rather than stopping 40px short. Hence `pl-10` with no right padding. -->
+<section id="specs" class="flex w-[940px] flex-col max-md:w-full">
+  <div class="h-8 max-md:h-6"></div>
+
+  <!-- Tab 1686:58455 / mobile 1997:314997 — 24px SemiBold labels, 24px gaps,
+       active is dark and underlined; the rest are `text-secondary`. Below `md`
+       the labels drop to 16/24 and the row scrolls: it is 636px of tabs in a
+       360px frame, with a white gradient over the right edge to show there is
+       more. `.pdp-tab-row` carries the fade so the row itself stays a plain
+       scroll rail. -->
+  <div class="pdp-tab-row max-md:relative">
+    <div
+      class="flex items-center gap-6 pl-10 max-md:scroll-rail max-md:gap-4 max-md:overflow-x-auto max-md:px-4"
+      role="tablist"
+      data-spec-tabs
+    >
+      <button type="button" class="pdp-tab" role="tab" aria-selected="true" data-panel="opisanie">Описание</button>
+      <button type="button" class="pdp-tab" role="tab" aria-selected="false" data-panel="moduli">Модули</button>
+      <button type="button" class="pdp-tab" role="tab" aria-selected="false" data-panel="sostav">Состав</button>
+      <button type="button" class="pdp-tab" role="tab" aria-selected="false" data-panel="dokumenty">Документы</button>
+      <a href="#reviews" class="pdp-tab">Отзывы</a>
+      <a href="#where" class="pdp-tab">Где купить</a>
+    </div>
+  </div>
+
+  <div class="h-2"></div>
+
+  <div class="pb-2 pl-10 max-md:px-4" data-spec-panels>
+    <!-- ---- Описание: two column groups of dotted-leader rows -------------
+         One column below `md` (1997:313653): the two groups stack, which is
+         what the mobile frame's single 11-row table amounts to. -->
+    <div class="flex flex-col gap-2" data-panel="opisanie">
+      <div class="grid grid-cols-2 gap-x-12 max-md:grid-cols-1">
+        <div class="flex flex-col" data-spec-col="0"></div>
+        <div class="flex flex-col" data-spec-col="1"></div>
+      </div>
+      <div class="pdp-alert" data-alert>
+        <img src="../../assets/pdp/icon-warning-dark.svg" alt="" class="size-4 shrink-0" />
+        <span class="flex-1 text-body-s text-text-primary max-md:text-m-body-s">Внимание! Ручка в комплект не входит.</span>
+        <button type="button" data-alert-close aria-label="Закрыть" class="shrink-0">
+          <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />
+        </button>
+      </div>
+    </div>
+
+    <!-- ---- Модули: комплектация, one full-width group + quantity --------- -->
+    <div class="hidden flex-col gap-2" data-panel="moduli">
+      <div class="flex flex-col" data-package-list></div>
+      <div class="pdp-alert" data-alert>
+        <img src="../../assets/pdp/icon-warning-dark.svg" alt="" class="size-4 shrink-0" />
+        <span class="flex-1 text-body-s text-text-primary max-md:text-m-body-s">Внимание! Ручка в комплект не входит.</span>
+        <button type="button" data-alert-close aria-label="Закрыть" class="shrink-0">
+          <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />
+        </button>
+      </div>
+    </div>
+
+    <!-- ---- Состав: TODO — no Figma frame; Описание's row shape, placeholder
+         copy, so the tab the design draws is not silently dropped. ---------- -->
+    <div class="hidden flex-col gap-2" data-panel="sostav">
+      <div class="grid grid-cols-2 gap-x-12 max-md:grid-cols-1">
+        <div class="flex flex-col" data-sostav-col="0"></div>
+        <div class="flex flex-col" data-sostav-col="1"></div>
+      </div>
+    </div>
+
+    <!-- ---- Документы: file links on bg-subtle (doc-container 942:34317,
+         mobile 2029:116837 — the same card at 16px padding) ---------------- -->
+    <div class="hidden flex-col gap-2 rounded-n bg-bg-subtle px-10 py-6 max-md:px-4 max-md:py-4" data-panel="dokumenty" data-doc-list></div>
+  </div>
+</section>
+
+<!-- one spec row: label · dotted leader · value (table-decor 1686:58549;
+     mobile 1997:314224 — 40px rows at 12/16, value column 110px) -->
+<template data-spec-row>
+  <div class="flex h-11 items-center gap-3 max-md:h-10">
+    <span class="shrink-0 text-body-n text-text-secondary max-md:text-m-body-s" data-spec-label></span>
+    <span class="spec-leader flex-1"></span>
+    <span class="ml-1 w-[116px] shrink-0 text-body-n text-text-primary max-md:w-[110px] max-md:text-m-body-s" data-spec-value></span>
+  </div>
+</template>
+
+<!-- one комплектация row: name · leader · value · quantity (942:34567;
+     mobile 2028:116117). Module names are long, so below `md` the name column
+     is fixed at 170px and WRAPS to two lines — and with it the dotted leader
+     goes away, exactly as the mobile frame draws it: there is no gap left to
+     lead across. -->
+<template data-package-row>
+  <div class="flex h-11 items-center gap-3 max-md:h-auto max-md:min-h-10 max-md:items-start max-md:gap-2 max-md:py-1">
+    <span class="shrink-0 text-body-n text-text-secondary max-md:w-[170px] max-md:text-m-body-s" data-package-name></span>
+    <span class="spec-leader flex-1 max-md:hidden"></span>
+    <span class="ml-1 w-[130px] shrink-0 text-body-n text-text-primary max-md:ml-0 max-md:w-[100px] max-md:text-m-body-s" data-package-value></span>
+    <span class="w-[53px] shrink-0 text-body-n text-text-primary max-md:w-10 max-md:text-m-body-s" data-package-qty></span>
+  </div>
+</template>
+
+<!-- one document link (942:34319 / mobile 2029:116838) -->
+<template data-doc-link>
+  <div class="flex h-11 items-center max-md:h-auto max-md:py-1.5">
+    <a href="#" class="flex items-center gap-1 text-body-n text-text-primary max-md:items-start max-md:text-m-body-l" data-doc-href>
+      <img src="../../assets/pdp/icon-doc.svg" alt="" class="size-5 shrink-0" />
+      <span class="underline decoration-from-font underline-offset-2" data-doc-name></span>
+    </a>
+  </div>
+</template>

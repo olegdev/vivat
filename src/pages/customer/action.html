@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Акции</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./action.js"></script>
+  </head>
+  <body class="bg-bg-page text-text-primary">
+    <!-- Акции — the promo listing page. Desktop = Figma Action 2248:97191 (fixed
+         1440 canvas); mobile = Figma 2248:110193 (single-column tiles, one-row
+         product rail, bottom-nav). One responsive DOM, `max-md:` at the call
+         site, like main.html and catalog.html. Everything on this page is a
+         component the other two pages already own: the promo tile (the home
+         page's "А как вам вот такое" tiles, hover and all), the carousel rail,
+         the green SEO band, and the shared chrome from src/partials/. -->
+    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- <template>s cloned by the sections below (inert markup) -->
+      <!--#include partials/promo-card.html -->
+      <!--#include partials/product-card.html -->
+
+      <!-- ==================== BREADCRUMBS ============================== -->
+      <nav class="flex items-center gap-2 px-10 py-4 text-body-s text-text-secondary max-md:px-4 max-md:py-2 max-md:text-m-body-s">
+        <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
+        <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
+        <span class="text-text-primary">Акции</span>
+      </nav>
+
+      <!-- ==================== TITLE BLOCK ==============================
+           Figma title-block 2248:97194 — 24px lead-in, H1, and an empty
+           `buttons` frame: no controls next to the title (see CLAUDE.md ›
+           don't invent elements). -->
+      <div class="px-10 pt-6 max-md:px-4 max-md:pt-3">
+        <h1 class="text-h1 text-text-primary max-md:text-m-h1">Акции</h1>
+      </div>
+
+      <!-- ==================== PROMO TILES ==============================
+           Figma products 2248:97196 — a wrapping 3-col grid of the same
+           `news-card` the home page rails (437px squares, 24px gutters); below
+           `md` it is one tile per row (2248:112626). The unit is the
+           <template> in partials/promo-card.html, cloned per promo by
+           action.js — the future Blade @foreach body. -->
+      <div class="grid grid-cols-3 gap-6 px-10 pt-1 max-md:grid-cols-1 max-md:gap-6 max-md:px-4" data-promo-grid></div>
+
+      <!-- ==================== CN: Подпишитесь на нас ===================
+           Figma social 2248:110142 — same block as the home page's, in its
+           own variant: `surface-accent-alt-subtle` at radius `l` (not the
+           home pill), H3 + BodyL copy, and the promo-specific second line.
+           The 360 frame (2248:110193) has no counterpart for it — that frame is
+           a partial copy — so below `md` this follows the home page's mobile
+           block instead (1968:220411): m-h3 / m-body-l, 40px icon boxes over a
+           32px glyph, and the same 64/32 lead-in and tail. -->
+      <section class="flex px-10 pt-24 max-md:px-4 max-md:pb-8 max-md:pt-16">
+        <div class="flex w-full flex-col items-center gap-4 rounded-[var(--radius-l)] bg-surface-accent-alt-subtle px-10 py-8 max-md:px-0">
+          <div class="flex flex-col items-center text-center max-md:gap-0">
+            <p class="text-h3 text-text-primary max-md:text-m-h3">Подпишитесь на нас в соцсетях</p>
+            <p class="text-body-l text-text-primary max-md:text-m-body-l">чтобы не пропустить новые акции!</p>
+          </div>
+          <!-- 6 separate links; 80px box / 64px glyph / 12px gap (Container
+               2248:110147), same sizes as the home page's desktop block, and its
+               40 / 32 / 8 below `md`. -->
+          <div class="flex items-center gap-3 max-md:gap-2">
+            <a href="#" aria-label="Дзен" class="social-icon size-20 max-md:size-10"><span class="size-16 max-md:size-8 social-zen"></span></a>
+            <a href="#" aria-label="ВКонтакте" class="social-icon size-20 max-md:size-10"><span class="size-16 max-md:size-8 social-vk"></span></a>
+            <a href="#" aria-label="Telegram" class="social-icon size-20 max-md:size-10"><span class="size-16 max-md:size-8 social-tg"></span></a>
+            <a href="#" aria-label="YouTube" class="social-icon size-20 max-md:size-10"><span class="size-16 max-md:size-8 social-yt"></span></a>
+            <a href="#" aria-label="Rutube" class="social-icon size-20 max-md:size-10"><span class="size-16 max-md:size-8 social-rt"></span></a>
+            <a href="#" aria-label="MAX" class="social-icon size-20 max-md:size-10"><span class="size-16 max-md:size-8 social-max"></span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== CAROUSEL: Популярные товары на акции ==== -->
+      <div data-section="popular-action"></div>
+
+      <div class="h-20 max-md:h-20"></div>
+
+      <!-- ==================== SEO / INFO BLOCK ======================== -->
+      <!--#include partials/seo-kitchens.html -->
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+  </body>
+</html>

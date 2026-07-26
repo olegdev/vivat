@@ -1,0 +1,36 @@
+<!-- ==================== PROMO / NEWS CARD templates ====================
+     Figma UI SYSTEM `news-card` (635:5432 desktop / 1821:326198 mobile) — the
+     square promo tile used by the home page's "А как вам вот такое" rail and by
+     every tile of the Акции page grid. One clean HTML unit the owning component
+     clones per promo (components/promo-card.js) — the future Blade @foreach body.
+
+     Hover (variants 635:5551 / 637:18208): the caption greys to text-secondary
+     and the media zooms 5% (`.promo-zoom`); the coral tile drifts its triangle
+     clusters instead (`.promo-coral`). Both are pure CSS off the `group`.
+
+     The card carries no width: the rail (home) and the grid (Акции) size their
+     own children, so the same unit fits both. -->
+
+<template data-promo-card>
+  <div class="group flex flex-col gap-4 max-md:gap-3">
+    <div data-promo-media class="relative aspect-square w-full overflow-hidden rounded-n bg-bg-subtle"></div>
+    <p
+      data-promo-caption
+      class="text-center text-body-xl text-text-primary transition-colors group-hover:text-text-secondary max-md:text-m-body-xl"
+    ></p>
+  </div>
+</template>
+
+<!-- Media, one per `type`. Each carries the constant 10% wash (the `overlay`
+     rect, 634:5416) — that is a token on the base variant, not a hover state.
+     The coral tile is an inlined SVG that brings its own overlay, so it has no
+     template here (see components/promo-card.js). -->
+<template data-promo-img>
+  <img data-promo-src alt="" draggable="false" class="absolute max-w-none" />
+  <span class="pointer-events-none absolute inset-0 bg-overlay-light"></span>
+</template>
+
+<template data-promo-video>
+  <video data-promo-src class="size-full object-cover" data-restart autoplay muted loop playsinline></video>
+  <span class="pointer-events-none absolute inset-0 bg-overlay-light"></span>
+</template>

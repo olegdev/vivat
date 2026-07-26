@@ -1,0 +1,17 @@
+<!-- ==================== REVIEW CARD template ============================
+     Figma `review-card` device=desktop condition=default (766:39855): a 437px
+     white card, 1px `border-light`, radius `l`, 24px padding — body text, then
+     the author's name and date in muted `body-s`. Below `md` it is the 320×292
+     tile (1997:315107), the same width as every other card in the PDP's mobile
+     rails. The rail it rides is the same carouselSection() shell the product
+     rails use; components/review-card.js clones this unit per review (the
+     future Blade @foreach). -->
+<template data-review-card>
+  <article class="flex h-[296px] w-[437px] shrink-0 flex-col justify-between gap-4 rounded-[var(--radius-l)] border border-border-light bg-surface-inverted p-6 max-md:h-[292px] max-md:w-[320px] max-md:snap-start">
+    <p class="overflow-hidden text-body-n text-text-primary max-md:text-m-body-l" data-review-text></p>
+    <div class="flex flex-col gap-0.5">
+      <span class="text-body-s text-text-secondary max-md:text-m-body-s" data-review-name></span>
+      <span class="text-body-s text-text-secondary max-md:text-m-body-s" data-review-date></span>
+    </div>
+  </article>
+</template>

@@ -6,16 +6,21 @@
      @foreach over $stores / $store->metro.
 
      Below `md` the section keeps only the title block and a 320px map with a
-     centred "Где купить" CTA (Figma section / Наши салоны 1968:71568). -->
-<section class="flex w-[1440px] flex-col bg-surface-accent pb-16 max-md:w-full max-md:bg-bg-page max-md:pb-10">
+     centred "Где купить" CTA (Figma section / Наши салоны 1968:71568).
+
+     The title and description are the only thing that differs per host — the
+     PDP mounts the same block as "Где купить" (map-general 1686:58697) — so
+     they carry data hooks and the copy below is the default. In Blade this
+     becomes @include('partials.stores', ['title' => …, 'description' => …]). -->
+<section id="where" class="flex w-[1440px] flex-col bg-surface-accent pb-16 max-md:w-full max-md:bg-bg-page max-md:pb-10">
   <div class="px-10 max-md:px-4">
     <div class="h-20 max-md:h-10"></div>
     <div class="flex w-[783px] flex-col max-md:w-full">
       <div class="flex min-h-11 items-center max-md:min-h-6">
-        <h2 class="text-h2 text-text-primary max-md:text-m-h2">Наши салоны</h2>
+        <h2 class="text-h2 text-text-primary max-md:text-m-h2" data-stores-title>Наши салоны</h2>
       </div>
       <div class="h-2 max-md:h-1"></div>
-      <p class="text-body-n-accent text-text-primary max-md:text-m-body-n">
+      <p class="text-body-n-accent text-text-primary max-md:text-m-body-n" data-stores-desc>
         Наша продукция продается в сотнях городов России в наших официальных
         магазинах и дилерских центрах.
       </p>
@@ -24,7 +29,7 @@
   </div>
 
   <div class="px-10 max-md:px-4">
-    <div class="flex overflow-hidden rounded-l shadow-dropdown max-md:shadow-none">
+    <div class="flex overflow-hidden rounded-[var(--radius-l)] shadow-dropdown max-md:shadow-none">
       <!-- left panel -->
       <aside class="flex h-[680px] w-[440px] shrink-0 flex-col bg-surface-inverted max-md:hidden">
         <div class="flex flex-col gap-2 border-b border-divider-light pb-4 pl-10 pr-6 pt-6">

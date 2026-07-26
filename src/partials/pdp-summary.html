@@ -1,0 +1,86 @@
+<!-- ==================== PDP SUMMARY PANEL ==============================
+     Figma `summary` device=desktop Customer=b2c Type=PDP (922:98746) and its
+     mobile counterpart (1997:313148). Desktop: a 412px card beside the photo
+     column — 1px `border-light`, radius `n`, white. Mobile: full width, no
+     border, and the price sits in a `bg-subtle` card at the bottom.
+
+     **The two faces order the blocks differently**, which is the only reason
+     `order-*` appears here: desktop reads title → colours → size → geometry →
+     price, mobile reads title → size → geometry → colours → price. The DOM is
+     authored in desktop order and `max-md:order-*` re-sequences it, so there is
+     one set of markup rather than two (and the Blade port stays one partial).
+
+     Structure only; pdp.js fills the swatches from data and drives the two
+     controls. The `service-icons` slot next to the desktop title is
+     white-on-white in the design — an invisible element, so it is not rendered
+     (CLAUDE.md › don't invent elements); mobile's share action lives on the
+     photo instead (partials/pdp-photo-overlay.html). -->
+<aside
+  class="flex w-[412px] shrink-0 flex-col self-start rounded-n border border-border-light bg-surface-inverted max-md:w-full max-md:rounded-none max-md:border-0 max-md:pt-2"
+  data-pdp-summary
+>
+  <!-- `contents` below `md` so the four blocks become direct flex children of
+       the panel and their `order-*` applies against the price block too. Their
+       own padding moves onto each block, since this wrapper has no box then. -->
+  <div class="flex flex-col gap-4 p-6 max-md:contents">
+    <h1 class="text-h3 text-text-primary max-md:order-1 max-md:px-4 max-md:pb-2" data-pdp-title>Кухня Фьюжн-05</h1>
+
+    <!-- colour swatches + the selected colour's name -->
+    <div class="flex flex-col gap-2.5 max-md:order-4 max-md:px-4 max-md:pb-4">
+      <div class="flex items-center gap-3 max-md:gap-4" data-pdp-colors></div>
+      <p class="text-body-s text-text-secondary" data-pdp-color-name></p>
+    </div>
+
+    <!-- size / material, with the link into the Характеристики block -->
+    <div class="flex flex-col max-md:order-2 max-md:px-4 max-md:pb-2">
+      <p class="text-body-n text-text-primary" data-pdp-size></p>
+      <a href="#specs" class="w-fit text-body-n text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary" data-pdp-more>Подробнее</a>
+    </div>
+
+    <!-- geometry (Прямая / Угловая) — `segments` size=l outline=on, 32px pills.
+         Only two fit the 160px desktop frame; below `md` the pair fills the row
+         (1997:313165), so the segments grow instead of hugging their labels. -->
+    <div class="flex items-center gap-1 max-md:order-3 max-md:gap-2 max-md:px-4 max-md:pb-2" role="radiogroup" aria-label="Геометрия" data-pdp-geometry>
+      <button type="button" class="pdp-segment max-md:h-10 max-md:flex-1" aria-checked="true" role="radio" value="pryamaya">Прямая</button>
+      <button type="button" class="pdp-segment max-md:h-10 max-md:flex-1" aria-checked="false" role="radio" value="uglovaya">Угловая</button>
+    </div>
+  </div>
+
+  <!-- Price block. Desktop: a divider inside the white card. Mobile: a
+       `bg-subtle` card inset by 16px, and NO order button — the mobile CTA
+       lives in the bottom bar (partials/sticky-price.html). -->
+  <div class="flex flex-col gap-3 border-t border-divider-light px-6 py-6 max-md:order-5 max-md:mx-4 max-md:gap-3 max-md:rounded-n max-md:border-0 max-md:bg-bg-subtle max-md:p-4">
+    <div class="flex items-center gap-4 max-md:gap-2">
+      <div class="flex items-baseline gap-2">
+        <span class="text-body-n-accent text-text-primary max-md:text-m-body-n-accent">от</span>
+        <span class="text-h3 text-text-primary max-md:text-m-h2" data-pdp-price></span>
+        <span class="text-body-n text-text-secondary line-through empty:hidden max-md:text-m-body-s-crossed" data-pdp-oldprice></span>
+      </div>
+      <span class="badge badge-s badge-discount empty:hidden" data-pdp-discount></span>
+    </div>
+
+    <button type="button" class="btn btn-m btn-primary w-fit max-md:hidden" data-pdp-order>Сформировать заказ</button>
+
+    <!-- `notice` 943:108544 — 16px warning glyph + 14/18 muted copy -->
+    <p class="flex gap-2 pt-0.5 text-body-s text-text-secondary max-md:pt-0">
+      <img src="../../assets/pdp/icon-warning.svg" alt="" class="mt-0.5 size-4 shrink-0" />
+      <span>Дилерская наценка может отличаться в зависимости от региона!</span>
+    </p>
+  </div>
+</aside>
+
+<!-- one colour swatch (future @foreach($product->colors as $color)).
+     `color-swatch` 629:26578 is a solid `color` frame with an optional image
+     over it, so a datum carries either — the same split as the product card's
+     swatches. 28px on desktop, 32px below `md` (1997:313155). -->
+<template data-pdp-swatch>
+  <button type="button" class="pdp-swatch max-md:size-8" aria-checked="false" role="radio"></button>
+</template>
+<template data-pdp-swatch-img>
+  <img alt="" class="size-full rounded-full object-cover" />
+</template>
+
+<!-- one dot under the mobile photo rail -->
+<template data-pdp-photo-dot>
+  <button type="button" class="carousel-dot" aria-current="false"><span></span></button>
+</template>

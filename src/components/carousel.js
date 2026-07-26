@@ -35,25 +35,56 @@ function chips(tabs = []) {
 }
 
 // ---- carousel section shell (title-block + arrows + track) ------------------
-export function carouselSection({ title, desc, action = "В раздел", tabs }) {
+// `desktopAction: false` for the sections whose Figma title-block carries an
+// empty `buttons` frame (the Акции page's rail, 2248:97229) — the mobile action
+// under the rail is part of the mobile `other-row` and stays either way.
+//
+// `desc` is optional: a Figma title-block with a description is 178 tall, one
+// without is 148 (the PDP's Модули / Отзывы / Вся коллекция rails), so the
+// paragraph and its 8px lead-in drop out together rather than rendering empty.
+// `count` is the muted number the PDP prints next to a title ("Отзывы 4").
+// `arrowTop` places the arrows on the card's image box — it differs per rail
+// because the card heights do.
+export function carouselSection({
+  title,
+  desc,
+  count,
+  action = "В раздел",
+  href = "#",
+  tabs,
+  desktopAction = true,
+  mobileAction = true,
+  mobileProgress = true,
+  arrowTop = 139,
+  id,
+}) {
   return `
-  <section class="flex flex-col">
+  <section class="flex flex-col"${id ? ` id="${id}"` : ""}>
     <div class="px-10 max-md:px-4">
       <div class="h-20 max-md:h-10"></div>
       <div class="flex items-start justify-between">
         <div class="flex w-[783px] flex-col max-md:w-full">
-          <div class="flex min-h-11 items-center max-md:min-h-6">
+          <div class="flex min-h-11 items-center gap-3 max-md:min-h-6 max-md:gap-2">
             <h2 class="text-h2 text-text-primary max-md:text-m-h2">${title}</h2>
+            ${count != null ? `<span class="text-h2 text-text-muted max-md:text-m-h2">${count}</span>` : ""}
           </div>
-          <div class="h-2 max-md:h-1"></div>
-          <p class="text-body-n-accent text-text-primary max-md:text-m-body-n">${desc}</p>
+          ${
+            desc
+              ? `<div class="h-2 max-md:h-1"></div>
+          <p class="text-body-n-accent text-text-primary max-md:text-m-body-n">${desc}</p>`
+              : ""
+          }
         </div>
-        <div class="flex h-11 items-start px-2 max-md:hidden">
-          <a href="#" class="btn btn-m btn-secondary">
+        ${
+          desktopAction
+            ? `<div class="flex h-11 items-start px-2 max-md:hidden">
+          <a href="${href}" class="btn btn-m btn-secondary">
             <span>${action}</span>
             <img src="${ICON}/arrow-right-24.svg" alt="" class="size-6" />
           </a>
-        </div>
+        </div>`
+            : ""
+        }
       </div>
       ${chips(tabs)}
       <div class="h-6 max-md:h-3"></div>
@@ -62,21 +93,25 @@ export function carouselSection({ title, desc, action = "В раздел", tabs 
       <div class="overflow-hidden max-md:scroll-rail max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto" data-viewport>
         <div class="flex gap-6 transition-transform duration-500 ease-out will-change-transform max-md:gap-2" data-track></div>
       </div>
-      <button data-prev aria-label="Назад" class="carousel-arrow absolute left-4 top-[139px] max-md:hidden">
+      <button data-prev aria-label="Назад" class="carousel-arrow absolute left-4 max-md:hidden" style="top:${arrowTop}px">
         <img src="${ICON}/chevron-left.svg" alt="" class="size-6" />
       </button>
-      <button data-next aria-label="Вперёд" class="carousel-arrow absolute right-4 top-[139px] max-md:hidden">
+      <button data-next aria-label="Вперёд" class="carousel-arrow absolute right-4 max-md:hidden" style="top:${arrowTop}px">
         <img src="${ICON}/chevron-right.svg" alt="" class="size-6" />
       </button>
     </div>
     <div class="hidden max-md:block">
-      <div class="scroll-progress" data-progress><span><i></i></span></div>
-      <div class="px-4 pt-2">
-        <a href="#" class="btn btn-m btn-secondary w-full">
+      ${mobileProgress ? `<div class="scroll-progress" data-progress><span><i></i></span></div>` : ""}
+      ${
+        mobileAction
+          ? `<div class="px-4 pt-2">
+        <a href="${href}" class="btn btn-m btn-secondary w-full">
           <span>${action}</span>
           <img src="${ICON}/arrow-right-24.svg" alt="" class="size-6" />
         </a>
-      </div>
+      </div>`
+          : ""
+      }
     </div>
   </section>`;
 }
@@ -106,19 +141,25 @@ export function enableDragScroll(el, { ignore } = {}) {
     // started from. It comes back on release, which is what eases the rail onto
     // the nearest card.
     el.style.scrollSnapType = "none";
-    // Capture, so a flick that runs past the edge of the rail keeps scrolling
-    // instead of dying the moment the cursor leaves the element.
-    try {
-      el.setPointerCapture(e.pointerId);
-    } catch {
-      /* pointer already gone */
-    }
   });
 
   el.addEventListener("pointermove", (e) => {
     if (!dragging) return;
     const dx = e.clientX - startX;
     if (!moved && Math.abs(dx) < 4) return;
+    // Capture only once the pointer has actually travelled, so a flick that runs
+    // past the edge of the rail keeps scrolling instead of dying the moment the
+    // cursor leaves the element. Capturing on `pointerdown` instead made the
+    // rail swallow every plain click: with capture live, the browser dispatches
+    // the click on the capturing element, so a tab chip inside the rail never
+    // saw its own click and the mobile-width tabs were dead.
+    if (!moved) {
+      try {
+        el.setPointerCapture(e.pointerId);
+      } catch {
+        /* pointer already gone */
+      }
+    }
     moved = true;
     el.scrollLeft = startScroll - dx;
     e.preventDefault();
@@ -243,15 +284,24 @@ export function initCarousel(sectionEl) {
 }
 
 // Builds a carousel section into `anchor` and wires it. `cfg` is the
-// carouselSection() config (title / desc / action / tabs / endpoint); `items`
-// are product-card descriptors.
+// carouselSection() config (title / desc / action / tabs / endpoint /
+// desktopAction), plus `mobileCard` — which mobile card shape the rail uses —
+// and `variant`, which Figma card component, both handed to renderCarousel().
+// `items` are product-card descriptors.
+//
+// `cfg.render` swaps the unit the rail is made of: the PDP's Отзывы rail is the
+// same section shell (title-block, arrows, native mobile scroll) filled with
+// review cards instead of products. Anything that renders into [data-track] and
+// leaves `article` elements behind works with the rest of the machinery.
 export function mountCarousel(anchor, cfg, items) {
   if (!anchor) return;
   anchor.innerHTML = carouselSection(cfg);
   const track = anchor.querySelector("[data-track]");
-  renderCarousel(track, items);
+  const cardOpts = { mobile: cfg.mobileCard, variant: cfg.variant };
+  const render = cfg.render || renderCarousel;
+  render(track, items, cardOpts);
   const carousel = initCarousel(anchor);
-  if (cfg.tabs?.length) initTabs(anchor, track, carousel, cfg, items);
+  if (cfg.tabs?.length) initTabs(anchor, track, carousel, cfg, items, cardOpts, render);
 }
 
 // Category tabs over a carousel (e.g. Популярные товары). This is a REQUEST
@@ -264,7 +314,7 @@ export function mountCarousel(anchor, cfg, items) {
 //     renderCarousel(track, await res.json());   // server-rendered/JSON cards
 //
 // The tab markup (chips) and the card markup don't change when that swap lands.
-function initTabs(anchor, track, carousel, cfg, items) {
+function initTabs(anchor, track, carousel, cfg, items, cardOpts, render = renderCarousel) {
   const chipsRow = anchor.querySelector("[data-chips]");
   if (!chipsRow) return;
   // chips() also renders a trailing "еще" more-button — the tabs are the first
@@ -277,7 +327,7 @@ function initTabs(anchor, track, carousel, cfg, items) {
       const label = cfg.tabs[i];
       // --- SEAM: load this tab's products (swap the body for a fetch, above) ---
       const shown = i === 0 ? items : items.filter((p) => p.tab === label);
-      renderCarousel(track, shown);
+      render(track, shown, cardOpts);
       carousel.reset();
     });
   });

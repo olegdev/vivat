@@ -86,8 +86,8 @@
               <img src="../../assets/header/icon-burger.svg" alt="" class="size-6" data-catalog-icon />
               <span class="text-button-m text-text-inverse-primary">Весь каталог</span>
             </button>
-            <a href="#" class="btn btn-m btn-ghost">Кухни</a>
-            <a href="#" class="btn btn-m btn-ghost">Акции</a>
+            <a href="catalog.html" class="btn btn-m btn-ghost">Кухни</a>
+            <a href="action.html" class="btn btn-m btn-ghost">Акции</a>
             <a href="#" class="btn btn-m btn-ghost">Где купить</a>
           </nav>
         </div>
@@ -113,13 +113,16 @@
           </button>
         </form>
       </div>
-      <!-- order icon — count badge driven by components/cart.js -->
-      <button class="icon-btn relative" data-cart aria-label="Корзина">
-        <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" />
-        <span
-          data-cart-count
-          class="absolute -right-0.5 -top-0.5 hidden size-5 items-center justify-center rounded-full bg-components-red text-body-xs text-text-inverse-primary [&:not(.hidden)]:flex"
-        >0</span>
+      <!-- order icon — count badge driven by components/cart.js. `icon-button`
+           (450:13425) is a row [circle 44][badge 20] at gap -12, so the badge is
+           an in-flow sibling and the control grows to 52 when it shows; the
+           variant here is `design=dark`. See SOLUTIONS.md › "Badges are layout,
+           not overlay". -->
+      <button class="flex h-11 shrink-0 items-center" data-cart aria-label="Корзина">
+        <span class="icon-btn">
+          <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" />
+        </span>
+        <span data-cart-count class="badge-number badge-number--dark -ml-3 hidden self-start">0</span>
       </button>
     </div>
   </div>

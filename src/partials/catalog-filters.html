@@ -24,7 +24,7 @@
     class="filter-drawer__panel absolute left-0 top-0 flex h-full w-[478px] max-w-full flex-col bg-surface-inverted shadow-dropdown"
   >
     <!-- header -->
-    <div class="flex h-16 shrink-0 items-center justify-between px-10">
+    <div class="flex h-16 shrink-0 items-center justify-between px-10 max-md:px-4">
       <h2 class="text-h4 text-text-primary">Фильтры</h2>
       <button
         type="button"
@@ -37,7 +37,7 @@
     </div>
 
     <!-- form: the request payload. `name`s are the query contract. -->
-    <form data-filter-form class="flex-1 overflow-y-auto px-10">
+    <form data-filter-form class="flex-1 overflow-y-auto px-10 max-md:px-4">
       <!-- ---- Коллекция ---- -->
       <details data-filter-section="collection" open class="group border-t border-divider-soft">
         <summary
@@ -182,7 +182,7 @@
     </form>
 
     <!-- footer: reset + apply. "Показать N" count is kept live by applyFilters(). -->
-    <div class="flex h-16 shrink-0 items-center justify-between gap-6 bg-surface-default px-10">
+    <div class="flex h-16 shrink-0 items-center justify-between gap-6 bg-surface-default px-10 max-md:px-4">
       <button
         type="button"
         data-filter-clear

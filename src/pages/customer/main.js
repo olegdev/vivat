@@ -1,21 +1,18 @@
 import "../../styles/app.css";
-// Inlined rather than <img src>: the hover animation transforms the three
-// triangle clusters individually, which only CSS-in-the-document can reach.
-// It lives in src/ (not public/) so Vite resolves and inlines it — same reason
-// the social glyphs do, see app.css.
-import CORAL_SVG from "../../components/promo-coral.svg?raw";
 import {
   mountCarousel,
   setCarouselIconBase,
   enableDragScroll,
   initScrollProgress,
 } from "../../components/carousel.js";
+import { renderPromoTiles } from "../../components/promo-card.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initHeroSlider } from "../../components/hero-slider.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
 import { initMobileMenu } from "../../components/mobile-menu.js";
+import { stores } from "../../data/stores.js";
 
 // This page lives at dist/pages/customer/main.html — assets sit two levels up.
 const ASSET_ROOT = "../../assets";
@@ -104,66 +101,15 @@ const modularItems = [
   comments: 2,
 }));
 
-// Restarts a tile's video when the pointer enters it, the way the prototype
-// replays the clip on hover. Touch never fires this, so mobile keeps the plain
-// autoplay loop.
-function initPromoHoverVideo(sectionEl) {
-  sectionEl.querySelectorAll("video[data-restart]").forEach((v) => {
-    const tile = v.closest(".group");
-    tile?.addEventListener("pointerenter", (e) => {
-      if (e.pointerType === "touch") return;
-      v.currentTime = 0;
-      v.play().catch(() => {});
-    });
-  });
-}
-
 // ---- promo tiles section (А как вам вот такое) ------------------------------
 // Per the Figma design this is NOT a slider (no arrows): a static row of 5 square
 // tiles, centered so the middle three are fully visible and the edge two peek.
-// Every tile is the same Figma `news-card`, whose hover variant (635:5551 /
-// 637:18208) greys the caption to #808080 and either zooms the media 5% or, on
-// the coral "animation" type, drifts the triangle clusters (see .promo-coral).
-function promoTile(t) {
-  let media;
-  if (t.type === "coral") {
-    // The coral tile's SVG carries its own overlay rect, so it needs no extra.
-    media = CORAL_SVG;
-  } else if (t.video) {
-    // Figma fills the 437 square with the video. `data-restart` rewinds it on
-    // hover, matching the prototype's replay-from-the-top behaviour.
-    media = `<video class="size-full object-cover"
-      src="${t.video}" ${t.poster ? `poster="${t.poster}"` : ""} ${
-      t.offset ? `data-offset="${t.offset}"` : ""
-    } data-restart autoplay muted loop playsinline></video>`;
-  } else {
-    // `crop` is the image fill's box in Figma, as % of the 437 square.
-    const c = t.crop;
-    media = `<img src="${t.img}" alt="${t.caption}" class="absolute max-w-none" draggable="false"
-      style="left:${c.left};top:${c.top};width:${c.width};height:${c.height}" />`;
-  }
-  // Every news-card variant sits under a constant 10% #141414 wash (the
-  // `overlay` rect, e.g. 634:5416) — it is not a hover state, it is always on.
-  const overlay =
-    t.type === "coral"
-      ? ""
-      : `<span class="pointer-events-none absolute inset-0 bg-overlay-light"></span>`;
-  const box =
-    t.type === "coral" ? "promo-coral" : t.zoom || t.video ? "promo-zoom" : "";
-  // The two clipped edge tiles exist only to bleed off the 1440 canvas; the
-  // 360px frame (1968:71551) carries three whole tiles instead.
-  const scope = t.desktopOnly ? " max-md:hidden" : "";
-  return `
-    <div class="group flex w-[437px] shrink-0 flex-col gap-4 max-md:w-[320px] max-md:snap-start max-md:gap-3${scope}">
-      <div class="${box} relative aspect-square w-full overflow-hidden rounded-n bg-bg-subtle">${media}${overlay}</div>
-      <p class="text-center text-body-xl text-text-primary transition-colors group-hover:text-text-secondary max-md:text-m-body-xl">${t.caption}</p>
-    </div>`;
-}
-
-// Desktop centres the row so the edge tiles peek; mobile scrolls the same tiles
-// as a rail with a progress bar and a full-width action underneath
-// (Figma section / А как вам 1968:71549).
-function promoSection({ title, action = "Все акции", tiles }) {
+// The tiles themselves are the shared `news-card` unit — markup in
+// partials/promo-card.html, filled by renderPromoTiles(); this section only
+// supplies the shell around them. The rail sizes its own children (the two
+// clipped edge tiles bleed off the 1440 canvas; the 360px frame 1968:71551
+// carries three whole tiles instead), so the tile unit carries no width.
+function promoSection({ title, action = "Все акции" }) {
   return `
   <section class="flex flex-col">
     <div class="px-10 max-md:px-4">
@@ -178,9 +124,10 @@ function promoSection({ title, action = "Все акции", tiles }) {
       <div class="h-6 max-md:h-3"></div>
     </div>
     <div class="w-[1440px] overflow-hidden max-md:scroll-rail max-md:w-full max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:px-4" data-viewport>
-      <div class="flex justify-center gap-6 max-md:justify-start max-md:gap-3" data-promo-track>${tiles
-        .map(promoTile)
-        .join("")}</div>
+      <div
+        class="flex justify-center gap-6 *:w-[437px] *:shrink-0 max-md:justify-start max-md:gap-3 max-md:*:w-[320px] max-md:*:snap-start"
+        data-promo-track
+      ></div>
     </div>
     <div class="hidden max-md:block">
       <div class="scroll-progress" data-progress><span><i></i></span></div>
@@ -204,7 +151,7 @@ const PROMO_PHOTO_CROP = { left: "-12.67%", top: "-39.82%", width: "169.05%", he
 
 const promoTiles = [
   { type: "coral", desktopOnly: true, caption: "Столешница в подарок к кухне!" },
-  { img: `${HOME}/promo-1-src.png`, crop: PROMO_PHOTO_CROP, zoom: true, caption: "Столешница в подарок к кухне!" },
+  { img: `${HOME}/promo-1-src.png`, crop: PROMO_PHOTO_CROP, caption: "Столешница в подарок к кухне!" },
   {
     video: `${HOME}/promo-chair.mp4`,
     poster: `${HOME}/promo-chair-poster.jpg`,
@@ -412,116 +359,13 @@ for (const [name, { cfg, items }] of Object.entries(sections)) {
 // promo tiles (distinct layout)
 const promoAnchor = document.querySelector('[data-section="promo"]');
 if (promoAnchor) {
-  promoAnchor.innerHTML = promoSection({ title: "А как вам вот такое", tiles: promoTiles });
+  promoAnchor.innerHTML = promoSection({ title: "А как вам вот такое" });
+  renderPromoTiles(promoAnchor.querySelector("[data-promo-track]"), promoTiles);
   initScrollProgress(promoAnchor);
-  initPromoHoverVideo(promoAnchor);
   enableDragScroll(promoAnchor.querySelector("[data-viewport]"));
-  // Offset the reused video so it plays out of sync with the middle one.
-  promoAnchor.querySelectorAll("video[data-offset]").forEach((v) => {
-    const seek = () => {
-      if (v.duration) v.currentTime = Number(v.dataset.offset) % v.duration;
-    };
-    v.readyState >= 1 ? seek() : v.addEventListener("loadedmetadata", seek, { once: true });
-  });
 }
 
 // ---- Наши салоны (Yandex Maps) ----------------------------------------------
-// Mock dealer network — 10 points around Moscow. `coords` is [lon, lat], the
-// order ymaps3 expects. `brand: true` = own VIVAT store, false = dealer centre;
-// the "Только фирменные магазины" toggle filters on it.
-const stores = [
-  {
-    name: "Фирменный магазин VIVAT",
-    brand: true,
-    address: "16-й км МКАД, 50 метров от внешней стороны, ул. Энергетиков, д. 22, корп. 3",
-    metro: ["Жулебино", "Котельники"],
-    coords: [37.8567, 55.6588],
-    hours: "Ежедневно, 10:00 — 21:00",
-    phone: "+7 (495) 120-45-01",
-  },
-  {
-    name: "Фирменный магазин VIVAT",
-    brand: true,
-    address: "г. Химки, Ленинградское ш., 5, ТЦ «Гранд», 2-й этаж",
-    metro: ["Планерная"],
-    coords: [37.4102, 55.8792],
-    hours: "Ежедневно, 10:00 — 22:00",
-    phone: "+7 (495) 120-45-02",
-  },
-  {
-    name: "Фирменный магазин VIVAT",
-    brand: true,
-    address: "Каширское ш., 61Г, ТЦ «Москворечье», 1-й этаж",
-    metro: ["Каширская", "Кантемировская"],
-    coords: [37.6510, 55.6432],
-    hours: "Ежедневно, 10:00 — 21:00",
-    phone: "+7 (495) 120-45-03",
-  },
-  {
-    name: "Дилерский центр «Мебель-Град»",
-    brand: false,
-    address: "Дмитровское ш., 163А, ТЦ «РИО», 3-й этаж",
-    metro: ["Алтуфьево"],
-    coords: [37.5661, 55.8891],
-    hours: "Пн — Вс, 10:00 — 22:00",
-    phone: "+7 (495) 771-16-40",
-  },
-  {
-    name: "Фирменный магазин VIVAT",
-    brand: true,
-    address: "Ленинградское ш., 16А, стр. 4, БЦ «Метрополис»",
-    metro: ["Войковская", "Сокол"],
-    coords: [37.4991, 55.8199],
-    hours: "Ежедневно, 10:00 — 21:00",
-    phone: "+7 (495) 120-45-05",
-  },
-  {
-    name: "Дилерский центр «Кухни Плюс»",
-    brand: false,
-    address: "ул. Профсоюзная, 61А, ТЦ «Калужский», 4-й этаж",
-    metro: ["Новые Черёмушки"],
-    coords: [37.5405, 55.6708],
-    hours: "Пн — Сб, 10:00 — 21:00 · Вс, 11:00 — 20:00",
-    phone: "+7 (495) 334-72-18",
-  },
-  {
-    name: "Фирменный магазин VIVAT",
-    brand: true,
-    address: "Варшавское ш., 87Б, ТЦ «Варшавский», 2-й этаж",
-    metro: ["Варшавская", "Нагатинская"],
-    coords: [37.6180, 55.6620],
-    hours: "Ежедневно, 10:00 — 21:00",
-    phone: "+7 (495) 120-45-07",
-  },
-  {
-    name: "Дилерский центр «ДомМебель»",
-    brand: false,
-    address: "Рязанский пр-т, 2, корп. 2, ТЦ «Город», 1-й этаж",
-    metro: ["Нижегородская"],
-    coords: [37.7350, 55.7280],
-    hours: "Пн — Вс, 10:00 — 22:00",
-    phone: "+7 (495) 660-09-33",
-  },
-  {
-    name: "Фирменный магазин VIVAT",
-    brand: true,
-    address: "Новорижское ш., 5-й км, МКЦ «Гранд», павильон 214",
-    metro: ["Мякинино"],
-    coords: [37.3893, 55.8258],
-    hours: "Ежедневно, 10:00 — 21:00",
-    phone: "+7 (495) 120-45-09",
-  },
-  {
-    name: "Дилерский центр «Интерьер-Холл»",
-    brand: false,
-    address: "г. Мытищи, Осташковское ш., 1, ТЦ «Красный Кит», 3-й этаж",
-    metro: ["Медведково"],
-    coords: [37.7370, 55.9040],
-    hours: "Пн — Вс, 10:00 — 21:00",
-    phone: "+7 (495) 419-55-06",
-  },
-];
-
 const storesAnchor = document.querySelector('[data-section="salony"]');
 if (storesAnchor) {
   setStoresMapBases({ home: HOME });

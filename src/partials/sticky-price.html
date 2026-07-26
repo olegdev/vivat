@@ -1,0 +1,54 @@
+<!-- ==================== STICKY PRICE BAR ================================
+     Figma `sticky-price` device=desktop (1884:366292), shown in the "sticky
+     price" frame 1884:366246: a 48px white bar pinned to the bottom of the
+     viewport once the summary panel's order button has scrolled away. Two
+     `text-action` links on the left, the product + price and a size=s dark
+     button on the right. `shadow-navbar` is the upward shadow the frame draws
+     above the bar (the same token the mobile bottom nav uses).
+
+     Visibility is one class (`is-visible`) toggled by components/pdp.js. -->
+<div class="pdp-sticky fixed inset-x-0 bottom-0 z-40 hidden h-12 bg-surface-inverted shadow-navbar md:block" data-sticky-price>
+  <div class="mx-auto flex h-full w-[1440px] items-center justify-between px-10">
+    <div class="flex items-center gap-4">
+      <a href="#where" class="flex items-center gap-1 text-body-s text-text-primary transition-colors hover:text-text-secondary">
+        <span>Где посмотреть / купить</span>
+        <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-4" />
+      </a>
+      <a href="#reviews" class="flex items-center gap-1 text-body-s text-text-primary transition-colors hover:text-text-secondary">
+        <span>Читать отзывы</span>
+        <img src="../../assets/header/icon-comment.svg" alt="" class="size-4" />
+      </a>
+    </div>
+
+    <div class="flex items-center gap-7">
+      <div class="flex items-center gap-4">
+        <span class="text-body-n-accent text-text-primary" data-sticky-title></span>
+        <div class="flex items-baseline gap-1">
+          <span class="text-body-s text-text-primary">от</span>
+          <span class="text-h4 text-text-primary" data-sticky-price-value></span>
+          <span class="text-body-s text-text-secondary line-through empty:hidden" data-sticky-oldprice></span>
+        </div>
+      </div>
+      <button type="button" class="btn btn-s btn-primary" data-pdp-order>Сформировать заказ</button>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== MOBILE CTA BAR =================================
+     Figma `modal-button-container` 2027:89990, from the DPD viewport frame
+     (2027:83602). A different component from the desktop bar, and a different
+     behaviour: it is **always** on screen, not revealed by scroll — the mobile
+     summary has no order button at all, so this is the only way to order.
+
+     It stacks directly on top of the bottom nav (60px bar over the 72px nav,
+     which is why the page reserves 132px at the bottom below `md`). -->
+<div class="fixed inset-x-0 bottom-[72px] z-40 flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 md:hidden">
+  <a href="#where" class="flex items-center gap-1 px-2 text-m-body-n text-text-secondary">
+    <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5 shrink-0 opacity-60" />
+    <span>Где купить</span>
+  </a>
+  <!-- The button's icon slot renders empty in the live frame — text only. -->
+  <button type="button" class="btn btn-m btn-accent text-m-button-m" data-pdp-order>
+    <span>Оформить&nbsp;• от <span data-sticky-price-value></span></span>
+  </button>
+</div>

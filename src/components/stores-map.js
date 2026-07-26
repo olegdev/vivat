@@ -42,14 +42,21 @@ function loadYmaps(apiKey) {
 // ---- component --------------------------------------------------------------
 // The section shell + the dealer-card / metro-chip <template>s live in
 // partials/stores.html (spliced into the page); this only queries and fills
-// them. `opts.title/description/city` are now static content in the partial.
+// them. `opts.city` is static content in the partial; `title`/`description`
+// override the partial's defaults for a page that mounts the block under a
+// different heading (the PDP's "Где купить").
 export function renderStoresMap(anchor, opts) {
   const {
     stores,
     apiKey,
+    title,
+    description,
     center = [55.7558, 37.6173], // 2.1 takes [lat, lon]
     zoom = 9,
   } = opts;
+
+  if (title) anchor.querySelector("[data-stores-title]").textContent = title;
+  if (description) anchor.querySelector("[data-stores-desc]").textContent = description;
 
   // id + [lat, lon] (flip from the [lon, lat] authored in the data).
   const items = stores.map((s, i) => ({
