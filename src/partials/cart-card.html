@@ -1,0 +1,90 @@
+<!-- ==================== CART CARD template ============================
+     Figma `card` 953:151123 (desktop 990×158) / 2029:156652 (mobile 360×162),
+     inside the order page's cart panel. One clean HTML unit that
+     components/order-cart.js clones per line — the future Blade @foreach body.
+
+     The three columns are authored as two boxes so the same DOM reads both
+     ways: desktop lays [image+text][price+stepper] out in a row (739 + 181),
+     mobile stacks them (image+text on top, price+stepper underneath). No
+     second copy, no `order-*`.
+
+     The stepper is part of this unit rather than its own partial: it exists
+     nowhere else in the design. Its left control follows the component's own
+     `count` axis — `count=1` is the trash can (943:79876), `count=2-and-more`
+     the minus (2029:129546). The mobile frame draws a minus next to a 1, which
+     is the designer picking the wrong variant; the count drives it here.
+
+     Desktop stepper: one 168×48 grey pill (`components-subtle`, radius 24).
+     Mobile: 152×40, transparent, with the number in a bordered white 48×40
+     box. Same markup, `max-md:` at the call site. -->
+<template data-cart-card>
+  <article
+    class="flex border-b border-divider-light px-6 py-6 max-md:flex-col max-md:gap-2 max-md:px-4 max-md:py-4"
+    data-cart-line
+  >
+    <!-- ---- image + title (desktop: 739 of 920; mobile: the top row) ---- -->
+    <div class="flex min-w-0 flex-1">
+      <div class="relative flex shrink-0 items-start gap-2 max-md:gap-0">
+        <label class="flex items-center max-md:absolute max-md:left-0.5 max-md:top-0.5 max-md:z-10">
+          <input type="checkbox" class="filter-check" data-line-select checked />
+        </label>
+        <img
+          src=""
+          alt=""
+          class="h-[110px] w-[148px] shrink-0 object-cover max-md:h-16 max-md:w-[86px] max-md:rounded-n"
+          data-line-image
+        />
+      </div>
+
+      <div class="flex min-w-0 flex-1 flex-col gap-1 px-6 max-md:px-4">
+        <p class="truncate text-h5 text-text-primary max-md:text-m-h4" data-line-title></p>
+        <p class="text-body-s text-text-secondary max-md:text-m-body-s" data-line-specs></p>
+        <p class="text-body-s text-text-primary max-md:text-m-body-s" data-line-color></p>
+      </div>
+    </div>
+
+    <!-- ---- price + stepper (desktop: the 181 column; mobile: bottom row)
+         181 is the design's width for a 7-digit price next to a 7-digit old
+         one; `min-w` rather than `w` so a longer number pushes the column out
+         instead of wrapping mid-price, and the title column (min-w-0) yields. -->
+    <div class="flex min-w-[181px] shrink-0 flex-col gap-3 max-md:w-full max-md:min-w-0 max-md:flex-row max-md:items-center max-md:gap-3 max-md:py-1">
+      <div class="flex items-baseline gap-2 whitespace-nowrap max-md:gap-1">
+        <!-- the mobile card drops the "от" prefix (2029:157695) -->
+        <span class="text-body-n text-text-primary max-md:hidden">от</span>
+        <span class="text-h3 leading-6 text-text-primary max-md:text-m-h4" data-line-price></span>
+        <span
+          class="text-body-n text-text-secondary line-through empty:hidden max-md:text-m-body-s-crossed"
+          data-line-oldprice
+        ></span>
+      </div>
+
+      <!-- the stepper hugs the column's right edge on desktop (168 inside 181,
+           offset 13 in 943:34167) and follows the price on mobile (2029:157693) -->
+      <div
+        class="flex h-12 w-[168px] items-center justify-between self-end rounded-pill bg-components-subtle px-1 max-md:h-10 max-md:w-[152px] max-md:self-auto max-md:bg-transparent max-md:px-1"
+        data-stepper
+      >
+        <button
+          type="button"
+          class="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-components-subtle-hover"
+          data-step-down
+          aria-label="Уменьшить количество"
+        >
+          <img src="" alt="" class="size-6" data-step-down-icon />
+        </button>
+        <span
+          class="flex h-11 w-14 items-center justify-center text-body-n text-text-primary max-md:h-10 max-md:w-12 max-md:rounded-n max-md:border max-md:border-border-light max-md:bg-surface-inverted max-md:text-m-body-n"
+          data-line-qty
+        >1</span>
+        <button
+          type="button"
+          class="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-components-subtle-hover"
+          data-step-up
+          aria-label="Увеличить количество"
+        >
+          <img src="" alt="" class="size-6" data-step-up-icon />
+        </button>
+      </div>
+    </div>
+  </article>
+</template>

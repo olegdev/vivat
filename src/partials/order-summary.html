@@ -1,0 +1,55 @@
+<!-- ==================== ORDER SUMMARY («Ваш заказ») ====================
+     Figma `summary` 946:110156 (desktop 322×362) / 2029:158393 (mobile
+     328×300). Static shell; components/order-cart.js writes the four values
+     through the data hooks and keeps the sticky bar in sync.
+
+     The desktop panel sits in the row's right column and stays put while the
+     list scrolls; below `md` it drops into the flow under the list, inside the
+     page's 16px gutter.
+
+     One real DOM difference between the widths: desktop reads button → notice
+     (942:111977), mobile reads notice → button (2029:158321 sits inside the
+     card, the buttons instance after it). That is the second place in this
+     project where mobile re-sequences rather than re-styles, so it is one
+     `max-md:order-first` on the notice, not a second copy — see SOLUTIONS.md ›
+     "When mobile re-orders a block". -->
+<div class="rounded-[var(--radius-l)] bg-bg-subtle" data-order-summary>
+  <div class="px-6 pt-4 pb-2">
+    <h2 class="text-h5 text-text-primary max-md:text-m-h4">Ваш заказ</h2>
+  </div>
+
+  <!-- table/order-card 946:41419 — 40px rows on desktop, 32px on mobile -->
+  <dl class="px-6">
+    <div class="flex h-10 items-center justify-between gap-4 max-md:h-8">
+      <dt class="text-body-n text-text-secondary max-md:text-m-body-n">В заказе</dt>
+      <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-count></dd>
+    </div>
+    <div class="flex h-10 items-center justify-between gap-4 max-md:h-8">
+      <dt class="text-body-n text-text-secondary max-md:text-m-body-n">Сумма заказа</dt>
+      <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-subtotal></dd>
+    </div>
+    <div class="flex h-10 items-center justify-between gap-4 max-md:h-8">
+      <dt class="text-body-n text-text-secondary max-md:text-m-body-n">Скидка</dt>
+      <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-discount></dd>
+    </div>
+    <div class="flex h-10 items-center justify-between gap-4 max-md:h-8">
+      <dt class="text-body-n text-text-primary max-md:text-m-body-n">Итого</dt>
+      <dd class="flex items-baseline gap-2">
+        <span class="text-body-n text-text-primary max-md:text-m-body-n">от</span>
+        <span class="text-h3 leading-7 text-text-primary" data-summary-total></span>
+      </dd>
+    </div>
+  </dl>
+
+  <div class="flex flex-col gap-4 px-6 pb-6 pt-6 max-md:gap-3 max-md:pb-4 max-md:pt-3">
+    <button type="button" class="btn btn-m btn-accent max-md:w-full" data-order-submit>
+      Сформировать заказ
+    </button>
+    <div class="flex gap-2 max-md:order-first">
+      <img src="../../assets/order/icon-info.svg" alt="" class="mt-0.5 size-4 shrink-0" />
+      <p class="text-body-s text-text-secondary max-md:text-m-body-s">
+        Дилерская наценка может отличаться в зависимости от региона!
+      </p>
+    </div>
+  </div>
+</div>

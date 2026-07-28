@@ -11,9 +11,16 @@
      The title and description are the only thing that differs per host — the
      PDP mounts the same block as "Где купить" (map-general 1686:58697) — so
      they carry data hooks and the copy below is the default. In Blade this
-     becomes @include('partials.stores', ['title' => …, 'description' => …]). -->
-<section id="where" class="flex w-[1440px] flex-col bg-surface-accent pb-16 max-md:w-full max-md:bg-bg-page max-md:pb-10">
-  <div class="px-10 max-md:px-4">
+     becomes @include('partials.stores', ['title' => …, 'description' => …]).
+
+     A third host is the order page's шаг 1 (Figma map-general 942:110251),
+     which mounts the same block to PICK a dealer: white surface instead of the
+     green one, the step's own copy in the title hooks, and cards that select.
+     `renderStoresMap({ selectable: true })` adds `.stores-select`, which also
+     turns the block into a full-screen map + bottom sheet below `md`
+     (2032:158435 / 2059:169141) — see app.css. -->
+<section id="where" class="flex w-[1440px] flex-col bg-surface-accent pb-16 max-md:w-full max-md:bg-bg-page max-md:pb-10" data-stores-section>
+  <div class="px-10 max-md:px-4" data-stores-head>
     <div class="h-20 max-md:h-10"></div>
     <div class="flex w-[783px] flex-col max-md:w-full">
       <div class="flex min-h-11 items-center max-md:min-h-6">
@@ -28,11 +35,21 @@
     <div class="h-6 max-md:h-3"></div>
   </div>
 
-  <div class="px-10 max-md:px-4">
-    <div class="flex overflow-hidden rounded-[var(--radius-l)] shadow-dropdown max-md:shadow-none">
+  <div class="px-10 max-md:px-4" data-map-wrap>
+    <div class="relative flex overflow-hidden rounded-[var(--radius-l)] shadow-dropdown max-md:shadow-none" data-map-frame>
       <!-- left panel -->
-      <aside class="flex h-[680px] w-[440px] shrink-0 flex-col bg-surface-inverted max-md:hidden">
-        <div class="flex flex-col gap-2 border-b border-divider-light pb-4 pl-10 pr-6 pt-6">
+      <aside class="flex h-[680px] w-[440px] shrink-0 flex-col bg-surface-inverted max-md:hidden" data-store-panel>
+        <!-- Sheet-only chrome (Figma 1821:331970 / 2059:169141): a drag handle
+             above the city + toggle block, and the address search below it.
+             Both are `hidden` for the pages that mount this block for reading;
+             `.stores-select` brings them back below `md`. The city and the
+             "только фирменные" toggle are shared — the sheet shows the same
+             ones, so there is one input, not two. -->
+        <div class="hidden h-5 shrink-0 items-center justify-center pt-1" data-sheet-grip>
+          <span class="h-1 w-8 rounded-full bg-surface-raised"></span>
+        </div>
+
+        <div class="flex flex-col gap-2 border-b border-divider-light pb-4 pl-10 pr-6 pt-6" data-panel-head>
           <div class="flex h-8 items-center gap-1">
             <span class="text-h3 text-text-primary underline decoration-dotted underline-offset-4">Москва</span>
             <img src="../../assets/header/icon-pin.svg" alt="" class="size-6" />
@@ -46,14 +63,24 @@
             </label>
           </div>
         </div>
-        <div data-store-list class="stores-scroll h-[580px] overflow-y-auto pl-4"></div>
+        <label class="mx-4 mb-2 mt-3 hidden h-11 items-center gap-2 rounded-[var(--radius-l)] bg-components-subtle px-3" data-sheet-search>
+          <input
+            type="search"
+            data-store-search
+            placeholder="Найти по адресу"
+            class="min-w-0 flex-1 bg-transparent text-m-body-n text-text-primary outline-none placeholder:text-text-secondary"
+          />
+          <img src="../../assets/header/icon-search.svg" alt="" class="size-5 shrink-0 opacity-60" />
+        </label>
+
+        <div data-store-list class="stores-scroll h-[580px] overflow-y-auto pl-4 max-md:min-h-0 max-md:flex-1 max-md:pl-0"></div>
       </aside>
 
       <!-- map -->
-      <div class="relative h-[680px] flex-1 max-md:h-80">
+      <div class="relative h-[680px] flex-1 max-md:h-80" data-map-pane>
         <div data-map class="size-full"></div>
         <div class="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-10 bg-linear-to-b from-alpha-black-100 to-transparent max-md:block"></div>
-        <a href="#" class="btn btn-m btn-accent absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 px-6 max-md:flex">Где купить</a>
+        <a href="#" class="btn btn-m btn-accent absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 px-6 max-md:flex" data-map-cta>Где купить</a>
         <div class="absolute bottom-6 right-6 z-10 flex flex-col gap-2 max-md:hidden">
           <button type="button" data-zoom="1" class="map-ctrl" aria-label="Приблизить">+</button>
           <button type="button" data-zoom="-1" class="map-ctrl" aria-label="Отдалить">−</button>
@@ -67,7 +94,12 @@
     <button type="button" data-store aria-expanded="false" class="store-card">
       <div class="flex w-full flex-col gap-1">
         <div class="flex w-full items-start justify-between gap-2">
-          <p data-store-name class="pr-6 text-h5 text-text-primary"></p>
+          <!-- The sheet's cards carry a radio (2059:169141); the reading list
+               and the desktop step-1 list do not — select mode un-hides it. -->
+          <span data-store-radio class="mr-2 hidden size-6 shrink-0 items-center justify-center">
+            <span class="size-6 rounded-full border border-border-default bg-surface-inverted"></span>
+          </span>
+          <p data-store-name class="flex-1 pr-6 text-h5 text-text-primary max-md:text-m-h4"></p>
           <img src="../../assets/header/chevron-down.svg" alt="" data-chevron class="size-6 shrink-0" />
         </div>
         <div class="flex flex-col gap-1.5">

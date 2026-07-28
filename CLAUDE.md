@@ -93,6 +93,32 @@ One deliberate deviation: the mobile frame titles the stores block **"Наши
 pointing at it, whereas the mobile instance only overrides the *description*,
 which reads as a component that was never re-titled. Say so if it comes up.
 
+`src/pages/customer/order.html` — оформление заказа. Desktop (Figma Order
+942:110179) and mobile (2029:126838 and the frames after it) are both done.
+Figma draws `Order-step0/1/2` as separate frames, but they are three states of
+this one page: each is the previous one with a section appended, and `Order`
+itself is identical to `Order-step2`. `data-step` gates them.
+
+Two things about it are worth not rediscovering:
+
+- **Steps accumulate on desktop and replace each other on mobile.** The 1440
+  frames put all three on one scroll, so the cart stays visible under шаг 1 and
+  шаг 2; the 360 frames are three separate screens. Each `[data-step-section]`
+  therefore carries both rules — `hidden` for "later than the current step" and
+  `max-md:hidden` for "not the current step".
+- **Шаг 1 is `partials/stores.html` in a third mode, not a new block.**
+  `renderStoresMap({ selectable: true })` re-dresses the same partial: white
+  surface, the step's copy in the title hooks, a selection ring, and below `md`
+  a full-screen map with a drag-snapped bottom sheet (`components/store-sheet.js`)
+  where the reading pages show a 320px map. See SOLUTIONS.md › "A shared partial
+  gains a mode from JS".
+
+Its own parts are the cart line (`partials/cart-card.html`, which also owns the
+quantity stepper — it exists nowhere else) and the summary
+(`partials/order-summary.html`); the contact form, the alert band and the
+confirmation overlay live in the page. Below `md` the site header is replaced by
+a modal-style bar whose title names the step.
+
 Everything else in `src/pages/` is a stub.
 
 ## Where this is heading — PHP Blade
@@ -127,7 +153,8 @@ works in both `npm run dev` and `npm run build`). One partial == one future
 Blade partial — the port to `@include('partials.name')` is mechanical. Current
 partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `catalog-filters`, `chip-close`, `stores`, `product-card`, `promo-card`,
-`review-card`, `pdp-summary`, `pdp-specs`, `sticky-price`, `seo-kitchens`.
+`review-card`, `pdp-summary`, `pdp-specs`, `sticky-price`, `seo-kitchens`,
+`cart-card`, `order-summary`.
 Several carry both a static shell and the `<template>` unit(s) their component
 clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`);
 `product-card`, `promo-card` and `review-card` are templates only, and

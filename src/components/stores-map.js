@@ -39,6 +39,72 @@ function loadYmaps(apiKey) {
   return ymapsPromise;
 }
 
+// ---- «выбор магазина» mode ---------------------------------------------------
+// The order page's шаг 1 mounts the same block to PICK a dealer (Figma
+// map-general 942:110251 / mobile 2032:158435). Three things change, and all
+// three are re-dressing, not a second component:
+//
+//   · the green surface goes white — the step owns the heading above it;
+//   · a picked card carries the ring the dealer-card component already has;
+//   · below `md` the block becomes a full-screen map with a bottom sheet, so
+//     the panel that is `max-md:hidden` for reading comes back as the sheet.
+//
+// The classes are flipped from here rather than written into partials/stores.html
+// because two other pages mount that partial for reading and must not carry
+// them. Tailwind sees these literals when it scans src/**.
+const swap = (el, off, on) => {
+  if (!el) return;
+  el.classList.remove(...off);
+  el.classList.add(...on);
+};
+
+function enterSelectMode(anchor) {
+  const q = (sel) => anchor.querySelector(sel);
+  // Pages mount the partial either directly or inside a wrapper (main.js hands
+  // in `[data-section="salony"]`), so find the section rather than assume it.
+  const section = anchor.matches("[data-stores-section]")
+    ? anchor
+    : anchor.querySelector("[data-stores-section]");
+
+  section.classList.add("stores-select");
+  swap(section, ["bg-surface-accent", "pb-16", "max-md:pb-10"], [
+    "bg-bg-page",
+    "pb-16",
+    "max-md:fixed",
+    "max-md:inset-0",
+    "max-md:z-40",
+    "max-md:pb-0",
+  ]);
+
+  // the step's own heading sits above the block on mobile, in the modal header
+  q("[data-stores-head]")?.classList.add("max-md:hidden");
+
+  // full-bleed, full-height map area below `md`
+  swap(q("[data-map-wrap]"), ["max-md:px-4"], ["max-md:h-full", "max-md:px-0"]);
+  swap(q("[data-map-frame]"), [], ["max-md:h-full", "max-md:rounded-none"]);
+  swap(q("[data-map-pane]"), ["max-md:h-80"], ["max-md:absolute", "max-md:inset-0", "max-md:h-full"]);
+  q("[data-map-cta]")?.classList.add("max-md:hidden");
+
+  // the reading panel becomes the sheet; its height is set by store-sheet.js
+  swap(q("[data-store-panel]"), ["max-md:hidden"], [
+    "max-md:absolute",
+    "max-md:inset-x-0",
+    "max-md:bottom-0",
+    "max-md:z-20",
+    "max-md:w-full",
+    "max-md:rounded-t-xl",
+    "max-md:shadow-dropdown",
+  ]);
+  // `hidden` stays and `max-md:flex` overrides it below `md` — the variant is
+  // emitted after the plain utility, so it wins where it applies. Removing
+  // `hidden` instead would leak the element onto the desktop panel.
+  q("[data-sheet-grip]")?.classList.add("max-md:flex");
+  q("[data-sheet-search]")?.classList.add("max-md:flex");
+  // the city + toggle block keeps its content at both widths, only the desktop
+  // panel's generous gutters shrink to the sheet's 16
+  swap(q("[data-panel-head]"), [], ["max-md:border-0", "max-md:px-4", "max-md:pb-2", "max-md:pt-2"]);
+}
+
 // ---- component --------------------------------------------------------------
 // The section shell + the dealer-card / metro-chip <template>s live in
 // partials/stores.html (spliced into the page); this only queries and fills
@@ -51,12 +117,15 @@ export function renderStoresMap(anchor, opts) {
     apiKey,
     title,
     description,
+    selectable = false,
+    onSelect,
     center = [55.7558, 37.6173], // 2.1 takes [lat, lon]
     zoom = 9,
   } = opts;
 
   if (title) anchor.querySelector("[data-stores-title]").textContent = title;
   if (description) anchor.querySelector("[data-stores-desc]").textContent = description;
+  if (selectable) enterSelectMode(anchor);
 
   // id + [lat, lon] (flip from the [lon, lat] authored in the data).
   const items = stores.map((s, i) => ({
@@ -85,6 +154,12 @@ export function renderStoresMap(anchor, opts) {
     node.querySelector("[data-store-address]").textContent = s.address;
     node.querySelector("[data-store-hours]").textContent = s.hours;
     node.querySelector("[data-store-phone]").textContent = s.phone;
+    if (selectable) {
+      // The sheet's card is the radio-and-ring variant; the desktop step-1 list
+      // reuses the plain reading card, so both only differ below `md`.
+      node.querySelector("[data-store-radio]")?.classList.add("max-md:flex");
+      node.querySelector("[data-chevron]")?.classList.add("max-md:hidden");
+    }
     const metroWrap = node.querySelector("[data-store-metro]");
     (s.metro || []).forEach((name) => {
       const chip = metroTpl.content.firstElementChild.cloneNode(true);
@@ -105,7 +180,14 @@ export function renderStoresMap(anchor, opts) {
       const on = card.dataset.store === selectedId;
       card.setAttribute("aria-current", String(on));
       card.setAttribute("aria-expanded", String(on));
-      card.querySelector("[data-details]").hidden = !on;
+      // Picking a dealer doesn't unfold hours/phone — the sheet's card has no
+      // detail row and no chevron; reading the list still expands.
+      card.querySelector("[data-details]").hidden = selectable || !on;
+      const dot = card.querySelector("[data-store-radio] > span");
+      if (dot) {
+        dot.classList.toggle("border-components-strong", on);
+        dot.classList.toggle("border-8", on);
+      }
       if (on && scroll) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
     }
     for (const [id, entry] of marks) {
@@ -114,8 +196,12 @@ export function renderStoresMap(anchor, opts) {
   }
 
   function select(id, { fly = false, scroll = false } = {}) {
-    selectedId = selectedId === id ? null : id;
+    // Reading the list, a second click on the open card closes it. Picking a
+    // dealer for an order it must stick — you can change the choice, not unmake
+    // it, because the step can't continue without one.
+    selectedId = !selectable && selectedId === id ? null : id;
     applySelection({ scroll });
+    if (selectable) onSelect?.(items.find((s) => s.id === selectedId) || null);
     if (fly && selectedId && map) {
       const store = items.find((s) => s.id === selectedId);
       currentZoom = Math.max(currentZoom, 13);
@@ -135,8 +221,16 @@ export function renderStoresMap(anchor, opts) {
   // rebuild the list from the response. The `brand` flag lives in the URL so the
   // state survives refresh/share (replaceState — a minor control, no history
   // entry). Nothing above this changes when the fetch lands.
+  // `query` is the sheet's address search (2209:210691), which only exists in
+  // select mode; it narrows the same list the toggle does, through the same seam.
+  let query = "";
   function loadStores({ brandOnly }) {
-    visible = brandOnly ? items.filter((s) => s.brand) : items;
+    const needle = query.trim().toLowerCase();
+    visible = items.filter(
+      (s) =>
+        (!brandOnly || s.brand) &&
+        (!needle || `${s.name} ${s.address}`.toLowerCase().includes(needle))
+    );
     if (selectedId && !visible.some((s) => s.id === selectedId)) selectedId = null;
     paintList();
     syncMarkers();
@@ -151,6 +245,11 @@ export function renderStoresMap(anchor, opts) {
   toggleEl.addEventListener("change", () => {
     loadStores({ brandOnly: toggleEl.checked });
     writeURL(toggleEl.checked);
+  });
+
+  anchor.querySelector("[data-store-search]")?.addEventListener("input", (e) => {
+    query = e.target.value;
+    loadStores({ brandOnly: toggleEl.checked });
   });
 
   function syncMarkers() {
@@ -234,4 +333,13 @@ export function renderStoresMap(anchor, opts) {
       syncMarkers();
     })
     .catch(mapFailed);
+
+  return {
+    select,
+    // The order page lays this block out while its step is still hidden, so
+    // ymaps measures a zero-height container. Call this when the step opens.
+    refresh() {
+      map?.container.fitToViewport();
+    },
+  };
 }

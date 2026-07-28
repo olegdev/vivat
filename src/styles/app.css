@@ -506,6 +506,15 @@
     @apply text-left transition-colors hover:bg-bg-subtle;
   }
   .store-card[aria-current="true"] { @apply bg-bg-subtle; }
+
+  /* Picking a dealer for an order (order page, шаг 1): the design gives the
+     mobile `dealer-card/order` variant a focus ring and no separate "Выбрать"
+     button, and there is no desktop order variant at all — so the whole card is
+     the control at both widths and the ring is the only added affordance.
+     Nested under the modifier so the reading pages keep the plain highlight. */
+  .stores-select .store-card[aria-current="true"] {
+    @apply bg-surface-inverted ring-2 ring-inset ring-border-ring;
+  }
   .store-card [data-chevron] { @apply transition-transform; }
   .store-card[aria-expanded="true"] [data-chevron] { rotate: 180deg; }
 
@@ -599,6 +608,17 @@
     /* dark centre dot on the light fill */
     background-image: radial-gradient(circle, #292929 0 5px, transparent 6px);
   }
+
+  /* ---- Order form field (Figma `input` 953:59193) -----------------------
+     44px grey field on a white card, label above and an optional hint below.
+     Used plain (no responsive variant), so `@layer components` is correct. */
+  .order-input {
+    @apply h-11 w-full rounded-[var(--radius-l)] bg-components-subtle px-3;
+    @apply text-body-n text-text-primary outline-none transition-colors;
+    @apply placeholder:text-text-secondary;
+    @apply focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-border-ring;
+  }
+  .order-input:user-invalid { @apply ring-1 ring-inset ring-border-error; }
 
   /* ---- Catalog filter drawer: slide-in ----------------------------------
      Left panel eases in over a fading scrim. `visibility` is delayed on close

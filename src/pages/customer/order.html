@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Мой заказ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./order.js"></script>
+  </head>
+  <body class="bg-bg-page text-text-primary">
+    <!-- Оформление заказа — the checkout flow. Desktop = Figma Order 942:110179;
+         mobile = 2029:126838 and the frames after it.
+
+         Figma draws `Order-step0` / `Order-step1` / `Order-step2` as separate
+         frames, but they are three states of ONE page, not three screens: each
+         later frame is the previous one with a section appended, and `Order`
+         itself is identical to `Order-step2`. So this is a single page whose
+         `data-step` gates the sections below — the cart never leaves the
+         screen. In Blade that stays one view with two @ifs, not three routes.
+
+         Mobile is not a narrower desktop in one structural way: the site header
+         is replaced by a modal-style bar (`header` 1859:338425 — back, title,
+         close) whose title changes per step, and the red CTA moves into a bar
+         above the bottom nav. -->
+    <div class="mx-auto w-full max-md:pb-[132px] md:w-[1440px]" data-order data-step="0">
+      <!-- ==================== SITE HEADER (desktop only) =============== -->
+      <div class="max-md:hidden">
+        <!--#include partials/header.html -->
+      </div>
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== MOBILE MODAL HEADER =====================
+           Figma header 2029:153971 (`design=default, type=H3`, 360×48): back
+           chevron, step title, close. The step-1 frame swaps it for the 78px
+           two-line variant (2082:143141), so the subtitle row is authored here
+           and hidden until a step asks for it. -->
+      <header class="sticky top-0 z-50 hidden bg-surface-inverted px-4 py-1 max-md:block" data-order-mheader>
+        <div class="flex items-center gap-0">
+          <button type="button" class="flex size-10 shrink-0 items-center justify-center" data-order-back aria-label="Назад">
+            <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
+          </button>
+          <div class="flex min-w-0 flex-1 flex-col justify-center py-2">
+            <p class="truncate text-m-h3 text-text-primary" data-order-mtitle>Оформление заказа</p>
+            <span class="flex gap-2 text-m-body-s text-text-secondary empty:hidden" data-order-msub></span>
+          </div>
+          <!-- icon-close.svg is the white glyph the dark burger menu uses; this
+               bar is white, so it takes the dark one (Figma 2214:13315). -->
+          <a href="main.html" class="flex size-10 shrink-0 items-center justify-center" aria-label="Закрыть">
+            <img src="../../assets/header/icon-close-s.svg" alt="" class="size-6" />
+          </a>
+        </div>
+      </header>
+
+      <!-- <template>s cloned by the sections below (inert markup) -->
+      <!--#include partials/cart-card.html -->
+
+      <!-- ==================== TITLE (desktop only) =====================
+           Figma title-block 943:39460 — the shared block with its title
+           overridden to "Мой заказ" and an empty `buttons` frame, i.e. no
+           controls next to the heading. The mobile frames carry no H1 at all;
+           the modal header above is their title. -->
+      <div class="px-10 pt-6 max-md:hidden">
+        <h1 class="text-h1 text-text-primary">Мой заказ</h1>
+      </div>
+      <div class="h-6 max-md:hidden"></div>
+
+      <!-- ==================== ШАГ 0 — КОРЗИНА ==========================
+           Figma row 943:34149: the 990 cart panel and the 322 summary with a
+           47px gutter inside the page's 40px margins. Below `md` the two stack
+           and the panel goes full-bleed (2029:129023). -->
+      <section class="flex gap-[47px] px-10 max-md:flex-col max-md:gap-0 max-md:px-0" data-step-section="0">
+        <div class="min-w-0 flex-1">
+          <div class="overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-md:rounded-none max-md:border-x-0 max-md:border-t-0">
+            <!-- panel header 953:151121 — select-all + delete, print + share.
+                 The live mobile render shows no "Удалить" (the node is in the
+                 tree but does not paint), so it is desktop-only here. -->
+            <div class="flex items-center justify-between border-b border-divider-light px-6 py-1 max-md:px-4 max-md:py-1.5">
+              <div class="flex items-center gap-6 max-md:gap-4">
+                <label class="flex items-center gap-3 py-2.5 max-md:gap-2">
+                  <input type="checkbox" class="filter-check" data-select-all checked />
+                  <span class="text-body-n text-text-primary max-md:text-m-body-n">Выбрать все</span>
+                </label>
+                <button
+                  type="button"
+                  class="flex items-center gap-1 text-body-n text-text-secondary transition-colors hover:text-text-primary max-md:hidden"
+                  data-delete-selected
+                >
+                  <span>Удалить</span>
+                  <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4 opacity-60" />
+                </button>
+              </div>
+              <div class="flex items-center gap-6">
+                <button type="button" class="flex size-6 items-center justify-center" aria-label="Распечатать заказ" data-order-print>
+                  <img src="../../assets/order/icon-print.svg" alt="" class="size-6" />
+                </button>
+                <button type="button" class="flex size-6 items-center justify-center" aria-label="Поделиться заказом">
+                  <img src="../../assets/order/icon-share.svg" alt="" class="size-6" />
+                </button>
+              </div>
+            </div>
+
+            <!-- one <article> per line, cloned from partials/cart-card.html -->
+            <div data-cart-list></div>
+
+            <p class="hidden px-6 py-16 text-center text-body-n text-text-secondary" data-cart-empty>
+              В заказе пока ничего нет.
+            </p>
+          </div>
+        </div>
+
+        <aside class="w-[322px] shrink-0 max-md:w-full max-md:px-4 max-md:pt-4">
+          <!--#include partials/order-summary.html -->
+        </aside>
+      </section>
+
+      <div class="h-16 max-md:h-10"></div>
+
+      <!-- ==================== ШАГ 1 — ВЫБОР МАГАЗИНА ===================
+           Figma map-general 942:110251. The heading and the map are the shared
+           stores block mounted under the step's own copy (see
+           partials/stores.html); the only thing this page adds above it is the
+           alert band, which the mobile frames don't carry. -->
+      <section data-step-section="1" hidden>
+        <div class="px-10 max-md:hidden">
+          <!-- alert 1604:72204 — 40px band, `surface-accent-subtle`, radius n -->
+          <div class="flex h-10 items-center gap-4 rounded-n bg-surface-accent-subtle px-4" data-alert>
+            <img src="../../assets/order/icon-info-dark.svg" alt="" class="size-4 shrink-0" />
+            <p class="flex-1 text-body-n text-text-primary">
+              Обращаем внимание покупателей, что 22.07.2026 мы работаем по сокращенному графику!
+            </p>
+            <button type="button" class="flex size-6 items-center justify-center" aria-label="Закрыть" data-alert-close>
+              <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />
+            </button>
+          </div>
+        </div>
+
+        <!--#include partials/stores.html -->
+
+        <!-- The sheet's CTA (2082:143084). Below `md` шаг 1 is a full-screen
+             map, so it gets its own bar rather than the cart's. -->
+        <div
+          class="fixed inset-x-0 bottom-0 z-50 hidden h-[60px] items-center justify-center bg-surface-inverted px-4 max-md:flex"
+          data-step1-bar
+        >
+          <button type="button" class="btn btn-m btn-accent w-full text-m-button-m" data-pick-done disabled>
+            Выберите дилера
+          </button>
+        </div>
+      </section>
+
+      <!-- ==================== ШАГ 2 — КОНТАКТНЫЕ ДАННЫЕ ===============
+           Figma step2 953:59446 (desktop) / 2082:145162 (mobile). The alert
+           band here confirms the pick instead of warning — same component,
+           different copy, plus an "Изменить выбор" link back to шаг 1. -->
+      <section data-step-section="2" hidden>
+        <div class="px-10 max-md:hidden">
+          <div class="flex h-10 items-center gap-4 rounded-n bg-surface-accent-subtle px-4">
+            <img src="../../assets/order/icon-info-dark.svg" alt="" class="size-4 shrink-0" />
+            <p class="flex-1 text-body-n text-text-primary">
+              Вы выбрали <span data-picked-store></span>
+            </p>
+            <button type="button" class="text-body-n text-text-primary underline underline-offset-4" data-change-store>
+              Изменить выбор
+            </button>
+          </div>
+        </div>
+
+        <div class="px-10 pt-16 max-md:hidden">
+          <h2 class="text-h2 text-text-primary">Шаг 2 из 2. Контактные данные.</h2>
+          <div class="h-2"></div>
+          <p class="text-body-n-accent text-text-primary">Пожалуйста, укажите контактные данные для связи!</p>
+        </div>
+
+        <div class="px-10 pt-6 max-md:px-4 max-md:pt-4">
+          <!-- 1360×520 card: form on the left, photo bleeding to the right edge
+               (953:59157). Below `md` the photo is gone and the form is the
+               whole panel (2082:145239). -->
+          <div class="flex h-[520px] overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-md:h-auto max-md:border-0">
+            <form id="order-form" class="flex w-[535px] shrink-0 flex-col gap-4 px-10 py-8 max-md:w-full max-md:px-0 max-md:py-0" data-order-form>
+              <div class="flex flex-col gap-6 max-md:gap-4">
+                <label class="flex flex-col gap-1">
+                  <span class="text-body-s text-text-primary max-md:text-m-body-s">Ваше имя*</span>
+                  <input type="text" name="name" required placeholder="Введите ваше имя" class="order-input" />
+                </label>
+                <label class="flex flex-col gap-1">
+                  <span class="text-body-s text-text-primary max-md:text-m-body-s">Телефон*</span>
+                  <input type="tel" name="phone" required placeholder="+7" class="order-input" />
+                  <span class="text-body-s text-text-secondary max-md:text-m-body-s">
+                    На этот номер вам позвонит менеджер дилера для консультации подтверждения заказа,
+                    или его корректировки
+                  </span>
+                </label>
+                <label class="flex flex-col gap-1">
+                  <span class="text-body-s text-text-primary max-md:text-m-body-s">Email*</span>
+                  <input type="email" name="email" required placeholder="Введите e-mail" class="order-input" />
+                  <span class="text-body-s text-text-secondary max-md:text-m-body-s">
+                    На этот адрес вам будет выслан pdf документ заказа
+                  </span>
+                </label>
+              </div>
+
+              <label class="flex items-start gap-3 py-2">
+                <input type="checkbox" name="consent" required class="filter-check" />
+                <span class="text-body-s text-text-primary max-md:text-m-body-s">
+                  Я согласен с тем что мои контактные данные будут переданы выбранному дилеру
+                </span>
+              </label>
+
+              <button type="submit" class="btn btn-l btn-accent self-start max-md:hidden">
+                <span>Оформить заказ</span>
+                <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+              </button>
+            </form>
+
+            <!-- 691×538 photo flush to the card's right edge (953:115364); the
+                 white gap between it and the form is the design's, not a gutter -->
+            <div class="ml-auto w-[691px] shrink-0 max-md:hidden">
+              <img src="../../assets/pdp/photo-1-src.png" alt="" class="size-full object-cover" />
+            </div>
+          </div>
+        </div>
+
+        <!-- mobile CTA (2082:145495) -->
+        <div
+          class="fixed inset-x-0 bottom-[72px] z-40 hidden h-[60px] items-center justify-center bg-surface-inverted px-4 max-md:flex"
+          data-step2-bar
+        >
+          <button type="submit" form="order-form" class="btn btn-m btn-accent w-full text-m-button-m">
+            Завершить оформление
+          </button>
+        </div>
+      </section>
+
+      <div class="h-20 max-md:h-10" data-step-section="2" hidden></div>
+
+      <!-- ==================== «ВАШ ЗАКАЗ ОТПРАВЛЕН» ====================
+           Figma form 2241:158412 (desktop modal 485×725) / 2241:158297 (mobile,
+           full screen over the bottom nav). One overlay: a centred card above
+           `md`, the whole viewport below it. -->
+      <!-- below `md` the bottom nav stays visible under it (2241:158305), so the
+           overlay reserves its 72px rather than covering the whole viewport -->
+      <div class="fixed inset-0 z-[60] hidden items-center justify-center bg-overlay-strong max-md:bg-transparent max-md:pb-[72px]" data-order-done>
+        <div class="relative h-[725px] w-[485px] overflow-hidden bg-surface-inverted max-md:h-full max-md:w-full">
+          <img src="../../assets/order/thanks-src.png" alt="" class="absolute inset-0 size-full object-cover" />
+
+          <a
+            href="main.html"
+            class="absolute right-2 top-2 z-10 flex size-8 items-center justify-center rounded-full bg-overlay-strong"
+            aria-label="Закрыть"
+          >
+            <img src="../../assets/header/icon-close.svg" alt="" class="size-5" />
+          </a>
+
+          <!-- centred block in the upper third (thank you frame 2241:161140:
+               112px of top padding inside a 666 frame), over the quiet part of
+               the photo — the kettle sits below it. -->
+          <div class="relative flex flex-col items-center gap-6 px-16 pt-28 text-center max-md:gap-5 max-md:px-10 max-md:pt-40">
+            <div class="flex flex-col gap-4 max-md:gap-3">
+              <p class="text-h3 text-text-primary max-md:text-m-h3">Ваш заказ отправлен!</p>
+              <p class="text-body-n text-text-primary max-md:text-m-body-n">
+                С вами свяжется представитель дилера для подтверждения заказа
+              </p>
+            </div>
+            <a href="catalog.html" class="btn btn-l btn-accent w-full max-md:h-11 max-md:text-m-button-l">
+              Продолжить покупки
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== MOBILE CTA BAR ==========================
+           Figma modal-button-container 2082:144086, stacked on the bottom nav.
+           Unlike the PDP's always-on bar this one is revealed by scroll: the
+           frame that shows the summary's own button (2084:145507) has no bar,
+           the one scrolled above it (2029:126838) does. order-cart.js watches
+           the summary button and mirrors the state. -->
+      <div
+        class="fixed inset-x-0 bottom-[72px] z-40 flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 opacity-0 transition-opacity duration-200 md:hidden"
+        data-order-bar
+        hidden
+      >
+        <button type="button" class="btn btn-m btn-accent w-full text-m-button-m" data-order-submit>
+          <span>Сформировать заказ&nbsp;• от <span data-summary-total></span></span>
+        </button>
+      </div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+  </body>
+</html>

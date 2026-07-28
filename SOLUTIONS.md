@@ -361,3 +361,63 @@ funnel glyph was redrawn from memory as two strokes + circles and came out
 mirrored (knobs on the wrong rows) at the wrong weight. `download_assets` with
 `defaultFormat: "svg"` returns the real path data; inline it with
 `fill="currentColor"` so it inverts with its host instead of shipping two files.
+
+## The .fig export shows component defaults where the live file shows overrides
+
+The order page's confirmation button reads **"56 моделей"** in `fig.mjs` and
+**"Продолжить покупки"** in the live render. The same thing happened to the
+mobile cart header's "Удалить" and to the sheet CTA's left link: present in the
+tree, absent on screen.
+
+`canvas.fig` gives you the node graph; a text override can live on a node the
+dump doesn't attribute it to, so what you read is the component's *default*.
+That default is often obvious filler ("56 моделей" on a button that has nothing
+to do with models) — **treat obvious filler as a signal to screenshot the frame,
+not as a gap in the design**. Reporting it as "the design doesn't say" cost a
+round-trip here: a decision was asked for and made on a question the design had
+already answered.
+
+Same family as the stale-colour rule in CLAUDE.md, one step further: the
+snapshot lags the live file on **colour and on copy and on visibility**. Numbers
+(sizes, gaps, positions) have been reliable; anything a designer types or toggles
+has not. `get_screenshot` is cheap — use it before asking a question.
+
+## A shared partial gains a mode from JS, not a second copy
+
+`partials/stores.html` is mounted by three pages: two read it ("Наши салоны",
+"Где купить") and the order page uses it to *pick* a dealer. The third host
+needs a white surface instead of green, a selection ring, a radio on each card,
+and — below `md` — the whole block as a full-screen map with a bottom sheet,
+where the reading pages show a 320px map with a CTA.
+
+That is a lot of difference, and it is still not a second partial. The switch is
+`renderStoresMap({ selectable: true })` → `enterSelectMode()`, which flips
+classes on hooks the partial exposes (`data-map-pane`, `data-store-panel`,
+`data-sheet-grip`, …). Two rules make it work:
+
+- **Flip classes from JS, don't write them into the shared partial.** Tailwind
+  scans `src/**`, so class literals in a component file are generated normally.
+  Putting them in the HTML would ship them to the two hosts that must not have
+  them.
+- **To reveal something below `md`, add `max-md:flex` — never remove `hidden`.**
+  The variant is emitted after the plain utility and wins where it applies, so
+  one class covers both widths. Removing `hidden` leaks the element onto
+  desktop; that is how a 24px radio rendered as a hairline next to every dealer
+  name on the 1440 canvas.
+
+## Anything laid out inside a hidden section measures zero
+
+The order page builds шаг 1 while its section is still `hidden`, so ymaps sized
+its container to 0 and the bottom sheet snapped to a 0-height track. Neither
+throws — you get an invisible map and a sheet flush with the bottom edge, which
+reads as a CSS bug and isn't one.
+
+Both components now expose a re-measure (`map.refresh()` → `fitToViewport()`,
+`sheet.sync()`), called when the step opens. **Any component that reads
+`getBoundingClientRect()` at init needs that method if a page can mount it
+hidden** — build it in rather than reaching for a `setTimeout`.
+
+The same page needed a measured value for a second reason: below `md` шаг 1 is
+`fixed inset-0`, and its top must clear the modal header — which is 48px on the
+steps with a one-line title and 78px on the one with a subtitle. Measure the
+header, don't hard-code either number.
