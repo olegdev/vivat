@@ -421,3 +421,86 @@ The same page needed a measured value for a second reason: below `md` шаг 1 i
 `fixed inset-0`, and its top must clear the modal header — which is 48px on the
 steps with a one-line title and 78px on the one with a subtitle. Measure the
 header, don't hard-code either number.
+
+## Two Figma frames, one panel: `data-state` + `group-data-*`
+
+The search overlay is drawn as four frames — empty/query × desktop/mobile — and
+the tempting read is "two components". It isn't: the query state is the empty one
+with a hint list and a chip row inserted, the title dropped, and (below `md`) the
+results relaid out. One panel, one attribute:
+
+```html
+<div data-search-panel data-state="empty" class="group …">
+  <div class="hidden group-data-[state=query]:block">…hints…</div>
+  <div class="px-10 pt-20 group-data-[state=query]:hidden">…Рекомендуем…</div>
+```
+
+**JS sets `panel.dataset.state` and nothing else.** Every layout difference —
+including padding (`max-md:group-data-[state=query]:px-2`) and a whole flex →
+grid switch on the results track — is a class at the call site. This is the same
+shape as the order page's `data-step`, and it is what makes a state readable in
+the markup instead of hidden in a JS branch. It ports to Blade unchanged: the
+attribute becomes `data-state="{{ $state }}"`.
+
+The specificity works in your favour rather than against it: `group-data-[…]:x`
+compiles to `.group[data-state="query"] &`, so it beats the plain utility it
+overrides without `!important` — that is why `grid` can win over `flex` and
+`px-2` over `px-4` on the same element.
+
+## One rail, two mobile layouts
+
+The same results rail is a two-row 152px scroll rail in one state and a two-up
+grid in the other (Figma 2338:236305 vs 2338:239772 — the second frame hides the
+scroll indicator, which is the tell). Don't build two containers.
+
+- The rail's mobile grid is the track's own classes under `group-data-*`; the
+  152px two-row layout stays the existing `.rail-2row` utility, applied by JS
+  because it needs `--cols`. They never apply together, so they can't fight.
+- **A card that lands in both needs an aspect ratio, not a fixed image height.**
+  `max-md:h-[111px]` is right only while the tile is 152px wide;
+  `max-md:aspect-[152/111]` is right at any width the container hands it. Same
+  rule as "a unit whose container differs carries no width of its own", applied
+  one level down.
+
+## `type="search"` draws its own clear button
+
+WebKit renders a native cancel glyph inside `input[type="search"]`, so the
+moment a designed clear button (Figma `clear` 585:54730) appeared next to it the
+field had two ×, one of them blue. Keep the semantics, drop the UA control once
+in `@layer base`:
+
+```css
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration { appearance: none; }
+```
+
+Worth checking on any native control the design re-draws — the same class of bug
+as the "double scrollbar" under `.scroll-progress`.
+
+## Highlighting a match: two character styles, not two fonts
+
+Figma writes a suggestion as one text node with a per-character style override
+(2338:103937): the matched run keeps the primary ink, the rest goes `#808080`.
+It reads as bold in a screenshot and isn't — the weight never changes. Build it
+by splitting the string and wrapping only the match, with `textContent` on every
+piece; a query interpolated into `innerHTML` is an injection waiting to happen.
+
+## Focus restore vs. focus-to-open
+
+An overlay opened by *focusing* a field cannot naively restore focus to that
+field on close: hide → `lastFocused.focus()` → the focus handler fires → it
+opens again, on the same click. The search × looked dead because of it.
+
+Keep both behaviours; just mark the restore. `.focus()` dispatches
+synchronously, so a plain flag around it is enough — no `setTimeout`, no
+dropping focus management:
+
+```js
+restoringFocus = true;
+lastFocused?.focus?.();
+restoringFocus = false;
+// …and the opener bails on `if (isOpen() || restoringFocus) return;`
+```
+
+Applies to any "open on focus" control: a `click` and a `focus` handler on the
+same element already fire twice on the way in, and the way out adds a third.

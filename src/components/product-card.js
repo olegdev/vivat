@@ -28,6 +28,7 @@ const clone = (sel) => document.querySelector(sel).content.firstElementChild.clo
 const TEMPLATE = {
   modul: "[data-pcard-modul]",
   "other-s": "[data-pcard-other-s]",
+  search: "[data-pcard-search]",
 };
 
 // Fills a card's gallery: one image, one hover zone and one dot per photo, from

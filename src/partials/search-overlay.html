@@ -1,0 +1,168 @@
+<!-- ==================== SEARCH OVERLAY =============================
+     Figma `search` section 2324:120596 — four frames that are two states of one
+     overlay at two widths:
+
+       2337:156356 / 2338:235809   nothing typed  → "Рекомендуем" + a rail
+       2338:101329 / 2338:237972   query "Стол"   → hints + chips + results
+
+     It is not a page: the catalog behind it stays put under a 90% scrim and the
+     panel drops over the site header, whose own logo/menu/cart the designer
+     hides (2337:159619 is `visible:false`, the utility row is opacity 0) so only
+     the field and a close × remain. Below `md` the panel is the whole screen.
+
+     ONE panel serves both states — `data-state="empty|query"` on the panel is
+     the only thing components/search.js toggles, and every difference between
+     the two frames is a `group-data-[state=…]` rule at the call site, the same
+     way the order page's `data-step` works. That includes the mobile results
+     layout: the empty state's rail is the site's usual two-row 152px rail, the
+     query state's is a two-up grid with the 8px gutter its frame draws
+     (2338:239772). -->
+<div data-search-overlay class="fixed inset-0 z-[60] hidden">
+  <div data-search-scrim class="absolute inset-0 bg-overlay-strong"></div>
+
+  <div
+    data-search-panel
+    data-state="empty"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Поиск по сайту"
+    class="group absolute inset-x-0 top-0 flex max-h-full flex-col overflow-y-auto bg-bg-page pb-6 max-md:bottom-0"
+  >
+    <!-- panel header: the 112px band the site header occupied, with the field
+         centred in it (723px, Figma 2337:159627) and the close × at the page's
+         40px gutter. Below `md` it is the 48px modal bar the mobile frames draw. -->
+    <div
+      class="relative flex h-28 shrink-0 items-start justify-center px-10 pt-14 max-md:h-12 max-md:items-center max-md:px-4 max-md:pt-0"
+    >
+      <form
+        data-search-form
+        action="/search"
+        method="get"
+        role="search"
+        class="flex h-11 w-[723px] items-center gap-4 rounded-pill bg-components-subtle px-4 max-md:w-auto max-md:min-w-0 max-md:flex-1"
+      >
+        <input
+          data-search-input
+          type="search"
+          name="q"
+          placeholder="Найти на сайте"
+          autocomplete="off"
+          aria-label="Найти на сайте"
+          class="min-w-0 flex-1 bg-transparent text-body-s-accent text-text-primary outline-none placeholder:text-text-muted"
+        />
+        <div class="flex shrink-0 items-center gap-2">
+          <button
+            type="button"
+            data-search-clear
+            aria-label="Очистить"
+            class="hidden text-text-secondary transition-colors hover:text-text-primary"
+          >
+            <!--#include partials/chip-close.html -->
+          </button>
+          <button type="submit" aria-label="Найти" class="flex size-6 items-center justify-center">
+            <img src="../../assets/header/icon-search.svg" alt="" class="size-6" />
+          </button>
+        </div>
+      </form>
+      <button
+        type="button"
+        data-search-close
+        aria-label="Закрыть поиск"
+        class="absolute right-10 top-[58px] flex size-10 shrink-0 items-center justify-end max-md:static"
+      >
+        <img src="../../assets/header/icon-close-s.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <!-- hints: the suggestion list, aligned under the field (723px, centred) -->
+    <div class="hidden px-10 group-data-[state=query]:block max-md:px-4">
+      <div
+        data-search-hints
+        class="mx-auto flex w-[723px] flex-col py-2 max-md:w-full max-md:py-0"
+      ></div>
+    </div>
+
+    <!-- chips: sections the query also hits. A chip is a search, not a filter. -->
+    <div class="hidden group-data-[state=query]:block">
+      <div
+        data-search-chips
+        class="flex items-center gap-3 px-10 pb-8 pt-4 max-md:scroll-rail max-md:gap-1 max-md:overflow-x-auto max-md:px-4 max-md:py-4"
+      ></div>
+    </div>
+
+    <!-- "Рекомендуем" — the empty state's title-block (2338:98359) -->
+    <div class="px-10 pb-6 pt-20 group-data-[state=query]:hidden max-md:px-4 max-md:pb-3 max-md:pt-10">
+      <div class="flex min-h-11 items-center max-md:min-h-6">
+        <h2 class="text-h2 text-text-primary max-md:text-m-h2">Рекомендуем</h2>
+      </div>
+    </div>
+
+    <!-- results rail (kitchen-row 2338:98360 / 2338:192476). Same shell the page
+         rails use — [data-viewport] clips, [data-track] translates — so
+         initCarousel() drives it unchanged. -->
+    <section data-search-rail class="flex flex-col">
+      <div
+        class="relative w-[1440px] px-10 max-md:w-full max-md:px-4 max-md:group-data-[state=query]:px-2"
+      >
+        <div
+          data-viewport
+          class="overflow-hidden max-md:scroll-rail max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:group-data-[state=query]:overflow-x-visible"
+        >
+          <div
+            data-track
+            class="flex gap-6 transition-transform duration-500 ease-out will-change-transform max-md:gap-2 max-md:group-data-[state=query]:grid max-md:group-data-[state=query]:grid-cols-2 max-md:group-data-[state=query]:gap-x-2 max-md:group-data-[state=query]:gap-y-6 max-md:group-data-[state=query]:[&>*]:w-auto"
+          ></div>
+        </div>
+        <button
+          data-prev
+          aria-label="Назад"
+          class="carousel-arrow absolute left-4 top-[139px] max-md:hidden"
+        >
+          <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
+        </button>
+        <button
+          data-next
+          aria-label="Вперёд"
+          class="carousel-arrow absolute right-4 top-[139px] max-md:hidden"
+        >
+          <img src="../../assets/header/chevron-right.svg" alt="" class="size-6" />
+        </button>
+      </div>
+      <!-- the query state lays the results out as a grid, so there is nothing to
+           scroll and its frame drops the indicator (2338:240988 is hidden) -->
+      <div class="hidden max-md:block max-md:group-data-[state=query]:hidden">
+        <div class="scroll-progress" data-progress><span><i></i></span></div>
+      </div>
+    </section>
+
+    <!-- nothing found: the design has no frame for it, so this is the plainest
+         thing that can be true — one muted line where the results would be. -->
+    <p
+      data-search-empty
+      class="hidden px-10 py-6 text-body-n text-text-secondary max-md:px-4 max-md:text-m-body-n"
+    >
+      Ничего не найдено. Попробуйте изменить запрос.
+    </p>
+  </div>
+
+  <!-- units the component clones (future Blade @foreach bodies) -->
+  <template data-search-hint>
+    <button
+      type="button"
+      class="flex h-8 w-full items-center text-left text-body-n text-text-secondary max-md:h-10 max-md:text-m-body-n"
+      data-search-hint-row
+    >
+      <span class="truncate"></span>
+    </button>
+  </template>
+  <template data-search-chip>
+    <button type="button" class="catalog-chip shrink-0 gap-1">
+      <span data-label></span>
+      <svg class="size-4 shrink-0" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path
+          d="M11.5 3a8.5 8.5 0 0 1 6.66 13.77l3.55 3.55a1 1 0 0 1-1.42 1.41l-3.55-3.55A8.5 8.5 0 1 1 11.5 3Zm0 2a6.5 6.5 0 1 0 0 13 6.5 6.5 0 0 0 0-13Z"
+        />
+      </svg>
+    </button>
+  </template>
+</div>

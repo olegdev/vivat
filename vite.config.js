@@ -27,6 +27,7 @@ export default defineConfig({
   build: {
     outDir: resolve(process.cwd(), "dist"),
     emptyOutDir: true,
+    modulePreload: { polyfill: false }, // see scripts/build.mjs
     rollupOptions: {
       input: {
         main: resolve(process.cwd(), "src/index.html"),

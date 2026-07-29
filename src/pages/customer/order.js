@@ -7,12 +7,8 @@ import { initOrderCart, initOrderBar } from "../../components/order-cart.js";
 import { renderStoresMap, setBases as setStoresBases } from "../../components/stores-map.js";
 import { initStoreSheet } from "../../components/store-sheet.js";
 import { stores } from "../../data/stores.js";
-
-// This page lives at dist/pages/customer/order.html — assets sit two levels up.
-const ASSET_ROOT = "../../assets";
-const HOME = `${ASSET_ROOT}/home`;
-const ICON = `${ASSET_ROOT}/header`;
-const ORDER_ICON = `${ASSET_ROOT}/order`;
+import { HOME, ICON, ORDER as ORDER_ICON } from "../../data/asset-base.js";
+import { LINES } from "../../data/order.js";
 
 // ---- shared chrome (header mega-menu + burger), same wiring as action.js ----
 setCatalogIconBase(ICON);
@@ -25,41 +21,6 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
 });
 initSearch();
 initCart();
-
-// ---- the order's lines ------------------------------------------------------
-// Fixture standing in for the session cart; the Blade build gets these from the
-// server. Titles, specs and colours are the three lines the Figma frame draws
-// (953:151123 and siblings); prices are internally consistent rather than
-// copied, because the frame's placeholder figures don't add up.
-const LINES = [
-  {
-    id: "flet-03",
-    title: "Флэт-03",
-    specs: "Прямая, В*Ш*Г 2000 х 2170 х 600 мм, Материал МДФ",
-    color: "Цвет Wotan Oak 2S/Temple Stone 2S",
-    image: `${HOME}/prod-mod-1-src.png`,
-    price: 43661,
-    oldPrice: 44861,
-  },
-  {
-    id: "shale",
-    title: "Шале",
-    specs: "Прямая, В*Ш*Г 2000 х 2170 х 600 мм, Материал МДФ",
-    color: "Цвет Brown Dreamline",
-    image: `${HOME}/prod-mod-2-src.png`,
-    price: 21335,
-    oldPrice: 22730,
-  },
-  {
-    id: "fusion-05",
-    title: "Кухня Фьюжн-05",
-    specs: "Прямая, В*Ш*Г 2000 х 2170 х 600 мм, Материал МДФ",
-    color: "Цвет Silky White/Silky Light Grey",
-    image: `${HOME}/prod-mod-3-src.png`,
-    price: 30675,
-    oldPrice: 31875,
-  },
-];
 
 const page = document.querySelector("[data-order]");
 initOrderCart(page, { lines: LINES, iconBase: ORDER_ICON });

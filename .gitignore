@@ -1,6 +1,8 @@
 VIVAT_SOURCES/
 node_modules/
 dist/
+dist-php/
+.handoff-tmp/
 .DS_Store
 
 # Playwright MCP screenshots / traces from local verification runs

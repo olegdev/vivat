@@ -4,9 +4,18 @@ Static marketing site built from a Figma design. Vite + Tailwind v4, vanilla JS,
 no framework. Each page builds to a single self-contained HTML file.
 
 ```
-npm run dev      # vite dev server → /pages/customer/main.html
-npm run build    # one vite build per page → dist/ (inlines all JS/CSS)
+npm run dev       # vite dev server → /pages/customer/main.html
+npm run build     # one vite build per page → dist/ (inlines all JS/CSS)
+npm run build:php # → dist-php/, the folder handed to the PHP developer
 ```
+
+Two builds, two audiences. `dist/` is for **showing the client**: one
+self-contained minified HTML per page that opens by double-click. `dist-php/` is
+the **hand-off** — the source tree with partials spliced in and each splice
+wrapped in the `@include(...)` it becomes, JS copied file-for-file, CSS compiled
+once, nothing minified. It needs a local web server (ES modules don't load over
+`file://`) and it carries `docs/PORTING.md`, which is the document the PHP
+developer actually works from. See `scripts/build-handoff.mjs`.
 
 `src/index.html` is a hand-kept screen index (→ `dist/index.html`). **Add every
 new page under `src/pages/` to it** — it isn't generated.
@@ -121,6 +130,31 @@ a modal-style bar whose title names the step.
 
 Everything else in `src/pages/` is a stub.
 
+**Search is not a page — it is an overlay every page carries.** Figma's `search`
+section (2324:120596) holds four frames: 2337:156356 / 2338:235809 (nothing
+typed) and 2338:101329 / 2338:237972 (query "Стол"), desktop and mobile. They
+are two states of one panel that drops over the site header while the page stays
+put under a 90% scrim — the designer builds it by *hiding* the header's logo,
+menu and cart (2337:159619 is `visible:false`, the utility row is opacity 0) so
+only the field and a close × remain.
+
+`partials/search-overlay.html` is that panel and `components/search.js` drives
+it. The state machine is one attribute: `data-state="empty|query"` on the panel,
+and every difference between the two frames is a `group-data-[state=…]` rule at
+the call site — the same technique as the order page's `data-step`. Empty draws
+"Рекомендуем" + a rail; query draws the hint list (aligned under the field, the
+matched run in primary ink and the rest muted), a row of section chips, and the
+results. Its cards are `data-pcard-search`, the designer's re-cut `cards-other
+size=s` (632:27760, now 322×410 — it gained a swatch + comments row): both
+footer rows collapse when the data is absent, which is exactly how one card
+serves a recommendation (348 tall) and a result (410).
+
+Below `md` the panel is the whole screen and the results change layout, not just
+width: the empty state is the site's usual two-row 152px rail, the query state is
+a two-up grid with no scroll indicator. Entry points are the desktop header's
+field and the burger menu's — the mobile header has no search of its own, which
+is why the menu's field is the way in.
+
 ## Where this is heading — PHP Blade
 
 This static build is a **prototype for a PHP Blade theme**: the markup will be
@@ -134,7 +168,11 @@ architectural rule — **structure is HTML, behaviour is JS.**
   behaviour (open/close, carousels, drag), not for emitting the page's
   structure. Every component now follows this — where a script fills a list, the
   single-unit markup is a clean HTML `<template>` in the partial that the script
-  clones and fills; it never builds markup from strings.
+  clones and fills; it never builds markup from strings. This was finished in
+  the hand-off pass: the carousel section shell (9 mounts), the hero and the
+  home page's promo row were the last four string builders, and moving them out
+  is what made `dist-php/` legible — before it, the authored HTML had *empty
+  divs* where the page's main sections belong.
 - Repeated, data-driven blocks (product cards, promo tiles, filter groups, menu
   rows, dealer cards) become Blade `@foreach` loops. Their unit lives as a
   `<template>` in the owning partial (`product-card`, `promo-card`,
@@ -152,15 +190,27 @@ into pages at build time by `scripts/vite-plugin-includes.mjs` via
 works in both `npm run dev` and `npm run build`). One partial == one future
 Blade partial — the port to `@include('partials.name')` is mechanical. Current
 partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
-`catalog-filters`, `chip-close`, `stores`, `product-card`, `promo-card`,
-`review-card`, `pdp-summary`, `pdp-specs`, `sticky-price`, `seo-kitchens`,
-`cart-card`, `order-summary`.
+`catalog-filters`, `chip-close`, `stores`, `hero`, `carousel-section`,
+`product-card`, `promo-card`, `review-card`, `pdp-summary`, `pdp-specs`,
+`pdp-photo-overlay`, `sticky-price`, `seo-kitchens`, `cart-card`,
+`order-summary`, `search-overlay`.
 Several carry both a static shell and the `<template>` unit(s) their component
-clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`);
-`product-card`, `promo-card` and `review-card` are templates only, and
-`seo-kitchens` is plain shared content. The matching
+clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`,
+`search-overlay`);
+`hero`, `carousel-section`, `product-card`, `promo-card` and `review-card` are
+templates only, and `seo-kitchens` is plain shared content. The matching
 `src/components/*.js` queries the shell and clones the templates — it never
 builds markup.
+
+The same plugin takes `markers: true` for the hand-off build, which wraps every
+splice in the `@include(...)` it becomes and re-indents the partial to the
+include's own depth. Nothing else in the pipeline changes.
+
+**Fixtures live in `src/data/`, one module per page — never in a page script or
+a component.** `asset-base.js` is the single place a media URL gets its prefix
+(it was duplicated in seven files before). Page scripts are pure wiring now:
+`main.js` went from 371 lines to 77. Section titles and descriptions are *not*
+fixtures — they are design copy and stay at the call site.
 
 **A partial that two pages mount under different copy takes data hooks, not a
 copy.** `stores` is the home page's "Наши салоны" and the PDP's "Где купить" —
@@ -189,12 +239,12 @@ gets re-hit on the next page.
 
 ## Reading the design
 
-The canonical Figma file is **`odPx3t2xUNTnIx09J9DpIS`**
-(https://www.figma.com/design/odPx3t2xUNTnIx09J9DpIS/VIVAT) — pass this fileKey
+The canonical Figma file is **`t7qJcR7KNgLigitQwv3V5T`**
+(https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT) — pass this fileKey
 to the MCP tools. Top-level pages: `Design` (189:10790), `UI SYSTEM`
-(922:83156). Older copies `9d9EunlGqwIMf5hPZI3kmf` and `J5GoY36VJIg79HSzfDVn3f`
-also exist — ignore them. Node ids are unchanged across the move, so ids quoted
-anywhere in these docs still resolve.
+(922:83156). Older copies `odPx3t2xUNTnIx09J9DpIS`, `9d9EunlGqwIMf5hPZI3kmf` and
+`J5GoY36VJIg79HSzfDVn3f` also exist — ignore them. Node ids are unchanged across
+each move, so ids quoted anywhere in these docs still resolve.
 
 Two sources. **Reach for the local export first, fall back to the Figma MCP
 server for whatever it doesn't have.**

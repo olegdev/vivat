@@ -19,11 +19,17 @@
 
     <div data-mm-body class="flex min-h-0 flex-1 flex-col overflow-y-auto pb-10">
       <div class="px-4 pt-4">
-        <form class="flex h-11 items-center gap-4 rounded-pill bg-components-subtle px-4" role="search" onsubmit="return false">
+        <!-- the mobile entry point into the search overlay: same `data-search`
+             contract as the desktop header's field, so components/search.js
+             opens the overlay from either one (the mobile frames draw no search
+             in the header itself). -->
+        <form data-search action="/search" method="get" class="flex h-11 items-center gap-4 rounded-pill bg-components-subtle px-4" role="search">
           <input
             type="search"
+            name="q"
             placeholder="Найти на сайте"
             aria-label="Найти на сайте"
+            autocomplete="off"
             class="min-w-0 flex-1 bg-transparent text-body-s-accent text-text-primary outline-none placeholder:text-text-muted"
           />
           <img src="../../assets/header/icon-search.svg" alt="" class="size-6 shrink-0" />

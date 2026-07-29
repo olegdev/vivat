@@ -1,6 +1,6 @@
 # VIVAT — Design System Rules (Figma → Code)
 
-Rules for translating the Figma file **VIVAT** (`odPx3t2xUNTnIx09J9DpIS`) into this
+Rules for translating the Figma file **VIVAT** (`t7qJcR7KNgLigitQwv3V5T`) into this
 codebase. Read this before implementing any screen. Goal: **pixel-perfect ("один в
 один") fidelity** against Figma, using the project's own tokens.
 

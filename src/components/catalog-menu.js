@@ -7,60 +7,14 @@
 // `sub` / `chips` / `collections`. Fill the other categories the same way as
 // their designs land — the render/interaction layer already handles them.
 
+import { categories } from "../data/catalog-menu.js";
+export { categories };
+
 let ICON = "../../assets/header";
 export function setCatalogIconBase(base) {
   ICON = base;
 }
 
-// ---- catalog data -----------------------------------------------------------
-// Exported so the mobile burger menu (mobile-menu.js) drills into the same tree
-// instead of keeping a second copy of it. Where the mobile mock lists a slightly
-// different catalog, this tree wins — one source, both surfaces.
-export const categories = [
-  {
-    name: "Кухни",
-    // second-column sub-tabs; the active one drives the collections column
-    sub: [{ label: "Все кухни" }, { label: "Коллекции", active: true }],
-    chips: [
-      "Прямые кухни",
-      "Угловые кухни",
-      "Фрезированые фасады",
-      "Плоские фасады",
-      "Стекло",
-      "Мультицвет",
-      "Белые",
-      "Недорогие",
-      "Популярные",
-      "Для встраивоемой техники",
-      "Под дерево",
-    ],
-    collections: [
-      "Фьюжн",
-      "Фрейм",
-      "Нео",
-      "Флэт",
-      "Сканди",
-      "Лофт",
-      "Шале",
-      "Барселона",
-      "Квадро",
-      "Дублин",
-      "Евро",
-      "Ницца",
-      "Глетчер",
-      "Прага",
-      "Глетчер",
-    ],
-  },
-  { name: "Техника для кухни" },
-  { name: "Столешницы и фартуки" },
-  { name: "Мойки и смесители" },
-  { name: "Мебельная фурнитура" },
-  { name: "Аксессуары для кухонь" },
-  { name: "Столы и стулья" },
-  { name: "Прихожие" },
-  { name: "Для продавцов" },
-];
 
 // ---- template helpers -------------------------------------------------------
 // The menu-item / chip units are clean HTML <template>s in the partial; this

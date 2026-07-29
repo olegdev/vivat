@@ -281,12 +281,10 @@ export function renderStoresMap(anchor, opts) {
   });
 
   // -- map -------------------------------------------------------------------
+  // Markup is the [data-map-failed] <template> in partials/stores.html.
   function mapFailed() {
-    mapEl.innerHTML = `
-      <div class="flex size-full flex-col items-center justify-center gap-2 bg-surface-default px-10 text-center">
-        <p class="text-h5 text-text-primary">Карта временно недоступна</p>
-        <p class="text-body-s text-text-secondary">Список салонов рядом — актуален.</p>
-      </div>`;
+    const tpl = document.querySelector("[data-map-failed]");
+    if (tpl) mapEl.replaceChildren(tpl.content.cloneNode(true));
   }
 
   loadYmaps(apiKey)

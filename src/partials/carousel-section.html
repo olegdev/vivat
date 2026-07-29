@@ -1,0 +1,98 @@
+<!-- ==================== CAROUSEL SECTION template ====================
+     The "title-block + arrows + track" section every listing rail is made of:
+     the home page's Модульные кухни / Популярные товары / Акции, the catalog's
+     Популярные товары, the Акции page's rail and the PDP's four rails — nine
+     mounts in all. One shell, two behaviours: desktop translates [data-track]
+     behind the arrows, below `md` the viewport scrolls natively and the arrows
+     give way to the progress bar + a full-width action.
+
+     components/carousel.js clones this per section and fills the hooks; the
+     cards inside [data-track] come from partials/product-card.html (or
+     review-card.html on the PDP's Отзывы rail).
+
+     In Blade this whole file is one partial and the mount becomes:
+
+         @include('partials.carousel-section', [
+           'title' => 'Популярные товары для кухни',
+           'desc'  => '…',            // optional — omit and the <p> drops out
+           'count' => null,           // optional muted number after the title
+           'action' => 'В раздел', 'href' => '/catalog',
+           'tabs'  => [...],          // optional chip row
+           'items' => $products,      // the @foreach body of product-card
+         ])
+
+     Optional parts are marked `data-cs-optional-*` and removed by the component
+     when the config omits them — in Blade they become plain @if blocks.
+
+     Figma: title-block with a description is 178 tall, without one 148 — so the
+     paragraph and its 8px lead-in drop out together rather than rendering empty.
+-->
+
+<template data-carousel-section>
+  <section class="flex flex-col">
+    <div class="px-10 max-md:px-4">
+      <div class="h-20 max-md:h-10"></div>
+      <div class="flex items-start justify-between">
+        <div class="flex w-[783px] flex-col max-md:w-full">
+          <div class="flex min-h-11 items-center gap-3 max-md:min-h-6 max-md:gap-2">
+            <h2 data-cs-title class="text-h2 text-text-primary max-md:text-m-h2"></h2>
+            <span data-cs-count class="text-h2 text-text-muted max-md:text-m-h2"></span>
+          </div>
+          <div data-cs-desc-gap class="h-2 max-md:h-1"></div>
+          <p data-cs-desc class="text-body-n-accent text-text-primary max-md:text-m-body-n"></p>
+        </div>
+        <div data-cs-desktop-action class="flex h-11 items-start px-2 max-md:hidden">
+          <a data-cs-action href="#" class="btn btn-m btn-secondary">
+            <span data-cs-action-label></span>
+            <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+          </a>
+        </div>
+      </div>
+      <div data-cs-chips-slot></div>
+      <div class="h-6 max-md:h-3"></div>
+    </div>
+    <div class="relative w-[1440px] px-10 max-md:w-full max-md:px-4">
+      <div
+        class="overflow-hidden max-md:scroll-rail max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto"
+        data-viewport
+      >
+        <div class="flex gap-6 transition-transform duration-500 ease-out will-change-transform max-md:gap-2" data-track></div>
+      </div>
+      <button data-prev aria-label="Назад" class="carousel-arrow absolute left-4 max-md:hidden">
+        <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
+      </button>
+      <button data-next aria-label="Вперёд" class="carousel-arrow absolute right-4 max-md:hidden">
+        <img src="../../assets/header/chevron-right.svg" alt="" class="size-6" />
+      </button>
+    </div>
+    <div class="hidden max-md:block">
+      <div data-cs-progress class="scroll-progress" data-progress><span><i></i></span></div>
+      <div data-cs-mobile-action class="px-4 pt-2">
+        <a data-cs-action class="btn btn-m btn-secondary w-full" href="#">
+          <span data-cs-action-label></span>
+          <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+        </a>
+      </div>
+    </div>
+  </section>
+</template>
+
+<!-- Tab chips over a rail (Популярные товары). Mobile turns the row into a 56px
+     edge-to-edge rail (Figma `segments` 1968:201371) — the negative margin lets
+     it bleed past the section padding. The trailing "еще" chip is part of the
+     row, not a tab; the component inserts one [data-carousel-chip] per tab
+     before it. -->
+<template data-carousel-chips>
+  <div
+    data-chips
+    class="flex items-center gap-2 pt-6 max-md:scroll-rail max-md:-mx-4 max-md:h-14 max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:px-4 max-md:pt-0 *:max-md:snap-start"
+  >
+    <button data-cs-more class="chip gap-1 border border-border-light bg-bg-page text-text-muted">
+      еще <span class="tracking-widest">···</span>
+    </button>
+  </div>
+</template>
+
+<template data-carousel-chip>
+  <button class="chip"></button>
+</template>

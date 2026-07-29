@@ -325,6 +325,15 @@
     color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
   }
+  /* `type="search"` is the right semantics for the header and overlay fields,
+     but WebKit draws its own clear glyph inside them — next to the designed one
+     (Figma `clear` 585:54730) that was a second, blue ×. Drop the UA control;
+     the markup supplies the button. */
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
   /* Tailwind v4 preflight leaves buttons with the default cursor. Restore the
      pointer on anything interactive (buttons, links, role=button, dots). */
   button:not(:disabled),

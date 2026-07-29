@@ -10,31 +10,15 @@
 // existing debt, not a pattern to extend).
 import { renderCarousel } from "./product-card.js";
 
-// Relative to the consuming page; set once via setCarouselIconBase().
-let ICON = "../../assets/header";
-export function setCarouselIconBase(base) {
-  ICON = base;
-}
-
 export const MOBILE = window.matchMedia("(max-width: 767px)");
 
-// ---- tab chips (e.g. Популярные товары) -------------------------------------
-// Mobile turns the row into a 56px edge-to-edge rail (Figma `segments`
-// 1968:201371); the negative margin lets it bleed past the section padding.
-function chips(tabs = []) {
-  if (!tabs.length) return "";
-  const items = tabs
-    .map((t, i) =>
-      i === 0
-        ? `<button class="chip" aria-selected="true">${t}</button>`
-        : `<button class="chip">${t}</button>`
-    )
-    .join("");
-  const more = `<button class="chip gap-1 border border-border-light bg-bg-page text-text-muted">еще <span class="tracking-widest">···</span></button>`;
-  return `<div data-chips class="flex items-center gap-2 pt-6 max-md:scroll-rail max-md:-mx-4 max-md:h-14 max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:px-4 max-md:pt-0 *:max-md:snap-start">${items}${more}</div>`;
-}
+const clone = (sel) => document.querySelector(sel).content.cloneNode(true);
+const drop = (root, sel) => root.querySelector(sel)?.remove();
 
 // ---- carousel section shell (title-block + arrows + track) ------------------
+// The markup is a clean HTML <template> in partials/carousel-section.html (the
+// future Blade partial); this only clones it and fills the hooks.
+//
 // `desktopAction: false` for the sections whose Figma title-block carries an
 // empty `buttons` frame (the Акции page's rail, 2248:97229) — the mobile action
 // under the rail is part of the mobile `other-row` and stays either way.
@@ -45,7 +29,7 @@ function chips(tabs = []) {
 // `count` is the muted number the PDP prints next to a title ("Отзывы 4").
 // `arrowTop` places the arrows on the card's image box — it differs per rail
 // because the card heights do.
-export function carouselSection({
+export function buildCarouselSection({
   title,
   desc,
   count,
@@ -58,62 +42,54 @@ export function carouselSection({
   arrowTop = 139,
   id,
 }) {
-  return `
-  <section class="flex flex-col"${id ? ` id="${id}"` : ""}>
-    <div class="px-10 max-md:px-4">
-      <div class="h-20 max-md:h-10"></div>
-      <div class="flex items-start justify-between">
-        <div class="flex w-[783px] flex-col max-md:w-full">
-          <div class="flex min-h-11 items-center gap-3 max-md:min-h-6 max-md:gap-2">
-            <h2 class="text-h2 text-text-primary max-md:text-m-h2">${title}</h2>
-            ${count != null ? `<span class="text-h2 text-text-muted max-md:text-m-h2">${count}</span>` : ""}
-          </div>
-          ${
-            desc
-              ? `<div class="h-2 max-md:h-1"></div>
-          <p class="text-body-n-accent text-text-primary max-md:text-m-body-n">${desc}</p>`
-              : ""
-          }
-        </div>
-        ${
-          desktopAction
-            ? `<div class="flex h-11 items-start px-2 max-md:hidden">
-          <a href="${href}" class="btn btn-m btn-secondary">
-            <span>${action}</span>
-            <img src="${ICON}/arrow-right-24.svg" alt="" class="size-6" />
-          </a>
-        </div>`
-            : ""
-        }
-      </div>
-      ${chips(tabs)}
-      <div class="h-6 max-md:h-3"></div>
-    </div>
-    <div class="relative w-[1440px] px-10 max-md:w-full max-md:px-4">
-      <div class="overflow-hidden max-md:scroll-rail max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto" data-viewport>
-        <div class="flex gap-6 transition-transform duration-500 ease-out will-change-transform max-md:gap-2" data-track></div>
-      </div>
-      <button data-prev aria-label="Назад" class="carousel-arrow absolute left-4 max-md:hidden" style="top:${arrowTop}px">
-        <img src="${ICON}/chevron-left.svg" alt="" class="size-6" />
-      </button>
-      <button data-next aria-label="Вперёд" class="carousel-arrow absolute right-4 max-md:hidden" style="top:${arrowTop}px">
-        <img src="${ICON}/chevron-right.svg" alt="" class="size-6" />
-      </button>
-    </div>
-    <div class="hidden max-md:block">
-      ${mobileProgress ? `<div class="scroll-progress" data-progress><span><i></i></span></div>` : ""}
-      ${
-        mobileAction
-          ? `<div class="px-4 pt-2">
-        <a href="${href}" class="btn btn-m btn-secondary w-full">
-          <span>${action}</span>
-          <img src="${ICON}/arrow-right-24.svg" alt="" class="size-6" />
-        </a>
-      </div>`
-          : ""
-      }
-    </div>
-  </section>`;
+  const frag = clone("[data-carousel-section]");
+  const section = frag.firstElementChild;
+  if (id) section.id = id;
+
+  section.querySelector("[data-cs-title]").textContent = title;
+
+  if (count != null) section.querySelector("[data-cs-count]").textContent = count;
+  else drop(section, "[data-cs-count]");
+
+  if (desc) section.querySelector("[data-cs-desc]").textContent = desc;
+  else {
+    drop(section, "[data-cs-desc-gap]");
+    drop(section, "[data-cs-desc]");
+  }
+
+  if (!desktopAction) drop(section, "[data-cs-desktop-action]");
+  if (!mobileAction) drop(section, "[data-cs-mobile-action]");
+  if (!mobileProgress) drop(section, "[data-cs-progress]");
+
+  // Both action buttons (desktop row, mobile full-width) carry the same copy.
+  section.querySelectorAll("[data-cs-action]").forEach((a) => {
+    a.href = href;
+    a.querySelector("[data-cs-action-label]").textContent = action;
+  });
+
+  section.querySelectorAll("[data-prev], [data-next]").forEach((b) => {
+    b.style.top = `${arrowTop}px`;
+  });
+
+  const chipsSlot = section.querySelector("[data-cs-chips-slot]");
+  if (tabs?.length) chipsSlot.replaceWith(buildChips(tabs));
+  else chipsSlot.remove();
+
+  return section;
+}
+
+// ---- tab chips (e.g. Популярные товары) -------------------------------------
+// One [data-carousel-chip] per tab, inserted before the row's trailing "еще".
+function buildChips(tabs) {
+  const row = clone("[data-carousel-chips]").firstElementChild;
+  const more = row.querySelector("[data-cs-more]");
+  tabs.forEach((label, i) => {
+    const chip = clone("[data-carousel-chip]").firstElementChild;
+    chip.textContent = label;
+    if (i === 0) chip.setAttribute("aria-selected", "true");
+    row.insertBefore(chip, more);
+  });
+  return row;
 }
 
 // Mobile rails scroll natively under a finger, but a mouse drag does nothing —
@@ -214,7 +190,7 @@ export function initScrollProgress(sectionEl) {
 }
 
 // Wires prev/next arrows to slide the track. Works on any section built by
-// carouselSection(): [data-viewport] clips, [data-track] translates by one card.
+// buildCarouselSection(): [data-viewport] clips, [data-track] translates by one card.
 // Below `md` the viewport scrolls natively instead, so the transform is cleared.
 export function initCarousel(sectionEl) {
   const viewport = sectionEl.querySelector("[data-viewport]");
@@ -284,7 +260,7 @@ export function initCarousel(sectionEl) {
 }
 
 // Builds a carousel section into `anchor` and wires it. `cfg` is the
-// carouselSection() config (title / desc / action / tabs / endpoint /
+// buildCarouselSection() config (title / desc / action / tabs / endpoint /
 // desktopAction), plus `mobileCard` — which mobile card shape the rail uses —
 // and `variant`, which Figma card component, both handed to renderCarousel().
 // `items` are product-card descriptors.
@@ -295,7 +271,7 @@ export function initCarousel(sectionEl) {
 // leaves `article` elements behind works with the rest of the machinery.
 export function mountCarousel(anchor, cfg, items) {
   if (!anchor) return;
-  anchor.innerHTML = carouselSection(cfg);
+  anchor.replaceChildren(buildCarouselSection(cfg));
   const track = anchor.querySelector("[data-track]");
   const cardOpts = { mobile: cfg.mobileCard, variant: cfg.variant };
   const render = cfg.render || renderCarousel;

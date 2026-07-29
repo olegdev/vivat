@@ -121,4 +121,13 @@
       <span data-metro-name class="text-body-s text-text-secondary"></span>
     </span>
   </template>
+
+  <!-- Shown in place of the map when the Yandex Maps API fails to load (no key,
+       offline, blocked). The list of salons beside it stays useful either way. -->
+  <template data-map-failed>
+    <div class="flex size-full flex-col items-center justify-center gap-2 bg-surface-default px-10 text-center">
+      <p class="text-h5 text-text-primary">Карта временно недоступна</p>
+      <p class="text-body-s text-text-secondary">Список салонов рядом — актуален.</p>
+    </div>
+  </template>
 </section>

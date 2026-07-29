@@ -39,6 +39,15 @@
       <!-- ==================== MOBILE BURGER MENU ======================= -->
       <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
 
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!-- Shell + templates in partials/search-overlay.html; opened from any
+           [data-search] field (desktop header, burger menu) by search.js. -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- product-card <template>s — this page has no rail of its own, but the
+           search overlay's results are made of them -->
+      <!--#include partials/product-card.html -->
+
       <!-- ==================== MOBILE MODAL HEADER =====================
            Figma header 2029:153971 (`design=default, type=H3`, 360×48): back
            chevron, step title, close. The step-1 frame swaps it for the 78px

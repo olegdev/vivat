@@ -17,7 +17,8 @@ Only things that are actually open. Delete lines as they land.
 ## Seams to wire (form + request seam pattern — see SOLUTIONS.md)
 
 Places that will be a server round-trip in the Blade build. Done so far: catalog
-filter drawer, popular-carousel tabs, header search, add-to-cart, stores filter.
+filter drawer, popular-carousel tabs, site search (overlay + suggest),
+add-to-cart, stores filter.
 
 The JS-string structure debt is unwound: every repeated unit is now a clean HTML
 `<template>` in its partial that the component clones (product-card, catalog-menu,
@@ -25,10 +26,17 @@ mobile-menu, stores). What stays in JS is only the mock *data* arrays
 (`categories`, `stores`, the product lists) — in Blade those come from the model
 and are printed into the same templates; nothing structural remains to convert.
 
-- The mobile burger-menu search field is still an inert `<form onsubmit="return
-  false">` (partials/mobile-menu.html) — not wired to components/search.js. Give
-  it `data-search`/`name="q"` and run initSearch() over it when mobile search
-  lands.
+- Search suggest is a seam in one function, `searchSuggest()` in
+  components/search.js — it returns `{ hints, chips, items }`, exactly the shape
+  a `/search/suggest?q=…` response should have. Its mock corpus is
+  `src/data/search.js`; both go away when the endpoint lands. The overlay's own
+  `<form action="/search" name="q">` already submits the real query.
+- The designer re-cut `cards-other size=s` (Figma 632:27760): it now carries a
+  swatch + comments row above the category tag, 322×410 instead of 386. The
+  search card (`data-pcard-search`) is built to the new shape; the PDP's
+  "Добавьте в корзину" rail still uses the old `data-pcard-other-s` template. No
+  visible difference today — that rail's fixtures carry no swatches — but the
+  two templates should be folded into one when someone next touches the PDP.
 
 ## Not started
 

@@ -7,103 +7,79 @@
 // carries no prototype interactions at all — the rotation that used to live
 // here was invented, and it moved the slide out from under people mid-read.
 
+// The markup is a set of clean HTML <template>s in partials/hero.html (the
+// future Blade partial); this file only clones, fills and wires them.
+const clone = (sel) => document.querySelector(sel).content.cloneNode(true);
+
 // `frame` reproduces the Figma media box verbatim (left/top/width/height inside
 // the 1440x640 banner), the same pattern the category tiles use. Without it the
 // media just covers the slide.
-function bgAttrs(s) {
-  const f = s.frame;
-  if (f) {
-    return {
-      cls: "hero-media",
-      style: `--l:${f.left}px;--t:${f.top}px;--w:${f.width}px;--h:${f.height}px`,
-    };
-  }
-  return {
-    cls: "absolute inset-0 size-full object-cover",
-    style: `object-position:${s.objectPosition || "center"}`,
-  };
-}
+function buildSlideMedia(s) {
+  const el = clone(s.video ? "[data-hero-video]" : "[data-hero-img]").firstElementChild;
+  el.src = s.video || s.image;
 
-function slideBg(s) {
-  const { cls, style } = bgAttrs(s);
+  if (s.frame) {
+    el.className = "hero-media";
+    el.style.cssText = `--l:${s.frame.left}px;--t:${s.frame.top}px;--w:${s.frame.width}px;--h:${s.frame.height}px`;
+  } else {
+    el.className = "absolute inset-0 size-full object-cover";
+    el.style.objectPosition = s.objectPosition || "center";
+  }
+
   if (s.video) {
+    if (s.poster) el.poster = s.poster;
     // Muted is required for autoplay; sound is enabled on first user gesture
     // (see unlockSound below) so it matches the "video plays with sound" prototype.
-    return `<video
-      class="${cls}" style="${style}"
-      src="${s.video}" ${s.poster ? `poster="${s.poster}"` : ""}
-      ${s.sound ? "data-sound" : ""} muted loop playsinline preload="metadata"></video>`;
+    if (s.sound) el.setAttribute("data-sound", "");
   }
-  return `<img class="${cls}" style="${style}" src="${s.image}" alt="" draggable="false" />`;
+  return el;
 }
 
-function slideCta(s) {
-  if (!s.title && !s.cta) return "";
-  return `
-    <div class="absolute inset-y-0 left-0 flex w-[619px] flex-col justify-center gap-2 py-2 pl-[155px] pr-2 max-md:inset-y-auto max-md:top-0 max-md:w-full max-md:justify-start max-md:px-4 max-md:pb-2 max-md:pt-8">
-      <div class="flex flex-col gap-6 max-md:gap-4">
-        <div class="flex flex-col gap-3 max-md:gap-1">
-          <h1 class="text-display-l text-text-link-highlighted max-md:text-center max-md:text-m-display-l">${s.title || ""}</h1>
-          ${s.subtitle ? `<p class="text-body-l text-text-link-highlighted max-md:text-center max-md:text-m-body-l">${s.subtitle}</p>` : ""}
-        </div>
-        ${
-          s.cta
-            ? `<div class="max-md:flex max-md:justify-center">
-                 <a href="${s.cta.href || "#"}" class="btn btn-l btn-accent gap-3 max-md:h-11 max-md:gap-2 max-md:px-6 max-md:text-m-button-l">
-                   <span>${s.cta.label}</span>
-                   <img src="${s.cta.arrow}" alt="" class="size-6" />
-                 </a>
-               </div>`
-            : ""
-        }
-      </div>
-    </div>`;
+function buildSlide(s, i) {
+  const node = clone("[data-hero-slide]").firstElementChild;
+  if (i === 0) node.classList.replace("opacity-0", "opacity-100");
+  if (i === 0) node.classList.remove("pointer-events-none");
+
+  const copy = node.querySelector("[data-hero-copy]");
+  if (!s.title && !s.cta) copy.remove();
+  else {
+    // The only field carrying markup: the two hero lines are split by a <br>.
+    node.querySelector("[data-hero-title]").innerHTML = s.title || "";
+
+    if (s.subtitle) node.querySelector("[data-hero-subtitle]").textContent = s.subtitle;
+    else node.querySelector("[data-hero-subtitle]").remove();
+
+    if (s.cta) {
+      const link = node.querySelector("[data-hero-cta]");
+      link.href = s.cta.href || "#";
+      node.querySelector("[data-hero-cta-label]").textContent = s.cta.label;
+    } else {
+      node.querySelector("[data-hero-cta-wrap]").remove();
+    }
+  }
+
+  node.insertBefore(buildSlideMedia(s), node.firstChild);
+  return node;
 }
 
-export function initHeroSlider(root, slides, opts = {}) {
-  const icon = opts.iconBase ?? "/assets/header";
+export function initHeroSlider(root, slides) {
+  // `touch-pan-y` (on the section in the partial) is what makes the swipe work
+  // on a phone: it leaves vertical panning to the browser but keeps horizontal
+  // gestures for us. Without it the browser claims the gesture and fires
+  // pointercancel, so the swipe wired here never completed on touch.
+  const shell = clone("[data-hero-section]").firstElementChild;
+  shell.querySelector("[data-track]").append(...slides.map(buildSlide));
 
-  // `touch-pan-y` is what makes the swipe work on a phone: it leaves vertical
-  // panning to the browser but keeps horizontal gestures for us. Without it the
-  // browser claims the gesture and fires pointercancel, so the swipe that used
-  // to be wired here never completed on touch.
-  root.innerHTML = `
-    <section class="relative h-[640px] w-[1440px] touch-pan-y select-none overflow-hidden bg-surface-default max-md:h-[508px] max-md:w-full">
-      <div data-track class="absolute inset-0">
-        ${slides
-          .map(
-            (s, i) => `
-          <div data-slide class="absolute inset-0 transition-opacity duration-700 ${
-            i === 0 ? "opacity-100" : "opacity-0 pointer-events-none"
-          }">
-            ${slideBg(s)}
-            ${slideCta({ ...s, cta: s.cta ? { ...s.cta, arrow: `${icon}/cta-arrow.svg` } : null })}
-          </div>`
-          )
-          .join("")}
-      </div>
+  const dots = shell.querySelector("[data-dots]");
+  slides.forEach((_, i) => {
+    const dot = clone("[data-hero-dot]").firstElementChild;
+    dot.dataset.dot = String(i);
+    dot.setAttribute("aria-label", `Слайд ${i + 1}`);
+    dot.setAttribute("aria-current", String(i === 0));
+    dots.append(dot);
+  });
 
-      <!-- Desktop parks the controls on the vertical centre line; the 360px
-           frame (1821:327514) drops them onto the dots row instead, one at each
-           edge of the 8px gutter. -->
-      <button data-prev aria-label="Назад"
-        class="carousel-arrow absolute left-6 top-1/2 z-20 -translate-y-1/2 max-md:bottom-1 max-md:left-2 max-md:top-auto max-md:translate-y-0">
-        <img src="${icon}/chevron-left.svg" alt="" class="size-6" />
-      </button>
-      <button data-next aria-label="Вперёд"
-        class="carousel-arrow absolute right-6 top-1/2 z-20 -translate-y-1/2 max-md:bottom-1 max-md:right-2 max-md:top-auto max-md:translate-y-0">
-        <img src="${icon}/chevron-right.svg" alt="" class="size-6" />
-      </button>
-
-      <div data-dots class="absolute inset-x-0 bottom-0 z-20 flex h-10 items-center justify-center gap-2 px-10 py-2 max-md:bottom-2">
-        ${slides
-          .map(
-            (_, i) => `
-          <button data-dot="${i}" aria-label="Слайд ${i + 1}" class="carousel-dot" aria-current="${i === 0}"><span></span></button>`
-          )
-          .join("")}
-      </div>
-    </section>`;
+  root.replaceChildren(shell);
 
   const slideEls = [...root.querySelectorAll("[data-slide]")];
   const dotEls = [...root.querySelectorAll("[data-dot]")];

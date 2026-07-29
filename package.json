@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "node scripts/build.mjs",
+    "build:php": "node scripts/build-handoff.mjs",
     "build:chunked": "vite build",
     "preview": "vite preview"
   },

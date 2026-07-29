@@ -26,6 +26,10 @@ for (const entry of entries) {
     build: {
       outDir,
       emptyOutDir: false, // we cleared it once above; keep prior pages' output
+      // Everything is inlined into one HTML, so no <link rel="modulepreload">
+      // is ever emitted — the polyfill Vite prepends to the entry chunk is
+      // dead weight in every page.
+      modulePreload: { polyfill: false },
       rollupOptions: {
         input: resolve(root, entry),
       },
