@@ -28,6 +28,9 @@ export default defineConfig({
     // На сервере projdev запускает dev с PORT в окружении (см. docs/DEV_SERVER.md).
     // Vite не читает PORT сам и не знает флага -p, поэтому порт берём отсюда;
     // локально остаётся дефолтный 5173.
+    // На сервере "localhost" резолвится в ::1, и туннель ssh, идущий на
+    // 127.0.0.1, стучится в закрытую дверь — слушаем адрес явно.
+    host: "127.0.0.1",
     port: Number(process.env.PORT) || 5173,
     strictPort: Boolean(process.env.PORT), // занят — падаем, а не уезжаем на соседний
   },
