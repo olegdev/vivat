@@ -7,3 +7,6 @@ dist-php/
 
 # Playwright MCP screenshots / traces from local verification runs
 .playwright-mcp/
+
+# Инструкция по dev-серверу: канонная копия живёт на самом сервере, в /srv/README.md
+docs/DEV_SERVER.md

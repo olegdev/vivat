@@ -24,6 +24,13 @@ export default defineConfig({
   base: "./", // relative asset URLs so the build opens straight from disk (file://)
   publicDir: resolve(process.cwd(), "public"),
   plugins: [htmlIncludes(), tailwindcss()],
+  server: {
+    // На сервере projdev запускает dev с PORT в окружении (см. docs/DEV_SERVER.md).
+    // Vite не читает PORT сам и не знает флага -p, поэтому порт берём отсюда;
+    // локально остаётся дефолтный 5173.
+    port: Number(process.env.PORT) || 5173,
+    strictPort: Boolean(process.env.PORT), // занят — падаем, а не уезжаем на соседний
+  },
   build: {
     outDir: resolve(process.cwd(), "dist"),
     emptyOutDir: true,
