@@ -363,26 +363,63 @@ and fail here; node's `zlib` handles both, so `kiwi-schema` is the only dep.
 - Custom classes used with a variant (`max-md:scroll-rail`) **must** be
   `@utility`, not `@layer components` — Tailwind only generates variants for
   utilities it owns, and otherwise emits nothing, silently.
-- **Verify in the browser at both 1440 and 390 before calling something done —
-  `npm run shot <page>`, then actually open the PNGs.** This is not optional and
-  it is not satisfiable by reading the diff: a strip that came out 350px narrow
-  and an icon that was never in the design both passed every structural check
-  and were caught by eye. The script rebuilds `dist/` when `src/` is newer,
-  shoots both widths, and flags horizontal overflow. `npm run shot` with no
-  argument does every page.
-  - Chromium is per-user (`npx playwright install chromium`, no root). Its
-    system libraries do need root (`sudo npx playwright install-deps chromium`)
-    — if a launch fails on a fresh machine, that is why.
+- **Nothing is done until it has been through the three checks below.** Reading
+  your own diff is not one of them.
 
-- **Diff the copy mechanically before calling a block done:**
-  `npm run audit <page> <selector> <figma-instance-id>`. It prints the Figma
-  instance's rendered text and the page's, in order, side by side. Eyes are bad
-  at exactly the defects that kept shipping here — a button missing, an extra
-  one, two in the wrong ORDER, a label read off the master. The diff is not.
-  It is exact on instances whose copy the designer overrode (title blocks,
-  button rows, menus); on instances with no overrides it can only show the
-  master's filler, and there `fig.mjs inst` plus the derived box size is the
-  tool. See SOLUTIONS.md › "An INSTANCE is not its master".
+## Before calling a block done
+
+Three checks, in this order. Each one caught defects the other two missed, so
+none of them is optional and none substitutes for another.
+
+**1 — Read the instance, not the master.**
+
+```bash
+node scripts/fig.mjs tree <page-frame-id> 2     # find the INSTANCE you built
+node scripts/fig.mjs inst <instance-id>         # its REAL layout and copy
+```
+
+`tree` on an instance prints the master component: master sizes, master copy,
+master visibility. All three are routinely contradicted. `inst` reads
+`derivedSymbolData` — the layout Figma actually computed. Also check
+`componentPropAssignments` in the instance's overrides: booleans like
+`цена-"от"` switch whole elements on and off and appear in neither dump.
+
+**2 — Diff the copy mechanically.**
+
+```bash
+npm run audit <page> <selector> <instance-id>
+# worked example — the dealer home page's news title block:
+npm run audit dealer/main '[data-section="news"] > div:nth-child(2)' 882:109468
+```
+
+Two columns, line by line: what the instance renders, what the page renders.
+A missing element, an extra one and a **wrong order** each show up as a
+mismatched row — the three defects eyes are worst at and that kept shipping.
+
+- `<page>` is the path under `dist/pages/` without the extension.
+- `<selector>` is the smallest element that wraps the block; quote it and escape
+  Tailwind brackets (`'.rounded-l-\[32px\]'`).
+- `<instance-id>` is the `<INSTANCE>` in the Figma frame that corresponds to it.
+
+Exit code is non-zero on any mismatch. It is exact where the designer overrode
+the copy (title blocks, button rows, menus); where an instance has no overrides
+it can only show the master's filler — there, fall back to check 1 and read the
+derived box size (a 43×18 text box is five characters, not "56 моделей").
+
+**3 — Look at it.**
+
+```bash
+npm run shot <page>          # 1440 and 390 → .shots/, warns on x-overflow
+```
+
+Then **actually open the PNGs**, and crop into the block you changed rather than
+glancing at the whole page — a strip 350px narrow and an invented icon both
+survived every structural check and were caught only by eye. `npm run shot`
+with no argument does every page.
+
+Chromium is per-user (`npx playwright install chromium`, no root); its system
+libraries need root (`sudo npx playwright install-deps chromium`). If a launch
+fails on a fresh machine, that is why.
 
 ## Layout facts worth not rediscovering
 
