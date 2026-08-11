@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Главная (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./main.js"></script>
+  </head>
+  <!-- `data-user="dealer"` is what turns the shared chrome into its dealer
+       variant: the header's utility links become the dark strip, the footer
+       gains its CTA and the «Письмо директору» link. `group` is what lets the
+       partials express that with `group-data-[user=dealer]:…` at the call
+       site — the same technique as the order page's `data-step`. In Blade it
+       becomes the `$user` the layout passes to each @include. -->
+  <body class="group bg-bg-page text-text-primary" data-user="dealer">
+    <!-- DESKTOP ONLY, on purpose. Figma dealer/Main 882:107882 exists at 1440
+         and has no 360 counterpart — see docs/FIGMA-MAP.md › вопросы. The
+         reused sections keep the `max-md:` rules they already carry from the
+         customer home page, but nothing here was authored for mobile and the
+         page deliberately omits the bottom nav and the burger menu until the
+         designer delivers the 360 frame. -->
+    <div class="mx-auto w-full md:w-[1440px]">
+      <!-- ==================== SITE HEADER ================================ -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ========================= -->
+      <!-- The dealer frames `menu` 953:121639 (one column) and 953:121756
+           (three) are two states of this same shell, not new screens —
+           catalog-menu.js already drives both. -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- inert <template>s cloned by the sections below -->
+      <!--#include partials/product-card.html -->
+      <!--#include partials/carousel-section.html -->
+      <!--#include partials/promo-card.html -->
+      <!--#include partials/news-card.html -->
+      <!--#include partials/hero.html -->
+
+      <!-- ==================== ALERT ===================================== -->
+      <!--#include partials/alert.html -->
+
+      <!-- ==================== HERO ====================================== -->
+      <!-- `banner` 882:107885 is the same master as the customer hero
+           (607:29214) with the same slides — the partial is reused verbatim. -->
+      <div data-hero></div>
+
+      <div class="h-10"></div>
+
+      <!-- ==================== CATEGORIES ================================ -->
+      <!--#include partials/categories.html -->
+
+      <!-- ==================== CAROUSEL: Модульные кухни ================= -->
+      <div data-section="modular"></div>
+
+      <!-- ==================== CAROUSEL: Популярные товары =============== -->
+      <div data-section="popular"></div>
+
+      <!-- ==================== PROMO: А как вам вот такое ================ -->
+      <!--#include partials/promo-row.html -->
+
+      <!-- ==================== CN: Подпишитесь на нас ==================== -->
+      <!--#include partials/socials.html -->
+
+      <!-- ==================== CAROUSEL: Акции и скидки ================== -->
+      <div data-section="akcii"></div>
+
+      <!-- ==================== Новости =================================== -->
+      <!-- `H2` 882:109467: title-block + a 3-up row of `news-item` cards. The
+           row sizes its children, so the card unit carries no width. -->
+      <section class="flex flex-col px-10" data-section="news">
+        <div class="h-20"></div>
+        <div class="flex items-start justify-between">
+          <h2 class="text-h2 text-text-primary">Новости</h2>
+          <div class="flex items-center gap-2">
+            <a href="#" class="btn btn-m btn-secondary">
+              <span>Все новости</span>
+              <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+            </a>
+          </div>
+        </div>
+        <div class="h-6"></div>
+        <div class="grid grid-cols-3 gap-6" data-news-track></div>
+      </section>
+
+      <div class="h-24"></div>
+
+      <!-- ==================== Наши салоны + карта ======================= -->
+      <!-- `map-general` 882:107971 — the shared stores partial, unchanged. Its
+           peach `surface-accent` band and "Наши салоны" title are already the
+           partial's defaults, so this page needs no override at all. -->
+      <div data-section="salony"><!--#include partials/stores.html --></div>
+
+      <!-- ==================== Производство ============================== -->
+      <!--#include partials/production.html -->
+
+      <!-- ==================== FOOTER ==================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+  </body>
+</html>

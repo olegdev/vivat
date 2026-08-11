@@ -1,0 +1,28 @@
+<!-- ==================== ALERT BAND ================================= -->
+<!-- Figma `alert` 882:107884 (dealer/Main). One centred row on the peach
+     `surface-accent-subtle` fill: info glyph, the message, and a close ×.
+     Dismissal is behaviour, not structure — the page script removes the band;
+     in Blade the whole include sits behind whatever renders site notices.
+
+     NB the customer home page still carries an older inline copy of this band
+     with no icon and no close (it predates this partial). Migrating it is a
+     visual change to a shipped page, so it waits on the designer confirming
+     the icon and × belong there too. -->
+<div
+  data-alert
+  class="flex h-10 w-full items-center justify-center gap-2 bg-surface-accent-subtle px-4 max-md:h-auto max-md:min-h-12 max-md:py-1 md:w-[1440px]"
+>
+  <img src="../../assets/header/icon-info.svg" alt="" class="size-4 shrink-0" />
+  <p class="text-center text-body-s text-text-primary max-md:text-m-body-n" data-alert-text>
+    Обращаем внимание покупателей, что 22.07.2026 мы работаем по сокращенному графику!
+    <a href="#" class="underline">Подробнее</a>
+  </p>
+  <button
+    type="button"
+    data-alert-close
+    aria-label="Закрыть уведомление"
+    class="flex size-6 shrink-0 items-center justify-center"
+  >
+    <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />
+  </button>
+</div>

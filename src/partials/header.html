@@ -53,7 +53,9 @@
           >+7 (495) 135-65-65</a
         >
       </div>
-      <div class="flex items-center gap-6">
+      <!-- Signed-out (customer) utility links. `header-dealer` 586:57341,
+           property-1=default — the plain "Войти в режим дилера" pill. -->
+      <div class="flex items-center gap-6 group-data-[user=dealer]:hidden">
         <a class="text-body-s-accent text-text-link-highlighted" href="#"
           >Стать дилером</a
         >
@@ -62,6 +64,71 @@
           >Войти в режим дилера
           <img src="../../assets/header/icon-arrow-right.svg" alt="" class="size-4" />
         </a>
+      </div>
+
+      <!-- Signed-in dealer strip — `header-dealer` 586:57343, property-1=variant2.
+           Same component, third variant: a dark bar that replaces the utility
+           links. It is rounded on the LEFT only (32px) and runs flush to the
+           right edge of the 1440 canvas, so it breaks the row's px-10 padding
+           with -mr-10. Shown by `data-user="dealer"` on <body> — the same
+           technique as the order page's `data-step`; in Blade it is the
+           @if($user === 'dealer') branch of this include. -->
+      <div
+        class="-mr-10 hidden h-11 items-center gap-6 rounded-l-[32px] bg-components-strong pl-6 pr-10 group-data-[user=dealer]:flex"
+      >
+        <!-- price visibility. Behaviour lives in components/dealer-header.js;
+             the design has no prototype on it, so it only reflects its own
+             state until the client confirms what it should hide. -->
+        <button
+          type="button"
+          role="switch"
+          aria-checked="true"
+          data-dealer-price-toggle
+          class="group/sw flex shrink-0 items-center gap-3"
+        >
+          <span
+            class="flex h-6 w-10 items-center rounded-pill bg-surface-raised p-0.5 transition-colors"
+          >
+            <span
+              class="size-5 translate-x-0 rounded-pill bg-components-strong transition-transform group-aria-[checked=true]/sw:translate-x-4"
+              data-dealer-price-knob
+            ></span>
+          </span>
+          <span class="whitespace-nowrap text-body-s-accent text-text-inverse-secondary"
+            >Показывать цену</span
+          >
+        </button>
+
+        <!-- price list selector — `dropdown-header` 607:26932. Options come
+             from data/dealer-home.js; wiring is dealer-header.js. -->
+        <div class="relative shrink-0" data-dealer-pricelist>
+          <button
+            type="button"
+            class="flex items-center gap-0.5 text-body-n-accent text-text-inverse-primary"
+            aria-expanded="false"
+            aria-haspopup="listbox"
+          >
+            <span data-dealer-pricelist-label>Оптовая цена</span>
+            <img src="../../assets/header/chevron-down-light.svg" alt="" class="size-6" />
+          </button>
+          <div
+            data-dealer-pricelist-menu
+            role="listbox"
+            class="absolute left-0 top-7 z-50 hidden w-[328px] rounded-[var(--radius-l)] bg-bg-page py-2 shadow-dropdown"
+          ></div>
+        </div>
+
+        <span class="flex-1"></span>
+
+        <a class="shrink-0 text-body-s-accent text-text-link-highlighted" href="#">Для бизнеса</a>
+        <a class="flex shrink-0 items-center gap-1 text-body-s-accent text-text-inverse-primary" href="#"
+          >Мой кабинет
+          <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-4" />
+        </a>
+        <!-- TODO(design): the strip ends with a 63px `text-action` (607:27603)
+             whose label is the component's filler ("56 моделей") — the real
+             copy is not in the export. Left out rather than invented; see
+             docs/FIGMA-MAP.md › вопросы. -->
       </div>
     </div>
 

@@ -1,0 +1,42 @@
+<!-- ==================== PROMO: А как вам вот такое ================ -->
+<!-- Shared by the customer home page and the dealer home page — the dealer
+     frame (Action 882:107944 / news 882:107946) draws the same five 437x517
+     tiles, centred and clipped at both edges. -->
+<!-- Per the Figma design this is NOT a slider (no arrows): a static row of
+     5 square tiles, centred so the middle three are fully visible and the
+     edge two peek off the 1440 canvas. The tiles are the shared `news-card`
+     unit — template in partials/promo-card.html, cloned by promo-card.js
+     into [data-promo-track]; this section is only the shell around them.
+     The rail sizes its own children (*:w-[437px]), so the tile carries no
+     width of its own and the same unit fits the Акции page's grid. -->
+<section class="flex flex-col" data-section="promo">
+  <div class="px-10 max-md:px-4">
+    <div class="h-20 max-md:h-10"></div>
+    <div class="flex items-start justify-between">
+      <h2 class="text-h2 text-text-primary max-md:text-m-h2">А как вам вот такое</h2>
+      <a href="#" class="btn btn-m btn-secondary max-md:hidden">
+        <span>Все акции</span>
+        <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+      </a>
+    </div>
+    <div class="h-6 max-md:h-3"></div>
+  </div>
+  <div
+    class="w-[1440px] overflow-hidden max-md:scroll-rail max-md:w-full max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:px-4"
+    data-viewport
+  >
+    <div
+      class="flex justify-center gap-6 *:w-[437px] *:shrink-0 max-md:justify-start max-md:gap-3 max-md:*:w-[320px] max-md:*:snap-start"
+      data-promo-track
+    ></div>
+  </div>
+  <div class="hidden max-md:block">
+    <div class="scroll-progress" data-progress><span><i></i></span></div>
+    <div class="px-4 pt-2">
+      <a href="#" class="btn btn-m btn-secondary w-full">
+        <span>В раздел</span>
+        <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+      </a>
+    </div>
+  </div>
+</section>
