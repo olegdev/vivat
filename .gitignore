@@ -10,3 +10,6 @@ dist-php/
 
 # Инструкция по dev-серверу: канонная копия живёт на самом сервере, в /srv/README.md
 docs/DEV_SERVER.md
+
+# screenshots from `npm run shot`
+.shots/
