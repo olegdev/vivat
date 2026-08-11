@@ -14,7 +14,8 @@
 //
 // Usage:
 //   node scripts/fig.mjs find <regex> [TYPE]   search layer names
-//   node scripts/fig.mjs tree <id> [depth]     dump a subtree (follows instances)
+//   node scripts/fig.mjs inst <id>             INSTANCE: real computed layout + copy
+//   node scripts/fig.mjs tree <id> [depth]     dump a subtree (MASTER data for instances)
 //   node scripts/fig.mjs node <id>             one node: parent, siblings, raw keys
 //   node scripts/fig.mjs raw  <id> [k1,k2]     raw JSON for a node
 //   node scripts/fig.mjs index --rebuild       force a cache rebuild
@@ -94,9 +95,8 @@ function slim(n) {
         color: p.type === "SOLID" ? hex(p.color) : null,
         opacity: p.opacity != null ? +p.opacity.toFixed(3) : 1,
       })),
-    // Hidden nodes stay in the graph and used to print exactly like visible
-    // ones — which is how invented icons got built off a `tree` dump. Carried
-    // so `describe()` can mark them; see SOLUTIONS.md.
+    // NB this is the node's OWN flag. For anything inside an INSTANCE that is
+    // the master's flag, which the instance may contradict — use `inst`.
     hidden: n.visible === false || undefined,
     radius: n.cornerRadius ?? null,
     opacity: n.opacity != null && n.opacity !== 1 ? +n.opacity.toFixed(3) : null,
@@ -163,9 +163,9 @@ function describe(n) {
       }]`
     : "";
   const tx = n.text ? ` ${JSON.stringify(n.text.slice(0, 48))}` : "";
-  // Loud on purpose: a hidden node is in the file but NOT on screen, and
-  // reading one as real is how the dealer strip grew an icon it never had.
-  const hid = n.hidden ? " ⃠HIDDEN" : "";
+  // "hidden in the master" — an instance can still render it. Never conclude
+  // absence from this alone; confirm with `inst`.
+  const hid = n.hidden ? " ⃠hidden-in-master" : "";
   return `${n.id} <${n.type}>${hid} ${n.name}${size ? " " + size : ""}${at}${rot}${fill}${r}${op}${st}${tx}`;
 }
 
@@ -209,12 +209,59 @@ if (cmd === "index") {
     }
   }
   if (!hits) console.log("no matches");
+} else if (cmd === "inst") {
+  // THE command for an INSTANCE. `tree` walks the master component, so it
+  // reports the master's sizes, the master's text and the master's visibility —
+  // none of which is what the page shows. Figma stores the instance's computed
+  // layout in `derivedSymbolData`: one entry per node that actually
+  // participates, with its real size. A node missing from that list is not
+  // rendered; a text override in `symbolOverrides` is the copy you will see.
+  //
+  // Reading `tree` instead of this is what produced an invented arrow icon, a
+  // strip 350px too narrow, two "hidden" buttons that were on screen, and a
+  // mail glyph on a button labelled «Личный кабинет».
+  const { byId } = load();
+  const id = norm(args[0]);
+  const n = byId.get(id);
+  if (!n) throw new Error(`no such node: ${id}`);
+  const raw = decodeFig().find((x) => gid(x.guid) === id);
+  if (!raw?.symbolData) throw new Error(`${id} is not an INSTANCE — use \`tree\``);
+
+  const path = (g) => g.guids.map((x) => `${x.sessionID}:${x.localID}`).join(".");
+  const text = new Map();
+  for (const o of raw.symbolData.symbolOverrides ?? [])
+    if (o.textData?.characters) text.set(path(o.guidPath), o.textData.characters);
+
+  const derived = raw.derivedSymbolData ?? [];
+  console.log(`${id} <INSTANCE> ${n.name} — computed layout, ${derived.length} node(s)`);
+  for (const e of derived) {
+    const p = path(e.guidPath);
+    const leaf = p.split(".").pop();
+    const meta = byId.get(leaf);
+    const size = e.size ? `${+e.size.x.toFixed(1)}x${+e.size.y.toFixed(1)}` : "—";
+    const tx = text.get(p);
+    console.log(
+      `  ${p.padEnd(30)} ${size.padStart(12)}  ${meta?.name ?? ""}` +
+        (tx ? `  ${JSON.stringify(tx)}` : "")
+    );
+  }
+  const orphan = [...text].filter(([p]) => !derived.some((e) => path(e.guidPath) === p));
+  if (orphan.length) {
+    console.log("\n  text overrides on nodes NOT in the computed layout:");
+    for (const [p, t] of orphan) console.log(`  ${p.padEnd(30)} ${JSON.stringify(t)}`);
+  }
 } else if (cmd === "tree") {
   const doc = load();
   const id = norm(args[0]);
   const n = doc.byId.get(id);
   if (!n) throw new Error(`no such node: ${id}`);
   console.log(describe(n));
+  if (n.symbol)
+    console.log(
+      "  ⚠ this is an INSTANCE — everything below is the MASTER component:\n" +
+      "    sizes, copy and visibility here may all be contradicted by the instance.\n" +
+      `    Run: node scripts/fig.mjs inst ${id}`
+    );
   walk(doc, id, 1, Number(args[1] ?? 3), new Set());
 } else if (cmd === "node") {
   const { byId, kids } = load();

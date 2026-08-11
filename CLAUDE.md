@@ -311,6 +311,30 @@ and fail here; node's `zlib` handles both, so `kiwi-schema` is the only dep.
 
 ## Rules
 
+- **NEVER invent. Not a label, not an icon, not a size, not a behaviour.**
+  This is absolute. If the design does not state it, you do not know it, and a
+  plausible guess is worse than an empty slot because it ships looking finished.
+  Every invented thing so far was reported as a defect by the client, never
+  noticed as a helpful default:
+  - an arrow icon next to «Мой кабинет» — the slots are not rendered;
+  - a mail glyph and the label «Подписаться на новости» on the dealer footer
+    button — it is «Личный кабинет» with a trailing arrow;
+  - «Все новости» styled as the only button — there are two;
+  - a strip sized to its content instead of the design's 1013px.
+
+  When a value is unreadable: **measure it, then ask.** A derived text box of
+  43×18 is five characters — that is enough to rule out "56 моделей" and to
+  frame a precise question. Put the question in `BACKLOG.md`, tell the user in
+  the reply, and leave the slot empty. Do not fill it "for now".
+
+- **For anything inside a component, run `fig.mjs inst <id>` — never `tree`.**
+  An INSTANCE has no children of its own, so `tree` prints the *master's* sizes,
+  copy and visibility, and the instance contradicts all three routinely. `inst`
+  reads `derivedSymbolData`, which is the layout actually rendered. Misreading
+  this produced every wrong pixel in the dealer header and footer at once; see
+  SOLUTIONS.md › "An INSTANCE is not its master". `tree` warns when you point it
+  at an instance — do not ignore the warning.
+
 - **Take numbers from the design, not from the screenshot.** Sizes, colours,
   gaps and hover states all come out of `fig.mjs`. Several bugs were shipped by
   eyeballing values that were a token away in the file.

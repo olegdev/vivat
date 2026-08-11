@@ -15,10 +15,24 @@
       Фабрика мебели VIVAT — это современные технологии создания корпусной
       мебели с акцентом на практичность, доступность и продуманную конструкцию.
     </p>
-    <a href="#" class="btn btn-l btn-white max-md:mt-2 max-md:h-11 max-md:px-6">
+    <!-- customer: `buttons` 1968:221010 — 176x56, no icon -->
+    <a
+      href="#"
+      class="btn btn-l btn-white group-data-[user=dealer]:hidden max-md:mt-2 max-md:h-11 max-md:px-6"
+    >
       <span class="text-[20px] font-medium leading-6 text-text-primary max-md:text-[16px] max-md:leading-[22px]"
         >О компании</span
       >
+    </a>
+    <!-- dealer: `row` 882:107982 — 191x44 with a trailing arrow -->
+    <a
+      href="#"
+      class="btn btn-white hidden h-11 gap-2 py-0 pl-4 pr-2 group-data-[user=dealer]:inline-flex"
+    >
+      <span class="text-[20px] font-medium leading-8 text-text-primary">О компании</span>
+      <span class="flex size-11 items-center justify-center rounded-pill">
+        <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+      </span>
     </a>
   </div>
 </section>

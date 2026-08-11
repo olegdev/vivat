@@ -401,157 +401,45 @@ Fall back to a screenshot when `raw` comes back empty — that means the node
 genuinely postdates the snapshot (as the four b2b modal panels do), which is a
 different problem from reading the wrong layer.
 
-## `tree` prints hidden nodes too — a dump is the graph, not the render
+## An INSTANCE is not its master — read `derivedSymbolData`, not `tree`
 
-The other half of the same trap, and the more expensive one. Component slots the
-designer switched **off** stay in the file, and `tree` used to print them exactly
-like visible ones. The dealer header strip got an arrow icon next to "Мой
-кабинет" purely because `left-icon` / `right-icon` frames appeared in the dump —
-both are `visible: false`, along with both `underline` frames, so the real design
-is two plain text links.
+**This one trap produced every wrong pixel in the dealer header and footer.**
+`fig.mjs tree` cannot show an instance's own content: an INSTANCE has no
+children, so `walk()` hops to the master component and prints *the master's*
+sizes, copy and visibility. All three are routinely contradicted by the
+instance, and nothing in the output says so.
 
-`fig.mjs` now marks them, so this should not recur:
+What it cost, all in one page:
+
+| read from `tree` | what the instance actually renders |
+|---|---|
+| `left-icon` / `right-icon` `visible:false` | absent — correct by luck |
+| two news buttons `visible:false` | **both on screen**, 161×44 and 264×44 |
+| strip 1193 wide (master) | **1013** |
+| right-hand label "56 моделей" | **«Выход»** — the derived text box is 43×18 |
+| footer button label "56 моделей" + a 14×12 glyph | **«Личный кабинет»** + a trailing 24px arrow |
+
+Figma stores the computed instance in **`derivedSymbolData`**: one entry per node
+that actually participates in the layout, each with its real size. A node absent
+from that list is not rendered. Text lives in `symbolData.symbolOverrides`.
+`fig.mjs inst <id>` joins the two:
 
 ```
-707:46733 <FRAME> ⃠HIDDEN left-icon 16x16 …
+$ node scripts/fig.mjs inst 882:109468
+  752:64207            161x44  buttons
+  752:64207.585:22316   97x24  text  "Все новости"
+  882:113046           264x44  buttons
+  882:113046.585:22325 200x24  text  "подписаться на рассылку"
 ```
 
-Treat any `⃠HIDDEN` node as absent. When in doubt on a single node,
-`raw <id>` carries the flag verbatim. The icon slots on `text-action` /
-`link-container` are the usual offenders — those components ship with a glyph on
-each side and most instances turn both off.
+**Rule: the moment a node is an `<INSTANCE>`, switch to `inst`.** `tree` now
+prints a warning when you point it at one, and its `⃠hidden-in-master` marker is
+named to stop anyone concluding absence from it. Use `tree` for the frame
+structure of a page; use `inst` for anything a component renders.
 
-**Corollary: sizes in a dump are the master's, not the instance's.** The same
-strip is 1013×44 on the page and 1193×44 in the component; children print at
-master coordinates regardless. So a strip built to fit its content came out
-~350px narrow. Read the *instance's* `size` (from `raw`, or the header line of
-`tree <instance-id>`) and pin the container to it — don't infer width by adding
-up children.
-
-Both failures were one habit: reading a dump as a picture. It is a database.
-
-## A shared partial gains a mode from JS, not a second copy
-
-`partials/stores.html` is mounted by three pages: two read it ("Наши салоны",
-"Где купить") and the order page uses it to *pick* a dealer. The third host
-needs a white surface instead of green, a selection ring, a radio on each card,
-and — below `md` — the whole block as a full-screen map with a bottom sheet,
-where the reading pages show a 320px map with a CTA.
-
-That is a lot of difference, and it is still not a second partial. The switch is
-`renderStoresMap({ selectable: true })` → `enterSelectMode()`, which flips
-classes on hooks the partial exposes (`data-map-pane`, `data-store-panel`,
-`data-sheet-grip`, …). Two rules make it work:
-
-- **Flip classes from JS, don't write them into the shared partial.** Tailwind
-  scans `src/**`, so class literals in a component file are generated normally.
-  Putting them in the HTML would ship them to the two hosts that must not have
-  them.
-- **To reveal something below `md`, add `max-md:flex` — never remove `hidden`.**
-  The variant is emitted after the plain utility and wins where it applies, so
-  one class covers both widths. Removing `hidden` leaks the element onto
-  desktop; that is how a 24px radio rendered as a hairline next to every dealer
-  name on the 1440 canvas.
-
-## Anything laid out inside a hidden section measures zero
-
-The order page builds шаг 1 while its section is still `hidden`, so ymaps sized
-its container to 0 and the bottom sheet snapped to a 0-height track. Neither
-throws — you get an invisible map and a sheet flush with the bottom edge, which
-reads as a CSS bug and isn't one.
-
-Both components now expose a re-measure (`map.refresh()` → `fitToViewport()`,
-`sheet.sync()`), called when the step opens. **Any component that reads
-`getBoundingClientRect()` at init needs that method if a page can mount it
-hidden** — build it in rather than reaching for a `setTimeout`.
-
-The same page needed a measured value for a second reason: below `md` шаг 1 is
-`fixed inset-0`, and its top must clear the modal header — which is 48px on the
-steps with a one-line title and 78px on the one with a subtitle. Measure the
-header, don't hard-code either number.
-
-## Two Figma frames, one panel: `data-state` + `group-data-*`
-
-The search overlay is drawn as four frames — empty/query × desktop/mobile — and
-the tempting read is "two components". It isn't: the query state is the empty one
-with a hint list and a chip row inserted, the title dropped, and (below `md`) the
-results relaid out. One panel, one attribute:
-
-```html
-<div data-search-panel data-state="empty" class="group …">
-  <div class="hidden group-data-[state=query]:block">…hints…</div>
-  <div class="px-10 pt-20 group-data-[state=query]:hidden">…Рекомендуем…</div>
-```
-
-**JS sets `panel.dataset.state` and nothing else.** Every layout difference —
-including padding (`max-md:group-data-[state=query]:px-2`) and a whole flex →
-grid switch on the results track — is a class at the call site. This is the same
-shape as the order page's `data-step`, and it is what makes a state readable in
-the markup instead of hidden in a JS branch. It ports to Blade unchanged: the
-attribute becomes `data-state="{{ $state }}"`.
-
-The specificity works in your favour rather than against it: `group-data-[…]:x`
-compiles to `.group[data-state="query"] &`, so it beats the plain utility it
-overrides without `!important` — that is why `grid` can win over `flex` and
-`px-2` over `px-4` on the same element.
-
-## One rail, two mobile layouts
-
-The same results rail is a two-row 152px scroll rail in one state and a two-up
-grid in the other (Figma 2338:236305 vs 2338:239772 — the second frame hides the
-scroll indicator, which is the tell). Don't build two containers.
-
-- The rail's mobile grid is the track's own classes under `group-data-*`; the
-  152px two-row layout stays the existing `.rail-2row` utility, applied by JS
-  because it needs `--cols`. They never apply together, so they can't fight.
-- **A card that lands in both needs an aspect ratio, not a fixed image height.**
-  `max-md:h-[111px]` is right only while the tile is 152px wide;
-  `max-md:aspect-[152/111]` is right at any width the container hands it. Same
-  rule as "a unit whose container differs carries no width of its own", applied
-  one level down.
-
-## `type="search"` draws its own clear button
-
-WebKit renders a native cancel glyph inside `input[type="search"]`, so the
-moment a designed clear button (Figma `clear` 585:54730) appeared next to it the
-field had two ×, one of them blue. Keep the semantics, drop the UA control once
-in `@layer base`:
-
-```css
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-decoration { appearance: none; }
-```
-
-Worth checking on any native control the design re-draws — the same class of bug
-as the "double scrollbar" under `.scroll-progress`.
-
-## Highlighting a match: two character styles, not two fonts
-
-Figma writes a suggestion as one text node with a per-character style override
-(2338:103937): the matched run keeps the primary ink, the rest goes `#808080`.
-It reads as bold in a screenshot and isn't — the weight never changes. Build it
-by splitting the string and wrapping only the match, with `textContent` on every
-piece; a query interpolated into `innerHTML` is an injection waiting to happen.
-
-## Focus restore vs. focus-to-open
-
-An overlay opened by *focusing* a field cannot naively restore focus to that
-field on close: hide → `lastFocused.focus()` → the focus handler fires → it
-opens again, on the same click. The search × looked dead because of it.
-
-Keep both behaviours; just mark the restore. `.focus()` dispatches
-synchronously, so a plain flag around it is enough — no `setTimeout`, no
-dropping focus management:
-
-```js
-restoringFocus = true;
-lastFocused?.focus?.();
-restoringFocus = false;
-// …and the opener bails on `if (isOpen() || restoringFocus) return;`
-```
-
-Applies to any "open on focus" control: a `click` and a `focus` handler on the
-same element already fire twice on the way in, and the way out adds a third.
+A derived size is also the honest way to identify unreadable copy: a 43×18 text
+box is five characters, not "56 моделей". Measure before you guess — and if it
+is still ambiguous, ask, do not fill it in.
 
 ## Pairing a section's desktop and mobile frames: sort by X, ignore the names
 
