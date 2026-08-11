@@ -382,6 +382,25 @@ snapshot lags the live file on **colour and on copy and on visibility**. Numbers
 (sizes, gaps, positions) have been reliable; anything a designer types or toggles
 has not. `get_screenshot` is cheap — use it before asking a question.
 
+**But try `raw` first — the overrides are usually right there.** `tree` renders
+the master's children, so it prints the default; the instance's own text sits in
+`symbolData.symbolOverrides[].textData.characters`, which `fig.mjs raw <id>`
+dumps in full. Reading the dealer home page's section titles this way gave
+"Наши салоны", "Модульные кухни. Хиты продаж", "Акции и скидки" — where `tree`
+showed the same filler master text on every one of them. Offline, exact, no MCP
+round-trip. A one-off loop over the page's title-blocks recovers the whole
+page's copy in a single pass:
+
+```js
+const j = JSON.parse(execFileSync('node', ['scripts/fig.mjs', 'raw', id]));
+for (const o of j.symbolData?.symbolOverrides ?? [])
+  if (o.textData?.characters) console.log(o.textData.characters);
+```
+
+Fall back to a screenshot when `raw` comes back empty — that means the node
+genuinely postdates the snapshot (as the four b2b modal panels do), which is a
+different problem from reading the wrong layer.
+
 ## A shared partial gains a mode from JS, not a second copy
 
 `partials/stores.html` is mounted by three pages: two read it ("Наши салоны",
@@ -504,3 +523,30 @@ restoringFocus = false;
 
 Applies to any "open on focus" control: a `click` and a `focus` handler on the
 same element already fire twice on the way in, and the way out adds a third.
+
+## Pairing a section's desktop and mobile frames: sort by X, ignore the names
+
+The `dealer` and `B2b additional` sections are ~50 frames and almost every
+360-wide one is named `catalog` or `menu` — the same two names, a dozen times
+each. The names carry no information; the **layout does**. The designer places
+each mobile frame immediately to the right of its 1440 parent, so sorting a
+section's direct children by `x` restores the pairs exactly, and a gap in the
+sequence is a genuinely missing mobile frame rather than a naming accident.
+
+That is how the dealer home page was shown to have no 360 counterpart while the
+catalog and order pages have several — a claim worth making precisely, because
+"the design doesn't cover mobile here" is a question for the designer and
+guessing wrong either invents a screen or stalls the build.
+
+```bash
+node scripts/fig.mjs tree <section-id> 2   # then sort the depth-1 rows by @x
+```
+
+Identify an unnamed frame by its child list, not its name: `header |
+order-container` is the order page, `site-header | breadcrumbs | main container`
+is a content page. And when a desktop frame is unreadable (the four b2b modals
+are just page + scrim in the export), its mobile twin often still carries the
+copy — that is what named them.
+
+The finished pass lives in `docs/FIGMA-MAP.md`; redo it there rather than
+re-deriving it per session.

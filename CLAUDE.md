@@ -258,6 +258,17 @@ node scripts/fig.mjs raw  <id> [k1,k2]     # full node JSON, for fields the inde
 
 ids take either form: `1968:71551` or the `1968-71551` in Figma URLs.
 
+**For the b2b half of the design, start from `docs/FIGMA-MAP.md`** — a linked
+index of the `dealer` (882:90262) and `B2b additional` (1334:57242) sections:
+every frame with its node id, its desktop↔mobile pair, what it reuses from the
+customer build, and the open questions for the designer. Those two sections are
+~50 frames and most of the mobile ones are named just `catalog` or `menu`, so
+the map is the difference between reading the section and re-deriving it. It
+also records the two techniques the sections require: pairing desktop to mobile
+by X-coordinate, and reading instance copy out of `symbolOverrides` via `raw`
+(`tree` shows the master's text, not the instance's). Refresh it whenever
+`canvas.fig` is re-exported.
+
 Local first because it is offline, unmetered, returns exact numbers rather than
 a rendering, and can diff component variants against each other — which is how
 the promo hover states and the coral tile's motion were derived.
