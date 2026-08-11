@@ -7,6 +7,7 @@ no framework. Each page builds to a single self-contained HTML file.
 npm run dev       # vite dev server → /pages/customer/main.html
 npm run build     # one vite build per page → dist/ (inlines all JS/CSS)
 npm run build:php # → dist-php/, the folder handed to the PHP developer
+npm run shot      # screenshots of dist/ at 1440 and 390 → .shots/
 ```
 
 Two builds, two audiences. `dist/` is for **showing the client**: one
@@ -337,7 +338,16 @@ and fail here; node's `zlib` handles both, so `kiwi-schema` is the only dep.
 - Custom classes used with a variant (`max-md:scroll-rail`) **must** be
   `@utility`, not `@layer components` — Tailwind only generates variants for
   utilities it owns, and otherwise emits nothing, silently.
-- Verify in the browser at both 1440 and 390 before calling something done.
+- **Verify in the browser at both 1440 and 390 before calling something done —
+  `npm run shot <page>`, then actually open the PNGs.** This is not optional and
+  it is not satisfiable by reading the diff: a strip that came out 350px narrow
+  and an icon that was never in the design both passed every structural check
+  and were caught by eye. The script rebuilds `dist/` when `src/` is newer,
+  shoots both widths, and flags horizontal overflow. `npm run shot` with no
+  argument does every page.
+  - Chromium is per-user (`npx playwright install chromium`, no root). Its
+    system libraries do need root (`sudo npx playwright install-deps chromium`)
+    — if a launch fails on a fresh machine, that is why.
 
 ## Layout facts worth not rediscovering
 
