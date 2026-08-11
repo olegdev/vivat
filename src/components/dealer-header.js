@@ -6,10 +6,9 @@
 //   • "Показывать цену" — a switch. The design carries no prototype on it, so
 //     it only reflects its own state; see docs/FIGMA-MAP.md › вопросы before
 //     wiring it to anything.
-//   • the price-list dropdown (`dropdown-header` 607:26932).
-
-const ITEM_CLASS =
-  "flex h-11 w-full items-center px-3 text-left text-body-n text-text-primary hover:bg-components-subtle-hover aria-selected:bg-components-subtle";
+// The price-list trigger next to it is markup only: the instance renders just
+// the trigger, and the export carries no prototype data, so what it opens is
+// unknown. Nothing is wired to it on purpose — see BACKLOG.md.
 
 function initPriceToggle(root) {
   const btn = root.querySelector("[data-dealer-price-toggle]");
@@ -25,58 +24,6 @@ function initPriceToggle(root) {
   });
 }
 
-function initPriceList(root, lists) {
-  const wrap = root.querySelector("[data-dealer-pricelist]");
-  if (!wrap || !lists?.length) return;
-
-  const trigger = wrap.querySelector("button");
-  const label = wrap.querySelector("[data-dealer-pricelist-label]");
-  const menu = wrap.querySelector("[data-dealer-pricelist-menu]");
-
-  const close = () => {
-    menu.classList.add("hidden");
-    trigger.setAttribute("aria-expanded", "false");
-  };
-
-  menu.replaceChildren(
-    ...lists.map((l) => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.role = "option";
-      b.className = ITEM_CLASS;
-      b.textContent = l.label;
-      b.setAttribute("aria-selected", String(Boolean(l.selected)));
-      b.addEventListener("click", () => {
-        menu.querySelectorAll("[role=option]").forEach((o) => o.setAttribute("aria-selected", "false"));
-        b.setAttribute("aria-selected", "true");
-        label.textContent = l.label;
-        close();
-        root.dispatchEvent(
-          new CustomEvent("dealer:price-list", { detail: { id: l.id }, bubbles: true })
-        );
-      });
-      return b;
-    })
-  );
-
-  const selected = lists.find((l) => l.selected);
-  if (selected) label.textContent = selected.label;
-
-  trigger.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const open = menu.classList.toggle("hidden") === false;
-    trigger.setAttribute("aria-expanded", String(open));
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!wrap.contains(e.target)) close();
-  });
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") close();
-  });
-}
-
-export function initDealerHeader(root = document, { priceLists } = {}) {
+export function initDealerHeader(root = document) {
   initPriceToggle(root);
-  initPriceList(root, priceLists);
 }

@@ -89,26 +89,17 @@
           >
         </button>
 
-        <div class="relative shrink-0" data-dealer-pricelist>
-          <button
-            type="button"
-            class="flex items-center gap-0.5 text-body-n-accent text-text-inverse-primary"
-            aria-expanded="false"
-            aria-haspopup="listbox"
-          >
-            <span
-              data-dealer-pricelist-label
-              class="underline decoration-dotted underline-offset-4"
-              >Оптовая цена</span
-            >
-            <img src="../../assets/header/chevron-down-light.svg" alt="" class="size-6" />
-          </button>
-          <div
-            data-dealer-pricelist-menu
-            role="listbox"
-            class="absolute left-0 top-7 z-50 hidden w-[328px] rounded-[var(--radius-l)] bg-bg-page py-2 shadow-dropdown"
-          ></div>
-        </div>
+        <!-- `dropdown-header` 607:26932 — the instance renders only the
+             132x24 trigger; there is no list in its layout and no prototype
+             data anywhere in the export, so nothing is wired. See BACKLOG. -->
+        <button
+          type="button"
+          class="flex shrink-0 items-center gap-0.5 text-body-n-accent text-text-inverse-primary"
+          data-dealer-pricelist
+        >
+          <span class="underline decoration-dotted underline-offset-4">Оптовая цена</span>
+          <img src="../../assets/header/chevron-down-light.svg" alt="" class="size-6" />
+        </button>
 
         <span class="flex-1"></span>
 

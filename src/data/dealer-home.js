@@ -32,12 +32,3 @@ export const newsItems = [
     date: "30.04.2026",
   },
 ];
-
-// ---- Прайс-листы (dropdown-header 607:26932) --------------------------------
-// Only the selected row is real copy; the other two are placeholders — see
-// BACKLOG.md › Дилерский раздел.
-export const priceLists = [
-  { id: "opt", label: "Оптовая цена", selected: true },
-  { id: "tbd-2", label: "Прайс-лист 2" },
-  { id: "tbd-3", label: "Прайс-лист 3" },
-];

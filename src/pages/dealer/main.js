@@ -12,15 +12,15 @@ import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-me
 import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { heroSlides, modularItems, popularItems, akciiItems, promoTiles } from "../../data/home.js";
-import { newsItems, priceLists } from "../../data/dealer-home.js";
+import { newsItems } from "../../data/dealer-home.js";
 
 // The dealer home page is the customer home page's sections plus the dealer
 // chrome — the rails, hero, tiles and promo row are the same fixtures, so this
 // script is wiring only. Desktop only for now: no 360 frame exists, so there is
 // no mobile menu or bottom nav to mount (see docs/FIGMA-MAP.md).
 
-// ---- dealer strip in the header (price switch + price list) -----------------
-initDealerHeader(document, { priceLists });
+// ---- dealer strip in the header (price switch) ------------------------------
+initDealerHeader();
 
 // ---- dismissible alert band -------------------------------------------------
 initAlert();
