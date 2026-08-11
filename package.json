@@ -9,7 +9,8 @@
     "build:php": "node scripts/build-handoff.mjs",
     "build:chunked": "vite build",
     "preview": "vite preview",
-    "shot": "node scripts/shot.mjs"
+    "shot": "node scripts/shot.mjs",
+    "audit": "node scripts/audit.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.0",

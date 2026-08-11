@@ -420,9 +420,8 @@ What it cost, all in one page:
 | footer button label "56 моделей" + a 14×12 glyph | **«Личный кабинет»** + a trailing 24px arrow |
 
 Figma stores the computed instance in **`derivedSymbolData`**: one entry per node
-that actually participates in the layout, each with its real size. A node absent
-from that list is not rendered. Text lives in `symbolData.symbolOverrides`.
-`fig.mjs inst <id>` joins the two:
+whose layout the instance recomputed, each with its real size. Text lives in
+`symbolData.symbolOverrides`. `fig.mjs inst <id>` joins the two:
 
 ```
 $ node scripts/fig.mjs inst 882:109468
@@ -437,9 +436,30 @@ prints a warning when you point it at one, and its `⃠hidden-in-master` marker 
 named to stop anyone concluding absence from it. Use `tree` for the frame
 structure of a page; use `inst` for anything a component renders.
 
+**Read the asymmetry correctly.** Presence in `derivedSymbolData` proves a node
+renders — that is what exposed the two "hidden" news buttons. Absence proves
+nothing on its own: it usually just means the instance did not resize the node.
+To decide a doubtful case, compare the *container's* derived height with the
+master's. The news title-block's `text-container` comes out 783×44 against the
+master's 783×74 — the missing 30px is a description this variant drops, and no
+flag anywhere says so.
+
+Show/hide is often a **component property**, not a visibility flag. The dealer
+rows set `цена-"от"` (632:3, BOOL, default true) to false on every card, which is
+the entire difference between the customer's «от 450 010₽» and the dealer's
+«450 010₽». Property names live in `componentPropDefs` on the component set;
+assignments live in the instance's `symbolOverrides` as
+`componentPropAssignments`. Neither shows up in `tree`.
+
 A derived size is also the honest way to identify unreadable copy: a 43×18 text
 box is five characters, not "56 моделей". Measure before you guess — and if it
 is still ambiguous, ask, do not fill it in.
+
+**Then diff it mechanically: `npm run audit <page> <selector> <instance-id>`.**
+It walks the instance the way described above and prints its text against the
+page's, in order. Missing element, extra element and wrong order all surface as
+a row mismatch. Every copy defect reported on the dealer page would have been
+caught by it, and none of them were caught by looking.
 
 ## Pairing a section's desktop and mobile frames: sort by X, ignore the names
 

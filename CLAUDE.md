@@ -8,6 +8,7 @@ npm run dev       # vite dev server → /pages/customer/main.html
 npm run build     # one vite build per page → dist/ (inlines all JS/CSS)
 npm run build:php # → dist-php/, the folder handed to the PHP developer
 npm run shot      # screenshots of dist/ at 1440 and 390 → .shots/
+npm run audit     # ordered text diff: a Figma instance vs the rendered page
 ```
 
 Two builds, two audiences. `dist/` is for **showing the client**: one
@@ -372,6 +373,16 @@ and fail here; node's `zlib` handles both, so `kiwi-schema` is the only dep.
   - Chromium is per-user (`npx playwright install chromium`, no root). Its
     system libraries do need root (`sudo npx playwright install-deps chromium`)
     — if a launch fails on a fresh machine, that is why.
+
+- **Diff the copy mechanically before calling a block done:**
+  `npm run audit <page> <selector> <figma-instance-id>`. It prints the Figma
+  instance's rendered text and the page's, in order, side by side. Eyes are bad
+  at exactly the defects that kept shipping here — a button missing, an extra
+  one, two in the wrong ORDER, a label read off the master. The diff is not.
+  It is exact on instances whose copy the designer overrode (title blocks,
+  button rows, menus); on instances with no overrides it can only show the
+  master's filler, and there `fig.mjs inst` plus the derived box size is the
+  tool. See SOLUTIONS.md › "An INSTANCE is not its master".
 
 ## Layout facts worth not rediscovering
 
