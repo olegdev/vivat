@@ -12,27 +12,13 @@
     />
     <script type="module" src="./main.js"></script>
   </head>
-  <!-- `data-user="dealer"` is what turns the shared chrome into its dealer
-       variant: the header's utility links become the dark strip, the footer
-       gains its CTA and the «Письмо директору» link. `group` is what lets the
-       partials express that with `group-data-[user=dealer]:…` at the call
-       site — the same technique as the order page's `data-step`. In Blade it
-       becomes the `$user` the layout passes to each @include. -->
   <body class="group bg-bg-page text-text-primary" data-user="dealer">
-    <!-- DESKTOP ONLY, on purpose. Figma dealer/Main 882:107882 exists at 1440
-         and has no 360 counterpart — see docs/FIGMA-MAP.md › вопросы. The
-         reused sections keep the `max-md:` rules they already carry from the
-         customer home page, but nothing here was authored for mobile and the
-         page deliberately omits the bottom nav and the burger menu until the
-         designer delivers the 360 frame. -->
+    <!-- Figma dealer/Main 882:107882. Desktop only — see BACKLOG.md. -->
     <div class="mx-auto w-full md:w-[1440px]">
       <!-- ==================== SITE HEADER ================================ -->
       <!--#include partials/header.html -->
 
       <!-- ==================== CATALOG MEGA-MENU ========================= -->
-      <!-- The dealer frames `menu` 953:121639 (one column) and 953:121756
-           (three) are two states of this same shell, not new screens —
-           catalog-menu.js already drives both. -->
       <div data-catalog><!--#include partials/catalog-menu.html --></div>
 
       <!-- ==================== SEARCH OVERLAY ============================ -->
@@ -49,8 +35,6 @@
       <!--#include partials/alert.html -->
 
       <!-- ==================== HERO ====================================== -->
-      <!-- `banner` 882:107885 is the same master as the customer hero
-           (607:29214) with the same slides — the partial is reused verbatim. -->
       <div data-hero></div>
 
       <div class="h-10"></div>
@@ -74,8 +58,6 @@
       <div data-section="akcii"></div>
 
       <!-- ==================== Новости =================================== -->
-      <!-- `H2` 882:109467: title-block + a 3-up row of `news-item` cards. The
-           row sizes its children, so the card unit carries no width. -->
       <section class="flex flex-col px-10" data-section="news">
         <div class="h-20"></div>
         <div class="flex items-start justify-between">
@@ -94,9 +76,6 @@
       <div class="h-24"></div>
 
       <!-- ==================== Наши салоны + карта ======================= -->
-      <!-- `map-general` 882:107971 — the shared stores partial, unchanged. Its
-           peach `surface-accent` band and "Наши салоны" title are already the
-           partial's defaults, so this page needs no override at all. -->
       <div data-section="salony"><!--#include partials/stores.html --></div>
 
       <!-- ==================== Производство ============================== -->

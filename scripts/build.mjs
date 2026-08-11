@@ -9,6 +9,25 @@ import { resolve } from "node:path";
 import { globSync } from "glob";
 import { rmSync } from "node:fs";
 
+// dist/ is the build shown to the client, so the source comments — Figma node
+// references, notes to the PHP developer — have no business in it. They stay in
+// src/ and in dist-php/, which is the hand-off and where they are the point.
+// Runs `post` so the includes plugin has already spliced the partials in, and
+// before vite-plugin-singlefile inlines JS/CSS, so only markup is touched.
+const stripHtmlComments = () => ({
+  name: "strip-html-comments",
+  transformIndexHtml: {
+    order: "post",
+    handler: (html) =>
+      html
+        // leave <script>/<style> bodies alone; only strip between them
+        .split(/(<(?:script|style)\b[\s\S]*?<\/(?:script|style)>)/i)
+        .map((part, i) => (i % 2 ? part : part.replace(/<!--[\s\S]*?-->/g, "")))
+        .join("")
+        .replace(/^[ \t]*\n/gm, ""),
+  },
+});
+
 const root = process.cwd();
 const outDir = resolve(root, "dist");
 
@@ -22,7 +41,7 @@ for (const entry of entries) {
     root: "src",
     base: "./",
     publicDir: resolve(root, "public"),
-    plugins: [htmlIncludes(), tailwindcss(), viteSingleFile()],
+    plugins: [htmlIncludes(), stripHtmlComments(), tailwindcss(), viteSingleFile()],
     build: {
       outDir,
       emptyOutDir: false, // we cleared it once above; keep prior pages' output

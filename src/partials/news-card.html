@@ -1,17 +1,5 @@
-<!-- News card unit — Figma `news-item` 882:110636
-     (device=desktop, layout=card, condition=default), 436×263 on `bg-subtle`
-     with 24px padding. Three rows: title, a four-line lead, and the date
-     pinned to the bottom in `text-secondary`.
-
-     The component also holds a 120×88 `img-news` thumbnail (1821:326626), but
-     it is `visible: false` in this variant — confirmed, not assumed — so the
-     text column runs the full width. A variant that shows it would be a second
-     <template> here, not a class swap.
-
-     The card carries no width of its own — the dealer home page's `4item` row
-     sizes its children (`*:w-[436px]`), so the same unit drops into a grid on
-     a future news listing page. Cloned per datum by components/news-card.js;
-     in Blade this template is the body of an @foreach. -->
+<!-- News card — Figma `news-item` 882:110636. Cloned per datum by
+     components/news-card.js; the row sizes the cards, the unit has no width. -->
 <template data-news-card>
   <article class="flex h-[263px] flex-col justify-between rounded-[var(--radius-l)] bg-bg-subtle p-6">
     <div class="flex flex-col gap-3">

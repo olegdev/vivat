@@ -34,9 +34,8 @@ export const newsItems = [
 ];
 
 // ---- Прайс-листы (dropdown-header 607:26932) --------------------------------
-// TODO(design): the dropdown draws three rows, and all three carry the
-// component's default label ("Оптовая цена") — only the selected one is real.
-// The other two are placeholders until the designer names them.
+// Only the selected row is real copy; the other two are placeholders — see
+// BACKLOG.md › Дилерский раздел.
 export const priceLists = [
   { id: "opt", label: "Оптовая цена", selected: true },
   { id: "tbd-2", label: "Прайс-лист 2" },

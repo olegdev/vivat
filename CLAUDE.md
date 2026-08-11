@@ -231,6 +231,20 @@ Tailwind variant gotcha, native scroll rails, touch gestures, faithful media,
 deriving states from Figma). Building the next page means reusing these, not
 re-deriving them.
 
+Then read **`BACKLOG.md`** — what is open, what is deliberately unfinished, and
+what is blocked on an answer from the designer or the client. Check it before
+starting anything and again before calling something done: half of what looks
+like a bug in this prototype is a known debt already written down, and a page
+you are about to touch may be waiting on a decision.
+
+**Debts go in `BACKLOG.md`, never in a code comment.** A TODO buried in a
+partial is invisible on the day the answer finally arrives, and it ships — the
+comment travels into `dist-php/` (by design) and used to travel into `dist/`,
+the build shown to the client, until the client build started stripping
+comments (`stripHtmlComments` in `scripts/build.mjs`). Keep comments in markup
+to the short "which Figma node is this" anchor the partials already use; put
+open questions, guessed copy and deliberate omissions in the backlog.
+
 **Keep it current.** Whenever you come back to fix or rework something the first
 version got wrong — a separate task, not the original build — and the fix
 carries a lesson that generalises, add it to `SOLUTIONS.md`. That doc exists
