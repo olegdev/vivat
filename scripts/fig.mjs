@@ -94,6 +94,10 @@ function slim(n) {
         color: p.type === "SOLID" ? hex(p.color) : null,
         opacity: p.opacity != null ? +p.opacity.toFixed(3) : 1,
       })),
+    // Hidden nodes stay in the graph and used to print exactly like visible
+    // ones — which is how invented icons got built off a `tree` dump. Carried
+    // so `describe()` can mark them; see SOLUTIONS.md.
+    hidden: n.visible === false || undefined,
     radius: n.cornerRadius ?? null,
     opacity: n.opacity != null && n.opacity !== 1 ? +n.opacity.toFixed(3) : null,
     text: n.textData?.characters ?? null,
@@ -159,7 +163,10 @@ function describe(n) {
       }]`
     : "";
   const tx = n.text ? ` ${JSON.stringify(n.text.slice(0, 48))}` : "";
-  return `${n.id} <${n.type}> ${n.name}${size ? " " + size : ""}${at}${rot}${fill}${r}${op}${st}${tx}`;
+  // Loud on purpose: a hidden node is in the file but NOT on screen, and
+  // reading one as real is how the dealer strip grew an icon it never had.
+  const hid = n.hidden ? " ⃠HIDDEN" : "";
+  return `${n.id} <${n.type}>${hid} ${n.name}${size ? " " + size : ""}${at}${rot}${fill}${r}${op}${st}${tx}`;
 }
 
 // An INSTANCE has no children of its own — its content lives on the master

@@ -401,6 +401,35 @@ Fall back to a screenshot when `raw` comes back empty — that means the node
 genuinely postdates the snapshot (as the four b2b modal panels do), which is a
 different problem from reading the wrong layer.
 
+## `tree` prints hidden nodes too — a dump is the graph, not the render
+
+The other half of the same trap, and the more expensive one. Component slots the
+designer switched **off** stay in the file, and `tree` used to print them exactly
+like visible ones. The dealer header strip got an arrow icon next to "Мой
+кабинет" purely because `left-icon` / `right-icon` frames appeared in the dump —
+both are `visible: false`, along with both `underline` frames, so the real design
+is two plain text links.
+
+`fig.mjs` now marks them, so this should not recur:
+
+```
+707:46733 <FRAME> ⃠HIDDEN left-icon 16x16 …
+```
+
+Treat any `⃠HIDDEN` node as absent. When in doubt on a single node,
+`raw <id>` carries the flag verbatim. The icon slots on `text-action` /
+`link-container` are the usual offenders — those components ship with a glyph on
+each side and most instances turn both off.
+
+**Corollary: sizes in a dump are the master's, not the instance's.** The same
+strip is 1013×44 on the page and 1193×44 in the component; children print at
+master coordinates regardless. So a strip built to fit its content came out
+~350px narrow. Read the *instance's* `size` (from `raw`, or the header line of
+`tree <instance-id>`) and pin the container to it — don't infer width by adding
+up children.
+
+Both failures were one habit: reading a dump as a picture. It is a database.
+
 ## A shared partial gains a mode from JS, not a second copy
 
 `partials/stores.html` is mounted by three pages: two read it ("Наши салоны",

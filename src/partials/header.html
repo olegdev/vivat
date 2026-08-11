@@ -66,15 +66,22 @@
         </a>
       </div>
 
-      <!-- Signed-in dealer strip — `header-dealer` 586:57343, property-1=variant2.
-           Same component, third variant: a dark bar that replaces the utility
-           links. It is rounded on the LEFT only (32px) and runs flush to the
-           right edge of the 1440 canvas, so it breaks the row's px-10 padding
-           with -mr-10. Shown by `data-user="dealer"` on <body> — the same
-           technique as the order page's `data-step`; in Blade it is the
-           @if($user === 'dealer') branch of this include. -->
+      <!-- Signed-in dealer strip — `header-dealer` 586:57343, property-1=variant2,
+           as instanced on dealer/Main (877:93261). Same component, third
+           variant: a dark bar that replaces the utility links.
+
+           Geometry is fixed, not content-driven: the instance overrides the
+           1193px master to **1013 × 44**, sitting at x=427 and running flush to
+           the right edge of the 1440 canvas — hence `-mr-10`, which breaks the
+           row's px-10. Rounded 32px on the LEFT corners only. Inner gap 24.
+           NB the instance's own padH is 12 while the master's is 24 and its
+           child sits at x=24; 24 is used here because 12 would tuck the toggle
+           into the corner radius. Worth a glance at 1440.
+
+           Shown by `data-user="dealer"` on <body> — the same technique as the
+           order page's `data-step`; in Blade, @if($user === 'dealer'). -->
       <div
-        class="-mr-10 hidden h-11 items-center gap-6 rounded-l-[32px] bg-components-strong pl-6 pr-10 group-data-[user=dealer]:flex"
+        class="-mr-10 hidden h-11 w-[1013px] shrink-0 items-center gap-6 rounded-l-[32px] bg-components-strong px-6 group-data-[user=dealer]:flex"
       >
         <!-- price visibility. Behaviour lives in components/dealer-header.js;
              the design has no prototype on it, so it only reflects its own
@@ -120,15 +127,18 @@
 
         <span class="flex-1"></span>
 
+        <!-- `for-business` 707:46732 — two PLAIN text links. Its left-icon,
+             right-icon and both underline frames are all `visible: false` in
+             the file, so there is no glyph and no rule here. -->
         <a class="shrink-0 text-body-s-accent text-text-link-highlighted" href="#">Для бизнеса</a>
-        <a class="flex shrink-0 items-center gap-1 text-body-s-accent text-text-inverse-primary" href="#"
-          >Мой кабинет
-          <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-4" />
-        </a>
-        <!-- TODO(design): the strip ends with a 63px `text-action` (607:27603)
-             whose label is the component's filler ("56 моделей") — the real
-             copy is not in the export. Left out rather than invented; see
-             docs/FIGMA-MAP.md › вопросы. -->
+        <a class="shrink-0 text-body-s-accent text-text-inverse-primary" href="#">Мой кабинет</a>
+
+        <!-- TODO(design): the strip ends with a visible 63px `text-action`
+             (607:27603) — two 16px glyphs around a ~23px label. The label in
+             the export is the component's filler ("56 моделей"), so the slot is
+             reserved to keep the 1013px layout honest but left empty rather
+             than invented. See docs/FIGMA-MAP.md › вопросы, п.7. -->
+        <span class="w-[63px] shrink-0" aria-hidden="true"></span>
       </div>
     </div>
 
