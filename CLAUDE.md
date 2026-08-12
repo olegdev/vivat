@@ -302,7 +302,11 @@ Several carry both a static shell and the `<template>` unit(s) their component
 clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`,
 `search-overlay`, `price-mode`);
 `hero`, `carousel-section`, `product-card`, `promo-card` and `review-card` are
-templates only, and `seo-kitchens` is plain shared content. The matching
+templates only, and `seo-kitchens` is shared content with one hook: its body is
+the same on all five pages that mount it, but the heading differs — the listings
+read «Кухни VIVAT — сочетание стиля и функциональности», both PDPs «Подберите
+полезные товары…», so the `<h2>` carries `data-seo-title` and the page script
+overrides it (the same call-site-copy pattern as `stores`). The matching
 `src/components/*.js` queries the shell and clones the templates — it never
 builds markup.
 
