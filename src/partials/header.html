@@ -210,9 +210,15 @@
               <img src="../../assets/header/icon-burger.svg" alt="" class="size-6" data-catalog-icon />
               <span class="text-button-m text-text-inverse-primary">Весь каталог</span>
             </button>
-            <a href="catalog.html" class="btn btn-m btn-ghost">Кухни</a>
-            <a href="action.html" class="btn btn-m btn-ghost">Акции</a>
-            <a href="#" class="btn btn-m btn-ghost">Где купить</a>
+            <!-- Набор пунктов у покупателя и у дилера разный, и это разные
+                 варианты одного компонента: menu-items 604:23352 у b2c
+                 (Кухни / Акции / Где купить) и 607:27488 у b2b
+                 (Конструктор / Контакты). «Весь каталог» общий. -->
+            <a href="catalog.html" class="btn btn-m btn-ghost group-data-[user=dealer]:hidden">Кухни</a>
+            <a href="action.html" class="btn btn-m btn-ghost group-data-[user=dealer]:hidden">Акции</a>
+            <a href="#" class="btn btn-m btn-ghost group-data-[user=dealer]:hidden">Где купить</a>
+            <a href="#" class="btn btn-m btn-ghost hidden group-data-[user=dealer]:flex">Конструктор</a>
+            <a href="#" class="btn btn-m btn-ghost hidden group-data-[user=dealer]:flex">Контакты</a>
           </nav>
         </div>
         <!-- search — a real GET form; `name="q"` is the query contract the Blade

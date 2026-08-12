@@ -146,6 +146,12 @@ own** — 882:107882 has no 360 counterpart. Where it came from matters:
   and the phone, a 40px dark row carrying the price-list trigger and the
   «Показать цену» switch, then the usual 60px logo row — and a bottom nav whose
   third item is «Бизнесу», not «Акции». Both are built from it.
+- **The dealer header's menu row is not the customer's.** `menu-items` is a
+  variant, not shared copy: b2c (604:23352) reads Кухни / Акции / Где купить,
+  b2b (607:27488) reads **Конструктор / Контакты**. «Весь каталог» is common.
+  Neither page instance overrides those labels, so reading the header off the
+  page's own instance shows the master and hides the difference — read the
+  variant that the `type=b2b` header points at.
 - **Three things are ours, by decision** (recorded in `BACKLOG.md`): the news
   block below `md` (a rail of 320px cards, its two buttons stacked because
   «Подписаться на рассылку» does not fit beside «Все новости» at 360), the
