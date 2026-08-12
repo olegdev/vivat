@@ -8,6 +8,7 @@ npm run dev       # vite dev server → /pages/customer/main.html
 npm run build     # one vite build per page → dist/ (inlines all JS/CSS)
 npm run build:php # → dist-php/, the folder handed to the PHP developer
 npm run shot      # screenshots of dist/ at 1440 and 390 → .shots/
+npm run crop      # one block of one page, with --click for open states
 npm run audit     # ordered text diff: a Figma instance vs the rendered page
 ```
 
@@ -130,6 +131,39 @@ quantity stepper — it exists nowhere else) and the summary
 confirmation overlay live in the page. Below `md` the site header is replaced by
 a modal-style bar whose title names the step.
 
+`src/pages/dealer/main.html` — the dealer home page. Desktop (Figma dealer/Main
+882:107882) and mobile are both done, but the mobile half has **no frame of its
+own** — 882:107882 has no 360 counterpart. Where it came from matters:
+
+- **The chrome is designed, just filed elsewhere.** The dealer catalog's mobile
+  frame (2225:160540) draws the whole dealer header — a 38px strip with «Москва»
+  and the phone, a 40px dark row carrying the price-list trigger and the
+  «Показать цену» switch, then the usual 60px logo row — and a bottom nav whose
+  third item is «Бизнесу», not «Акции». Both are built from it.
+- **Three things are ours, by decision** (recorded in `BACKLOG.md`): the news
+  block below `md` (a rail of 320px cards, its two buttons stacked because
+  «Подписаться на рассылку» does not fit beside «Все новости» at 360), the
+  burger menu's dealer rows («Мой кабинет», «Выход» instead of «Стать дилером»),
+  and the mobile footer's dealer branches.
+
+**The price list is a real component, not a placeholder.** `dropdown-header`
+(607:26932) has four variants and the open one — `desktop/condition=open`
+1299:49518 — draws the whole panel: 328×144, three 320×44 rows, the selected one
+on `#eeeeee` with a check. Its mobile twin is the «Наценка» sheet, two states at
+2225:163666 / 2225:164865. Three modes, and their labels only exist in the
+instances (the master says «Оптовая цена» three times): **Оптовая цена /
+Рекомендованая цена / Своя наценка**, the last with a `%` field, a 50% minimum
+and an «Применить» button that the other two don't have.
+
+`partials/price-mode.html` holds the row `<template>` and the mobile sheet; the
+desktop panel sits in the dealer strip in `partials/header.html` because it is
+positioned off the trigger. `components/price-mode.js` (which absorbed the old
+`dealer-header.js`) drives both and owns the single request seam,
+`applyPriceMode({mode, markup})` — localStorage plus a recompute of every
+`[data-card-price]` from the `data-price-base` the card carries. The
+«Показать цену» switch still hides nothing: it has no prototype, and the client
+confirmed it stays that way for now.
+
 Everything else in `src/pages/` is a stub.
 
 **Search is not a page — it is an overlay every page carries.** Figma's `search`
@@ -195,10 +229,10 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `catalog-filters`, `chip-close`, `stores`, `hero`, `carousel-section`,
 `product-card`, `promo-card`, `review-card`, `pdp-summary`, `pdp-specs`,
 `pdp-photo-overlay`, `sticky-price`, `seo-kitchens`, `cart-card`,
-`order-summary`, `search-overlay`.
+`order-summary`, `search-overlay`, `price-mode`.
 Several carry both a static shell and the `<template>` unit(s) their component
 clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`,
-`search-overlay`);
+`search-overlay`, `price-mode`);
 `hero`, `carousel-section`, `product-card`, `promo-card` and `review-card` are
 templates only, and `seo-kitchens` is plain shared content. The matching
 `src/components/*.js` queries the shell and clones the templates — it never
