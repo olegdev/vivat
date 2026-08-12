@@ -153,10 +153,17 @@ export function initOrderCart(root, { lines, iconBase = "../../assets/order" } =
     render();
   });
 
+  // «Очистить корзину» — the dealer summary's link under the button
+  // (953:151749); the customer panel has no such control.
+  root.querySelector("[data-cart-clear]")?.addEventListener("click", () => {
+    state.length = 0;
+    render();
+  });
+
   root.querySelector("[data-order-print]")?.addEventListener("click", () => window.print());
 
   render();
-  return { state, commit };
+  return { state, commit, render };
 }
 
 // The mobile CTA bar is revealed by scroll, not always on: the frame showing

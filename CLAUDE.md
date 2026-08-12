@@ -229,9 +229,47 @@ and the grey band at 360. The two bottom bars have no dealer frame at all and
 are reused as they are — without them the 360 page would have no CTA, since the
 mobile summary carries none by design.
 
+`src/pages/dealer/order.html` — дилерское оформление заказа. Desktop (Figma
+Order 1209:95219 and Order-b2b-delivery 1415:67609) and mobile (catalog
+2225:167283) are both done. **It has no step machinery.** Where the customer's
+order page accumulates шаг 0/1/2, the two dealer 1440 frames are one screen in
+two states: only the «Доставка» card's body changes (264 → 616), so the state
+is `data-delivery="pickup|delivery"` on that card and every difference is a
+`group-data-[delivery=…]` rule. Below `md` the whole thing — cart, summary,
+form — is one scroll; there are no screens there either.
+
+Its own part is `partials/order-forms.html`, four cards under «Внесите ваши
+данные»: Контактные данные (ФИО / E-mail / ИНН / Телефон, two columns that go
+`max-md:contents` to flow in the 360 frame's order), Оплата (one select whose
+options the design never names — see `BACKLOG.md`), Доставка (the segment
+control, the pickup address or the delivery form with its two surcharge badges
+and the coral alert) and Комментарий к заказу. Everything else is the customer
+page's parts under dealer branches:
+
+- **the cart card is the same `<template>`** (`customer=b2b` is a variant of
+  the same Figma component): specs hidden on 1440, [stepper][price] instead of
+  price-over-stepper, «Редактировать модули» under the colour — a round pencil
+  at 360 — and the expanded state's module list. The rows live in
+  `partials/order-modules.html`, which also owns the 360 bottom sheet the same
+  list opens in (2225:201034);
+- **the summary is the same partial**: `Способ оплаты` instead of «Итого» on
+  1440 (the 360 frame keeps «Итого»), a «Доставка» row, a different notice, no
+  button below `md` — which is why this page's sticky bar is always on rather
+  than revealed by scroll — and «Очистить корзину» under the 1440 button;
+- **the confirmation overlay is now `partials/order-done.html`**, shared with
+  the customer page. The dealer section has no frame of its own for it; the
+  designer's are 2241:158412 / 2241:158297.
+
+**The bottom nav has an active item, and exactly one.** `nav-item
+condition=active` fills the 32px icon box `#292929`, whitens the glyph and
+lifts the label to `#808080`. In the whole design it is only ever «Корзина»,
+and only on order screens — customer and dealer alike; the catalog, PDP, home
+and search frames carry no active item. Pages set `aria-current="page"`;
+`.nav-item[aria-current]` in `app.css` does the rest.
+
 There are no stubs left in `src/pages/` — every file there is a finished page.
-What remains unbuilt is the rest of the dealer half: its order flow and the
-whole `B2b additional` section. See `BACKLOG.md` › "Not started".
+What remains unbuilt is the `B2b additional` section. See `BACKLOG.md` ›
+"Not started".
 
 **Search is not a page — it is an overlay every page carries.** Figma's `search`
 section (2324:120596) holds four frames: 2337:156356 / 2338:235809 (nothing
@@ -297,10 +335,11 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `chip-close`, `stores`, `hero`, `carousel-section`,
 `product-card`, `promo-card`, `review-card`, `pdp-summary`, `pdp-specs`,
 `pdp-photo-overlay`, `sticky-price`, `seo-kitchens`, `cart-card`,
-`order-summary`, `search-overlay`, `price-mode`.
+`order-summary`, `order-forms`, `order-modules`, `order-done`,
+`search-overlay`, `price-mode`.
 Several carry both a static shell and the `<template>` unit(s) their component
 clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`,
-`search-overlay`, `price-mode`);
+`search-overlay`, `price-mode`, `order-modules`);
 `hero`, `carousel-section`, `product-card`, `promo-card` and `review-card` are
 templates only, and `seo-kitchens` is shared content with one hook: its body is
 the same on all five pages that mount it, but the heading differs — the listings

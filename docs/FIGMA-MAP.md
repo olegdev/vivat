@@ -66,10 +66,10 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 | 12484 | **PDP** ✅ | [953:122180](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122180) | — |
 | 13989 | PDP: панель «Модули» ✅ | [1686:59341](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1686-59341) | — |
 | 15521 | PDP: панель «Документы» ✅ | [1686:59383](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1686-59383) | — |
-| 17239 | **Заказ** | [1209:95219](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1209-95219) | [2225:202954](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-202954) |
-| 18771 | **Заказ: b2b-доставка** | [1415:67609](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1415-67609) | [2225:167283](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-167283) |
-| 20695 | Заказ: меню (моб.) | — | [2225:201034](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-201034) |
-| 21597 | Заказ: подтверждение (моб.) | — | [2238:157458](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2238-157458) |
+| 17239 | **Заказ** ✅ | [1209:95219](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1209-95219) | [2225:202954](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-202954) |
+| 18771 | **Заказ: b2b-доставка** ✅ | [1415:67609](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1415-67609) | [2225:167283](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-167283) |
+| 20695 | Заказ: шторка «Модули» (моб.) ✅ | — | [2225:201034](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-201034) |
+| 21597 | Заказ: подтверждение (моб.) ✅ | — | [2238:157458](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2238-157458) |
 
 Мобильных фреймов **нет** у: главной, мега-меню на 1440, трёх состояний
 фильтров каталога, PDP и обеих его панелей.

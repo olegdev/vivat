@@ -629,6 +629,17 @@
   }
   .order-input:user-invalid { @apply ring-1 ring-inset ring-border-error; }
 
+  /* ---- Order form select (`filters-sort` 1209:95256) --------------------
+     The dealer order's «Оплата» control: the same 44px field as `.order-input`
+     but pill-shaped, with the chevron drawn by the call site. A native
+     <select> so the options are an @foreach in Blade; the design names none of
+     them yet, so today it holds only its placeholder. */
+  .order-select {
+    @apply h-11 w-full appearance-none rounded-pill bg-components-subtle pl-4 pr-11;
+    @apply text-body-n text-text-secondary outline-none transition-colors;
+    @apply focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-border-ring;
+  }
+
   /* ---- Catalog filter drawer: slide-in ----------------------------------
      Left panel eases in over a fading scrim. `visibility` is delayed on close
      so the panel can slide back out before it's hidden (and stops intercepting
@@ -736,6 +747,26 @@
   .badge-number--red { @apply bg-components-red text-text-inverse-primary; }
   .badge-number--outline {
     @apply border border-border-active bg-components-white text-text-primary;
+  }
+
+  /* ---- Bottom nav: the active item (`nav-item condition=active`) ----------
+     1739:218606 / 218674 and siblings: the 32px icon box fills `#292929`, the
+     glyph turns white and the label lifts from `#acacac` to `#808080`. The
+     glyphs are single-colour `#292929` SVGs loaded as <img>, so the white one
+     is `brightness(0) invert(1)` rather than a second file — one rule then
+     covers every item instead of shipping a white twin of each icon.
+
+     The cart's badge changes with it: red-on-white becomes `#e7e7e7` with dark
+     digits (1739:218753), which is the only place that pairing appears, so it
+     lives here and not as a fifth `badge-number` variant.
+
+     Only «Корзина» is ever drawn active, and only on the order screens — the
+     page sets `aria-current="page"`; no other page in this design has one. */
+  .nav-item[aria-current="page"] .nav-item-icon { @apply rounded-full bg-components-strong; }
+  .nav-item[aria-current="page"] .nav-item-icon > img { filter: brightness(0) invert(1); }
+  .nav-item[aria-current="page"] .nav-item-label { @apply text-text-secondary; }
+  .nav-item[aria-current="page"] .badge-number {
+    @apply bg-components-light text-text-primary;
   }
 
   /* ==========================================================================

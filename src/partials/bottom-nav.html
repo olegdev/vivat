@@ -1,60 +1,68 @@
 <!-- Figma nav-bar 1739:218804 (b2c): five equal items, 24px icon in a
      32px box over a 12px muted label. Pinned to the viewport — hence the
-     upward `shadow-navbar` — with the page reserving 72px for it. -->
+     upward `shadow-navbar` — with the page reserving 72px for it.
+
+     ACTIVE ITEM. `nav-item condition=active` (1739:218606 and siblings) fills
+     the 32px box dark, turns the glyph white and lifts the label from
+     `#acacac` to `#808080`. The page marks it with `aria-current="page"`; the
+     styling is `.nav-item[aria-current]` in app.css. Only «Корзина» is ever
+     drawn active in this design, and only on the order screens — the catalog,
+     PDP and home frames carry no active item at all, so no other page sets
+     it. -->
 <nav
   class="fixed inset-x-0 bottom-0 z-40 flex h-[72px] items-center bg-surface-inverted shadow-navbar md:hidden"
   aria-label="Основная навигация"
 >
   <a
     href="#"
-    class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1"
+    class="nav-item flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1"
     data-mobile-catalog
     aria-expanded="false"
   >
-    <span class="flex size-8 items-center justify-center">
+    <span class="nav-item-icon flex size-8 items-center justify-center">
       <img src="../../assets/header/nav-catalog.svg" alt="" class="size-6" />
     </span>
-    <span class="text-body-xs text-text-muted">Каталог</span>
+    <span class="nav-item-label text-body-xs text-text-muted">Каталог</span>
   </a>
-  <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
-    <span class="flex size-8 items-center justify-center">
+  <a href="#" class="nav-item flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
+    <span class="nav-item-icon flex size-8 items-center justify-center">
       <img src="../../assets/header/nav-contacts.svg" alt="" class="size-6" />
     </span>
-    <span class="text-body-xs text-text-muted">Контакты</span>
+    <span class="nav-item-label text-body-xs text-text-muted">Контакты</span>
   </a>
   <a
     href="action.html"
-    class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1 group-data-[user=dealer]:hidden"
+    class="nav-item flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1 group-data-[user=dealer]:hidden"
   >
-    <span class="flex size-8 items-center justify-center">
+    <span class="nav-item-icon flex size-8 items-center justify-center">
       <img src="../../assets/header/nav-action.svg" alt="" class="size-6" />
     </span>
-    <span class="text-body-xs text-text-muted">Акции</span>
+    <span class="nav-item-label text-body-xs text-text-muted">Акции</span>
   </a>
   <!-- у дилера третий пункт другой — nav-item 1739:233051 в 2225:160593 -->
   <a
     href="#"
-    class="hidden min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1 group-data-[user=dealer]:flex"
+    class="nav-item hidden min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1 group-data-[user=dealer]:flex"
   >
-    <span class="flex size-8 items-center justify-center">
+    <span class="nav-item-icon flex size-8 items-center justify-center">
       <img src="../../assets/header/nav-business.svg" alt="" class="size-6" />
     </span>
-    <span class="text-body-xs text-text-muted">Бизнесу</span>
+    <span class="nav-item-label text-body-xs text-text-muted">Бизнесу</span>
   </a>
-  <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
+  <a href="#" class="nav-item flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1" data-nav-cart>
     <!-- here the badge really *is* an overlay: `nav-item` (1739:218769) keeps a
          fixed 32px box and positions the badge absolutely at (20, 0), so the
          icon doesn't shift. Variant `design=red`. -->
-    <span class="relative flex size-8 items-center justify-center">
+    <span class="nav-item-icon relative flex size-8 items-center justify-center">
       <img src="../../assets/header/nav-cart.svg" alt="" class="size-6" />
       <span data-cart-count class="badge-number badge-number--red absolute -right-2 top-0 hidden">0</span>
     </span>
-    <span class="text-body-xs text-text-muted">Корзина</span>
+    <span class="nav-item-label text-body-xs text-text-muted">Корзина</span>
   </a>
-  <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
-    <span class="flex size-8 items-center justify-center">
+  <a href="#" class="nav-item flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
+    <span class="nav-item-icon flex size-8 items-center justify-center">
       <img src="../../assets/header/nav-profile.svg" alt="" class="size-6" />
     </span>
-    <span class="text-body-xs text-text-muted">Кабинет</span>
+    <span class="nav-item-label text-body-xs text-text-muted">Кабинет</span>
   </a>
 </nav>

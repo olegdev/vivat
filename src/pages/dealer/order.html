@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Мой заказ (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./order.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary" data-user="dealer">
+    <!-- Дилерское оформление заказа. 1440 — Figma Order 1209:95219 и
+         Order-b2b-delivery 1415:67609, 360 — catalog 2225:167283.
+
+         Пошаговой машины здесь нет: два фрейма на 1440 — одна страница в двух
+         состояниях, и отличается только тело карточки «Доставка» (264 → 616).
+         Состояние живёт на самой карточке как `data-delivery`, см.
+         partials/order-forms.html. На 360 всё это идёт одним скроллом:
+         корзина, сводка, форма — экранов там тоже не два.
+
+         От покупательского заказа отличается ровно тем, что нарисовано:
+         дилерская обвязка, корзина с модулями, сводка со «Способом оплаты» и
+         «Доставкой» вместо «Итого», и форма на четыре карточки вместо шага 1
+         (выбор магазина) и шага 2 (контакты). -->
+    <div class="mx-auto w-full max-md:pb-[132px] md:w-[1440px]" data-order>
+      <!-- ==================== SITE HEADER (desktop only) =============== -->
+      <div class="max-md:hidden">
+        <!--#include partials/header.html -->
+      </div>
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- product-card <template>s — the search overlay's results need them -->
+      <!--#include partials/product-card.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- ==================== MOBILE MODAL HEADER =====================
+           Figma header 2225:167284 — the same modal bar the customer order
+           uses, titled «Оформление заказа». One title, because this page has
+           no steps to name. -->
+      <header class="sticky top-0 z-50 hidden bg-surface-inverted px-4 py-1 max-md:block">
+        <div class="flex items-center gap-0">
+          <a href="catalog.html" class="flex size-10 shrink-0 items-center justify-center" aria-label="Назад">
+            <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
+          </a>
+          <div class="flex min-w-0 flex-1 flex-col justify-center py-2">
+            <p class="truncate text-m-h3 text-text-primary">Оформление заказа</p>
+          </div>
+          <a href="main.html" class="flex size-10 shrink-0 items-center justify-center" aria-label="Закрыть">
+            <img src="../../assets/header/icon-close-s.svg" alt="" class="size-6" />
+          </a>
+        </div>
+      </header>
+
+      <!-- <template>s cloned by the cart below (inert markup) -->
+      <!--#include partials/cart-card.html -->
+      <!--#include partials/order-modules.html -->
+
+      <!-- ==================== TITLE (desktop only) =====================
+           title-block 1209:95221 — «Мой заказ», empty `buttons` frame. The 360
+           frame carries no H1; the modal bar above is its title. -->
+      <div class="px-10 pt-6 max-md:hidden">
+        <h1 class="text-h1 text-text-primary">Мой заказ</h1>
+      </div>
+      <div class="h-6 max-md:hidden"></div>
+
+      <!-- ==================== КОРЗИНА + СВОДКА =========================
+           top 1209:95222: the 990 cart panel and the 322 summary with a 47px
+           gutter inside the page's 40px margins. Below `md` the two stack and
+           the panel goes full-bleed (2225:167285). -->
+      <section class="flex gap-[47px] px-10 max-md:flex-col max-md:gap-0 max-md:px-0">
+        <div class="min-w-0 flex-1">
+          <div class="overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-md:rounded-none max-md:border-x-0 max-md:border-t-0">
+            <!-- panel header 1209:95224 — select-all + delete, print + share.
+                 The dealer instance overrides neither control, so «Удалить»
+                 renders the master's filler in the frame; it is the same
+                 control the customer frame names «Удалить» (see BACKLOG). As
+                 there, the 360 frame paints no delete. -->
+            <div class="flex items-center justify-between border-b border-divider-light px-6 py-1 max-md:px-4 max-md:py-1.5">
+              <div class="flex items-center gap-6 max-md:gap-4">
+                <label class="flex items-center gap-3 py-2.5 max-md:gap-2">
+                  <input type="checkbox" class="filter-check" data-select-all checked />
+                  <span class="text-body-n text-text-primary max-md:text-m-body-n">Выбрать все</span>
+                </label>
+                <button
+                  type="button"
+                  class="flex items-center gap-1 text-body-n text-text-secondary transition-colors hover:text-text-primary max-md:hidden"
+                  data-delete-selected
+                >
+                  <span>Удалить</span>
+                  <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4 opacity-60" />
+                </button>
+              </div>
+              <div class="flex items-center gap-6">
+                <button type="button" class="flex size-6 items-center justify-center" aria-label="Распечатать заказ" data-order-print>
+                  <img src="../../assets/order/icon-print.svg" alt="" class="size-6" />
+                </button>
+                <button type="button" class="flex size-6 items-center justify-center" aria-label="Поделиться заказом">
+                  <img src="../../assets/order/icon-share.svg" alt="" class="size-6" />
+                </button>
+              </div>
+            </div>
+
+            <!-- one <article> per line, cloned from partials/cart-card.html -->
+            <div data-cart-list></div>
+
+            <p class="hidden px-6 py-16 text-center text-body-n text-text-secondary" data-cart-empty>
+              В заказе пока ничего нет.
+            </p>
+          </div>
+        </div>
+
+        <aside class="w-[322px] shrink-0 max-md:w-full max-md:px-4 max-md:pt-4">
+          <!--#include partials/order-summary.html -->
+        </aside>
+      </section>
+
+      <div class="h-16 max-md:h-6"></div>
+
+      <!-- ==================== ВНЕСИТЕ ВАШИ ДАННЫЕ ======================
+           Steps-order 1209:95232 / 2238:157273 — the form's title block. -->
+      <div class="px-10 pb-6 max-md:px-4 max-md:pb-4">
+        <h2 class="text-h2 text-text-primary max-md:text-m-h2">Внесите ваши данные</h2>
+        <div class="h-2"></div>
+        <p class="text-body-n text-text-primary max-md:text-m-body-n">
+          Пожалуйста, заполните поля с необходимой информацией и выберите способ оплаты.
+        </p>
+      </div>
+
+      <!-- ==================== ФОРМА ==================================== -->
+      <!--#include partials/order-forms.html -->
+
+      <div class="h-16 max-md:h-8"></div>
+
+      <!-- ==================== «ВАШ ЗАКАЗ ОТПРАВЛЕН» ==================== -->
+      <!--#include partials/order-done.html -->
+
+      <!-- ==================== MOBILE CTA BAR ==========================
+           modal-button-container 2225:167295, stacked on the bottom nav.
+           Unlike the customer's, this bar is ALWAYS on: the dealer's mobile
+           summary has no button of its own (2225:202292), so there is nothing
+           for a scroll to hand over from. Same component as the PDP's.
+           The frame's label reads «• от 43 335₽»; dealer prices go without
+           «от» by the client's decision — see BACKLOG. -->
+      <div
+        class="fixed inset-x-0 bottom-[72px] z-40 flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 md:hidden"
+      >
+        <button type="submit" form="dealer-order-form" class="btn btn-m btn-accent w-full text-m-button-m">
+          <span>Сформировать заказ&nbsp;• <span data-summary-total></span></span>
+        </button>
+      </div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+  </body>
+</html>

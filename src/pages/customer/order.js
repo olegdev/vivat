@@ -26,6 +26,11 @@ const page = document.querySelector("[data-order]");
 initOrderCart(page, { lines: LINES, iconBase: ORDER_ICON });
 initOrderBar(page);
 
+// The order screens are the only ones in the design with an active bottom-nav
+// item, and it is always «Корзина» (2029:126838, 2084:145507, 2241:158297).
+// In Blade this is a parameter on the include, not a line of script.
+document.querySelector("[data-nav-cart]")?.setAttribute("aria-current", "page");
+
 // ---- the three steps --------------------------------------------------------
 // Figma draws Order-step0/1/2 as separate frames, but each is the previous one
 // with a section appended — so this is one page and `data-step` gates what has

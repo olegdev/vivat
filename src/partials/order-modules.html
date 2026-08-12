@@ -1,0 +1,84 @@
+<!-- ==================== МОДУЛИ СТРОКИ ЗАКАЗА ==========================
+     The комплектация of one cart line, in the two places the dealer order page
+     shows it:
+
+       · 1440 — inside the card itself, which grows 158 → 260 (`card
+         customer=b2b, condition=edit` 953:152360, rows 953:152907);
+       · 360 — a bottom sheet over the page (2225:201034): the kitchen's name,
+         the same rows, and «Применить».
+
+     One <template> serves both. The row reads [title][stepper][price] on 1440
+     and stacks to title over [price][stepper] on 360, which is the same
+     `flex-row-reverse` trick the card itself uses — the DOM stays in desktop
+     order and the mobile rule turns the pair round.
+
+     components/order-modules.js clones the row; it never builds markup. -->
+<template data-module-row>
+  <div
+    class="flex items-center gap-6 py-1 max-md:flex-col max-md:items-stretch max-md:gap-2 max-md:border-b max-md:border-divider-light max-md:px-4 max-md:py-3"
+    data-module-line
+  >
+    <p
+      class="min-w-0 flex-1 truncate text-body-n text-text-muted max-md:whitespace-normal max-md:text-m-body-n max-md:text-text-primary"
+      data-module-title
+    ></p>
+
+    <div class="flex items-center gap-6 max-md:flex-row-reverse max-md:justify-between max-md:gap-3">
+      <!-- transparent stepper: no pill on either width here (953:152844 /
+           2225:202146), only the number's box comes back below `md` -->
+      <div class="flex w-[152px] shrink-0 items-center justify-between max-md:w-[152px]">
+        <button
+          type="button"
+          class="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-components-subtle"
+          data-module-down
+          aria-label="Уменьшить количество"
+        >
+          <img src="../../assets/order/icon-minus.svg" alt="" class="size-6" />
+        </button>
+        <span
+          class="flex h-10 w-12 items-center justify-center text-body-n text-text-muted max-md:rounded-n max-md:border max-md:border-border-light max-md:bg-surface-inverted max-md:text-m-body-n max-md:text-text-primary"
+          data-module-qty
+        >1</span>
+        <button
+          type="button"
+          class="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-components-subtle"
+          data-module-up
+          aria-label="Увеличить количество"
+        >
+          <img src="../../assets/order/icon-plus.svg" alt="" class="size-6" />
+        </button>
+      </div>
+
+      <span
+        class="w-[86px] shrink-0 text-right text-body-n text-text-muted max-md:w-auto max-md:text-m-h4 max-md:text-text-primary"
+        data-module-price
+      ></span>
+    </div>
+  </div>
+</template>
+
+<!-- ---- the 360 sheet (2225:201034) ------------------------------------
+     A plain bottom sheet: scrim, white panel pinned to the bottom edge, the
+     line's title in a 56px header with a close ×, the rows, and a dark
+     full-width «Применить» in the same 60px bar the page's CTA uses. No drag —
+     the frame draws one height and no gesture, unlike the store sheet. -->
+<div class="fixed inset-0 z-[70] hidden md:hidden" data-modules-sheet>
+  <div class="absolute inset-0 bg-overlay-strong" data-modules-close></div>
+
+  <div class="absolute inset-x-0 bottom-0 flex max-h-[85vh] flex-col bg-surface-inverted">
+    <div class="flex items-center gap-2 px-4 py-2">
+      <p class="min-w-0 flex-1 truncate text-m-h3 text-text-primary" data-modules-title></p>
+      <button type="button" class="flex size-10 shrink-0 items-center justify-center" data-modules-close aria-label="Закрыть">
+        <img src="../../assets/header/icon-close-s.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <div class="min-h-0 flex-1 overflow-y-auto" data-modules-sheet-list></div>
+
+    <div class="flex h-[60px] shrink-0 items-center px-4 py-2">
+      <button type="button" class="btn btn-m btn-primary w-full text-m-button-m" data-modules-apply>
+        Применить
+      </button>
+    </div>
+  </div>
+</div>

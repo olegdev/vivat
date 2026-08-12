@@ -16,12 +16,23 @@
 
      Desktop stepper: one 168×48 grey pill (`components-subtle`, radius 24).
      Mobile: 152×40, transparent, with the number in a bordered white 48×40
-     box. Same markup, `max-md:` at the call site. -->
+     box. Same markup, `max-md:` at the call site.
+
+     DEALER (`customer=b2b`, 953:151784 default / 953:152360 edit). The same
+     unit, four differences, all `group-data-[user=dealer]` at the call site:
+       · the specs line is gone on 1440 and stays on 360;
+       · 1440 reads image → text → stepper → price, where the customer reads
+         price above stepper in one right column. That is one
+         `md:…:flex-row-reverse`, scoped to `md:` so the shared mobile order
+         (price, stepper) is untouched — below `md` both users read the same;
+       · under the colour sits «Редактировать модули»; below `md` that control
+         is the round pencil at the end of the price row instead (2225:167289);
+       · the expanded card carries its модули inline (rows cloned from
+         partials/order-modules.html). Below `md` the same list is the bottom
+         sheet in that partial, so the card renders no inline list there. -->
 <template data-cart-card>
-  <article
-    class="flex border-b border-divider-light px-6 py-6 max-md:flex-col max-md:gap-2 max-md:px-4 max-md:py-4"
-    data-cart-line
-  >
+  <article class="border-b border-divider-light px-6 py-6 max-md:px-4 max-md:py-4" data-cart-line>
+   <div class="flex max-md:flex-col max-md:gap-2">
     <!-- ---- image + title (desktop: 739 of 920; mobile: the top row) ---- -->
     <div class="flex min-w-0 flex-1">
       <div class="relative flex shrink-0 items-start gap-2 max-md:gap-0">
@@ -38,8 +49,29 @@
 
       <div class="flex min-w-0 flex-1 flex-col gap-1 px-6 max-md:px-4">
         <p class="truncate text-h5 text-text-primary max-md:text-m-h4" data-line-title></p>
-        <p class="text-body-s text-text-secondary max-md:text-m-body-s" data-line-specs></p>
+        <!-- the dealer's 1440 card drops the specs line (953:152367 has only
+             the title and the colour); its 360 card keeps it (2029:153731) -->
+        <p
+          class="text-body-s text-text-secondary max-md:text-m-body-s md:group-data-[user=dealer]:hidden"
+          data-line-specs
+        ></p>
         <p class="text-body-s text-text-primary max-md:text-m-body-s" data-line-color></p>
+
+        <!-- dealer, 1440 only: the modules toggle under the colour -->
+        <button
+          type="button"
+          class="hidden w-fit items-center gap-2 pt-1 text-body-s text-text-primary md:group-data-[user=dealer]:inline-flex"
+          data-line-modules
+          aria-expanded="false"
+        >
+          <span class="underline underline-offset-4">Редактировать модули</span>
+          <img
+            src="../../assets/header/chevron-down.svg"
+            alt=""
+            class="size-4 transition-transform"
+            data-line-modules-chevron
+          />
+        </button>
       </div>
     </div>
 
@@ -47,13 +79,19 @@
          181 is the design's width for a 7-digit price next to a 7-digit old
          one; `min-w` rather than `w` so a longer number pushes the column out
          instead of wrapping mid-price, and the title column (min-w-0) yields. -->
-    <div class="flex min-w-[181px] shrink-0 flex-col gap-3 max-md:w-full max-md:min-w-0 max-md:flex-row max-md:items-center max-md:gap-3 max-md:py-1">
-      <div class="flex items-baseline gap-2 whitespace-nowrap max-md:gap-1">
-        <!-- the mobile card drops the "от" prefix (2029:157695) -->
-        <span class="text-body-n text-text-primary max-md:hidden">от</span>
+    <!-- the dealer's 1440 row is [stepper][price] inside 278 (953:152373); the
+         DOM stays [price][stepper] and `flex-row-reverse` turns it round, and
+         the rule is scoped to `md:` so the shared mobile row is untouched -->
+    <div
+      class="flex min-w-[181px] shrink-0 flex-col gap-3 max-md:w-full max-md:min-w-0 max-md:flex-row max-md:items-center max-md:gap-3 max-md:py-1 md:group-data-[user=dealer]:min-w-[278px] md:group-data-[user=dealer]:flex-row-reverse md:group-data-[user=dealer]:items-center md:group-data-[user=dealer]:gap-6"
+    >
+      <div class="flex items-baseline gap-2 whitespace-nowrap max-md:gap-1 md:group-data-[user=dealer]:ml-auto">
+        <!-- the mobile card drops the "от" prefix (2029:157695); the dealer
+             drops it at both widths, like every other dealer price -->
+        <span class="text-body-n text-text-primary max-md:hidden group-data-[user=dealer]:hidden">от</span>
         <span class="text-h3 leading-6 text-text-primary max-md:text-m-h4" data-line-price></span>
         <span
-          class="text-body-n text-text-secondary line-through empty:hidden max-md:text-m-body-s-crossed"
+          class="text-body-n text-text-secondary line-through empty:hidden max-md:text-m-body-s-crossed group-data-[user=dealer]:hidden"
           data-line-oldprice
         ></span>
       </div>
@@ -61,7 +99,7 @@
       <!-- the stepper hugs the column's right edge on desktop (168 inside 181,
            offset 13 in 943:34167) and follows the price on mobile (2029:157693) -->
       <div
-        class="flex h-12 w-[168px] items-center justify-between self-end rounded-pill bg-components-subtle px-1 max-md:h-10 max-md:w-[152px] max-md:self-auto max-md:bg-transparent max-md:px-1"
+        class="flex h-12 w-[168px] items-center justify-between self-end rounded-pill bg-components-subtle px-1 max-md:h-10 max-md:w-[152px] max-md:self-auto max-md:bg-transparent max-md:px-1 md:group-data-[user=dealer]:self-center"
         data-stepper
       >
         <button
@@ -85,6 +123,23 @@
           <img src="" alt="" class="size-6" data-step-up-icon />
         </button>
       </div>
+
+      <!-- dealer, 360 only: the modules toggle is a 40px grey circle at the end
+           of the price row (`control` 2238:155755) instead of the text link -->
+      <button
+        type="button"
+        class="hidden size-10 shrink-0 items-center justify-center rounded-full bg-components-subtle max-md:ml-auto max-md:group-data-[user=dealer]:flex"
+        data-line-modules
+        aria-label="Редактировать модули"
+      >
+        <img src="../../assets/order/icon-edit.svg" alt="" class="size-5" />
+      </button>
     </div>
+   </div>
+
+    <!-- dealer, 1440 only: the expanded card's module rows (953:152907), one
+         per module, cloned from partials/order-modules.html. Below `md` the
+         same list is that partial's bottom sheet, so this stays hidden. -->
+    <div class="hidden pl-[204px] pt-4 max-md:hidden" data-line-modules-list></div>
   </article>
 </template>

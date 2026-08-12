@@ -1,0 +1,184 @@
+<!-- ==================== ФОРМА ЗАКАЗА (дилер) ==========================
+     Figma forms-block 1209:95240 (самовывоз) / 1415:67630 (доставка), 360:
+     2238:157281. Four cards under «Внесите ваши данные».
+
+     The two 1440 frames are ONE page in two states, not two screens: only the
+     «Доставка» card's body changes (264 → 616). So the state lives on that
+     card as `data-delivery="pickup|delivery"` and every difference is a
+     `group-data-[delivery=…]` rule at the call site — the same technique as
+     the customer order page's `data-step` and the search panel's `data-state`.
+
+     The card itself is `middle` (990 wide, white, 1px #e7e7e7, radius 8); the
+     `outer-container` around it in Figma is layout, not paint. Below `md` the
+     card is 328 in the page's 16px gutter.
+
+     Two-column rows are authored as columns and go `max-md:contents` below
+     `md`, so the fields flow ФИО → E-mail → ИНН → Телефон exactly as the 360
+     frame draws them — no `order-*`, the same move the dealer catalog's
+     settings bar makes. -->
+<form id="dealer-order-form" class="flex flex-col gap-4 px-10 max-md:gap-3 max-md:px-4" data-order-form>
+  <!-- ---- Контактные данные (1209:95241) -------------------------------- -->
+  <section class="w-[990px] rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-md:w-full max-md:px-4 max-md:py-5">
+    <h3 class="text-h4 text-text-primary max-md:text-m-h3">Контактные данные</h3>
+
+    <div class="flex gap-10 pt-6 max-md:contents">
+      <div class="flex w-[435px] flex-col gap-6 max-md:contents">
+        <label class="flex flex-col gap-1 max-md:pt-4">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">ФИО*</span>
+          <input type="text" name="fio" required placeholder="Фамилия, имя, отчество" class="order-input" />
+        </label>
+        <label class="flex flex-col gap-1 max-md:pt-4">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">E-mail*</span>
+          <input type="email" name="email" required placeholder="example@example.com" class="order-input" />
+        </label>
+      </div>
+      <div class="flex w-[435px] flex-col gap-6 max-md:contents">
+        <label class="flex flex-col gap-1 max-md:pt-4">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">ИНН*</span>
+          <input
+            type="text"
+            name="inn"
+            required
+            placeholder="Индивидуальный номер налогоплательщика"
+            class="order-input"
+          />
+        </label>
+        <label class="flex flex-col gap-1 max-md:pt-4">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Телефон*</span>
+          <input type="tel" name="phone" required placeholder="+7" class="order-input" />
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---- Оплата (1209:95253) --------------------------------------------
+       One 435×44 select. The design names no options anywhere — neither frame
+       draws an open list and there is no mobile sheet for it — so the control
+       ships with its placeholder only and the list is a question in BACKLOG.
+       In Blade the options are an @foreach inside this <select>. -->
+  <section class="w-[990px] rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-md:w-full max-md:px-4 max-md:py-5">
+    <h3 class="text-h4 text-text-primary max-md:text-m-h3">Оплата</h3>
+
+    <div class="relative w-[435px] pt-6 max-md:w-full max-md:pt-4">
+      <select name="payment" class="order-select" data-order-payment>
+        <option value="">Не выбрана</option>
+      </select>
+      <img
+        src="../../assets/header/chevron-down.svg"
+        alt=""
+        class="pointer-events-none absolute bottom-3 right-4 size-5"
+      />
+    </div>
+  </section>
+
+  <!-- ---- Доставка (1209:95257 / 1415:67647) ----------------------------- -->
+  <section
+    class="group/delivery w-[990px] rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-md:w-full max-md:px-4 max-md:py-5"
+    data-delivery="pickup"
+  >
+    <h3 class="text-h4 text-text-primary max-md:text-m-h3">Доставка</h3>
+
+    <!-- segment control: two 213.5×44 pills, the picked one `#414141` with
+         white text (1209:95261) — its state is the card's `data-delivery`, so
+         the buttons never carry a class of their own -->
+    <div class="flex gap-2 pt-6 max-md:pt-4">
+      <button
+        type="button"
+        class="h-11 w-[213.5px] rounded-pill bg-components-subtle text-button-m text-text-primary transition-colors group-data-[delivery=pickup]/delivery:bg-components-active-muted group-data-[delivery=pickup]/delivery:text-text-inverse-primary max-md:w-1/2 max-md:text-m-button-m"
+        data-delivery-mode="pickup"
+      >
+        Самовывоз
+      </button>
+      <button
+        type="button"
+        class="h-11 w-[213.5px] rounded-pill bg-components-subtle text-button-m text-text-primary transition-colors group-data-[delivery=delivery]/delivery:bg-components-active-muted group-data-[delivery=delivery]/delivery:text-text-inverse-primary max-md:w-1/2 max-md:text-m-button-m"
+        data-delivery-mode="delivery"
+      >
+        Доставка
+      </button>
+    </div>
+
+    <!-- самовывоз (1209:95263) -->
+    <div class="pt-6 max-md:pt-4 group-data-[delivery=delivery]/delivery:hidden" data-delivery-pickup>
+      <p class="flex items-center gap-1.5 text-body-n text-text-secondary max-md:text-m-body-n">
+        <span>Ваш регион:</span>
+        <a href="#" class="inline-flex items-center gap-1 text-text-primary">
+          <span class="underline underline-offset-4">Москва</span>
+          <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5" />
+        </a>
+      </p>
+      <p class="pt-4 text-body-n text-text-primary max-md:text-m-body-n">
+        Самовывоз осуществляется с центрального склада — 16-й км МКАД, 50 метров от внешней
+        стороны, ул. Энергетиков.
+      </p>
+    </div>
+
+    <!-- доставка (1415:67654) -->
+    <div
+      class="hidden flex-col gap-6 pt-8 max-md:gap-4 max-md:pt-4 group-data-[delivery=delivery]/delivery:flex"
+      data-delivery-form
+    >
+      <label class="flex w-[435px] flex-col gap-1 max-md:w-full">
+        <span class="text-body-s text-text-primary max-md:text-m-body-s">Ф.И.О. получателя*</span>
+        <input type="text" name="recipient" placeholder="Фамилия, имя, отчество" class="order-input" />
+      </label>
+
+      <div class="flex gap-10 max-md:contents">
+        <label class="flex w-[435px] flex-col gap-1 max-md:w-full">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Телефон получателя*</span>
+          <input type="tel" name="recipient_phone" value="+7 (999) 999-99-99" class="order-input" />
+        </label>
+        <label class="flex w-[435px] flex-col gap-1 max-md:w-full">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Адрес доставки*</span>
+          <input type="text" name="address" placeholder="Введите адрес" class="order-input" />
+        </label>
+      </div>
+
+      <!-- 262 field + a 58×44 surcharge badge (2225:203560). What the badge
+           owes to the field is not in the design — both instances read the
+           same «+222₽» — so the figure comes from the fixture; see BACKLOG. -->
+      <div class="flex items-end gap-2">
+        <label class="flex w-[262px] flex-col gap-1 max-md:w-full">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Расстояние от МКАД (км)</span>
+          <input type="text" name="distance" value="12" class="order-input" data-delivery-distance />
+        </label>
+        <span class="flex h-11 shrink-0 items-center px-2 text-body-n text-text-primary" data-surcharge-distance></span>
+      </div>
+
+      <div class="flex items-end gap-2">
+        <label class="flex w-[262px] flex-col gap-1 max-md:w-full">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Этаж</span>
+          <input type="text" name="floor" value="8" class="order-input" data-delivery-floor />
+        </label>
+        <span class="flex h-11 shrink-0 items-center px-2 text-body-n text-text-primary" data-surcharge-floor></span>
+      </div>
+
+      <!-- alert 1415:67671 — two lines, no close control on this instance -->
+      <div class="flex gap-2 rounded-n bg-surface-accent-subtle px-4 py-3">
+        <img src="../../assets/order/icon-info-dark.svg" alt="" class="mt-1 size-4 shrink-0" />
+        <p class="text-body-n text-text-primary max-md:text-m-body-n" data-delivery-cost></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---- Комментарий к заказу (1209:95268) ------------------------------ -->
+  <section class="w-[990px] rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-md:w-full max-md:px-4 max-md:py-5">
+    <h3 class="text-h4 text-text-primary max-md:text-m-h3">Комментарий к заказу</h3>
+
+    <textarea
+      name="comment"
+      rows="4"
+      placeholder="Введите комментарий к заказу"
+      class="order-input mt-6 h-[120px] resize-none py-3 max-md:mt-4"
+    ></textarea>
+
+    <label class="flex items-start gap-3 pt-4">
+      <input type="checkbox" name="consent" required class="filter-check" checked />
+      <span class="text-body-n text-text-primary max-md:text-m-body-n">
+        Я даю согласие на обработку
+        <a href="#" class="text-text-link-highlighted underline underline-offset-4">персональной информации</a>
+        в соответствии с политикой конфиденциальности.
+      </span>
+    </label>
+  </section>
+</form>

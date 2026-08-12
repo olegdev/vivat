@@ -12,7 +12,20 @@
      card, the buttons instance after it). That is the second place in this
      project where mobile re-sequences rather than re-styles, so it is one
      `max-md:order-first` on the notice, not a second copy — see SOLUTIONS.md ›
-     "When mobile re-orders a block". -->
+     "When mobile re-orders a block".
+
+     DEALER (`Customer=b2b, Type=order` — 953:149252 on 1440, 2029:158160 on
+     360). Same panel, five `group-data-[user=dealer]` differences:
+       · a «Способ оплаты» row the customer panel doesn't have;
+       · «Итого» is gone on 1440 and stays on 360 — both frames draw it that
+         way, so the rule is scoped `md:`;
+       · a «Доставка» row under its own divider, fed by the delivery card;
+       · the notice reads about delivery, not about the dealer's markup, and
+         it sits above the button rather than below it;
+       · 360 has no button at all (2225:202292 is the panel's `Top` half), so
+         the dealer page's sticky bar is always on instead of scroll-revealed,
+         and «Очистить корзину» appears under the 1440 button. -->
+
 <div class="rounded-[var(--radius-l)] bg-bg-subtle" data-order-summary>
   <div class="px-6 pt-4 pb-2">
     <h2 class="text-h5 text-text-primary max-md:text-m-h4">Ваш заказ</h2>
@@ -32,24 +45,67 @@
       <dt class="text-body-n text-text-secondary max-md:text-m-body-n">Скидка</dt>
       <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-discount></dd>
     </div>
-    <div class="flex h-10 items-center justify-between gap-4 max-md:h-8">
+    <!-- dealer only (953:149344): the payment method, which for the customer
+         is not part of this panel at all -->
+    <div class="hidden h-10 items-center justify-between gap-4 max-md:h-8 group-data-[user=dealer]:flex">
+      <dt class="text-body-n text-text-primary max-md:text-m-body-n">Способ оплаты</dt>
+      <dd class="text-body-n text-text-primary max-md:text-m-body-n max-md:underline max-md:underline-offset-4" data-summary-payment>
+        не выбран
+      </dd>
+    </div>
+    <!-- «Итого» is on the customer panel at both widths and on the dealer's
+         360 one, but the dealer's 1440 panel (953:149252) simply has no such
+         row — that is the frame, not an omission on our side. -->
+    <div class="flex h-10 items-center justify-between gap-4 max-md:h-8 md:group-data-[user=dealer]:hidden">
       <dt class="text-body-n text-text-primary max-md:text-m-body-n">Итого</dt>
       <dd class="flex items-baseline gap-2">
-        <span class="text-body-n text-text-primary max-md:text-m-body-n">от</span>
+        <span class="text-body-n text-text-primary max-md:text-m-body-n group-data-[user=dealer]:hidden">от</span>
         <span class="text-h3 leading-7 text-text-primary" data-summary-total></span>
       </dd>
     </div>
   </dl>
 
+  <!-- dealer only (953:149377): the delivery mode, split off the table above
+       by its own divider and fed by the «Доставка» card's segment control -->
+  <div class="hidden px-6 pt-2 group-data-[user=dealer]:block">
+    <div class="flex h-10 items-center justify-between gap-4 border-t border-divider-light pt-2 max-md:h-8">
+      <span class="text-body-n text-text-primary max-md:text-m-body-n">Доставка</span>
+      <span class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-delivery>Самовывоз</span>
+    </div>
+  </div>
+
   <div class="flex flex-col gap-4 px-6 pb-6 pt-6 max-md:gap-3 max-md:pb-4 max-md:pt-3">
-    <button type="button" class="btn btn-m btn-accent max-md:w-full" data-order-submit>
+    <!-- the dealer's 360 panel carries no button at all (2225:202292 is the
+         `Top` half only) — its CTA is the sticky bar, which is therefore
+         always on rather than revealed by scroll like the customer's -->
+    <button
+      type="button"
+      class="btn btn-m btn-accent max-md:w-full max-md:group-data-[user=dealer]:hidden"
+      data-order-submit
+    >
       Сформировать заказ
     </button>
-    <div class="flex gap-2 max-md:order-first">
+
+    <!-- one notice, two texts: the customer panel warns about the dealer's
+         markup (943:108533), the dealer panel about delivery (953:149401) -->
+    <div class="flex gap-2 max-md:order-first group-data-[user=dealer]:order-first">
       <img src="../../assets/order/icon-info.svg" alt="" class="mt-0.5 size-4 shrink-0" />
-      <p class="text-body-s text-text-secondary max-md:text-m-body-s">
+      <p class="text-body-s text-text-secondary max-md:text-m-body-s group-data-[user=dealer]:hidden">
         Дилерская наценка может отличаться в зависимости от региона!
       </p>
+      <p class="hidden text-body-s text-text-secondary max-md:text-m-body-s group-data-[user=dealer]:block">
+        Доставка оплачивается отдельно и доступна только в Москве
+      </p>
     </div>
+
+    <!-- dealer only (953:151749), under the button -->
+    <button
+      type="button"
+      class="hidden items-center justify-center gap-2 self-center text-body-s text-text-secondary transition-colors hover:text-text-primary md:group-data-[user=dealer]:inline-flex"
+      data-cart-clear
+    >
+      <span>Очистить корзину</span>
+      <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4 opacity-60" />
+    </button>
   </div>
 </div>

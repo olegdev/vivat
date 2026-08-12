@@ -18,6 +18,18 @@ example, not the point itself.
   rendering quirk, not a class bug. Write such tokens explicitly —
   `rounded-[var(--radius-l)]` — for any token named after a side (`l r t b s e`).
   Ref: the socials block, the sort dropdown, the stores card, `.store-pin__popup`.
+- **`group-data-[…]` outranks `max-md:` — a media query does not "win" over a
+  class.** `max-md:hidden group-data-[user=dealer]:inline-flex` reads like
+  "dealer only, and only above `md`", and it is not: the group variant compiles
+  to `.group[data-user="dealer"] &` (two classes, 0-2-0) while `max-md:hidden`
+  is one class inside `@media` (0-1-0), so the element shows below `md` too.
+  Nothing errors; the block simply appears where the frame doesn't draw it.
+  **Scope the branch, don't try to cancel it:** write
+  `md:group-data-[user=dealer]:inline-flex` when the dealer branch is
+  desktop-only, `max-md:group-data-[user=dealer]:hidden` when it is
+  mobile-only. Same for any two-condition rule — a `data-*` state plus a
+  breakpoint always needs both conditions on the *same* declaration.
+  Ref: «Редактировать модули» and «Очистить корзину» on the dealer order page.
 
 ## Native horizontal scroll rails
 

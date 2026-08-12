@@ -1,0 +1,39 @@
+<!-- ==================== «ВАШ ЗАКАЗ ОТПРАВЛЕН» =========================
+     Figma form 2241:158412 (desktop modal 485×725) / 2241:158297 (mobile, full
+     screen over the bottom nav); the dealer page's own frame, 2238:157458, is
+     the same thing under dealer chrome. One overlay: a centred card above
+     `md`, the whole viewport below it.
+
+     Both order pages mount this — the customer's and the dealer's — and its
+     two links point at sibling pages (`main.html`, `catalog.html`), which
+     resolve inside whichever page's folder splices it in. -->
+<!-- below `md` the bottom nav stays visible under it (2241:158305), so the
+     overlay reserves its 72px rather than covering the whole viewport -->
+<div class="fixed inset-0 z-[60] hidden items-center justify-center bg-overlay-strong max-md:bg-transparent max-md:pb-[72px]" data-order-done>
+  <div class="relative h-[725px] w-[485px] overflow-hidden bg-surface-inverted max-md:h-full max-md:w-full">
+    <img src="../../assets/order/thanks-src.png" alt="" class="absolute inset-0 size-full object-cover" />
+
+    <a
+      href="main.html"
+      class="absolute right-2 top-2 z-10 flex size-8 items-center justify-center rounded-full bg-overlay-strong"
+      aria-label="Закрыть"
+    >
+      <img src="../../assets/header/icon-close.svg" alt="" class="size-5" />
+    </a>
+
+    <!-- centred block in the upper third (thank you frame 2241:161140: 112px
+         of top padding inside a 666 frame), over the quiet part of the photo —
+         the kettle sits below it. -->
+    <div class="relative flex flex-col items-center gap-6 px-16 pt-28 text-center max-md:gap-5 max-md:px-10 max-md:pt-40">
+      <div class="flex flex-col gap-4 max-md:gap-3">
+        <p class="text-h3 text-text-primary max-md:text-m-h3">Ваш заказ отправлен!</p>
+        <p class="text-body-n text-text-primary max-md:text-m-body-n">
+          С вами свяжется представитель дилера для подтверждения заказа
+        </p>
+      </div>
+      <a href="catalog.html" class="btn btn-l btn-accent w-full max-md:h-11 max-md:text-m-button-l">
+        Продолжить покупки
+      </a>
+    </div>
+  </div>
+</div>
