@@ -1,0 +1,68 @@
+<!-- Дилерский прайс-лист. Строка списка — один <template> на оба экрана:
+     десктопная панель живёт в дилерской полоске partials/header.html (ей нужен
+     relative от триггера), мобильная шторка — ниже в этом файле. Клонирует
+     components/price-mode.js; строк тут не собирается ни в одном JS. -->
+
+<!-- `dropdown-item` 606:26531 / 2225:165635: 40 в обычном виде, 44 выбранная,
+     108 у раскрытой «Своей наценки». -->
+<template data-price-item>
+  <div class="price-item md:min-h-11" data-price-item-id>
+    <button type="button" class="flex w-full items-center gap-2 text-left" data-price-item-select>
+      <span
+        class="min-w-0 flex-1 text-body-n text-text-primary max-md:text-m-body-n"
+        data-price-item-label
+      ></span>
+      <img
+        src="../../assets/header/icon-check.svg"
+        alt=""
+        class="hidden size-6 shrink-0"
+        data-price-item-check
+      />
+    </button>
+    <div class="hidden items-center gap-4 pt-2" data-price-item-field>
+      <label class="flex h-11 w-[100px] items-center gap-1 rounded-[var(--radius-s)] bg-bg-page px-3">
+        <input
+          type="number"
+          inputmode="numeric"
+          class="min-w-0 flex-1 bg-transparent text-body-s text-text-primary outline-none"
+          data-price-input
+        />
+        <span class="text-body-s text-text-muted">%</span>
+      </label>
+      <!-- подпись у дизайнера 11/14 — берём ближайший токен, 12/16 -->
+      <span class="text-body-xs text-text-secondary" data-price-item-hint></span>
+    </div>
+  </div>
+</template>
+
+<!-- Шторка выбора прайс-листа на 360 — 2225:163666 / 2225:164865: оверлей
+     #141414/0.9, панель 400 снизу, шапка 56 с заголовком и ×, кнопка
+     «Применить» только у «Своей наценки». Выше md не рендерится. -->
+<div data-price-sheet class="fixed inset-0 z-50 hidden md:hidden">
+  <div class="absolute inset-0 bg-overlay-strong" data-price-close></div>
+  <div
+    class="absolute inset-x-0 bottom-0 flex h-[400px] flex-col bg-bg-page"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Наценка"
+  >
+    <div class="flex h-14 shrink-0 items-center px-4">
+      <span class="min-w-0 flex-1 text-m-h2 text-text-primary">Наценка</span>
+      <button
+        type="button"
+        class="flex size-10 shrink-0 items-center justify-end"
+        aria-label="Закрыть"
+        data-price-close
+      >
+        <img src="../../assets/header/icon-close-s.svg" alt="" class="size-6" />
+      </button>
+    </div>
+    <div class="flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto px-4 py-4" data-price-list></div>
+    <!-- modal-button-container 2225:165727 -->
+    <div class="hidden shrink-0 px-4 py-2" data-price-apply-row>
+      <button type="button" class="btn btn-m btn-primary w-full" data-price-apply>
+        <span>Применить</span>
+      </button>
+    </div>
+  </div>
+</div>

@@ -9,10 +9,59 @@
       >
       <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5" />
     </a>
-    <a class="text-m-body-n text-text-primary underline decoration-from-font underline-offset-2" href="#"
+    <a
+      class="text-m-body-n text-text-primary underline decoration-from-font underline-offset-2 group-data-[user=dealer]:hidden"
+      href="#"
       >Стать дилером</a
     >
+    <!-- у дилера правый слот полоски — телефон (2225:163628) -->
+    <a
+      class="hidden text-m-body-n-accent text-text-primary group-data-[user=dealer]:block"
+      href="tel:+74951356565"
+      >+7 (495) 135-65-65</a
+    >
   </div>
+
+  <!-- Дилерский ряд — site-header 2225:163138, ряд `row` 1739:219449: 40px,
+       слева выбор прайс-листа, справа тумблер. Порядок обратный десктопному —
+       там тумблер первый, здесь подпись (1739:219406). -->
+  <div
+    class="hidden h-10 items-center justify-between bg-components-strong px-4 group-data-[user=dealer]:flex"
+  >
+    <button
+      type="button"
+      class="group/pt flex items-center gap-0.5 text-m-body-n text-text-inverse-primary"
+      data-price-trigger
+      data-price-sheet-trigger
+      aria-expanded="false"
+      aria-haspopup="dialog"
+    >
+      <span data-price-trigger-label>Оптовая цена</span>
+      <img
+        src="../../assets/header/chevron-down-light.svg"
+        alt=""
+        class="size-6 transition-transform group-aria-[expanded=true]/pt:rotate-180"
+      />
+    </button>
+    <button
+      type="button"
+      role="switch"
+      aria-checked="true"
+      data-dealer-price-toggle
+      class="group/sw flex shrink-0 items-center gap-2"
+    >
+      <span class="whitespace-nowrap text-m-body-n text-text-inverse-primary">Показать цену</span>
+      <span
+        class="flex h-6 w-10 items-center rounded-pill bg-components-light p-0.5 transition-colors group-aria-[checked=true]/sw:bg-surface-raised"
+      >
+        <span
+          class="size-5 translate-x-0 rounded-pill bg-components-disabled-inverted transition-[translate,background-color] group-aria-[checked=true]/sw:translate-x-4 group-aria-[checked=true]/sw:bg-components-strong"
+          data-dealer-price-knob
+        ></span>
+      </span>
+    </button>
+  </div>
+
   <div class="flex h-[60px] items-center justify-between px-4">
     <button
       class="flex size-10 items-center justify-center rounded-pill"
@@ -91,17 +140,39 @@
           >
         </button>
 
-        <!-- `dropdown-header` 607:26932 — the instance renders only the
-             132x24 trigger; there is no list in its layout and no prototype
-             data anywhere in the export, so nothing is wired. See BACKLOG. -->
-        <button
-          type="button"
-          class="flex shrink-0 items-center gap-0.5 text-body-n-accent text-text-inverse-primary"
-          data-dealer-pricelist
-        >
-          <span class="underline decoration-dotted underline-offset-4">Оптовая цена</span>
-          <img src="../../assets/header/chevron-down-light.svg" alt="" class="size-6" />
-        </button>
+        <!-- `dropdown-header` 607:26932. Открытое состояние — вариант
+             condition=open 1299:49518: панель 328 под триггером, строки 320x44.
+             Строка списка клонируется из partials/price-mode.html. -->
+        <div class="relative shrink-0">
+          <button
+            type="button"
+            class="group/pt flex items-center gap-0.5 text-body-n-accent text-text-inverse-primary"
+            data-price-trigger
+            data-price-panel-trigger
+            aria-expanded="false"
+            aria-haspopup="listbox"
+          >
+            <span class="underline decoration-dotted underline-offset-4" data-price-trigger-label
+              >Оптовая цена</span
+            >
+            <img
+              src="../../assets/header/chevron-down-light.svg"
+              alt=""
+              class="size-6 transition-transform group-aria-[expanded=true]/pt:rotate-180"
+            />
+          </button>
+          <div
+            class="absolute left-0 top-8 z-50 hidden w-[328px] rounded-[var(--radius-s)] bg-bg-page py-2 shadow-dropdown"
+            data-price-panel
+          >
+            <div class="flex flex-col px-1" data-price-list></div>
+            <div class="hidden px-1 pt-2" data-price-apply-row>
+              <button type="button" class="btn btn-m btn-primary w-full" data-price-apply>
+                <span>Применить</span>
+              </button>
+            </div>
+          </div>
+        </div>
 
         <span class="flex-1"></span>
 

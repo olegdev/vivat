@@ -923,6 +923,18 @@
   }
 }
 
+/* Строка списка прайс-листов (`dropdown-item` 606:26531). Выбранная получает
+   подложку и подрастает с 40 до 44; «Своя наценка» в выбранном виде — 108, эту
+   высоту даёт раскрытое поле, а не правило. */
+@utility price-item {
+  @apply flex w-full flex-col rounded-[var(--radius-s)] px-3 py-2 text-left transition-colors;
+  min-height: 40px;
+  &[aria-selected="true"] {
+    @apply bg-components-subtle-hover;
+    min-height: 44px;
+  }
+}
+
 /* The 152px "other" cards ride two rows deep on mobile (Figma `rows`
    1968:150236), filled row-major, so the column count is handed in as --cols by
    whoever renders the track. This lives in `utilities`, not `components`,

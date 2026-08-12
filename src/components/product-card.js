@@ -280,4 +280,8 @@ export function renderCarousel(el, items, opts = {}) {
     el.style.setProperty("--cols", String(Math.ceil(items.length / 2)));
   }
   initProductCards(el);
+  // Карточки появляются и после загрузки страницы — вкладки «Популярных» их
+  // перерисовывают. Кому важно доработать по свежей разметке (дилерский
+  // прайс-лист), слушает это событие вместо угадывания порядка вызовов.
+  document.dispatchEvent(new CustomEvent("cards:rendered", { detail: { root: el } }));
 }

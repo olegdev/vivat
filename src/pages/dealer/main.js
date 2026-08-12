@@ -6,7 +6,7 @@ import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initAlert } from "../../components/alert.js";
 import { initHeroSlider } from "../../components/hero-slider.js";
-import { initDealerHeader } from "../../components/dealer-header.js";
+import { initDealerPriceControls } from "../../components/price-mode.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
 import { stores } from "../../data/stores.js";
@@ -19,8 +19,8 @@ import { newsItems } from "../../data/dealer-home.js";
 // script is wiring only. Desktop only for now: no 360 frame exists, so there is
 // no mobile menu or bottom nav to mount (see docs/FIGMA-MAP.md).
 
-// ---- dealer strip in the header (price switch) ------------------------------
-initDealerHeader();
+// ---- dealer strip: price list + «Показать цену» ------------------------------
+initDealerPriceControls();
 
 // ---- dismissible alert band -------------------------------------------------
 initAlert();
