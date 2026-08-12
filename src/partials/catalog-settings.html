@@ -1,0 +1,129 @@
+<!-- ==================== CATALOG SETTINGS (filters bar + sort) ==========
+     Figma catalog-settings — один компонент с вариантами device × type:
+     покупательский 768:28896 (1440) / 1806:237126 (360), дилерский
+     880:17203 (1440) / 1806:238139 (360). Дилерский отличается ровно одним:
+     тумблером «Только модули», поэтому здесь он и живёт, под
+     `group-data-[user=dealer]`. Будущий Blade: <x-catalog-settings/>.
+
+     Все элементы этой панели открывают или ведут один и тот же ящик фильтров
+     и состояние URL; обвязка — в components/catalog-listing.js. -->
+<div data-catalog-settings class="flex flex-col gap-3 px-10 py-6 max-md:px-4 max-md:py-3">
+  <div class="flex items-center justify-between max-md:flex-wrap max-md:gap-2">
+    <!-- filter openers. Below `md` the named pills collapse to the single
+         funnel button (Figma catalog-settings 1806:237128) — the drawer is
+         the only way into the filters on mobile. -->
+    <div class="flex items-center gap-2">
+      <!-- funnel. `icon-button` (881:51240) is an auto-layout ROW — 44px
+           circle + 20px badge at gap -12, badge top-aligned — so the whole
+           control is 52 wide and the badge pushes the pills right by 8.
+           Reproduced as a flex row with `-ml-3`, not as an absolute
+           overlay; see SOLUTIONS.md › "Badges are layout, not overlay".
+           With filters applied the circle flips to the dark variant. -->
+      <button type="button" data-filter-open class="filter-funnel flex h-11 shrink-0 items-center" aria-label="Открыть фильтры">
+        <!-- service-icons `filter, 24 Bold` (752:60735), exported from
+             Figma; inline + currentColor so it inverts with the circle. -->
+        <span class="filter-funnel__circle">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M13 12c2.209 0 4 1.791 4 4s-1.791 4-4 4a4.002 4.002 0 0 1-3.876-3.009A1 1 0 0 1 9 17H3a1 1 0 1 1 0-2h6c.042 0 .083.003.124.008A4.002 4.002 0 0 1 13 12Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+            <path d="M21 15a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2h2Z" />
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2c2.209 0 4 1.791 4 4s-1.791 4-4 4a4.002 4.002 0 0 1-3.876-3.009A1 1 0 0 1 6 7H3a1 1 0 0 1 0-2h3c.042 0 .083.003.124.008A4.002 4.002 0 0 1 10 2Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+            <path d="M21 5a1 1 0 1 1 0 2h-5a1 1 0 1 1 0-2h5Z" />
+          </svg>
+        </span>
+        <span data-filter-badge class="badge-number badge-number--outline -ml-3 hidden self-start">0</span>
+      </button>
+      <!-- named pills. A group with a selection takes the `condition=active`
+           pill (Figma 752:63467): #414141 border + a muted count. -->
+      <button type="button" data-filter-open="collection" data-filter-pill="collection" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Коллекция<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="form" data-filter-pill="form" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Форма кухни<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="facade" data-filter-pill="facade" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Фасады<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="color" data-filter-pill="color" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цвет<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="style" data-filter-pill="style" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Стиль<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="price" data-filter-pill="price" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цена<span data-pill-count class="hidden text-text-muted"></span></button>
+    </div>
+
+    <!-- правая группа. На 1440 это фрейм `popular` 480 = текст+тумблер 168,
+         зазор 32, сортировка 280 (Figma 882:89384). Ниже `md` группа
+         становится `display:contents`, её дети выходят прямыми элементами
+         строки — тумблер встаёт справа от воронки, сортировка переносится
+         на вторую строку во всю ширину (Figma 1806:238141: колонка 328×96
+         из двух рядов по 44 с зазором 8). Никаких `order-*`. -->
+    <div class="flex items-center gap-8 max-md:contents">
+      <!-- «Только модули» — единственная дилерская добавка панели
+           (Figma text+toggle 882:89379 на 1440, 1806:238263 на 360).
+           Тумблер 604:24626: off #e7e7e7/#acacac, on #cbcbcb/#292929 —
+           те же токены, что у «Показать цену» в шапке. -->
+      <button
+        type="button"
+        role="switch"
+        aria-checked="false"
+        data-modules-only
+        class="group/sw hidden shrink-0 items-center gap-3 group-data-[user=dealer]:flex"
+      >
+        <span class="whitespace-nowrap text-body-n text-text-primary max-md:text-m-body-n">Только модули</span>
+        <span
+          class="flex h-6 w-10 items-center rounded-pill bg-components-light p-0.5 transition-colors group-hover/sw:bg-components-light-hover group-aria-[checked=true]/sw:bg-surface-raised"
+        >
+          <span
+            class="size-5 translate-x-0 rounded-pill bg-components-disabled-inverted transition-[translate,background-color] group-hover/sw:bg-components-disabled-inverted-hover group-aria-[checked=true]/sw:translate-x-4 group-aria-[checked=true]/sw:bg-components-strong"
+          ></span>
+        </span>
+      </button>
+
+      <!-- sort dropdown — fills the row width on mobile; у дилера ниже `md`
+           это отдельная строка целиком (Figma 1806:238151, 328×44). -->
+      <div
+        class="relative max-md:min-w-0 max-md:flex-1 max-md:group-data-[user=dealer]:w-full max-md:group-data-[user=dealer]:flex-none"
+        data-sort
+      >
+        <button
+          type="button"
+          data-sort-toggle
+          class="flex h-11 w-[280px] items-center justify-between gap-2 rounded-pill bg-components-subtle px-4 text-button-m text-text-primary transition-colors hover:bg-components-subtle-hover max-md:w-full max-md:text-m-button-m"
+          aria-expanded="false"
+        >
+          <span data-sort-label>Сначала популярные</span>
+          <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform" data-sort-chevron />
+        </button>
+        <div
+          data-sort-menu
+          class="absolute right-0 top-[calc(100%+8px)] z-30 hidden w-[280px] overflow-hidden rounded-[var(--radius-l)] bg-surface-inverted py-2 shadow-dropdown max-md:w-full"
+        >
+          <button type="button" class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle" data-sort-value="popular" aria-current="true">Сначала популярные</button>
+          <button type="button" class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle" data-sort-value="cheap">Сначала дешёвые</button>
+          <button type="button" class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle" data-sort-value="expensive">Сначала дорогие</button>
+          <button type="button" class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle" data-sort-value="new">По новизне</button>
+          <button type="button" class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle" data-sort-value="discount">По размеру скидки</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- quick-filter chips: shortcuts that toggle a drawer option + re-apply.
+       `data-quickfilter="param=value"` names the field it drives.
+
+       Two states of one row (Figma Catalog-default 882:89752 vs
+       Catalog-selected-parameters 882:88832 / 1806:237553): with nothing
+       selected the row is the full shortcut list ending in "Больше ···";
+       as soon as a shortcut is on, the row becomes the *selected
+       parameters* — only the active chips (grey fill + ×, click to
+       release) followed by an "Очистить все" chip. catalog-listing.js ›
+       syncChips() swaps between the two. On mobile the shortcut list is a
+       scroll rail; the selected row wraps (the mock shows two rows). -->
+  <div
+    data-chips
+    class="flex flex-wrap items-center gap-2 max-md:flex-nowrap max-md:overflow-x-auto max-md:scroll-rail max-md:[&>button]:shrink-0 max-md:data-selected:flex-wrap max-md:data-selected:overflow-visible"
+  >
+    <button type="button" class="catalog-chip" data-quickfilter="form=pryamaya">Прямые кухни<!--#include partials/chip-close.html --></button>
+    <button type="button" class="catalog-chip" data-quickfilter="form=uglovaya">Угловые кухни<!--#include partials/chip-close.html --></button>
+    <button type="button" class="catalog-chip" data-quickfilter="color=belyy">Белые кухни<!--#include partials/chip-close.html --></button>
+    <button type="button" class="catalog-chip" data-quickfilter="color=multicvet">Мультицвет<!--#include partials/chip-close.html --></button>
+    <button type="button" class="catalog-chip" data-quickfilter="facade=mdf">Фрезированые фасады<!--#include partials/chip-close.html --></button>
+    <button type="button" class="catalog-chip" data-quickfilter="facade=mdf">МДФ<!--#include partials/chip-close.html --></button>
+    <button type="button" class="catalog-chip" data-quickfilter="facade=mdf-steklo">Стекло<!--#include partials/chip-close.html --></button>
+    <button type="button" class="catalog-chip" data-quickfilter="style=klassika">Классика<!--#include partials/chip-close.html --></button>
+    <button type="button" data-filter-open data-chip-more class="catalog-chip">Больше <span class="tracking-widest">···</span></button>
+    <!-- shown only while something is selected -->
+    <button type="button" data-filter-clear data-chip-clear class="catalog-chip catalog-chip--dismiss hidden">Очистить все<!--#include partials/chip-close.html --></button>
+  </div>
+</div>

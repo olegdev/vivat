@@ -60,6 +60,10 @@ export const PRODUCTS = Array.from({ length: 24 }, (_, i) => {
     swatches: SWATCHES,
     more: "+5",
     comments: (i % 4) + 1,
+    // Дилерский тумблер «Только модули» фильтрует по этому полю. Раскладка
+    // через один — фикстура, а не факт из дизайна: серверного поля у него ещё
+    // нет (см. BACKLOG).
+    isModule: i % 2 === 0,
     collection,
     facade,
     form,

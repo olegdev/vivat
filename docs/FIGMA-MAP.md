@@ -50,12 +50,14 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 Полноценный параллельный b2b-сайт: те же страницы, что у покупателя, но со
 своей шапкой, подвалом и ценами.
 
+✅ — свёрстано.
+
 | X | Экран | 1440 | 360 |
 |---|---|---|---|
-| 360 | **Главная** | [882:107882](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=882-107882) | — |
+| 360 | **Главная** ✅ | [882:107882](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=882-107882) | — |
 | 1918 | Мега-меню каталога, 1 колонка | [953:121639](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121639) | — |
 | 3446 | Мега-меню каталога, 3 колонки | [953:121756](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121756) | — |
-| 5053 | **Каталог** | [953:121911](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121911) | [2225:160540](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-160540) — **и дилерская шапка с нижней навигацией** |
+| 5053 | **Каталог** ✅ | [953:121911](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121911) | [2225:160540](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-160540) — **и дилерская шапка с нижней навигацией** |
 | 6935 | **Шторка «Наценка»**, выбрана «Оптовая цена» | — | [2225:163666](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-163666) |
 | 7328 | **Шторка «Наценка»**, выбрана «Своя наценка» | — | [2225:164865](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-164865) |
 | 7889 | Каталог: все фильтры | [953:121956](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121956) | — |

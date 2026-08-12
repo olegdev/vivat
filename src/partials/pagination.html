@@ -1,0 +1,31 @@
+<!-- ==================== PAGINATION ====================================
+     Figma pagination 953:121947 (1440) / 2225:160586 (360). В прототипе
+     блок презентационный — настоящая постраничка серверная и приходит тем
+     же швом, что и фильтры. -->
+<section class="flex flex-col items-center gap-10 px-10 py-16 max-md:gap-8 max-md:px-4 max-md:py-10">
+  <button type="button" class="btn btn-m btn-primary max-md:w-full max-md:text-m-button-m">
+    Показать еще 40 товаров из <span data-grid-total>123</span>
+  </button>
+  <nav class="flex items-center gap-6 text-body-n">
+    <a href="#" class="flex items-center gap-2 text-text-secondary transition-colors hover:text-text-primary max-md:hidden">
+      <img src="../../assets/header/chevron-left.svg" alt="" class="size-5 opacity-60" />
+      В начало
+    </a>
+    <!-- On mobile the middle pages collapse to an ellipsis (Figma pagination
+         1806:236599): 1 2 3 4 … 7. -->
+    <div class="flex items-center gap-1">
+      <button type="button" class="flex size-9 items-center justify-center rounded-full bg-components-subtle text-text-primary" aria-current="page">1</button>
+      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">2</button>
+      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">3</button>
+      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">4</button>
+      <span class="hidden size-9 items-center justify-center text-text-secondary max-md:flex">…</span>
+      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle max-md:hidden">5</button>
+      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle max-md:hidden">6</button>
+      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">7</button>
+    </div>
+    <a href="#" class="flex items-center gap-2 text-text-primary transition-colors hover:text-text-secondary max-md:hidden">
+      В конец
+      <img src="../../assets/header/chevron-right.svg" alt="" class="size-5" />
+    </a>
+  </nav>
+</section>

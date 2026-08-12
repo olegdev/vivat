@@ -1,0 +1,62 @@
+<!-- ==================== PRODUCTS GRID =================================
+     Figma products 2250:137837 (покупатель) / 1686:158729 (дилер) — сетка
+     из `cards-kitchen size=m` 322×389 в 4 колонки на 1440 и 168×259 в две
+     колонки на 360. Фреймы совпадают, поэтому партиал один.
+
+     Одна чистая карточка живёт в <template> ниже (это и есть будущее тело
+     Blade @foreach); components/catalog-listing.js клонирует её на товар и
+     ничего не строит из строк. -->
+<template data-card-tpl>
+  <article class="flex flex-col" data-card>
+    <div class="relative overflow-hidden rounded-n bg-bg-subtle">
+      <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:aspect-[168/125] max-md:h-auto" data-card-gallery>
+        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="card-zones" data-card-zones></div>
+      </div>
+      <div data-card-badges class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1"></div>
+      <!-- Filled per photo by fillGallery(); the dots the design draws here
+           are the gallery's, not decoration. -->
+      <div class="pointer-events-none absolute inset-x-0 bottom-2 flex items-center justify-center gap-2 [&>*]:pointer-events-auto max-md:bottom-1 max-md:gap-1" data-card-dots></div>
+    </div>
+    <div class="flex flex-col gap-1 px-1 py-3 max-md:gap-0 max-md:py-1.5">
+      <div class="flex items-start gap-4 max-md:gap-0">
+        <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
+          <div class="flex items-center gap-2 max-md:gap-1">
+            <!-- у дилера цена идёт без «от» (Figma dealer/Catalog 953:121911) -->
+            <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-md:text-m-body-n-accent">от</span>
+            <span data-card-price class="text-h3 font-medium text-text-primary max-md:text-m-body-n-accent"></span>
+            <span data-card-oldprice class="text-body-n text-text-muted line-through max-md:text-m-body-s-crossed max-md:text-text-secondary empty:hidden"></span>
+          </div>
+          <p data-card-title class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-compact"></p>
+        </div>
+        <button type="button" data-add-to-cart class="icon-btn max-md:hidden" aria-label="В корзину">
+          <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" />
+        </button>
+      </div>
+      <div class="flex items-center gap-4 py-1 max-md:gap-2 max-md:py-0.5">
+        <div class="flex min-w-0 flex-1 items-center gap-2 max-md:gap-1">
+          <div data-card-swatches class="flex items-center gap-2 max-md:gap-1"></div>
+          <span data-card-more class="text-body-s text-text-secondary empty:hidden max-md:text-m-body-xs"></span>
+        </div>
+        <div class="flex items-center gap-1">
+          <span data-card-comments class="text-body-s text-text-secondary max-md:text-m-body-xs"></span>
+          <img src="../../assets/header/icon-comment.svg" alt="" class="size-4" />
+        </div>
+      </div>
+      <!-- full-width "в корзину" pill — mobile only (Figma малая плитка) -->
+      <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-1 max-md:flex">
+        <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" />
+        <span class="text-m-button-s text-text-primary">в корзину</span>
+      </button>
+    </div>
+  </article>
+</template>
+
+<div data-grid class="grid grid-cols-4 gap-6 px-10 max-md:grid-cols-2 max-md:gap-2 max-md:px-2"></div>
+
+<!-- empty state (shown by catalog-listing.js when a filter matches nothing) -->
+<div data-grid-empty class="hidden px-10 py-24 text-center max-md:px-4 max-md:py-16">
+  <p class="text-h4 text-text-primary">Ничего не найдено</p>
+  <p class="pt-2 text-body-n text-text-secondary">Попробуйте ослабить фильтры или сбросить их.</p>
+  <button type="button" data-filter-clear class="btn btn-m btn-secondary mt-6">Сбросить фильтры</button>
+</div>

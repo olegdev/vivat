@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Каталог: Кухни (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./catalog.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary" data-user="dealer">
+    <!-- Дилерский каталог. 1440 — Figma Catalog-default 953:121911, 360 —
+         catalog 2225:160540. Фрейм совпадает с покупательским нода в ноду:
+         та же сетка `cards-kitchen size=m`, та же пагинация, тот же блок
+         «Популярные товары», та же зелёная SEO-полоса. Отличается обвязка
+         (шапка, подвал, нижняя навигация), цена без «от» с пересчётом по
+         прайс-листу и тумблер «Только модули» в панели настроек.
+
+         Панель настроек, сетка и пагинация — общие партиалы с покупательской
+         страницей; вся механика в components/catalog-listing.js. -->
+    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- product-card <template>s cloned by the Популярные carousel below -->
+      <!--#include partials/product-card.html -->
+      <!--#include partials/carousel-section.html -->
+
+      <!-- ==================== BREADCRUMBS + H1 =========================
+           На 360 дилерский фрейм идёт сразу от панели настроек: ни крошек,
+           ни заголовка там нет (на 1440 и на покупательской мобилке есть).
+           Собрано по макету, вопрос дизайнеру — см. BACKLOG. -->
+      <div class="max-md:hidden">
+        <nav class="flex items-center gap-2 px-10 py-4 text-body-s text-text-secondary">
+          <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
+          <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
+          <a href="#" class="transition-colors hover:text-text-primary">Каталог</a>
+          <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
+          <span class="text-text-primary">Кухни VIVAT</span>
+        </nav>
+        <div class="px-10 pt-2">
+          <h1 class="text-h1 text-text-primary">Кухни VIVAT</h1>
+        </div>
+      </div>
+
+      <!--#include partials/catalog-settings.html -->
+
+      <!--#include partials/catalog-grid.html -->
+
+      <!--#include partials/pagination.html -->
+
+      <!-- ==================== CAROUSEL: Популярные товары ============= -->
+      <div data-section="popular"></div>
+
+      <div class="h-20 max-md:h-8"></div>
+
+      <!-- ==================== SEO / INFO BLOCK ======================== -->
+      <!--#include partials/seo-kitchens.html -->
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- ==================== FILTER DRAWER (overlay) =================== -->
+    <!--#include partials/catalog-filters.html -->
+  </body>
+</html>

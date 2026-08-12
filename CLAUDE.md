@@ -44,6 +44,12 @@ chip row becomes the selected parameters + "Очистить все", pills gain
 the funnel goes dark. The carousel machinery both pages share now lives in
 `src/components/carousel.js`.
 
+The page's own body is three partials — `catalog-settings` (funnel, pills,
+sort, chips), `catalog-grid` (the card `<template>` + the grid + the empty
+state) and `pagination` — and all of its behaviour is
+`src/components/catalog-listing.js`. Both catalog pages, customer and dealer,
+are assembled from them; the page scripts are wiring only.
+
 `src/pages/customer/action.html` — the Акции listing page. Desktop (Figma Action
 2248:97191) and mobile (Figma 2248:110193) are both done, and it is assembled
 almost entirely from parts the other two pages already own: breadcrumbs + H1, a
@@ -162,12 +168,32 @@ positioned off the trigger. `components/price-mode.js` (which absorbed the old
 `applyPriceMode({mode, markup, enabled})` — localStorage plus a recompute of
 every `[data-card-price]` from the `data-price-base` the card carries.
 
+`src/pages/dealer/catalog.html` — the dealer catalog. Desktop (Figma
+Catalog-default 953:121911) and mobile (catalog 2225:160540) are both done, and
+the frame is the customer catalog node for node: same `cards-kitchen size=m`
+grid, same pagination, same Популярные rail, same green SEO band. Four things
+differ and nothing else:
+
+- the chrome is the dealer's (`data-user="dealer"` — header strip, «Бизнесу» in
+  the bottom nav, dealer footer branches);
+- the settings bar is `catalog-settings type=dealer`, which adds a **«Только
+  модули» switch** — 1440: text+toggle 168 then a 32 gap then the 280 sort;
+  360: the switch joins the funnel on row 1 and the sort drops to a full-width
+  row 2, so the bar grows 116 → 164. The right-hand group is
+  `max-md:contents`, which is what re-flows it without a single `order-*`;
+- prices lose the «от» and are recomputed by the price list;
+- **below `md` there are no breadcrumbs and no H1** — the 360 frame simply
+  doesn't draw them, though the dealer 1440 and the customer 360 both do. Built
+  to the frame; the question is in `BACKLOG.md`.
+
 The «Показать цену» switch **hides nothing** — it is the apply switch for that
 selector: off means the wholesale price whatever the list says, on means the
 selected mode. The design carries no prototype on it; this is the client's
 answer.
 
-Everything else in `src/pages/` is a stub.
+There are no stubs left in `src/pages/` — every file there is a finished page.
+What remains unbuilt is the rest of the dealer half: its PDP, its order flow and
+the whole `B2b additional` section. See `BACKLOG.md` › "Not started".
 
 **Search is not a page — it is an overlay every page carries.** Figma's `search`
 section (2324:120596) holds four frames: 2337:156356 / 2338:235809 (nothing
@@ -229,7 +255,8 @@ into pages at build time by `scripts/vite-plugin-includes.mjs` via
 works in both `npm run dev` and `npm run build`). One partial == one future
 Blade partial — the port to `@include('partials.name')` is mechanical. Current
 partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
-`catalog-filters`, `chip-close`, `stores`, `hero`, `carousel-section`,
+`catalog-filters`, `catalog-settings`, `catalog-grid`, `pagination`,
+`chip-close`, `stores`, `hero`, `carousel-section`,
 `product-card`, `promo-card`, `review-card`, `pdp-summary`, `pdp-specs`,
 `pdp-photo-overlay`, `sticky-price`, `seo-kitchens`, `cart-card`,
 `order-summary`, `search-overlay`, `price-mode`.

@@ -107,6 +107,16 @@ Two things make that work:
   The default order is whatever the DOM says; make that the face you didn't
   write classes for.
 
+**The same `max-md:contents` also splits a desktop group across mobile rows.**
+The dealer catalog's settings bar pins «Только модули» + сортировка to the right
+as one 32-gap group on 1440, while on 360 the switch stays on the funnel's row
+and the sort takes a full row of its own. Grouping them in a wrapper and giving
+it `max-md:contents` makes both true at once: on desktop it is a real flex box
+that `justify-between` can push right; below `md` its box disappears and the two
+children become direct items of the bar, so `flex-wrap` + a full-width sort
+breaks the line exactly where the frame does. No `order-*`, no second copy, and
+the DOM still reads in design order. Ref: `partials/catalog-settings.html`.
+
 ## Touch gestures
 
 - **Swipe needs `touch-action` set** (`touch-pan-y` for a horizontal swipe) or
@@ -589,3 +599,30 @@ const commit = () => applyPriceMode({ ...state, enabled: (applied ?? state).enab
 перезагрузишь страницу в нетронутом состоянии». Значит, где-то живёт снимок,
 сделанный раньше действия пользователя, и тестировать надо не с чистого листа,
 а с сохранённого.
+
+## Вторая страница пары — это и есть повод вынести первую в партиалы
+
+Дилерский каталог отличается от покупательского обвязкой, ценами и одним
+тумблером. Всё остальное — панель фильтров, шаблон карточки, сетка, пагинация,
+423 строки механики — совпадает. Копия страницы обошлась бы в полдня и разошлась
+бы на первой же правке фильтров, а PHP-разработчик получил бы два почти
+одинаковых шаблона вместо одного `@include`.
+
+Порядок, который сработал и который стоит повторить на дилерских PDP и заказе:
+
+1. **Снять эталон до правки** — `npm run shot` первой страницы на обеих
+   ширинах, PNG в сторону.
+2. **Вынести тело в партиалы, ничего в нём не меняя.** Разрез идёт по будущим
+   Blade-партиалам, а не «по удобству»: панель настроек в Figma и есть один
+   компонент с вариантом `type=dealer`, поэтому дилерская добавка живёт в нём
+   одном под `group-data-[user=dealer]`.
+3. **Механику — в `components/`,** страничный скрипт оставить проводкой.
+4. **Доказать, что первая страница не поехала:** тот же шот и попиксельное
+   сравнение с эталоном, а не чтение диффа.
+5. Только после этого собирать вторую страницу и добавлять её отличия.
+
+Ловушка на шаге 4: полностраничный шот **флапает** на ленивых картинках — один
+прогон из трёх разошёлся на одной карточке карусели, полоса та же, состав
+случайный. Отличие в одну карточку с целыми боксами вокруг — это гонка загрузки,
+а не регрессия; отличие в геометрии повторяется прогон за прогоном. Прогонять
+шот трижды и смотреть, повторяется ли полоса.

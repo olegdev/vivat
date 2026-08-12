@@ -4,15 +4,20 @@ import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-me
 import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
+import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initCatalogListing } from "../../components/catalog-listing.js";
 import { ICON } from "../../data/asset-base.js";
 import { PRODUCTS, rub, popularItems } from "../../data/catalog.js";
+import { dealerMenuSections } from "../../data/dealer-home.js";
 
-// Страница каталога — обвязка. Сетка, фильтры, сортировка, чипсы и шов
-// applyFilters живут в components/catalog-listing.js: та же механика работает на
-// дилерской странице (pages/dealer/catalog.html).
+// Дилерский каталог — та же проводка, что у покупательского, плюс дилерская
+// обвязка: полоска с прайс-листом в шапке и дилерский набор ссылок в бургере.
+// Товары те же (data/catalog.js) — у дилера отличается только показ цены.
 
-// ---- shared chrome (header mega-menu + burger), same wiring as main.js ------
+// ---- dealer strip: price list + «Показать цену» -----------------------------
+initDealerPriceControls();
+
+// ---- shared chrome (header mega-menu + burger) ------------------------------
 setCatalogIconBase(ICON);
 initCatalogMenu(document.querySelector("[data-catalog]"), {
   toggle: document.querySelector("[data-catalog-toggle]"),
@@ -20,11 +25,12 @@ initCatalogMenu(document.querySelector("[data-catalog]"), {
 initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
   toggle: document.querySelector("[data-mobile-menu]"),
   catalogToggle: document.querySelector("[data-mobile-catalog]"),
+  rootSections: dealerMenuSections,
 });
 initSearch();
 initCart();
 
-// ---- сетка + фильтры + сортировка + чипсы + URL -----------------------------
+// ---- сетка + фильтры + сортировка + чипсы + «Только модули» + URL ------------
 initCatalogListing({ products: PRODUCTS, rub });
 
 // ---- Популярные товары ------------------------------------------------------
