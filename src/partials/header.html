@@ -76,11 +76,13 @@
           data-dealer-price-toggle
           class="group/sw flex shrink-0 items-center gap-3"
         >
+          <!-- toggle 604:24616: on #cbcbcb/#292929, off #e7e7e7/#acacac,
+               hover-off #d9d9d9/#707070 -->
           <span
-            class="flex h-6 w-10 items-center rounded-pill bg-surface-raised p-0.5 transition-colors"
+            class="flex h-6 w-10 items-center rounded-pill bg-components-light p-0.5 transition-colors group-hover/sw:bg-components-light-hover group-aria-[checked=true]/sw:bg-surface-raised"
           >
             <span
-              class="size-5 translate-x-0 rounded-pill bg-components-strong transition-transform group-aria-[checked=true]/sw:translate-x-4"
+              class="size-5 translate-x-0 rounded-pill bg-components-disabled-inverted transition-[translate,background-color] group-hover/sw:bg-components-disabled-inverted-hover group-aria-[checked=true]/sw:translate-x-4 group-aria-[checked=true]/sw:bg-components-strong"
               data-dealer-price-knob
             ></span>
           </span>

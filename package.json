@@ -10,6 +10,7 @@
     "build:chunked": "vite build",
     "preview": "vite preview",
     "shot": "node scripts/shot.mjs",
+    "crop": "node scripts/crop.mjs",
     "audit": "node scripts/audit.mjs"
   },
   "devDependencies": {
