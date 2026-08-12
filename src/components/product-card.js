@@ -90,7 +90,14 @@ function buildCard(p, { mobile = "s", variant } = {}) {
     badgesWrap.append(span);
   });
 
-  node.querySelector("[data-card-price]").textContent = p.price;
+  const priceEl = node.querySelector("[data-card-price]");
+  priceEl.textContent = p.price;
+  // Фикстура даёт цену строкой («450 010₽»). Дилерский прайс-лист
+  // (components/price-mode.js) считает от числа, а «Оптовая цена» возвращает
+  // исходную строку дословно — поэтому храним обе формы.
+  priceEl.dataset.priceRaw = p.price;
+  priceEl.dataset.priceBase = String(parseInt(String(p.price).replace(/\D/g, ""), 10) || 0);
+
   node.querySelector("[data-card-oldprice]").textContent = p.oldPrice || "";
   node.querySelector("[data-card-title]").textContent = p.title || "";
   // cart-seam contract on every add button (icon + mobile pill)
