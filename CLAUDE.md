@@ -152,7 +152,7 @@ own** — 882:107882 has no 360 counterpart. Where it came from matters:
 on `#eeeeee` with a check. Its mobile twin is the «Наценка» sheet, two states at
 2225:163666 / 2225:164865. Three modes, and their labels only exist in the
 instances (the master says «Оптовая цена» three times): **Оптовая цена /
-Рекомендованая цена / Своя наценка**, the last with a `%` field, a 50% minimum
+Рекомендованная цена / Своя наценка**, the last with a `%` field, a 50% minimum
 and an «Применить» button that the other two don't have.
 
 `partials/price-mode.html` holds the row `<template>` and the mobile sheet; the
@@ -385,6 +385,14 @@ and fail here; node's `zlib` handles both, so `kiwi-schema` is the only dep.
   them with guessed icons (the invented like/share buttons were exactly this).
   When something genuinely is missing or ambiguous, **propose a solution and ask
   — never decide it silently** (that's how the price min/max inputs were handled).
+- **Fix spelling mistakes — do not reproduce them.** The "never invent" rule
+  covers *what* the design says, not its typos. When Figma copy has a clear
+  spelling error, ship the correct spelling, and write the divergence down in
+  `BACKLOG.md` so the designer can fix the source (`npm run audit` will report
+  it as a mismatch, which is the point — it is a known one). Live example: the
+  dealer price list is drawn as «Рекомендованая цена» and rendered as
+  «Рекомендованная». This applies to our own text too — comments, docs, commit
+  messages: correct a typo when you pass one.
 - **Verify colour against the live render, not a stale snapshot or your eye.**
   The green SEO band's text is **white** — the `.fig` snapshot said `#292929`
   (stale) and it's easy to mis-eyeball dark on a mid-green. `canvas.fig` lags the

@@ -1,4 +1,4 @@
-// Дилерский прайс-лист — «Оптовая цена / Рекомендованая цена / Своя наценка».
+// Дилерский прайс-лист — «Оптовая цена / Рекомендованная цена / Своя наценка».
 //
 // Разметка живёт в HTML: строка списка — <template> в partials/price-mode.html,
 // десктопная панель — в дилерской полоске partials/header.html, мобильная
@@ -73,6 +73,10 @@ export function applyPriceMode({ mode, markup, enabled = true }) {
   }
   applied = state;
   document.body.dataset.priceMode = effectiveMode(state);
+  // Триггер гаснет, когда тумблер выключен: выбранный режим не применяется, и
+  // подпись не должна выглядеть действующей. В дизайне этого состояния нет —
+  // см. BACKLOG.
+  document.body.dataset.priceEnabled = String(state.enabled !== false);
   reprice(state);
   document.dispatchEvent(new CustomEvent("dealer:price-mode", { detail: state }));
   return state;

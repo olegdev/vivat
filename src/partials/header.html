@@ -36,11 +36,15 @@
       aria-expanded="false"
       aria-haspopup="dialog"
     >
-      <span data-price-trigger-label>Оптовая цена</span>
+      <span
+        class="transition-colors group-data-[price-enabled=false]:text-text-inverse-muted"
+        data-price-trigger-label
+        >Оптовая цена</span
+      >
       <img
         src="../../assets/header/chevron-down-light.svg"
         alt=""
-        class="size-6 transition-transform group-aria-[expanded=true]/pt:rotate-180"
+        class="size-6 transition-[rotate,opacity] group-aria-[expanded=true]/pt:rotate-180 group-data-[price-enabled=false]:opacity-60"
       />
     </button>
     <button
@@ -152,13 +156,15 @@
             aria-expanded="false"
             aria-haspopup="listbox"
           >
-            <span class="underline decoration-dotted underline-offset-4" data-price-trigger-label
+            <span
+              class="underline decoration-dotted underline-offset-4 transition-colors group-data-[price-enabled=false]:text-text-inverse-muted"
+              data-price-trigger-label
               >Оптовая цена</span
             >
             <img
               src="../../assets/header/chevron-down-light.svg"
               alt=""
-              class="size-6 transition-transform group-aria-[expanded=true]/pt:rotate-180"
+              class="size-6 transition-[rotate,opacity] group-aria-[expanded=true]/pt:rotate-180 group-data-[price-enabled=false]:opacity-60"
             />
           </button>
           <div
