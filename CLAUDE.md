@@ -159,10 +159,13 @@ and an «Применить» button that the other two don't have.
 desktop panel sits in the dealer strip in `partials/header.html` because it is
 positioned off the trigger. `components/price-mode.js` (which absorbed the old
 `dealer-header.js`) drives both and owns the single request seam,
-`applyPriceMode({mode, markup})` — localStorage plus a recompute of every
-`[data-card-price]` from the `data-price-base` the card carries. The
-«Показать цену» switch still hides nothing: it has no prototype, and the client
-confirmed it stays that way for now.
+`applyPriceMode({mode, markup, enabled})` — localStorage plus a recompute of
+every `[data-card-price]` from the `data-price-base` the card carries.
+
+The «Показать цену» switch **hides nothing** — it is the apply switch for that
+selector: off means the wholesale price whatever the list says, on means the
+selected mode. The design carries no prototype on it; this is the client's
+answer.
 
 Everything else in `src/pages/` is a stub.
 

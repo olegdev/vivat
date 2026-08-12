@@ -20,12 +20,18 @@ export function readPriceMode() {
   try {
     const raw = JSON.parse(localStorage.getItem(STORE_KEY) || "null");
     if (raw && priceModes.some((m) => m.id === raw.mode)) {
-      return { mode: raw.mode, markup: Number(raw.markup) || markupMin() };
+      return {
+        mode: raw.mode,
+        markup: Number(raw.markup) || markupMin(),
+        enabled: raw.enabled !== false,
+      };
     }
   } catch {
     /* приватный режим или битое значение — молча падаем на умолчание */
   }
-  return { mode: "wholesale", markup: markupMin() };
+  // Тумблер в макете включён (604:24614, turn=on), это и есть состояние по
+  // умолчанию.
+  return { mode: "wholesale", markup: markupMin(), enabled: true };
 }
 
 export function formatPrice(n) {
@@ -35,13 +41,19 @@ export function formatPrice(n) {
   return `${Math.round(n).toLocaleString("ru-RU").replace(/ /g, " ")}₽`;
 }
 
-function priceFor(el, { mode, markup }) {
+// Тумблер «Показать цену» — выключатель применения: выключен, значит цена
+// оптовая, независимо от выбранного в списке режима. Ничего не скрывает.
+function effectiveMode({ mode, enabled }) {
+  return enabled === false ? "wholesale" : mode;
+}
+
+function priceFor(el, state) {
   const base = Number(el.dataset.priceBase || 0);
   // «Оптовая цена» возвращает строку фикстуры дословно: на покупательских
   // страницах, где режима нет вовсе, ничего не должно меняться.
-  if (!base || mode === "wholesale") return el.dataset.priceRaw ?? el.textContent;
-  if (mode === "rrp") return formatPrice(base * RRP_FACTOR);
-  return formatPrice(base * (1 + markup / 100));
+  if (!base || effectiveMode(state) === "wholesale") return el.dataset.priceRaw ?? el.textContent;
+  if (effectiveMode(state) === "rrp") return formatPrice(base * RRP_FACTOR);
+  return formatPrice(base * (1 + state.markup / 100));
 }
 
 let applied = null;
@@ -52,15 +64,15 @@ function reprice(state, root = document) {
   });
 }
 
-export function applyPriceMode({ mode, markup }) {
-  const state = { mode, markup: Number(markup) || markupMin() };
+export function applyPriceMode({ mode, markup, enabled = true }) {
+  const state = { mode, markup: Number(markup) || markupMin(), enabled };
   try {
     localStorage.setItem(STORE_KEY, JSON.stringify(state));
   } catch {
     /* см. readPriceMode */
   }
   applied = state;
-  document.body.dataset.priceMode = state.mode;
+  document.body.dataset.priceMode = effectiveMode(state);
   reprice(state);
   document.dispatchEvent(new CustomEvent("dealer:price-mode", { detail: state }));
   return state;
@@ -211,12 +223,20 @@ function initPriceToggle(root) {
   // Тумблеров два — в десктопной полоске и в мобильном ряду; видно всегда один,
   // но состояние держим общим, иначе поворот экрана показывает другое.
   const all = [...root.querySelectorAll("[data-dealer-price-toggle]")];
+  if (!all.length) return;
+
+  const paint = (on) => all.forEach((el) => el.setAttribute("aria-checked", String(on)));
+  paint((applied ?? readPriceMode()).enabled !== false);
+
   all.forEach((btn) =>
     btn.addEventListener("click", () => {
       const on = btn.getAttribute("aria-checked") !== "true";
-      all.forEach((el) => el.setAttribute("aria-checked", String(on)));
+      paint(on);
+      // Тумблер применяет то, что выбрано в списке: выключен — цены оптовые,
+      // включён — выбранный режим.
+      applyPriceMode({ ...(applied ?? readPriceMode()), enabled: on });
       root.dispatchEvent(
-        new CustomEvent("dealer:price-visibility", { detail: { visible: on }, bubbles: true })
+        new CustomEvent("dealer:price-enabled", { detail: { enabled: on }, bubbles: true })
       );
     })
   );
