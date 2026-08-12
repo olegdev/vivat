@@ -16,8 +16,10 @@
 import { categories } from "./catalog-menu.js";
 
 // ---- data -------------------------------------------------------------------
-// Root level of the burger menu (Figma 1997:255059 "menu-main-block").
-const rootSections = [
+// Root level of the burger menu (Figma 1997:255059 "menu-main-block"). The
+// dealer site passes its own set — same rows, dealer links at the bottom; see
+// src/data/dealer-home.js.
+const defaultRootSections = [
   { label: "Каталог", view: "catalog" },
   { label: "Где купить", href: "#" },
   { label: "Компания", href: "#" },
@@ -68,7 +70,7 @@ function buildRow(item, index) {
 // The panel shell (header, search, list slot, social row) + row templates are
 // static markup in src/partials/mobile-menu.html. This only fills the drill-down
 // list (data-mm-list) from the view stack and runs the open/close + focus-trap.
-export function initMobileMenu(anchor, { toggle, catalogToggle } = {}) {
+export function initMobileMenu(anchor, { toggle, catalogToggle, rootSections = defaultRootSections } = {}) {
   if (!anchor) return;
 
   const overlay = anchor.querySelector("[data-mm-overlay]");

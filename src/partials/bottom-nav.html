@@ -22,11 +22,24 @@
     </span>
     <span class="text-body-xs text-text-muted">Контакты</span>
   </a>
-  <a href="action.html" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
+  <a
+    href="action.html"
+    class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1 group-data-[user=dealer]:hidden"
+  >
     <span class="flex size-8 items-center justify-center">
       <img src="../../assets/header/nav-action.svg" alt="" class="size-6" />
     </span>
     <span class="text-body-xs text-text-muted">Акции</span>
+  </a>
+  <!-- у дилера третий пункт другой — nav-item 1739:233051 в 2225:160593 -->
+  <a
+    href="#"
+    class="hidden min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1 group-data-[user=dealer]:flex"
+  >
+    <span class="flex size-8 items-center justify-center">
+      <img src="../../assets/header/nav-business.svg" alt="" class="size-6" />
+    </span>
+    <span class="text-body-xs text-text-muted">Бизнесу</span>
   </a>
   <a href="#" class="flex min-w-0 flex-1 flex-col items-center px-0.5 pb-2 pt-1">
     <!-- here the badge really *is* an overlay: `nav-item` (1739:218769) keeps a

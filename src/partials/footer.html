@@ -16,6 +16,16 @@
       <a href="#" aria-label="YouTube" class="social-icon size-10"><span class="size-8 social-yt"></span></a>
       <a href="#" aria-label="Rutube" class="social-icon size-10"><span class="size-8 social-rt"></span></a>
     </div>
+    <!-- только у дилера — `buttons` 752:51003; 360-фрейма дилерского подвала
+         нет, ветка повторяет десктопную -->
+    <a
+      href="#"
+      class="btn btn-m btn-primary hidden w-full gap-2 group-data-[user=dealer]:flex"
+      data-dealer-cabinet
+    >
+      <span>Личный кабинет</span>
+      <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-6" />
+    </a>
   </div>
 
   <div class="mt-4 flex flex-col gap-4 text-text-primary">
@@ -38,6 +48,10 @@
         <a href="#" class="whitespace-nowrap">О нас</a>
         <a href="#" class="whitespace-nowrap">Наш адрес и телефоны</a>
         <a href="#" class="whitespace-nowrap">Новости</a>
+        <!-- только у дилера — 380:49495 -->
+        <a href="#" class="hidden whitespace-nowrap group-data-[user=dealer]:inline"
+          >Письмо директору</a
+        >
       </div>
     </div>
     <div class="flex flex-col justify-center gap-2 py-2">

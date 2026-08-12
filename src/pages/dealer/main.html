@@ -13,13 +13,21 @@
     <script type="module" src="./main.js"></script>
   </head>
   <body class="group bg-bg-page text-text-primary" data-user="dealer">
-    <!-- Figma dealer/Main 882:107882. Desktop only — see BACKLOG.md. -->
-    <div class="mx-auto w-full md:w-[1440px]">
+    <!-- Figma dealer/Main 882:107882. Две ширины, один DOM. Своего 360-фрейма
+         у дилерской главной нет: мобильная обвязка выведена из дилерского
+         каталога 2225:160540, а новости, бургер-меню и подвал собраны без
+         фрейма — см. BACKLOG.md. -->
+    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
       <!-- ==================== SITE HEADER ================================ -->
       <!--#include partials/header.html -->
 
       <!-- ==================== CATALOG MEGA-MENU ========================= -->
       <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================== -->
+      <!-- Оболочка — partials/mobile-menu.html, поведение в mobile-menu.js.
+           Набор ссылок дилерский, он приходит из data/dealer-home.js. -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
 
       <!-- ==================== SEARCH OVERLAY ============================ -->
       <!--#include partials/search-overlay.html -->
@@ -61,26 +69,43 @@
       <div data-section="akcii"></div>
 
       <!-- ==================== Новости =================================== -->
-      <section class="flex flex-col px-10" data-section="news">
-        <div class="h-20"></div>
-        <div class="flex items-start justify-between">
-          <h2 class="text-h2 text-text-primary">Новости</h2>
-          <!-- desktop-only page; wrap below md purely so it cannot scroll sideways -->
-          <div class="flex items-center gap-2 max-md:flex-wrap max-md:justify-end">
-            <a href="#" class="btn btn-m btn-primary" data-news-subscribe>
-              <span>Подписаться на рассылку</span>
-            </a>
-            <a href="#" class="btn btn-m btn-secondary">
-              <span>Все новости</span>
-              <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
-            </a>
+      <!-- На 1440 сетка 3x1 (882:109467). 360-фрейма у блока нет: ниже md он
+           становится рельсом из 320-х карточек — тем же, что у мобильных
+           «Акций», — а два действия уходят строкой под заголовок. -->
+      <section class="flex flex-col" data-section="news">
+        <div class="px-10 max-md:px-4">
+          <div class="h-20 max-md:h-10"></div>
+          <div class="flex items-start justify-between max-md:flex-col max-md:gap-3">
+            <h2 class="text-h2 text-text-primary max-md:text-m-h2">Новости</h2>
+            <!-- на 360 обе кнопки в ряд не помещаются: «Подписаться на
+                 рассылку» рвётся на две строки и вылезает из пилюли -->
+            <div class="flex items-center gap-2 max-md:w-full max-md:flex-col">
+              <a href="#" class="btn btn-m btn-primary max-md:w-full" data-news-subscribe>
+                <span>Подписаться на рассылку</span>
+              </a>
+              <a href="#" class="btn btn-m btn-secondary max-md:w-full">
+                <span>Все новости</span>
+                <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+              </a>
+            </div>
           </div>
+          <div class="h-6 max-md:h-3"></div>
         </div>
-        <div class="h-6"></div>
-        <div class="grid grid-cols-3 gap-6" data-news-track></div>
+        <div
+          class="px-10 max-md:scroll-rail max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:px-4"
+          data-viewport
+        >
+          <div
+            class="grid grid-cols-3 gap-6 max-md:flex max-md:gap-3 max-md:*:w-[320px] max-md:*:shrink-0 max-md:*:snap-start"
+            data-news-track
+          ></div>
+        </div>
+        <div class="hidden max-md:block">
+          <div class="scroll-progress" data-progress><span><i></i></span></div>
+        </div>
       </section>
 
-      <div class="h-24"></div>
+      <div class="h-24 max-md:h-10"></div>
 
       <!-- ==================== Наши салоны + карта ======================= -->
       <div data-section="salony"><!--#include partials/stores.html --></div>
@@ -90,6 +115,9 @@
 
       <!-- ==================== FOOTER ==================================== -->
       <!--#include partials/footer.html -->
+
+      <!-- ==================== BOTTOM NAV (max-md) ======================= -->
+      <!--#include partials/bottom-nav.html -->
     </div>
   </body>
 </html>

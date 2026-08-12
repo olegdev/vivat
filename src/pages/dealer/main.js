@@ -9,15 +9,17 @@ import { initHeroSlider } from "../../components/hero-slider.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
+import { initMobileMenu } from "../../components/mobile-menu.js";
 import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { heroSlides, modularItems, popularItems, akciiItems, promoTiles } from "../../data/home.js";
-import { newsItems } from "../../data/dealer-home.js";
+import { newsItems, dealerMenuSections } from "../../data/dealer-home.js";
 
 // The dealer home page is the customer home page's sections plus the dealer
 // chrome — the rails, hero, tiles and promo row are the same fixtures, so this
-// script is wiring only. Desktop only for now: no 360 frame exists, so there is
-// no mobile menu or bottom nav to mount (see docs/FIGMA-MAP.md).
+// script is wiring only. Below `md` the chrome is the dealer one: header strip
+// with the price list, bottom nav with «Бизнесу», burger menu with the dealer
+// links (see docs/FIGMA-MAP.md).
 
 // ---- dealer strip: price list + «Показать цену» ------------------------------
 initDealerPriceControls();
@@ -33,6 +35,13 @@ if (heroEl) initHeroSlider(heroEl, heroSlides);
 setCatalogIconBase(ICON);
 initCatalogMenu(document.querySelector("[data-catalog]"), {
   toggle: document.querySelector("[data-catalog-toggle]"),
+});
+
+// ---- mobile burger menu (max-md only) ---------------------------------------
+initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
+  toggle: document.querySelector("[data-mobile-menu]"),
+  catalogToggle: document.querySelector("[data-mobile-catalog]"),
+  rootSections: dealerMenuSections,
 });
 
 // ---- header search (query contract + suggest seam) --------------------------
@@ -74,7 +83,13 @@ if (promoAnchor) {
 }
 
 // ---- Новости ----------------------------------------------------------------
-renderNewsCards(document.querySelector("[data-news-track]"), newsItems);
+// Ниже md блок — рельс, поэтому ему нужны те же индикатор и драг, что каруселям.
+const newsAnchor = document.querySelector('[data-section="news"]');
+if (newsAnchor) {
+  renderNewsCards(newsAnchor.querySelector("[data-news-track]"), newsItems);
+  initScrollProgress(newsAnchor);
+  enableDragScroll(newsAnchor.querySelector("[data-viewport]"));
+}
 
 // ---- Наши салоны (Yandex Maps) ----------------------------------------------
 const storesAnchor = document.querySelector('[data-section="salony"]');
