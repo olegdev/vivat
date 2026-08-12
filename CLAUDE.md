@@ -197,9 +197,41 @@ selector: off means the wholesale price whatever the list says, on means the
 selected mode. The design carries no prototype on it; this is the client's
 answer.
 
+`src/pages/dealer/pdp.html` — the dealer product page. Desktop is Figma PDP
+953:122180 plus its two tab panels (1686:59341 «Модули», 1686:59383
+«Документы»); **none of the three has a 360 frame**. The frame is the customer
+PDP node for node — same anchor bar, same 900×2041 photo column, the whole
+Характеристики block and both panels identical to 922:126723 / 942:34310, the
+same four rails with the same copy, the same stores block and green band.
+Exactly five things differ, and four of them are chrome:
+
+- the header is `type=b2b` and the footer `user=Dealer` — both by `data-user`;
+- the summary is the **`Customer=b2b` variant** (953:142727). It is 392 tall
+  against the customer's 441, and the whole difference is four hidden elements:
+  the «от», the struck-through old price, the discount badge and the notice line
+  under the button. They are four `group-data-[user=dealer]:hidden` rules in
+  `partials/pdp-summary.html` — no second partial;
+- the Отзывы → Вся коллекция region sits on **`#f8f8f8`** (1686:63218) where the
+  customer's is white, and the frame puts an extra 80px spacer before it;
+- prices lose the «от» — including in the rails, which the frame itself draws
+  *with* «от» (a copied customer instance; the client chose the dealer rule, see
+  `BACKLOG.md`);
+- the product's own price follows the price list, like every card price. That is
+  why `price-mode.js` reprices `[data-price-base]` rather than
+  `[data-card-price]` — the summary and both bottom bars carry the same
+  `data-price-raw`/`data-price-base` pair, set by `setPrice()` in `pdp.js`.
+
+Below `md` the body is the customer's mobile PDP (1997:305719 and its panels)
+under dealer chrome from 2225:160540. Three things are ours by decision and are
+written down in `BACKLOG.md`: the mobile summary in dealer dress (there is no
+`device=mobile, Customer=b2b` variant), the order button's label without «от»,
+and the grey band at 360. The two bottom bars have no dealer frame at all and
+are reused as they are — without them the 360 page would have no CTA, since the
+mobile summary carries none by design.
+
 There are no stubs left in `src/pages/` — every file there is a finished page.
-What remains unbuilt is the rest of the dealer half: its PDP, its order flow and
-the whole `B2b additional` section. See `BACKLOG.md` › "Not started".
+What remains unbuilt is the rest of the dealer half: its order flow and the
+whole `B2b additional` section. See `BACKLOG.md` › "Not started".
 
 **Search is not a page — it is an overlay every page carries.** Figma's `search`
 section (2324:120596) holds four frames: 2337:156356 / 2338:235809 (nothing

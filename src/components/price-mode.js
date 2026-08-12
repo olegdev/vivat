@@ -58,8 +58,11 @@ function priceFor(el, state) {
 
 let applied = null;
 
+// Пересчитываем всё, у чего есть базовая цена, а не только карточки: на
+// дилерском PDP по прайс-листу ходит ещё и цена товара в сводке и в нижней
+// панели (components/pdp.js кладёт им ту же пару data-price-raw/base).
 function reprice(state, root = document) {
-  root.querySelectorAll("[data-card-price]").forEach((el) => {
+  root.querySelectorAll("[data-price-base]").forEach((el) => {
     el.textContent = priceFor(el, state);
   });
 }

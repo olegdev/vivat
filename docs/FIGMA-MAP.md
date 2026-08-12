@@ -63,9 +63,9 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 | 7889 | Каталог: все фильтры | [953:121956](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121956) | — |
 | 9462 | Каталог: один фильтр | [953:122063](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122063) | — |
 | 10997 | Каталог: выбранные параметры | [953:122135](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122135) | — |
-| 12484 | **PDP** | [953:122180](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122180) | — |
-| 13989 | PDP: панель «Модули» | [1686:59341](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1686-59341) | — |
-| 15521 | PDP: панель «Документы» | [1686:59383](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1686-59383) | — |
+| 12484 | **PDP** ✅ | [953:122180](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122180) | — |
+| 13989 | PDP: панель «Модули» ✅ | [1686:59341](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1686-59341) | — |
+| 15521 | PDP: панель «Документы» ✅ | [1686:59383](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1686-59383) | — |
 | 17239 | **Заказ** | [1209:95219](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1209-95219) | [2225:202954](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-202954) |
 | 18771 | **Заказ: b2b-доставка** | [1415:67609](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1415-67609) | [2225:167283](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-167283) |
 | 20695 | Заказ: меню (моб.) | — | [2225:201034](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-201034) |
@@ -164,7 +164,12 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
    Без фрейма выведены новости, бургер-меню и дилерские ветки подвала (см.
    `BACKLOG.md`) — их надо показать дизайнеру.
 2. **Мобильного PDP для дилера нет** (953:122180 и панели 1686:59341 /
-   1686:59383) — при том, что у покупателя мобильный PDP нарисован.
+   1686:59383) — при том, что у покупателя мобильный PDP нарисован. Страница
+   на 360 всё же собрана: тело с покупательского мобильного PDP, обвязка из
+   2225:160540. Выведены мобильная сводка в дилерском виде, подпись кнопки
+   заказа и серая полоса под отзывами — см. `BACKLOG.md`. Отдельно: рельс «Вся
+   коллекция Фьюжн» на дилерском 1440 нарисован с «от», хотя дилерский каталог
+   и сводка этого же фрейма его не имеют.
 3. **Нет 360 у трёх состояний фильтров каталога** (953:121956, 953:122063,
    953:122135) и у страницы «Техническая информация» (1463:60856).
 4. ~~**Тумблер «Показывать цену»**~~ — закрыт заказчиком 12.08.2026: тумблер

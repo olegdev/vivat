@@ -6,7 +6,12 @@
      button on the right. `shadow-navbar` is the upward shadow the frame draws
      above the bar (the same token the mobile bottom nav uses).
 
-     Visibility is one class (`is-visible`) toggled by components/pdp.js. -->
+     Visibility is one class (`is-visible`) toggled by components/pdp.js.
+
+     Neither bar has a dealer frame; the dealer PDP mounts these two, with the
+     price reduced to the one line the b2b summary draws — no «от», no old price.
+     Their price carries `data-price-base`, so it follows the price list like
+     every card price. See BACKLOG. -->
 <div class="pdp-sticky fixed inset-x-0 bottom-0 z-40 hidden h-12 bg-surface-inverted shadow-navbar md:block" data-sticky-price>
   <div class="mx-auto flex h-full w-[1440px] items-center justify-between px-10">
     <div class="flex items-center gap-4">
@@ -24,9 +29,9 @@
       <div class="flex items-center gap-4">
         <span class="text-body-n-accent text-text-primary" data-sticky-title></span>
         <div class="flex items-baseline gap-1">
-          <span class="text-body-s text-text-primary">от</span>
+          <span class="text-body-s text-text-primary group-data-[user=dealer]:hidden">от</span>
           <span class="text-h4 text-text-primary" data-sticky-price-value></span>
-          <span class="text-body-s text-text-secondary line-through empty:hidden" data-sticky-oldprice></span>
+          <span class="text-body-s text-text-secondary line-through empty:hidden group-data-[user=dealer]:hidden" data-sticky-oldprice></span>
         </div>
       </div>
       <button type="button" class="btn btn-s btn-primary" data-pdp-order>Сформировать заказ</button>
@@ -49,6 +54,10 @@
   </a>
   <!-- The button's icon slot renders empty in the live frame — text only. -->
   <button type="button" class="btn btn-m btn-accent text-m-button-m" data-pdp-order>
-    <span>Оформить&nbsp;• от <span data-sticky-price-value></span></span>
+    <span
+      >Оформить&nbsp;•
+      <span class="group-data-[user=dealer]:hidden">от </span
+      ><span data-sticky-price-value></span
+    ></span>
   </button>
 </div>

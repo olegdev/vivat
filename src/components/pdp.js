@@ -9,6 +9,17 @@
 
 const clone = (sel) => document.querySelector(sel).content.firstElementChild.cloneNode(true);
 
+// Цена товара на дилерской странице подчиняется выбранному прайс-листу так же,
+// как цены карточек: components/price-mode.js пересчитывает всё, у чего есть
+// база. Пара «строка фикстуры + число» — тот же контракт, что в
+// components/product-card.js. На покупательских страницах это мёртвый атрибут.
+function setPrice(el, price) {
+  if (!el) return;
+  el.textContent = price;
+  el.dataset.priceRaw = price;
+  el.dataset.priceBase = String(parseInt(String(price).replace(/\D/g, ""), 10) || 0);
+}
+
 // ---- summary panel ----------------------------------------------------------
 // `product` is the same shape a Blade controller would hand the view.
 export function initSummary(product) {
@@ -17,7 +28,7 @@ export function initSummary(product) {
 
   root.querySelector("[data-pdp-title]").textContent = product.title;
   root.querySelector("[data-pdp-size]").textContent = product.size;
-  root.querySelector("[data-pdp-price]").textContent = product.price;
+  setPrice(root.querySelector("[data-pdp-price]"), product.price);
   root.querySelector("[data-pdp-oldprice]").textContent = product.oldPrice || "";
   root.querySelector("[data-pdp-discount]").textContent = product.discount || "";
 
@@ -201,7 +212,7 @@ export function initSectionNav() {
 export function initStickyPrice(product) {
   document
     .querySelectorAll("[data-sticky-price-value]")
-    .forEach((el) => (el.textContent = product.price));
+    .forEach((el) => setPrice(el, product.price));
 
   const bar = document.querySelector("[data-sticky-price]");
   // The anchor is `max-md:hidden`, so below `md` it has no box and the observer

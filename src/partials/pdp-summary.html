@@ -10,6 +10,12 @@
      authored in desktop order and `max-md:order-*` re-sequences it, so there is
      one set of markup rather than two (and the Blade port stays one partial).
 
+     The dealer page mounts the same partial as the `Customer=b2b` variant
+     (953:142727): the price is one line — «от», the struck-through old price
+     (953:142751) and the discount badge (953:142753) are all hidden in that
+     master — and the notice below the button is gone. Those four `hidden`s under
+     `group-data-[user=dealer]` are the whole 441 → 392 difference.
+
      Structure only; pdp.js fills the swatches from data and drives the two
      controls. The `service-icons` slot next to the desktop title is
      white-on-white in the design — an invisible element, so it is not rendered
@@ -52,17 +58,19 @@
   <div class="flex flex-col gap-3 border-t border-divider-light px-6 py-6 max-md:order-5 max-md:mx-4 max-md:gap-3 max-md:rounded-n max-md:border-0 max-md:bg-bg-subtle max-md:p-4">
     <div class="flex items-center gap-4 max-md:gap-2">
       <div class="flex items-baseline gap-2">
-        <span class="text-body-n-accent text-text-primary max-md:text-m-body-n-accent">от</span>
+        <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-md:text-m-body-n-accent">от</span>
         <span class="text-h3 text-text-primary max-md:text-m-h2" data-pdp-price></span>
-        <span class="text-body-n text-text-secondary line-through empty:hidden max-md:text-m-body-s-crossed" data-pdp-oldprice></span>
+        <span class="text-body-n text-text-secondary line-through empty:hidden group-data-[user=dealer]:hidden max-md:text-m-body-s-crossed" data-pdp-oldprice></span>
       </div>
-      <span class="badge badge-s badge-discount empty:hidden" data-pdp-discount></span>
+      <span class="badge badge-s badge-discount empty:hidden group-data-[user=dealer]:hidden" data-pdp-discount></span>
     </div>
 
     <button type="button" class="btn btn-m btn-primary w-fit max-md:hidden" data-pdp-order>Сформировать заказ</button>
 
-    <!-- `notice` 943:108544 — 16px warning glyph + 14/18 muted copy -->
-    <p class="flex gap-2 pt-0.5 text-body-s text-text-secondary max-md:pt-0">
+    <!-- `notice` 943:108544 — 16px warning glyph + 14/18 muted copy. Дилерский
+         вариант сводки (953:142727) её не несёт, как и «от» выше: там цена одна
+         строкой, поэтому панель на 49px ниже покупательской. -->
+    <p class="flex gap-2 pt-0.5 text-body-s text-text-secondary group-data-[user=dealer]:hidden max-md:pt-0">
       <img src="../../assets/pdp/icon-warning.svg" alt="" class="mt-0.5 size-4 shrink-0" />
       <span>Дилерская наценка может отличаться в зависимости от региона!</span>
     </p>

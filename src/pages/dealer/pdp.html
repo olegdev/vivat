@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Кухня Фьюжн-05 (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./pdp.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary" data-user="dealer">
+    <!-- Дилерская страница товара. 1440 — Figma PDP 953:122180, две его панели
+         вкладок — PDP-package 1686:59341 и PDP-docs 1686:59383.
+
+         Фрейм совпадает с покупательским (914:101099) нода в ноду: та же
+         якорная панель над фото, та же колонка 900×2041, тот же блок
+         «Характеристики» вместе с обеими панелями, те же четыре рельса с той же
+         копией, тот же блок «Где купить» и та же зелёная SEO-полоса.
+
+         Отличий ровно пять, и четыре из них — обвязка:
+           · шапка `type=b2b` и подвал `user=Dealer` (оба по data-user);
+           · сводка — вариант `Customer=b2b` (953:142727): цена без «от» и без
+             строки notice, отчего панель 392 вместо 441;
+           · блок «Отзывы» → «Вся коллекция» лежит на `#f8f8f8` (1686:63218),
+             у покупателя он белый;
+           · перед этой серой полосой фрейм ставит спейсер 80, которого у
+             покупателя нет.
+
+         Мобильных фреймов у дилерского PDP нет. Тело ниже `md` — покупательский
+         мобильный PDP (1997:305719 и панели), обвязка — дилерская из
+         2225:160540. Что выведено без макета, перечислено в BACKLOG.
+
+         Ниже `md` страница резервирует 132px: 72px нижней навигации плюс 60px
+         панели заказа над ней. -->
+    <div class="mx-auto w-full max-md:pb-[132px] md:w-[1440px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- <template>s cloned by the sections below (inert markup) -->
+      <!--#include partials/product-card.html -->
+      <!--#include partials/review-card.html -->
+      <!--#include partials/carousel-section.html -->
+
+      <!-- ==================== BREADCRUMBS ============================== -->
+      <nav class="flex items-center gap-2 px-10 py-4 text-body-s text-text-secondary max-md:px-4 max-md:py-2 max-md:text-m-body-s">
+        <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
+        <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
+        <a href="catalog.html" class="transition-colors hover:text-text-primary">Кухни VIVAT</a>
+        <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
+        <span class="text-text-primary">Кухня Фьюжн-05</span>
+      </nav>
+
+      <!-- ==================== SECTION ANCHOR BAR ======================
+           Figma Tab 953:122183 — тот же инстанс, что у покупателя: пять
+           подписей, шестая вкладка скрыта (visible=False в обоих фреймах). -->
+      <div class="flex h-[50px] w-[940px] items-center gap-6 px-10 max-md:hidden" data-section-nav>
+        <a href="#photos" class="pdp-tab" aria-selected="true">Фото</a>
+        <a href="#specs" class="pdp-tab">Характеристики</a>
+        <a href="#modules" class="pdp-tab">Модули</a>
+        <a href="#reviews" class="pdp-tab">Отзывы</a>
+        <a href="#where" class="pdp-tab">Где купить</a>
+      </div>
+
+      <!-- ==================== MEDIA (photos + summary) =================
+           Figma media 953:122184 — 1360 контента: колонка фото 900 (три кадра
+           по 671 с шагом 14) и панель сводки 412. Ниже `md` та же колонка
+           становится рельсом слайдов 344×256 со снапом и точками. -->
+      <section class="flex justify-between px-10 max-md:flex-col max-md:px-0" id="photos">
+        <div
+          class="flex w-[900px] flex-col gap-3.5 max-md:w-full max-md:snap-x max-md:snap-mandatory max-md:scroll-pl-2 max-md:flex-row max-md:gap-2 max-md:overflow-x-auto max-md:px-2 max-md:scroll-rail"
+          data-photo-rail
+        >
+          <div class="h-[671px] overflow-hidden rounded-n max-md:relative max-md:h-64 max-md:w-full max-md:shrink-0 max-md:snap-start max-md:bg-bg-subtle">
+            <img src="../../assets/pdp/photo-1-src.png" alt="Кухня Фьюжн-05" class="size-full object-cover" />
+            <!--#include partials/pdp-photo-overlay.html -->
+          </div>
+          <div class="h-[671px] overflow-hidden rounded-n max-md:relative max-md:h-64 max-md:w-full max-md:shrink-0 max-md:snap-start max-md:bg-bg-subtle">
+            <img src="../../assets/pdp/photo-3-src.png" alt="Кухня Фьюжн-05, открытые фасады" class="size-full object-cover" />
+            <!--#include partials/pdp-photo-overlay.html -->
+          </div>
+          <div class="h-[671px] overflow-hidden rounded-n max-md:relative max-md:h-64 max-md:w-full max-md:shrink-0 max-md:snap-start max-md:bg-bg-subtle">
+            <img src="../../assets/pdp/photo-2-src.png" alt="Кухня Фьюжн-05, ящик с органайзером" class="size-full object-cover" />
+            <!--#include partials/pdp-photo-overlay.html -->
+          </div>
+        </div>
+
+        <!-- one dot per photo, mobile only; pdp.js mirrors the rail's scroll -->
+        <div class="hidden items-center justify-center gap-2 pt-0 max-md:flex" data-photo-dots></div>
+
+        <!--#include partials/pdp-summary.html -->
+      </section>
+
+      <!-- ==================== ХАРАКТЕРИСТИКИ ========================== -->
+      <!--#include partials/pdp-specs.html -->
+
+      <!-- ==================== CAROUSEL: Модули ======================== -->
+      <div data-section="modules"></div>
+
+      <!-- ==================== CAROUSEL: Добавьте в корзину ============ -->
+      <div data-section="add-to-cart"></div>
+
+      <!-- Спейсер 1686:68707 — 80px белого перед серой полосой. У покупателя
+           рельс «Добавьте в корзину» им не заканчивается (617 против 697). -->
+      <div class="h-20 max-md:h-10"></div>
+
+      <!-- ==================== СЕРАЯ ПОЛОСА (1686:63218) ===============
+           Отзывы, «Вся коллекция Фьюжн» и отступ под ними лежат на `#f8f8f8`.
+           Блок «Где купить» ниже несёт собственную заливку `#f8bb92`, поэтому
+           серое видно ровно под этими двумя рельсами. На 360 фрейма нет —
+           применяем на обеих ширинах, вопрос в BACKLOG. -->
+      <div class="bg-bg-subtle">
+        <!-- ==================== CAROUSEL: Отзывы ====================== -->
+        <div data-section="reviews"></div>
+
+        <!-- ==================== CAROUSEL: Вся коллекция Фьюжн ========= -->
+        <div data-section="collection"></div>
+
+        <div class="h-20 max-md:h-10"></div>
+      </div>
+
+      <!-- ==================== ГДЕ КУПИТЬ (map + dealers) ==============
+           Figma map-general 1686:63231 — блок салонов с главной на своей
+           полосе `surface-accent`, под заголовком этой страницы. -->
+      <div data-section="salony"><!--#include partials/stores.html --></div>
+
+      <!-- ==================== SEO / INFO BLOCK ======================== -->
+      <!--#include partials/seo-kitchens.html -->
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- ==================== STICKY PRICE BAR (overlay) ================
+         Дилерского фрейма у панелей нет — переиспользуем покупательские,
+         «от» уходит по дилерскому правилу. См. BACKLOG. -->
+    <!--#include partials/sticky-price.html -->
+  </body>
+</html>
