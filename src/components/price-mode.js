@@ -130,6 +130,12 @@ export function initPriceMode(root = document) {
   const triggers = [...root.querySelectorAll("[data-price-trigger]")];
   let state = readPriceMode();
 
+  // У `enabled` один владелец — тумблер, и его состояние живёт в `applied`.
+  // Локальный `state` держит только режим и наценку: если он начнёт носить и
+  // `enabled`, то выбор строки применится со снимком, сделанным при загрузке,
+  // и отменит тумблер, нажатый после неё.
+  const commit = () => applyPriceMode({ ...state, enabled: (applied ?? state).enabled !== false });
+
   const close = () => {
     panel?.classList.add("hidden");
     sheet?.classList.add("hidden");
@@ -161,7 +167,7 @@ export function initPriceMode(root = document) {
       state = { ...state, mode: row.dataset.priceItemId };
       // «Применить» есть только у «Своей наценки» — остальные режимы
       // применяются сразу по тапу, кнопки в макете у них нет.
-      if (state.mode !== "markup") applyPriceMode(state);
+      if (state.mode !== "markup") commit();
       render();
       if (state.mode !== "markup") close();
     });
@@ -179,7 +185,7 @@ export function initPriceMode(root = document) {
         render();
         return;
       }
-      applyPriceMode(state);
+      commit();
       render();
       close();
     })
@@ -217,7 +223,7 @@ export function initPriceMode(root = document) {
   });
 
   render();
-  applyPriceMode(state);
+  commit();
 }
 
 // ---- тумблер «Показать цену» ------------------------------------------------
