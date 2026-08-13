@@ -1,0 +1,62 @@
+<!-- ==================== СТАТЬ ДИЛЕРОМ ================================
+     Figma form 1003:166072 (1440, 485×701) / 2209:214642 (360, нижняя
+     шторка). Пять полей с подписями и без плейсхолдеров, строка согласия и
+     одна коралловая кнопка во всю ширину: серая «Отмена» в мастере
+     `modal-button-container` есть, но этот инстанс её не рисует — `inst` не
+     отдаёт её в раскладке.
+
+     В шапке только крестик, заголовка там нет: `modal-header/desktop`
+     (1003:166613) — это один глиф 24px у правого края. Заголовок — первый
+     блок тела. -->
+<div class="modal-scrim" data-modal="dealer-request">
+  <div class="modal-panel" data-modal-panel>
+    <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
+      <button type="button" class="flex size-6 items-center justify-center" data-modal-close aria-label="Закрыть">
+        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <form class="px-10 pb-6 max-md:px-4" data-modal-form>
+      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h3">
+        Заполните заявку, и мы свяжемся с Вами для обсуждения деталей сотрудничества
+      </h2>
+
+      <div class="flex flex-col gap-4 pt-6">
+        <label class="flex flex-col gap-1">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Город</span>
+          <input type="text" name="city" required class="order-input" />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Компания</span>
+          <input type="text" name="company" required class="order-input" />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Имя</span>
+          <input type="text" name="name" required class="order-input" />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Email</span>
+          <input type="email" name="email" required class="order-input" />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Телефон</span>
+          <input type="tel" name="phone" required class="order-input" />
+        </label>
+      </div>
+
+      <label class="flex items-start gap-3 pt-4">
+        <input type="checkbox" name="consent" required class="filter-check" checked />
+        <!-- 12/16: строка согласия 369×32 — две строки (1003:166440), а ссылка
+             в ней несёт стиль «Desktop/Link XS dotted» (587:21781) -->
+        <span class="text-body-xs text-text-primary max-md:text-m-body-s">
+          Я даю своё согласие на обработку персональной информации в соответствии с
+          <a href="#" class="link-dotted">Политикой конфиденциальности</a>
+        </span>
+      </label>
+
+      <button type="submit" class="btn btn-l btn-accent mt-6 w-full max-md:h-11 max-md:text-m-button-l">
+        Стать дилером
+      </button>
+    </form>
+  </div>
+</div>
