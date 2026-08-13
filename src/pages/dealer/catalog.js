@@ -9,6 +9,7 @@ import { initCatalogListing } from "../../components/catalog-listing.js";
 import { ICON } from "../../data/asset-base.js";
 import { PRODUCTS, rub, popularItems } from "../../data/catalog.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
+import { initModals } from "../../components/modals.js";
 
 // Дилерский каталог — та же проводка, что у покупательского, плюс дилерская
 // обвязка: полоска с прайс-листом в шапке и дилерский набор ссылок в бургере.
@@ -44,3 +45,5 @@ mountCarousel(
   },
   popularItems
 );
+
+initModals();

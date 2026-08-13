@@ -11,6 +11,7 @@ import { ICON } from "../../data/asset-base.js";
 import { rub } from "../../data/catalog.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { LINES, DELIVERY } from "../../data/dealer-order.js";
+import { initModals } from "../../components/modals.js";
 
 // Дилерский заказ — та же корзина и та же сводка, что у покупателя, плюс
 // модули строки и форма из четырёх карточек. Шагов нет: оба фрейма на 1440 —
@@ -71,3 +72,5 @@ const forms = initOrderForms(page, {
 page.querySelector("[data-order-summary] [data-order-submit]")?.addEventListener("click", () =>
   forms?.form.requestSubmit()
 );
+
+initModals();

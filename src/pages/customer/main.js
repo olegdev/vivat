@@ -10,6 +10,7 @@ import { initMobileMenu } from "../../components/mobile-menu.js";
 import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { heroSlides, modularItems, popularItems, akciiItems, promoTiles } from "../../data/home.js";
+import { initModals } from "../../components/modals.js";
 
 // ---- hero slider ------------------------------------------------------------
 const heroEl = document.querySelector("[data-hero]");
@@ -75,3 +76,5 @@ if (storesAnchor) {
     apiKey: import.meta.env?.VITE_YANDEX_MAPS_KEY || "73abf802-7fa6-4da1-bc36-7dd3457e4673",
   });
 }
+
+initModals();

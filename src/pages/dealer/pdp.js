@@ -19,6 +19,7 @@ import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { product, modules, addToCart, reviews, collection } from "../../data/pdp.js";
+import { initModals } from "../../components/modals.js";
 
 // Дилерский PDP — та же проводка, что у покупательского (фреймы совпадают нода
 // в ноду), плюс дилерская обвязка: полоска с прайс-листом в шапке и дилерский
@@ -180,3 +181,5 @@ initDealerPriceControls();
 // (914:103460 и 1686:63240) — эта строка. Оттого их полоса 716, а не 680.
 document.querySelector("[data-seo-title]").textContent =
   "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.";
+
+initModals();

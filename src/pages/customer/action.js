@@ -7,6 +7,7 @@ import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { ICON } from "../../data/asset-base.js";
 import { promos, actionItems } from "../../data/action.js";
+import { initModals } from "../../components/modals.js";
 
 // ---- shared chrome (header mega-menu + burger), same wiring as main.js ------
 setCatalogIconBase(ICON);
@@ -45,3 +46,5 @@ mountCarousel(
   },
   actionItems
 );
+
+initModals();

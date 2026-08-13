@@ -7,6 +7,7 @@ import { initCart } from "../../components/cart.js";
 import { initCatalogListing } from "../../components/catalog-listing.js";
 import { ICON } from "../../data/asset-base.js";
 import { PRODUCTS, rub, popularItems } from "../../data/catalog.js";
+import { initModals } from "../../components/modals.js";
 
 // Страница каталога — обвязка. Сетка, фильтры, сортировка, чипсы и шов
 // applyFilters живут в components/catalog-listing.js: та же механика работает на
@@ -38,3 +39,5 @@ mountCarousel(
   },
   popularItems
 );
+
+initModals();
