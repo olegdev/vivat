@@ -105,18 +105,20 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 ### Модальные окна (левая колонка, X = 134)
 
 Все четыре нарисованы поверх каталога и в дереве выглядят одинаково
-(`modal-window` = страница + затемнение `#141414/0.9`). **Сама панель в
-снапшоте отсутствует** — опознаны по мобильным двойникам.
+(`modal-window` = страница + затемнение `#141414/0.9`). Панели в экспорте
+**есть** — это `form` внутри `modal-window`, id в последней колонке; ранняя
+заметка «панель в снапшоте отсутствует» была неверной.
 
-| Окно | 1440 | 360 |
-|---|---|---|
-| «Стать дилером» — форма заявки | [1003:160435](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-160435) | [2209:213755](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2209-213755) |
-| «Войти в режим дилера» — вход по паролю | [1003:166631](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-166631) | [2209:216011](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2209-216011) |
-| «Подписаться на новости» | [1003:169259](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-169259) | [2225:96576](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-96576) |
-| `mail` — «Сообщение директору» | [1534:65836](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1534-65836) | [2225:97387](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-97387), [2225:98292](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-98292) |
+| Окно | 1440 | 360 | Панель 1440 |
+|---|---|---|---|
+| «Стать дилером» — форма заявки ✅ | [1003:160435](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-160435) | [2209:213755](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2209-213755) | `1003:166072`, 485×701 |
+| «Войти в режим дилера» — вход по паролю ✅ | [1003:166631](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-166631) | [2209:216011](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2209-216011) | `1003:166682`, 485×323 |
+| «Подписаться на новости» ✅ | [1003:169259](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-169259) | [2225:96576](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-96576) | `1003:169310`, 485×343 |
+| `mail` — «Сообщение директору» ✅ | [1534:65836](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1534-65836) | [2225:97387](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-97387), [2225:98292](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-98292) | `1534:70720`, 485×811 |
 
-Десктопные панели этих окон нужно смотреть **в живой Figma** — в экспорте от
-28.07.2026 их нет.
+Кнопка в каждом окне одна: серая «Отмена» лежит в мастере
+`modal-button-container`, но инстансы её не рисуют — читать через
+`fig.mjs inst`, а не `tree`.
 
 ---
 

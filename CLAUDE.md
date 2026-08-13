@@ -318,6 +318,47 @@ a two-up grid with no scroll indicator. Entry points are the desktop header's
 field and the burger menu's — the mobile header has no search of its own, which
 is why the menu's field is the way in.
 
+**Four modal windows are the first built piece of `B2b additional`** (Figma
+section 1334:57242, the column at X = 134). They belong to no page: their
+triggers live in the header, the footer and the dealer home page's news block,
+so every page carries all four — «Стать дилером» (1003:160435 / 2209:213755),
+«Войти в режим дилера» (1003:166631 / 2209:216011), «Подписаться на новости»
+(1003:169259 / 2225:96576) and «Сообщение директору» (1534:65836 /
+2225:97387).
+
+One shell serves all of them and lives in `app.css`, not in a partial:
+`.modal-scrim` + `.modal-panel` is a 485-wide centred card above `md` (all four
+frames put it at x=478 = (1440−485)/2) and a **bottom sheet** below it, the same
+shape as the order page's modules sheet. `partials/order-done.html` uses the
+same two classes — it was the fourth copy of that card before they were pulled
+out. Because `hidden` now lives inside `.modal-scrim`, showing an overlay means
+adding `.is-open`, not removing a class.
+
+Four things about them are easy to get wrong:
+
+- **The panel's header carries no title** — `modal-header/desktop` (1003:166613)
+  is one 24px close glyph at the right edge. Every title is the first block of
+  the body. The mobile header of three windows out of four reads «Войти в режим
+  дилера»; that is a copied instance, not copy.
+- **There is one button, full width.** The master `modal-button-container` draws
+  a grey «Отмена» beside the coloured one, and every instance hides it — `inst`
+  does not return it in the layout. Its colour is not uniform either: заявка and
+  директор are coral, вход and подписка dark.
+- **The consent line is not one size.** Заявка and подписка draw it 12/16 in a
+  44px box, директор 14/18 in a 76px one — two variants of `control+text`. The
+  link inside it is «Link … dotted», i.e. `link-dotted`.
+- **Nothing is drawn for "sent".** All four forms just close; the login also
+  navigates to the dealer home, which is our decision, not the design's. Both
+  are in `BACKLOG.md`.
+
+`partials/modals.html` is a hub of four `#include`s rather than a container —
+the include plugin recurses, so a page mounts everything with one line while
+`dist-php/` still gets four separate `@include('partials.modal-…')`.
+`components/modals.js` drives all of them and holds the four seams; what is
+open is read off the DOM (`[data-modal].is-open`) rather than kept in a
+variable, so a panel shown by other means still closes on Esc, the × and a
+click outside.
+
 ## Where this is heading — PHP Blade
 
 This static build is a **prototype for a PHP Blade theme**: the markup will be
@@ -358,7 +399,9 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `product-card`, `promo-card`, `review-card`, `pdp-summary`, `pdp-specs`,
 `pdp-photo-overlay`, `sticky-price`, `seo-kitchens`, `cart-card`,
 `order-summary`, `order-forms`, `order-modules`, `order-done`,
-`search-overlay`, `price-mode`.
+`search-overlay`, `price-mode`, `modals` (хаб) and the four it pulls in —
+`modal-dealer-request`, `modal-dealer-login`, `modal-subscribe`,
+`modal-director`.
 Several carry both a static shell and the `<template>` unit(s) their component
 clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`,
 `search-overlay`, `price-mode`, `order-modules`);
