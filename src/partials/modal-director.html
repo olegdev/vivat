@@ -1,0 +1,69 @@
+<!-- ==================== СООБЩЕНИЕ ДИРЕКТОРУ ==========================
+     Figma form 1534:70720 (1440, 485×811) / 2225:97387 (360). Самое высокое
+     из четырёх окон: оранжевый алерт (в этом инстансе без крестика), три
+     поля, textarea и согласие с коралловой ссылкой. Кнопка коралловая.
+
+     Подписи и плейсхолдеры в макете переставлены — под «Телефон» стоит
+     «Адрес электронной почты», под «E-mail» — «Номер телефона». Сверстано по
+     смыслу, расхождение записано в BACKLOG. -->
+<div class="modal-scrim" data-modal="director">
+  <div class="modal-panel" data-modal-panel>
+    <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
+      <button type="button" class="flex size-6 items-center justify-center" data-modal-close aria-label="Закрыть">
+        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <form class="px-10 pb-6 max-md:px-4" data-modal-form>
+      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h3">
+        Заполните форму и отправьте сообщение директору
+      </h2>
+
+      <!-- alert 1534:70725 — в этом инстансе без крестика -->
+      <div class="mt-6 flex gap-2 rounded-n bg-surface-accent-subtle px-4 py-2.5">
+        <img src="../../assets/order/icon-info-dark.svg" alt="" class="mt-0.5 size-4 shrink-0" />
+        <p class="text-body-s text-text-primary max-md:text-m-body-s">
+          Фабрика мебели VIVAT не ведёт розничные продажи. Все вопросы по заказу и обслуживанию
+          направляйте дилеру, у которого была совершена покупка
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-4 pt-4">
+        <label class="flex flex-col gap-1">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Имя</span>
+          <input type="text" name="name" required placeholder="Ваше имя" class="order-input" />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Телефон</span>
+          <input type="tel" name="phone" required placeholder="Номер телефона" class="order-input" />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">E-mail</span>
+          <input type="email" name="email" required placeholder="Адрес электронной почты" class="order-input" />
+        </label>
+        <label class="flex flex-col gap-1">
+          <span class="text-body-s text-text-primary max-md:text-m-body-s">Комментарий к заказу</span>
+          <textarea
+            name="comment"
+            rows="4"
+            placeholder="Введите комментарий к заказу"
+            class="order-input h-[120px] resize-none py-3 text-body-n placeholder:text-text-muted max-md:text-m-body-n"
+          ></textarea>
+        </label>
+      </div>
+
+      <label class="mt-4 flex items-start gap-3 py-2.5">
+        <input type="checkbox" name="consent" required class="filter-check" checked />
+        <span class="text-body-s text-text-primary max-md:text-m-body-s">
+          Нажимая кнопку «Отправить», я даю своё согласие на обработку персональной информации в
+          соответствии с
+          <a href="#" class="link-dotted text-text-link-highlighted">Политикой конфиденциальности</a>
+        </span>
+      </label>
+
+      <button type="submit" class="btn btn-m btn-accent mt-6 w-full max-md:text-m-button-m">
+        Отправить
+      </button>
+    </form>
+  </div>
+</div>
