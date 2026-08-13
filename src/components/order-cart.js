@@ -30,7 +30,9 @@ function plural(n, one, few, many) {
   return `${n} ${many}`;
 }
 
-export function initOrderCart(root, { lines, iconBase = "../../assets/order" } = {}) {
+const isMobile = () => window.matchMedia("(max-width: 47.99rem)").matches;
+
+export function initOrderCart(root, { lines } = {}) {
   if (!root) return null;
 
   const listEl = root.querySelector("[data-cart-list]");
@@ -77,9 +79,11 @@ export function initOrderCart(root, { lines, iconBase = "../../assets/order" } =
     return node;
   }
 
-  // Quantity, prices and the stepper's left icon. The `quantity-stepper`
-  // component switches that icon on its own `count` axis — trash at 1
-  // (943:79876), minus at 2 and more (2029:129546).
+  // Quantity, prices and the stepper's count. The `quantity-stepper` component
+  // switches its left control on a `count` axis — trash at 1 (943:79876),
+  // minus at 2 and more (2029:129546) — but only on 1440: every 360 card in
+  // the file draws the minus beside a 1. Both glyphs live in the template and
+  // the attribute below is all the CSS needs; see partials/cart-card.html.
   function paintLine(node, line) {
     node.querySelector("[data-line-qty]").textContent = String(line.qty);
     node.querySelector("[data-line-price]").textContent = money(line.price * line.qty);
@@ -87,11 +91,11 @@ export function initOrderCart(root, { lines, iconBase = "../../assets/order" } =
       ? money(line.oldPrice * line.qty)
       : "";
 
-    const down = node.querySelector("[data-step-down-icon]");
     const isLast = line.qty <= 1;
-    down.src = `${iconBase}/${isLast ? "icon-trash" : "icon-minus"}.svg`;
-    down.alt = isLast ? "Удалить из заказа" : "Уменьшить количество";
-    node.querySelector("[data-step-up-icon]").src = `${iconBase}/icon-plus.svg`;
+    node.querySelector("[data-stepper]").dataset.count = isLast ? "one" : "many";
+    node
+      .querySelector("[data-step-down]")
+      .setAttribute("aria-label", isLast && !isMobile() ? "Удалить из заказа" : "Уменьшить количество");
   }
 
   function render() {
@@ -129,7 +133,8 @@ export function initOrderCart(root, { lines, iconBase = "../../assets/order" } =
 
     if (btn.hasAttribute("data-step-up")) line.qty += 1;
     else if (line.qty > 1) line.qty -= 1;
-    else return drop(line.id); // the trash state removes the line
+    else if (!isMobile()) return drop(line.id); // the trash state removes the line
+    else return; // 360 shows a minus at 1 and the design gives it nothing to do
 
     paintLine(node, line);
     commit();

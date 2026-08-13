@@ -7,7 +7,7 @@ import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initOrderCart } from "../../components/order-cart.js";
 import { initOrderModules } from "../../components/order-modules.js";
 import { initOrderForms } from "../../components/order-forms.js";
-import { ICON, ORDER as ORDER_ICON } from "../../data/asset-base.js";
+import { ICON } from "../../data/asset-base.js";
 import { rub } from "../../data/catalog.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { LINES, DELIVERY } from "../../data/dealer-order.js";
@@ -39,7 +39,7 @@ document.querySelector("[data-nav-cart]")?.setAttribute("aria-current", "page");
 const page = document.querySelector("[data-order]");
 
 // ---- корзина ----------------------------------------------------------------
-initOrderCart(page, { lines: LINES, iconBase: ORDER_ICON });
+initOrderCart(page, { lines: LINES });
 
 // ---- модули строки ----------------------------------------------------------
 const modules = initOrderModules(page, { lines: LINES, money: rub });

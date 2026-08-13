@@ -7,7 +7,7 @@ import { initOrderCart, initOrderBar } from "../../components/order-cart.js";
 import { renderStoresMap, setBases as setStoresBases } from "../../components/stores-map.js";
 import { initStoreSheet } from "../../components/store-sheet.js";
 import { stores } from "../../data/stores.js";
-import { HOME, ICON, ORDER as ORDER_ICON } from "../../data/asset-base.js";
+import { HOME, ICON } from "../../data/asset-base.js";
 import { LINES } from "../../data/order.js";
 
 // ---- shared chrome (header mega-menu + burger), same wiring as action.js ----
@@ -23,7 +23,7 @@ initSearch();
 initCart();
 
 const page = document.querySelector("[data-order]");
-initOrderCart(page, { lines: LINES, iconBase: ORDER_ICON });
+initOrderCart(page, { lines: LINES });
 initOrderBar(page);
 
 // The order screens are the only ones in the design with an active bottom-nav

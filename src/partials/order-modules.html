@@ -15,7 +15,7 @@
      components/order-modules.js clones the row; it never builds markup. -->
 <template data-module-row>
   <div
-    class="flex items-center gap-6 py-1 max-md:flex-col max-md:items-stretch max-md:gap-2 max-md:border-b max-md:border-divider-light max-md:px-4 max-md:py-3"
+    class="flex items-center gap-6 md:h-10 max-md:flex-col max-md:items-stretch max-md:gap-2 max-md:border-b max-md:border-divider-light max-md:px-4 max-md:py-3"
     data-module-line
   >
     <p
@@ -23,7 +23,10 @@
       data-module-title
     ></p>
 
-    <div class="flex items-center gap-6 max-md:flex-row-reverse max-md:justify-between max-md:gap-3">
+    <!-- 278 wide, the same box as the card's own [stepper][price] row
+         (953:152373), so the module minus lands exactly under the card's trash
+         and the module price under the card's price: 152 + 24 + 102 = 278. -->
+    <div class="flex items-center gap-6 md:w-[278px] md:shrink-0 max-md:flex-row-reverse max-md:justify-between max-md:gap-3">
       <!-- transparent stepper: no pill on either width here (953:152844 /
            2225:202146), only the number's box comes back below `md` -->
       <div class="flex w-[152px] shrink-0 items-center justify-between max-md:w-[152px]">
@@ -50,7 +53,7 @@
       </div>
 
       <span
-        class="w-[86px] shrink-0 text-right text-body-n text-text-muted max-md:w-auto max-md:text-m-h4 max-md:text-text-primary"
+        class="text-right text-body-n text-text-muted md:min-w-0 md:flex-1 max-md:w-auto max-md:text-m-h4 max-md:text-text-primary"
         data-module-price
       ></span>
     </div>

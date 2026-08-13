@@ -50,6 +50,7 @@ export function initOrderModules(root, { lines, money, onChange } = {}) {
     const list = card.querySelector("[data-line-modules-list]");
     const toggle = card.querySelector("[data-line-modules][aria-expanded]");
     list?.classList.toggle("hidden", !on);
+    list?.classList.toggle("flex", on);
     toggle?.setAttribute("aria-expanded", String(on));
     card.querySelector("[data-line-modules-chevron]")?.classList.toggle("rotate-180", on);
   }

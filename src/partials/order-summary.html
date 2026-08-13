@@ -49,7 +49,9 @@
          is not part of this panel at all -->
     <div class="hidden h-10 items-center justify-between gap-4 max-md:h-8 group-data-[user=dealer]:flex">
       <dt class="text-body-n text-text-primary max-md:text-m-body-n">Способ оплаты</dt>
-      <dd class="text-body-n text-text-primary max-md:text-m-body-n max-md:underline max-md:underline-offset-4" data-summary-payment>
+      <!-- the value is a dotted link at both widths (953:149347 carries the
+           «Desktop/Link M dotted» text style; the 360 panel draws the same) -->
+      <dd class="link-dotted text-body-n text-text-primary max-md:text-m-body-n" data-summary-payment>
         не выбран
       </dd>
     </div>
@@ -74,7 +76,11 @@
     </div>
   </div>
 
-  <div class="flex flex-col gap-4 px-6 pb-6 pt-6 max-md:gap-3 max-md:pb-4 max-md:pt-3">
+  <!-- The dealer's notice is not a footer block — it sits inside the table,
+       straight under the «Доставка» row (953:149377 puts the two in one 80px
+       frame with no gap) and 16 above the button. Hence `pt-1` where the
+       customer panel opens a full 24 before its button. -->
+  <div class="flex flex-col gap-4 px-6 pb-6 pt-6 max-md:gap-3 max-md:pb-4 max-md:pt-3 group-data-[user=dealer]:pt-1 max-md:group-data-[user=dealer]:pt-1">
     <!-- the dealer's 360 panel carries no button at all (2225:202292 is the
          `Top` half only) — its CTA is the sticky bar, which is therefore
          always on rather than revealed by scroll like the customer's -->
