@@ -10,6 +10,7 @@ import { initDealerPriceControls } from "../../components/price-mode.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
 import { initMobileMenu } from "../../components/mobile-menu.js";
+import { initModals } from "../../components/modals.js";
 import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { heroSlides, modularItems, popularItems, akciiItems, promoTiles } from "../../data/home.js";
@@ -49,6 +50,7 @@ initSearch();
 
 // ---- add to cart (badge + POST /cart seam) ----------------------------------
 initCart();
+initModals();
 
 const sections = {
   modular: {

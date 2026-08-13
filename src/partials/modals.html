@@ -1,0 +1,14 @@
+<!-- ==================== МОДАЛЬНЫЕ ОКНА ===============================
+     Четыре окна секции B2b additional (1334:57242), общие для обеих половин
+     сайта: триггеры к ним живут в шапке, подвале и на дилерской главной, а
+     они есть на каждой странице.
+
+     Это хаб, а не контейнер: плагин включений рекурсивный
+     (`expand` в scripts/vite-plugin-includes.mjs), поэтому страница
+     подключает всё одной строкой, а в dist-php/ остаются четыре
+     самостоятельных @include('partials.modal-…') — по одному на будущий
+     Blade-партиал. -->
+<!--#include partials/modal-dealer-request.html -->
+<!--#include partials/modal-dealer-login.html -->
+<!--#include partials/modal-subscribe.html -->
+<!--#include partials/modal-director.html -->
