@@ -10,12 +10,13 @@
 
      The stepper is part of this unit rather than its own partial: it exists
      nowhere else in the design. Its left control follows the component's own
-     `count` axis — `count=1` is the trash can (943:79876), `count=2-and-more`
-     the minus (2029:129546) — but that axis is a 1440 thing: every 360 card in
-     the file (2225:167289, 2029:156652 …) draws the minus beside a 1. So the
-     trash is a desktop state, and `data-count` on the stepper is what CSS
-     reads. Which leaves the 360 minus with nothing to do at 1 — the design
-     offers no way to drop a line from a phone; that question is in BACKLOG.
+     `count` axis — `count=1` is the trash can, `count=2-and-more` the minus —
+     but that axis is only filled in at `size=l`: the set has no
+     `size=s, count=1` variant at all. 1440 cards take the big stepper
+     (168×48, 943:79876) and 360 cards the small one (152×40, 2029:129546), so
+     the trash is a desktop state and `data-count` is what CSS reads. Which
+     leaves the 360 minus with nothing to do at 1 — the design offers no way to
+     drop a line from a phone; that question is in BACKLOG.
 
      Desktop stepper: one 168×48 grey pill (`components-subtle`, radius 24).
      Mobile: 152×40, transparent, with the number in a bordered white 48×40
