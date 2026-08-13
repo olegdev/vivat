@@ -1,0 +1,37 @@
+<!-- ==================== ВОЙТИ В РЕЖИМ ДИЛЕРА =========================
+     Figma form 1003:166682 (1440, 485×323) / 2209:216011 (360). Узкое окно:
+     тело с боковыми отступами 96 вместо 40.
+
+     Одно поле без подписи, чекбокса нет, кнопка ТЁМНАЯ — в отличие от заявки
+     и письма директору, где она коралловая. Под кнопкой две строки, и во
+     второй «стать дилером?» — коралловая ссылка, открывающая соседнее окно:
+     единственное место, где одна модалка передаёт управление другой. -->
+<div class="modal-scrim" data-modal="dealer-login">
+  <div class="modal-panel" data-modal-panel>
+    <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
+      <button type="button" class="flex size-6 items-center justify-center" data-modal-close aria-label="Закрыть">
+        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <form class="px-24 pb-6 max-md:px-4" data-modal-form>
+      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h3">Войти в режим дилера</h2>
+
+      <input type="password" name="password" required placeholder="Введите пароль" class="order-input mt-6" />
+
+      <button type="submit" class="btn btn-m btn-primary mt-6 w-full max-md:text-m-button-m">
+        Войти
+      </button>
+
+      <p class="pt-6 text-center text-body-xs text-text-primary max-md:text-m-body-s">
+        Чтобы получить пароль, обратитесь к своему персональному менеджеру.
+      </p>
+      <p class="pt-2 text-center text-body-xs text-text-primary max-md:text-m-body-s">
+        Хотите
+        <button type="button" class="text-text-link-highlighted" data-modal-open="dealer-request">
+          стать дилером?
+        </button>
+      </p>
+    </form>
+  </div>
+</div>

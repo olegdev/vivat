@@ -1,0 +1,31 @@
+<!-- ==================== ПОДПИСАТЬСЯ НА НОВОСТИ =======================
+     Figma form 1003:169310 (1440, 485×343) / 2225:96576 (360, шторка 400).
+     Узкое окно, отступы 96. Поле без подписи, согласие тем же текстом, что в
+     заявке, кнопка ТЁМНАЯ. -->
+<div class="modal-scrim" data-modal="subscribe">
+  <div class="modal-panel" data-modal-panel>
+    <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
+      <button type="button" class="flex size-6 items-center justify-center" data-modal-close aria-label="Закрыть">
+        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <form class="px-24 pb-12 max-md:px-4 max-md:pb-6" data-modal-form>
+      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h3">Подписаться на новости</h2>
+
+      <input type="email" name="email" required placeholder="Введите e-mail" class="order-input mt-6" />
+
+      <label class="mt-4 flex items-start gap-3 py-1.5">
+        <input type="checkbox" name="consent" required class="filter-check" checked />
+        <span class="text-body-xs text-text-primary max-md:text-m-body-s">
+          Я даю своё согласие на обработку персональной информации в соответствии с
+          <a href="#" class="link-dotted">Политикой конфиденциальности</a>
+        </span>
+      </label>
+
+      <button type="submit" class="btn btn-m btn-primary mt-6 w-full max-md:text-m-button-m">
+        Подписаться
+      </button>
+    </form>
+  </div>
+</div>
