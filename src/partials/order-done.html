@@ -9,8 +9,8 @@
      resolve inside whichever page's folder splices it in. -->
 <!-- below `md` the bottom nav stays visible under it (2241:158305), so the
      overlay reserves its 72px rather than covering the whole viewport -->
-<div class="fixed inset-0 z-[60] hidden items-center justify-center bg-overlay-strong max-md:bg-transparent max-md:pb-[72px]" data-order-done>
-  <div class="relative h-[725px] w-[485px] overflow-hidden bg-surface-inverted max-md:h-full max-md:w-full">
+<div class="modal-scrim z-[60] max-md:items-center max-md:bg-transparent max-md:pb-[72px]" data-order-done>
+  <div class="modal-panel relative h-[725px] overflow-hidden max-md:h-full max-md:max-h-none max-md:rounded-none">
     <img src="../../assets/order/thanks-src.png" alt="" class="absolute inset-0 size-full object-cover" />
 
     <a

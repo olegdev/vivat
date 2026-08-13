@@ -645,6 +645,24 @@
     @apply focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-border-ring;
   }
 
+  /* ---- Модальное окно (секция B2b additional) --------------------------
+     Одна оболочка на четыре окна. 1440: скрим на весь экран и белая панель
+     485 по центру — во всех четырёх фреймах панель стоит на x=478, то есть
+     (1440−485)/2. 360: панель прижата к низу и растёт по содержимому —
+     подписка 400, заявка 760 из 800 (2225:96981 / 2209:214642), верхние
+     углы скруглены. Шапка панели несёт только крестик: `modal-header/desktop`
+     1003:166613 — это один глиф 24px у правого края, заголовка там нет.
+     Используется без вариантов, поэтому `@layer components` уместен. */
+  .modal-scrim {
+    @apply fixed inset-0 z-[70] hidden items-center justify-center bg-overlay-strong;
+    @apply max-md:items-end;
+  }
+  .modal-scrim.is-open { @apply flex; }
+  .modal-panel {
+    @apply w-[485px] bg-surface-inverted;
+    @apply max-md:max-h-[95vh] max-md:w-full max-md:overflow-y-auto max-md:rounded-t-[var(--radius-l)];
+  }
+
   /* ---- Catalog filter drawer: slide-in ----------------------------------
      Left panel eases in over a fading scrim. `visibility` is delayed on close
      so the panel can slide back out before it's hidden (and stops intercepting

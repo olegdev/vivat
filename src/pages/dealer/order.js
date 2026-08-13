@@ -53,8 +53,7 @@ const deliveryOut = page.querySelector("[data-summary-delivery]");
 
 function submitOrder(payload) {
   void payload; // (the prototype has nowhere to send it)
-  done.classList.remove("hidden");
-  done.classList.add("flex");
+  done.classList.add("is-open"); // `.modal-scrim` держит `hidden`, показывает `.is-open`
   document.body.classList.add("overflow-hidden");
 }
 
