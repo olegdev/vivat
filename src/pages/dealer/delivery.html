@@ -53,6 +53,11 @@
         </div>
       </div>
 
+      <!-- ==================== ШАПКА РАЗДЕЛА НА 360 =====================
+           Ниже md заголовочный блок и левое меню заменяются этим блоком
+           (2225:132266, 104): «Для бизнеса» и селектор с именем страницы. -->
+      <!--#include partials/for-business-header.html -->
+
       <!-- ==================== МЕНЮ + КОЛОНКА ===========================
            general-container 1167:79696 — 40 + 298 + 40 + 1022 + 40 = 1440. -->
       <div class="flex gap-10 px-10 max-md:flex-col max-md:gap-0 max-md:px-0">
@@ -63,30 +68,36 @@
 
           <!-- Вводные абзацы — дизайн-копия, поэтому стоят в разметке, а не в
                фикстуре: в Blade это литерал, а не @foreach. -->
-          <p class="pt-4 text-body-l text-text-primary">
+          <p class="pt-4 text-body-l text-text-primary max-md:text-m-body-l">
             Уважаемые партнеры! Для вас Фабрика мебели VIVAT запустила сотрудничество с сервисной
             компанией «АТП-Комфорт».
           </p>
-          <p class="pt-4 text-body-n text-text-primary">
+          <p class="pt-4 text-body-n text-text-primary max-md:pt-3 max-md:text-m-body-n">
             Какие преимущества дает это сотрудничество нашим оптовым покупателям:
           </p>
 
           <!-- Пять плиток: 3 + 2, зазор 8 (row 1167:79705, 862×366). Ширину
-               задаёт колонка сетки, у самой плитки её нет. -->
-          <div class="mt-8 grid grid-cols-3 gap-2 max-md:grid-cols-1" data-benefit-tiles></div>
+               задаёт колонка сетки, у самой плитки её нет.
+
+               На 360 (2225:133001) раскладка другая: 1-2 парой, 3-4 парой,
+               пятая во всю ширину. Отсюда две колонки и span у пятой. -->
+          <div
+            class="mt-8 grid grid-cols-3 gap-2 max-md:mt-6 max-md:grid-cols-2 max-md:[&>*:nth-child(5)]:col-span-2"
+            data-benefit-tiles
+          ></div>
 
           <!-- Врезка 1167:79712 — 862×316, #ffd6b9, padH=40. Figma объявляет
                padV=8, но высота у секции фиксированная и содержимое в ней
                центрируется, так что фактический отступ 16: 284 + 32 = 316. -->
           <div class="mt-8 bg-surface-accent-subtle px-10 py-4 max-md:px-4" data-callout>
-            <p class="pt-4 text-body-n text-text-primary">
+            <p class="pt-4 text-body-n text-text-primary max-md:pt-3 max-md:text-m-body-n">
               «АТП-Комфорт» зарекомендовали себя как настоящие профессионалы своего дела. Немало
               важно, что они отслеживают эффективность своей работы, взаимодействуя с покупателем
               после оказания всех услуг. Это значительно увеличивает степень доверия покупателей.
               Данное сотрудничество решает ключевые вопросы в принятии решения об открытии
               собственного мебельного салона:
             </p>
-            <ul class="text-body-n text-text-primary">
+            <ul class="text-body-n text-text-primary max-md:text-m-body-n">
               <li class="flex gap-1 pt-3">
                 <span class="flex size-6 shrink-0 items-center justify-center" aria-hidden="true">
                   <span class="size-1 rounded-full bg-text-primary"></span>
@@ -110,22 +121,22 @@
               </li>
             </ul>
             <!-- Подпись — одна строка и серая (#808080), несмотря на \r в копии. -->
-            <p class="pt-4 text-body-n text-text-secondary">
+            <p class="pt-4 text-body-n text-text-secondary max-md:pt-3 max-md:text-m-body-n">
               Руководитель отдела продаж Фабрики мебели VIVAT
             </p>
           </div>
 
           <!-- FAQ 1167:79719 — spacing 80 + заголовок 36. -->
-          <h2 class="pt-20 text-h2 text-text-primary max-md:text-m-h2">
+          <h2 class="pt-20 text-h2 text-text-primary max-md:pt-10 max-md:text-m-h2">
             Ответы на частые вопросы:
           </h2>
           <div data-faq></div>
 
           <!-- Контакты 1167:79727 / 1167:79729 — spacing 64 + 16, строка 56. -->
-          <p class="pt-20 text-body-n text-text-primary max-md:text-m-body-l">
+          <p class="pt-20 text-body-n text-text-primary max-md:pt-9 max-md:text-m-body-n">
             Остались вопросы о сервисе? Обращайтесь за бесплатной консультацией.
           </p>
-          <div class="flex gap-8 py-4 text-body-n text-text-primary max-md:text-m-body-l">
+          <div class="flex gap-8 py-4 text-body-n text-text-primary max-md:text-m-body-n">
             <a href="tel:+79067565659">8 (906) 756-56-59</a>
             <a href="mailto:atpcomfort@yandex.ru">atpcomfort@yandex.ru</a>
           </div>

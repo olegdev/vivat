@@ -9,13 +9,16 @@
      250×72 держит три строки, и при 20px первая строка требует 299px из 250
      доступных. Инстанс кегль мастера не наследует — считать по боксу.
 
+     На 360 плитка меньше: цифра 44/31, текст 14/20, зазор 12, высота по
+     содержимому — ряд выравнивает плитки сам.
+
      Ширины у единицы нет: её задаёт контейнер (см. CLAUDE.md про промо-плитку).
      Клонируется components/benefit-tile.js — будущий @foreach. -->
 <template data-benefit-tile>
   <article
-    class="flex h-[179px] flex-col gap-6 rounded-[var(--radius-n)] border border-border-subtle p-4"
+    class="flex h-[179px] flex-col gap-6 rounded-[var(--radius-n)] border border-border-subtle p-4 max-md:h-auto max-md:gap-3"
   >
-    <span class="text-[72px] font-thin leading-[51px] text-text-primary" data-tile-n></span>
-    <p class="text-body-n text-text-primary" data-tile-text></p>
+    <span class="text-[72px] font-thin leading-[51px] text-text-primary max-md:text-[44px] max-md:leading-[31px]" data-tile-n></span>
+    <p class="text-body-n text-text-primary max-md:text-m-body-n" data-tile-text></p>
   </article>
 </template>

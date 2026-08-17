@@ -19,7 +19,7 @@
 <!-- один блок (future @foreach($menu as $block)) -->
 <template data-menu-b2b-block>
   <nav class="flex flex-col">
-    <p class="flex h-10 items-center px-4 text-body-n-accent text-text-muted" data-block-title></p>
+    <p class="flex h-10 items-center px-4 text-body-n-accent text-text-muted max-md:h-11" data-block-title></p>
     <div data-block-items></div>
   </nav>
 </template>
@@ -28,7 +28,7 @@
 <template data-menu-b2b-item>
   <a
     href="#"
-    class="flex h-10 items-center px-4 text-body-n-accent text-text-primary transition-colors hover:bg-components-subtle-hover aria-[current=page]:bg-components-subtle-hover"
+    class="flex h-10 items-center px-4 text-body-n-accent text-text-primary transition-colors hover:bg-components-subtle-hover aria-[current=page]:bg-components-subtle-hover max-md:h-11"
     data-menu-b2b-link
   ></a>
 </template>

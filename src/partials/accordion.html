@@ -10,7 +10,10 @@
      CLAUDE.md про мусорку в степпере).
 
      У раскрытого блока вопрос сереет до #808080 — это часть варианта pressed,
-     а не ховер. Ответ шириной 742: 862 − 120 на колонку с иконкой. -->
+     а не ховер. Ответ шириной 742: 862 − 120 на колонку с иконкой.
+
+     На 360 (мастер 2224:13133, 328×104) колонка с текстом 280, зазор до
+     иконки 8, вопрос и ответ 16/24: 328 = 280 + 8 + 40. -->
 <template data-accordion-item>
   <!-- Разделитель нарисован тенью внутрь, а не border-b: обводка в Figma
        внутренняя, и рамка снаружи прибавляла бы блоку лишний пиксель. -->
@@ -18,7 +21,7 @@
     <button
       type="button"
       aria-expanded="false"
-      class="group/acc flex w-full items-center gap-20 text-left max-md:gap-4"
+      class="group/acc flex w-full items-center gap-20 text-left max-md:gap-2"
       data-accordion-toggle
     >
       <span
