@@ -129,6 +129,25 @@ function enterContactPageMode(anchor, detail) {
   q("[data-store-list]")?.classList.add("hidden");
   swap(q("[data-store-detail]"), ["hidden"], ["flex"]);
 
+  // На 360 (вариант 2225:106894, 360×902) блок перестаёт быть «панель слева,
+  // карта справа»: полотно 360 сверху, панель во всю ширину под ним, и панель
+  // наезжает на карту на 8 скруглённым верхом. Карта здесь во всю ширину.
+  swap(q("[data-map-wrap]"), ["max-md:px-4"], ["max-md:px-0"]);
+  // Панель в разметке идёт перед картой (слева на 1440), а на 360 она под
+  // ней, поэтому колонка перевёрнутая.
+  swap(q("[data-map-frame]"), [], ["max-md:flex-col-reverse", "max-md:rounded-none"]);
+  // flex-1 в колонке даёт нулевую базу, поэтому полотну нужен flex-none
+  swap(q("[data-map-pane]"), ["max-md:h-80"], ["max-md:h-[360px]", "max-md:flex-none"]);
+  q("[data-map-cta]")?.classList.add("max-md:hidden");
+  swap(q("[data-store-panel]"), ["max-md:hidden"], [
+    "max-md:relative",
+    "max-md:z-10",
+    "max-md:-mt-2",
+    "max-md:h-auto",
+    "max-md:w-full",
+    "max-md:rounded-t-[var(--radius-l)]",
+  ]);
+
   fillDetail(anchor, detail);
 }
 
