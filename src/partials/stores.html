@@ -74,6 +74,50 @@
         </label>
 
         <div data-store-list class="stores-scroll h-[580px] overflow-y-auto pl-4 max-md:min-h-0 max-md:flex-1 max-md:pl-0"></div>
+
+        <!-- Второе тело панели — вариант `type=contact page` (1456:56787):
+             вместо списка салонов один адрес. Показывается режимом
+             contactPage в components/stores-map.js, там же и наполняется.
+             general-container 440×442: padH=24, зазор между блоками 24. -->
+        <div class="hidden flex-col gap-6 px-6" data-store-detail>
+          <!-- top-container 392×56: отбивка 32 и название 24 -->
+          <p class="pt-8 text-h5 text-text-primary" data-detail-name></p>
+
+          <!-- adress 392×104: описание 48 (адрес 24 + метро 18, зазор 6),
+               зазор 12, кнопка 44 -->
+          <div class="flex flex-col gap-3">
+            <div class="flex flex-col gap-1.5">
+              <p class="text-body-n text-text-primary" data-detail-address></p>
+              <span class="flex items-center gap-2 empty:hidden" data-detail-metro>
+                <img src="../../assets/home/icon-metro.svg" alt="" class="size-4 shrink-0" />
+                <span class="text-body-s text-text-secondary" data-detail-metro-name></span>
+              </span>
+            </div>
+            <a
+              href="#"
+              class="inline-flex h-11 w-fit items-center gap-2 rounded-pill bg-components-subtle px-4 text-button-m text-text-primary"
+              data-detail-route
+            >
+              <span data-detail-route-label></span>
+              <img src="../../assets/contacts/icon-route.svg" alt="" class="size-6 shrink-0" />
+            </a>
+          </div>
+
+          <!-- consult 392×108: заголовок 24, зазор 8, столбец 76 -->
+          <div class="flex flex-col gap-2">
+            <p class="text-h5 text-text-primary" data-detail-dept-title></p>
+            <div class="flex flex-col gap-2" data-detail-dept-rows></div>
+          </div>
+
+          <!-- wh 392×102: заголовок 24, зазор 8, две колонки 52 и 91 -->
+          <div class="flex flex-col gap-2">
+            <p class="text-h5 text-text-primary" data-detail-hours-title></p>
+            <div class="flex gap-2">
+              <div class="flex w-[52px] flex-col gap-2" data-detail-hours-labels></div>
+              <div class="flex flex-col gap-2" data-detail-hours-values></div>
+            </div>
+          </div>
+        </div>
       </aside>
 
       <!-- map -->

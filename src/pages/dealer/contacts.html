@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Контакты (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./contacts.js"></script>
+  </head>
+  <body class="group group/page bg-bg-page text-text-primary" data-user="dealer" data-audience="opt">
+    <!-- Контакты — контентная страница дилерского раздела. 1440 — Figma
+         contacts 1415:68377, 360 — 2225:104774. В меню раздела страница
+         называется «Адреса», в заголовке — «Контакты»; расхождение макета,
+         воспроизведено как есть.
+
+         Единственная страница секции без левого меню: блоки идут во всю
+         ширину, а заголовочный блок ниже остальных (68 против 92 — нижняя
+         отбивка 24 в нём скрыта). -->
+    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- ==================== ЗАГОЛОВОК СТРАНИЦЫ =======================
+           title-block 1415:68379 — 68: отбивка 24 и строка 44, нижней нет. -->
+      <div class="px-10 pt-6 max-md:hidden">
+        <div class="flex h-11 items-center">
+          <h1 class="text-h1 text-text-primary">Контакты</h1>
+        </div>
+      </div>
+
+      <!-- ==================== ШАПКА РАЗДЕЛА НА 360 =====================
+           Здесь у for-business-header только заголовок (2225:104778, 46):
+           левого меню на этой странице нет, значит нечего и открывать. -->
+      <!--#include partials/for-business-header.html -->
+
+      <!-- ==================== ОПТ / РОЗНИЦА ============================
+           city 1462:56195 — 1440×88. Фрейм назван `city`, но сегменты в нём
+           не города: `segments` 1447:53433, 322 = 157 + 8 + 157, активный
+           «Опт» (882:55295, condition=active, #414141).
+
+           На 360 этого блока нет — мобильный фрейм его не рисует. -->
+      <div class="px-10 pb-3 max-md:hidden" data-audience>
+        <div class="flex w-[322px] gap-2 py-4">
+          <button
+            type="button"
+            class="h-11 w-[157px] rounded-pill bg-components-subtle text-button-m text-text-primary transition-colors group-data-[audience=opt]/page:bg-components-active-muted group-data-[audience=opt]/page:text-text-inverse-primary"
+            data-audience-mode="opt"
+          >
+            Опт
+          </button>
+          <button
+            type="button"
+            class="h-11 w-[157px] rounded-pill bg-components-subtle text-button-m text-text-primary transition-colors group-data-[audience=retail]/page:bg-components-active-muted group-data-[audience=retail]/page:text-text-inverse-primary"
+            data-audience-mode="retail"
+          >
+            Розница
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================== КАРТА =====================================
+           Тот же партиал, что на главной, PDP и шаге 1 заказа, в четвёртом
+           режиме: `type=contact page` (1456:56787). Вместо списка салонов —
+           карточка одного адреса. -->
+      <div data-section="map"><!--#include partials/stores.html --></div>
+
+      <!-- ==================== НАШИ СОТРУДНИКИ ==========================
+           1462:56243 — 442: заголовочный блок 178 (отбивка 80, заголовок 44,
+           зазор 6, описание 24, отбивка 24) и сетка 264. -->
+      <section class="px-10 max-md:px-4" data-employees-section>
+        <div class="pt-20 max-md:pt-10">
+          <div class="flex h-11 items-center">
+            <h2 class="text-h2 text-text-primary max-md:text-m-h2">Наши сотрудники</h2>
+          </div>
+          <p class="pt-1.5 text-body-n text-text-primary max-md:text-m-body-n">
+            Свяжитесь с профильным специалистом и мы поможем подобрать решение.
+          </p>
+        </div>
+        <div
+          class="grid grid-cols-4 gap-x-6 gap-y-6 pt-6 max-md:grid-cols-2 max-md:gap-x-6"
+          data-employees
+        ></div>
+      </section>
+
+      <!-- ==================== НАШ СКЛАД =================================
+           1463:56244 — 475: заголовочный блок 148 (без описания — в этом
+           инстансе оно скрыто) и рельс 327 из трёх снимков 438×327. -->
+      <section class="max-md:overflow-hidden" data-gallery-section>
+        <div class="px-10 pt-20 max-md:px-4 max-md:pt-10">
+          <div class="flex h-11 items-center">
+            <h2 class="text-h2 text-text-primary max-md:text-m-h2">Наш склад</h2>
+          </div>
+        </div>
+        <div class="relative px-10 pt-6 max-md:px-4">
+          <div class="overflow-hidden" data-viewport>
+            <div class="flex gap-6 transition-transform duration-300 max-md:gap-2" data-track></div>
+          </div>
+          <!-- carousel-controls 48×48 по краям кадра (1463:56697 / 1463:56698) -->
+          <button
+            type="button"
+            class="carousel-arrow absolute left-16 top-1/2 z-10 -translate-y-1/2 max-md:hidden"
+            data-prev
+            aria-label="Назад"
+          >
+            <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
+          </button>
+          <button
+            type="button"
+            class="carousel-arrow absolute right-16 top-1/2 z-10 -translate-y-1/2 max-md:hidden"
+            data-next
+            aria-label="Вперёд"
+          >
+            <img src="../../assets/header/chevron-right.svg" alt="" class="size-6" />
+          </button>
+        </div>
+      </section>
+
+      <div class="h-24 max-md:h-20"></div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- одна карточка сотрудника (future @foreach($employees as $e)) -->
+    <template data-employee-card>
+      <div class="flex flex-col">
+        <p class="pt-4 text-body-l text-text-primary max-md:text-m-body-l" data-employee-name></p>
+        <p class="text-body-n text-text-primary max-md:text-m-body-n" data-employee-role></p>
+      </div>
+    </template>
+
+    <!-- один снимок склада (future @foreach($photos as $p)) -->
+    <template data-warehouse-photo>
+      <img
+        class="h-[327px] w-[438px] shrink-0 rounded-[var(--radius-l)] object-cover max-md:h-[238px] max-md:w-[280px]"
+        alt=""
+        data-photo
+      />
+    </template>
+
+    <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
+    <!--#include partials/modals.html -->
+  </body>
+</html>

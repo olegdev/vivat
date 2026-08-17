@@ -105,6 +105,90 @@ function enterSelectMode(anchor) {
   swap(q("[data-panel-head]"), [], ["max-md:border-0", "max-md:px-4", "max-md:pb-2", "max-md:pt-2"]);
 }
 
+// Вариант `type=contact page` (1456:56787) — четвёртый режим того же блока.
+// Рамка, шапка панели, полотно карты и зум те же; меняется тело панели: вместо
+// списка салонов одна карточка адреса. Плюс блок теряет заголовок и подложку —
+// на Контактах над картой стоит переключатель «Опт / Розница», а не title-block.
+function enterContactPageMode(anchor, detail) {
+  const q = (sel) => anchor.querySelector(sel);
+  const section = anchor.matches("[data-stores-section]")
+    ? anchor
+    : anchor.querySelector("[data-stores-section]");
+
+  swap(section, ["bg-surface-accent", "pb-16", "max-md:bg-bg-page", "max-md:pb-10"], ["bg-bg-page"]);
+  q("[data-stores-head]")?.classList.add("hidden");
+
+  // Шапка панели здесь — только «Москва» с пином: тумблер «Только фирменные
+  // магазины» в дереве есть, но на рендере варианта его нет.
+  q("[data-panel-head]")?.parentElement
+    ?.querySelector("[data-brand-only]")
+    ?.closest("div.flex.items-center")
+    ?.classList.add("hidden");
+  swap(q("[data-panel-head]"), ["pl-10", "pr-6", "pt-6", "pb-4"], ["px-6", "py-6"]);
+
+  q("[data-store-list]")?.classList.add("hidden");
+  swap(q("[data-store-detail]"), ["hidden"], ["flex"]);
+
+  fillDetail(anchor, detail);
+}
+
+// Тело карточки адреса. Листовые строки (телефоны, почта, часы) создаются
+// здесь, а не шаблонами: это отдельные текстовые узлы, а не единицы вёрстки, —
+// тот же приём, что у ссылки внутри ответа в components/accordion.js.
+function fillDetail(anchor, d) {
+  if (!d) return;
+  const q = (sel) => anchor.querySelector(sel);
+  const text = (sel, v) => {
+    const el = q(sel);
+    if (el) el.textContent = v;
+  };
+
+  text("[data-detail-name]", d.name);
+  text("[data-detail-address]", d.address);
+  text("[data-detail-metro-name]", d.metro || "");
+  if (!d.metro) q("[data-detail-metro]")?.classList.add("hidden");
+  text("[data-detail-route-label]", d.routeLabel);
+  text("[data-detail-dept-title]", d.dept.title);
+  text("[data-detail-hours-title]", d.hours.title);
+
+  const rows = q("[data-detail-dept-rows]");
+  if (rows) {
+    const line = (cls, tag = "p") => {
+      const el = document.createElement(tag);
+      el.className = cls;
+      return el;
+    };
+    const nodes = d.dept.phones.map((p) => {
+      const a = line("text-body-s text-text-primary", "a");
+      a.href = `tel:${p.replace(/[^\d+]/g, "")}`;
+      a.textContent = p;
+      return a;
+    });
+    const mail = line("text-body-n text-text-primary underline", "a");
+    mail.href = `mailto:${d.dept.email}`;
+    mail.textContent = d.dept.email;
+    nodes.push(mail);
+    rows.replaceChildren(...nodes);
+  }
+
+  const labels = q("[data-detail-hours-labels]");
+  const values = q("[data-detail-hours-values]");
+  if (labels && values) {
+    const span = (cls, v) => {
+      const el = document.createElement("span");
+      el.className = cls;
+      el.textContent = v;
+      return el;
+    };
+    labels.replaceChildren(
+      ...d.hours.rows.map(([l]) => span("text-body-s text-text-secondary", l))
+    );
+    values.replaceChildren(
+      ...d.hours.rows.map(([, v]) => span("text-body-s text-text-primary", v))
+    );
+  }
+}
+
 // ---- component --------------------------------------------------------------
 // The section shell + the dealer-card / metro-chip <template>s live in
 // partials/stores.html (spliced into the page); this only queries and fills
@@ -119,6 +203,8 @@ export function renderStoresMap(anchor, opts) {
     description,
     selectable = false,
     onSelect,
+    contactPage = false,
+    detail,
     center = [55.7558, 37.6173], // 2.1 takes [lat, lon]
     zoom = 9,
   } = opts;
@@ -126,6 +212,7 @@ export function renderStoresMap(anchor, opts) {
   if (title) anchor.querySelector("[data-stores-title]").textContent = title;
   if (description) anchor.querySelector("[data-stores-desc]").textContent = description;
   if (selectable) enterSelectMode(anchor);
+  if (contactPage) enterContactPageMode(anchor, detail);
 
   // id + [lat, lon] (flip from the [lon, lat] authored in the data).
   const items = stores.map((s, i) => ({
@@ -171,6 +258,9 @@ export function renderStoresMap(anchor, opts) {
 
   // -- list ------------------------------------------------------------------
   function paintList() {
+    // В режиме contactPage списка нет — панель занимает карточка адреса.
+    // Маркеры при этом строятся как обычно, из тех же items.
+    if (contactPage) return;
     listEl.replaceChildren(...visible.map(buildStoreCard));
     applySelection({ scroll: false });
   }
