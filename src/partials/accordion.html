@@ -1,0 +1,47 @@
+<!-- Аккордеон — Figma `accordion` 1058:177899 (`condition=default`) и
+     1058:177901 (`condition=pressed`). 862 в колонке, разделитель 1px #eeeeee
+     снизу каждого блока, padV=16.
+
+     Свёрнутый: 16 + вопрос 40 + 16 = 72; если вопрос в две строки — 96.
+     Раскрытый: 16 + (вопрос 40 + 12 + ответ 128) + 16 = 212.
+
+     Иконка — плюс/минус, а не шеврон. Оба глифа лежат в разметке и выбираются
+     вариантом от aria-expanded: подмена src из JS не переживает ресайз (см.
+     CLAUDE.md про мусорку в степпере).
+
+     У раскрытого блока вопрос сереет до #808080 — это часть варианта pressed,
+     а не ховер. Ответ шириной 742: 862 − 120 на колонку с иконкой. -->
+<template data-accordion-item>
+  <!-- Разделитель нарисован тенью внутрь, а не border-b: обводка в Figma
+       внутренняя, и рамка снаружи прибавляла бы блоку лишний пиксель. -->
+  <div class="py-4 shadow-[inset_0_-1px_0_var(--color-border-subtle)]">
+    <button
+      type="button"
+      aria-expanded="false"
+      class="group/acc flex w-full items-center gap-20 text-left max-md:gap-4"
+      data-accordion-toggle
+    >
+      <span
+        class="flex-1 text-body-l text-text-primary group-aria-expanded/acc:text-text-secondary max-md:text-m-body-l"
+        data-accordion-q
+      ></span>
+      <span class="flex size-10 shrink-0 items-center justify-center">
+        <img
+          src="../../assets/order/icon-plus.svg"
+          alt=""
+          class="size-6 group-aria-expanded/acc:hidden"
+        />
+        <img
+          src="../../assets/order/icon-minus.svg"
+          alt=""
+          class="hidden size-6 group-aria-expanded/acc:block"
+        />
+      </span>
+    </button>
+    <div
+      class="pr-[120px] pt-3 text-body-l text-text-primary max-md:pr-0 max-md:text-m-body-l"
+      data-accordion-a
+      hidden
+    ></div>
+  </div>
+</template>
