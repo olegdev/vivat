@@ -290,7 +290,8 @@ and search frames carry no active item. Pages set `aria-current="page"`;
 `.nav-item[aria-current]` in `app.css` does the rest.
 
 There are no stubs left in `src/pages/` — every file there is a finished page.
-What remains unbuilt is the `B2b additional` section. See `BACKLOG.md` ›
+What remains unbuilt is the rest of `B2b additional`: its four modals, Доставка
+and Контакты are done, nine content pages are not. See `BACKLOG.md` ›
 "Not started".
 
 **Search is not a page — it is an overlay every page carries.** Figma's `search`
@@ -359,6 +360,58 @@ open is read off the DOM (`[data-modal].is-open`) rather than kept in a
 variable, so a panel shown by other means still closes on Esc, the × and a
 click outside.
 
+`src/pages/dealer/delivery.html` and `src/pages/dealer/contacts.html` are the
+**first two content pages of `B2b additional`** — Доставка (Figma 1167:79692 /
+2225:132262) and Контакты (1415:68377 / 2225:104774). Nine more remain, and they
+are the reason these two were built as a template rather than as two pages: ten
+of the eleven frames share one shell.
+
+```
+site-header        1440×116
+title-block        1442×92    type=H1
+general-container  1440×N     40 + menu-b2b 298 + 40 + right-container 1022 + 40
+spacing            1440×96
+group              1440×595   ← это подвал, а не блок «Производство»
+```
+
+Five things about that shell are easy to get wrong, and every one of them cost
+time here:
+
+- **The top block is the heading, not breadcrumbs.** There are no breadcrumbs on
+  these pages at either width. On the pages that carry the menu the heading is
+  **«Для бизнеса»** — the section's name — and the page's own name is the first
+  line of the right column; Контакты, which has no menu, puts «Контакты» there
+  directly. The block's `buttons` frame renders empty: `inst` finds a «В раздел»
+  button in it and the render does not, exactly like the catalog title.
+- **The shell is not a partial.** `<!--#include -->` is a flat splice — it cannot
+  wrap a page body, and there are no slots. Expressing the shell would mean
+  either paired open/close partials or a new layout mechanism in the include
+  plugin; both were rejected because the shell is six lines and all the real
+  bulk is the menu. The page writes the wrapper itself. See
+  `docs/superpowers/specs/2026-08-17-b2b-content-pages-design.md`.
+- **`menu-b2b` (298) is on eight pages of nine.** Контакты is the only one
+  without it, and its blocks run full width. The menu's copy lives in the
+  **master**, not the instances — a page overrides exactly one row, the active
+  one — so read it with `raw` per `menu-item`, never off the page's instance.
+  There is no `condition=active` variant in the set: the designer marks the
+  current page with the **hover** variant (`#eeeeee`), so hover and current
+  share their styling.
+- **Below `md` the menu is replaced, not narrowed.** `for-business-header`
+  («Для бизнеса» + a pill naming the current page) opens the section menu as a
+  sheet on the shared `.modal-scrim` / `.modal-panel` shell. One set of
+  `<template>`s serves both: the aside is hidden below `md` and the sheet above
+  it, so `h-10 max-md:h-11` is the whole of the 40 → 44 row change.
+- **Контакты' map is the fourth mode of `partials/stores.html`**, not a new
+  block: variant `type=contact page` (1456:56787). Frame, panel header, canvas
+  and zoom are shared; only the panel's body changes — one address card instead
+  of the dealer list — and below `md` the block turns into canvas-on-top /
+  panel-under, which is why the frame gets `flex-col-reverse` there.
+
+Their own parts are `partials/benefit-tile.html` (the Figma component is called
+`benefit`; its numeral is Onest **Thin**, a weight no other page loads) and
+`partials/accordion.html` (plus/minus, never a chevron; the expanded question
+greys to `#808080`). Everything else is reuse.
+
 ## Where this is heading — PHP Blade
 
 This static build is a **prototype for a PHP Blade theme**: the markup will be
@@ -401,7 +454,9 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `order-summary`, `order-forms`, `order-modules`, `order-done`,
 `search-overlay`, `price-mode`, `modals` (хаб) and the four it pulls in —
 `modal-dealer-request`, `modal-dealer-login`, `modal-subscribe`,
-`modal-director`.
+`modal-director`, and the content-page trio `menu-b2b`, `for-business-header`
+(which also carries the section-menu sheet) and `accordion`, plus
+`benefit-tile`.
 Several carry both a static shell and the `<template>` unit(s) their component
 clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`,
 `search-overlay`, `price-mode`, `order-modules`);

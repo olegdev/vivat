@@ -13,9 +13,9 @@
      ряд табов. Части включаются атрибутами на корне, отдельных копий партиала
      не заводим.
 
-     Тычок в селектор открывает шторку ниже — она же и есть мобильное меню
-     раздела. Оболочка у шторки общая с остальными (`.modal-scrim` /
-     `.modal-panel` в app.css), пятой копии не плодим. -->
+     Тычок в селектор открывает шторку меню — она живёт в partials/menu-b2b.html
+     вместе с самим меню, потому что это и есть меню на 360. У Контактов меню
+     нет, значит нет и шторки: страница подключает только эту шапку. -->
 <div class="group/fbh flex flex-col gap-1.5 md:hidden" data-for-business-header>
   <div class="px-4 pb-2 pt-3">
     <p class="text-m-h2 text-text-primary" data-fbh-title>Для бизнеса</p>
@@ -32,48 +32,5 @@
       <span class="flex-1 text-left text-m-button-m text-text-primary" data-fbh-current></span>
       <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 shrink-0" />
     </button>
-  </div>
-</div>
-
-<!-- ==================== ШТОРКА МЕНЮ РАЗДЕЛА (360) =====================
-     Figma 2209:213627 — оверлей #141414/0.9 и панель с ручкой перетаскивания
-     32×4, заголовком с крестиком, полем поиска и теми же тремя блоками меню.
-     Строки в шторке 44, а не 40: блоки 220 / 396 / 176 делятся на 44 ровно. -->
-<div class="modal-scrim md:hidden" data-menu-sheet>
-  <div class="modal-panel" data-menu-sheet-panel role="dialog" aria-label="Разделы для дилеров">
-    <div class="flex h-5 items-center justify-center pt-2">
-      <span class="h-1 w-8 rounded-pill bg-surface-raised"></span>
-    </div>
-
-    <div class="flex h-10 items-center justify-between px-4">
-      <p class="text-m-h2 text-text-primary">Для бизнеса</p>
-      <button type="button" class="flex size-6 items-center justify-center" data-menu-sheet-close>
-        <img src="../../assets/header/icon-close-dark.svg" alt="Закрыть" class="size-6" />
-      </button>
-    </div>
-
-    <div class="px-4 pt-1">
-      <!-- Тот же компонент поля, что в бургер-меню, с подписью этого экрана.
-           Что именно оно ищет, макет не говорит и прототипа на нём нет —
-           поведение не выдумываем, вопрос записан в BACKLOG. -->
-      <form
-        action="/search"
-        method="get"
-        class="flex h-11 items-center gap-4 rounded-pill bg-components-subtle px-4"
-        role="search"
-      >
-        <input
-          type="search"
-          name="q"
-          placeholder="Найти в документах"
-          aria-label="Найти в документах"
-          autocomplete="off"
-          class="min-w-0 flex-1 bg-transparent text-body-s-accent text-text-primary outline-none placeholder:text-text-muted"
-        />
-        <img src="../../assets/header/icon-search.svg" alt="" class="size-6 shrink-0" />
-      </form>
-    </div>
-
-    <div class="pt-4" data-menu-b2b-sheet></div>
   </div>
 </div>

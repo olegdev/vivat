@@ -9,7 +9,7 @@
 тратит время на то, чтобы понять, какой фрейм чему соответствует и где вообще
 мобильная версия. Здесь это уже разобрано.
 
-**Когда обновлять.** Снапшот `VIVAT_SOURCES/canvas.fig` от **2026-07-28**. Если
+**Когда обновлять.** Снапшот `VIVAT_SOURCES/canvas.fig` от **2026-08-17**. Если
 дизайнер добавил фреймы позже — переэкспортировать, `node scripts/fig.mjs index
 --rebuild`, и обновить таблицы ниже. Живая Figma всегда важнее снапшота.
 
@@ -85,22 +85,39 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 | X | Страница | 1440 | 360 |
 |---|---|---|---|
-| 2617 | Контакты | [1415:68377](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1415-68377) | [2225:104774](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-104774) |
-| 4704 | Доставка | [1167:79692](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-79692) | [2225:132262](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-132262) |
+| 2617 | **Контакты** ✅ | [1415:68377](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1415-68377) | [2225:104774](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-104774) |
+| 4704 | **Доставка** ✅ | [1167:79692](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-79692) | [2225:132262](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-132262) |
 | 7023 | Для интернет-магазинов | [1167:74233](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-74233) | [2209:104247](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-104247) + меню [2209:213627](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-213627) |
 | 9808 | Как с нами работать | [1167:98333](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-98333) | [2241:161193](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-161193) |
 | 12242 | Схемы сборки (свёрнуто) | [1463:60735](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60735) | [2241:163440](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-163440) |
 | 14199 | Схемы сборки (развёрнуто) | [1463:63542](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-63542) | [2241:164062](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-164062) |
 | 16219 | Сертификаты | [1463:60803](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60803) | [2241:164857](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-164857) |
 | 18390 | Техническая информация | [1463:60856](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60856) | **—** |
-| 19894 | Методические пособия | [1488:127306](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-127306) | [2241:186252](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-186252) |
-| 22091 | Методические пособия (2) | [1488:69674](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-69674) | [2241:187453](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-187453) |
+| 19894 | **Каталог декоров** (имя фрейма врёт) | [1488:127306](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-127306) | [2241:186252](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-186252) |
+| 22091 | **Каталог декоров**, второе состояние | [1488:69674](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-69674) | [2241:187453](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-187453) |
 | 24484 | Новости | [1463:67081](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-67081) | [2241:188212](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-188212) |
 | 27210 | Каталог (вариант) | [2338:254259](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2338-254259) | [2338:254303](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2338-254303) |
 
-Все контентные страницы устроены одинаково: `site-header` → `breadcrumbs` →
-`general-container` / `main container` → `group` (блок «Производство») →
-подвал. То есть это один шаблон с разным содержимым центральной колонки.
+Все контентные страницы устроены одинаково: `site-header` → `title-block`
+(`type=H1`) → `general-container` → отбивка 96 → подвал. То есть это один
+шаблон с разным содержимым центральной колонки.
+
+Три уточнения, за которые заплачено временем:
+
+- **`group` в конце страницы — это подвал**, а не блок «Производство»:
+  `Frame 2087325236` — 1440×580, `#f8f8f8`, `container 1374` из
+  `top/center/bottom`. Блока «Производство» на контентных страницах нет.
+- **Верхний блок — не хлебные крошки, а заголовок.** Крошек на 1440 нет вовсе.
+  На страницах с меню заголовок читается «Для бизнеса» (имя раздела), своё имя
+  страницы стоит первой строкой правой колонки; у Контактов, где меню нет, —
+  сразу «Контакты».
+- **Имена фреймов не определяют страницу — читать нужно H1.** Два фрейма
+  названы `metodicheskie-posobiya`, а их заголовок — «Каталог декоров»; у
+  «Методических пособий» фрейма нет вовсе.
+
+Левое меню `menu-b2b` (298) есть у восьми страниц из девяти; единственная без
+него — Контакты, они идут во всю ширину. Ниже `md` меню заменяется компонентом
+`for-business-header` и шторкой 2209:213627.
 
 ### Модальные окна (левая колонка, X = 134)
 
