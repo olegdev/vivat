@@ -1,0 +1,21 @@
+<!-- Плитка преимущества — Figma `benefit` 1058:177646, 282×179.
+     Рамка 1px #eeeeee, радиус 4, padding 16, зазор 24 между цифрой и текстом.
+
+     Цифра набрана Onest Thin (100) в 72px с интерлиньяжем 51 — начертание,
+     которого нет на других страницах проекта, поэтому страница догружает
+     его отдельно.
+
+     Текст — 16/24 (body-n), а не 20/32, как объявляет мастер: бокс текста
+     250×72 держит три строки, и при 20px первая строка требует 299px из 250
+     доступных. Инстанс кегль мастера не наследует — считать по боксу.
+
+     Ширины у единицы нет: её задаёт контейнер (см. CLAUDE.md про промо-плитку).
+     Клонируется components/benefit-tile.js — будущий @foreach. -->
+<template data-benefit-tile>
+  <article
+    class="flex h-[179px] flex-col gap-6 rounded-[var(--radius-n)] border border-border-subtle p-4"
+  >
+    <span class="text-[72px] font-thin leading-[51px] text-text-primary" data-tile-n></span>
+    <p class="text-body-n text-text-primary" data-tile-text></p>
+  </article>
+</template>

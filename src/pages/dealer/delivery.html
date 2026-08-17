@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@100;400;500;600&display=swap"
       rel="stylesheet"
     />
     <script type="module" src="./delivery.js"></script>
@@ -41,6 +41,9 @@
       <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
       <!--#include partials/price-mode.html -->
 
+      <!-- <template> плитки преимущества, клонируется в колонку ниже -->
+      <!--#include partials/benefit-tile.html -->
+
       <!-- ==================== ЗАГОЛОВОК РАЗДЕЛА ========================
            title-block 1167:79694 — spacing 24, строка 44, spacing 24. -->
       <div class="px-10 py-6 max-md:hidden">
@@ -56,6 +59,60 @@
 
         <div class="w-[1022px] px-20 max-md:w-full max-md:px-4" data-content-column>
           <h2 class="text-h2 text-text-primary max-md:hidden">Доставка</h2>
+
+          <!-- Вводные абзацы — дизайн-копия, поэтому стоят в разметке, а не в
+               фикстуре: в Blade это литерал, а не @foreach. -->
+          <p class="pt-4 text-body-l text-text-primary">
+            Уважаемые партнеры! Для вас Фабрика мебели VIVAT запустила сотрудничество с сервисной
+            компанией «АТП-Комфорт».
+          </p>
+          <p class="pt-4 text-body-n text-text-primary">
+            Какие преимущества дает это сотрудничество нашим оптовым покупателям:
+          </p>
+
+          <!-- Пять плиток: 3 + 2, зазор 8 (row 1167:79705, 862×366). Ширину
+               задаёт колонка сетки, у самой плитки её нет. -->
+          <div class="mt-8 grid grid-cols-3 gap-2 max-md:grid-cols-1" data-benefit-tiles></div>
+
+          <!-- Врезка 1167:79712 — 862×316, #ffd6b9, padH=40. Figma объявляет
+               padV=8, но высота у секции фиксированная и содержимое в ней
+               центрируется, так что фактический отступ 16: 284 + 32 = 316. -->
+          <div class="mt-8 bg-surface-accent-subtle px-10 py-4 max-md:px-4" data-callout>
+            <p class="pt-4 text-body-n text-text-primary">
+              «АТП-Комфорт» зарекомендовали себя как настоящие профессионалы своего дела. Немало
+              важно, что они отслеживают эффективность своей работы, взаимодействуя с покупателем
+              после оказания всех услуг. Это значительно увеличивает степень доверия покупателей.
+              Данное сотрудничество решает ключевые вопросы в принятии решения об открытии
+              собственного мебельного салона:
+            </p>
+            <ul class="text-body-n text-text-primary">
+              <li class="flex gap-1 pt-3">
+                <span class="flex size-6 shrink-0 items-center justify-center" aria-hidden="true">
+                  <span class="size-1 rounded-full bg-text-primary"></span>
+                </span>
+                <span>Как и где найти профессионалов для оказания сервисных услуг покупателю?</span>
+              </li>
+              <li class="flex gap-1 pt-3">
+                <span class="flex size-6 shrink-0 items-center justify-center" aria-hidden="true">
+                  <span class="size-1 rounded-full bg-text-primary"></span>
+                </span>
+                <span>
+                  Что выгоднее в вопросе доставки: купить собственный транспорт или нанять водителя
+                  со своей машиной?
+                </span>
+              </li>
+              <li class="flex gap-1 pt-3">
+                <span class="flex size-6 shrink-0 items-center justify-center" aria-hidden="true">
+                  <span class="size-1 rounded-full bg-text-primary"></span>
+                </span>
+                <span>Как снизить расходную часть бизнеса на услуги сервиса?</span>
+              </li>
+            </ul>
+            <!-- Подпись — одна строка и серая (#808080), несмотря на \r в копии. -->
+            <p class="pt-4 text-body-n text-text-secondary">
+              Руководитель отдела продаж Фабрики мебели VIVAT
+            </p>
+          </div>
         </div>
       </div>
 
