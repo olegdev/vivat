@@ -89,9 +89,11 @@
 - Consumes: `partials/header.html`, `partials/footer.html`,
   `partials/modals.html` — уже существуют.
 - Produces: `MENU_B2B` — массив трёх блоков вида
-  `{ title: string, items: [{ label: string, href: string }] }`;
-  `renderMenuB2b({ current })` из `components/menu-b2b.js`, где `current` —
-  `href` активного пункта.
+  `{ title: string, items: [{ label: string, href: string, modal?: string }] }`;
+  `renderMenuB2b(blocks, { current })` из `components/menu-b2b.js`, где
+  `current` — `href` активного пункта. Данные передаёт страница, как во всех
+  остальных компонентах проекта (`renderNewsCards(el, items)`): фикстуры живут
+  в `src/data/`, скрипт страницы — только проводка.
 
 - [ ] **Шаг 1: вычитать меню из мастера**
 

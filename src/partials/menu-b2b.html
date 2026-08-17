@@ -1,0 +1,34 @@
+<!-- ==================== МЕНЮ ДИЛЕРСКОГО РАЗДЕЛА ======================
+     Figma `menu-b2b` 1058:178109 — 298×776, #f8f8f8, padH=8 padV=16, зазор
+     между блоками 12. Блок — заголовок плюс пункты, каждая строка 282×40.
+
+     Блоки и пункты — вложенные <template>, будущие вложенные @foreach;
+     components/menu-b2b.js их клонирует и никогда не собирает разметку из
+     строк. Активный пункт помечается aria-current="page": в наборе нет
+     варианта condition=active, текущую страницу дизайнер рисует ховером
+     (912:80243, #eeeeee), поэтому у ховера и у текущей страницы один фон.
+
+     Ниже md меню не сжимается, а заменяется другим компонентом —
+     partials/for-business-header.html. -->
+<aside
+  class="flex w-[298px] shrink-0 flex-col gap-3 bg-bg-subtle px-2 py-4 max-md:hidden"
+  data-menu-b2b
+  aria-label="Разделы для дилеров"
+></aside>
+
+<!-- один блок (future @foreach($menu as $block)) -->
+<template data-menu-b2b-block>
+  <nav class="flex flex-col">
+    <p class="flex h-10 items-center px-4 text-body-n-accent text-text-muted" data-block-title></p>
+    <div data-block-items></div>
+  </nav>
+</template>
+
+<!-- один пункт (future @foreach($block->items as $item)) -->
+<template data-menu-b2b-item>
+  <a
+    href="#"
+    class="flex h-10 items-center px-4 text-body-n-accent text-text-primary transition-colors hover:bg-components-subtle-hover aria-[current=page]:bg-components-subtle-hover"
+    data-menu-b2b-link
+  ></a>
+</template>
