@@ -465,12 +465,13 @@ gets re-hit on the next page.
 
 ## Reading the design
 
-The canonical Figma file is **`t7qJcR7KNgLigitQwv3V5T`**
-(https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT) — pass this fileKey
+The canonical Figma file is **`locvXJpmVZqIMVwPoumae3`**
+(https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT) — pass this fileKey
 to the MCP tools. Top-level pages: `Design` (189:10790), `UI SYSTEM`
-(922:83156). Older copies `odPx3t2xUNTnIx09J9DpIS`, `9d9EunlGqwIMf5hPZI3kmf` and
-`J5GoY36VJIg79HSzfDVn3f` also exist — ignore them. Node ids are unchanged across
-each move, so ids quoted anywhere in these docs still resolve.
+(922:83156). Older copies `t7qJcR7KNgLigitQwv3V5T`, `odPx3t2xUNTnIx09J9DpIS`,
+`9d9EunlGqwIMf5hPZI3kmf` and `J5GoY36VJIg79HSzfDVn3f` also exist — ignore them.
+Node ids are unchanged across each move, so ids quoted anywhere in these docs
+still resolve.
 
 Two sources. **Reach for the local export first, fall back to the Figma MCP
 server for whatever it doesn't have.**

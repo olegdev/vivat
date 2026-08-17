@@ -10,10 +10,10 @@
 
 | Окно | 1440 | 360 | Панель 1440 |
 |---|---|---|---|
-| Стать дилером | [1003:160435](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-160435) | [2209:213755](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2209-213755) | `1003:166072`, 485×701 |
-| Войти в режим дилера | [1003:166631](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-166631) | [2209:216011](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2209-216011) | `1003:166682`, 485×323 |
-| Подписаться на новости | [1003:169259](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-169259) | [2225:96576](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-96576) | `1003:169310`, 485×343 |
-| Сообщение директору | [1534:65836](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1534-65836) | [2225:97387](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-97387), [2225:98292](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-98292) | `1534:70720`, 485×811 |
+| Стать дилером | [1003:160435](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1003-160435) | [2209:213755](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-213755) | `1003:166072`, 485×701 |
+| Войти в режим дилера | [1003:166631](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1003-166631) | [2209:216011](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-216011) | `1003:166682`, 485×323 |
+| Подписаться на новости | [1003:169259](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1003-169259) | [2225:96576](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-96576) | `1003:169310`, 485×343 |
+| Сообщение директору | [1534:65836](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1534-65836) | [2225:97387](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-97387), [2225:98292](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-98292) | `1534:70720`, 485×811 |
 
 ## Оболочка
 

@@ -13,7 +13,7 @@
 дизайнер добавил фреймы позже — переэкспортировать, `node scripts/fig.mjs index
 --rebuild`, и обновить таблицы ниже. Живая Figma всегда важнее снапшота.
 
-**Ссылки** ведут в канонический файл `t7qJcR7KNgLigitQwv3V5T` (см. CLAUDE.md).
+**Ссылки** ведут в канонический файл `locvXJpmVZqIMVwPoumae3` (см. CLAUDE.md).
 Node-id не меняются между копиями, поэтому те же id открываются и в копии
 `odPx3t2xUNTnIx09J9DpIS`, по которой ходит заказчик.
 
@@ -45,7 +45,7 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 ---
 
-## Секция `dealer` — [882:90262](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=882-90262)
+## Секция `dealer` — [882:90262](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=882-90262)
 
 Полноценный параллельный b2b-сайт: те же страницы, что у покупателя, но со
 своей шапкой, подвалом и ценами.
@@ -54,29 +54,29 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 | X | Экран | 1440 | 360 |
 |---|---|---|---|
-| 360 | **Главная** ✅ | [882:107882](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=882-107882) | — |
-| 1918 | Мега-меню каталога, 1 колонка | [953:121639](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121639) | — |
-| 3446 | Мега-меню каталога, 3 колонки | [953:121756](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121756) | — |
-| 5053 | **Каталог** ✅ | [953:121911](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121911) | [2225:160540](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-160540) — **и дилерская шапка с нижней навигацией** |
-| 6935 | **Шторка «Наценка»**, выбрана «Оптовая цена» | — | [2225:163666](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-163666) |
-| 7328 | **Шторка «Наценка»**, выбрана «Своя наценка» | — | [2225:164865](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-164865) |
-| 7889 | Каталог: все фильтры | [953:121956](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121956) | — |
-| 9462 | Каталог: один фильтр | [953:122063](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122063) | — |
-| 10997 | Каталог: выбранные параметры | [953:122135](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122135) | — |
-| 12484 | **PDP** ✅ | [953:122180](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122180) | — |
-| 13989 | PDP: панель «Модули» ✅ | [1686:59341](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1686-59341) | — |
-| 15521 | PDP: панель «Документы» ✅ | [1686:59383](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1686-59383) | — |
-| 17239 | **Заказ** ✅ | [1209:95219](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1209-95219) | [2225:202954](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-202954) |
-| 18771 | **Заказ: b2b-доставка** ✅ | [1415:67609](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1415-67609) | [2225:167283](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-167283) |
-| 20695 | Заказ: шторка «Модули» (моб.) ✅ | — | [2225:201034](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-201034) |
-| 21597 | Заказ: подтверждение (моб.) ✅ | — | [2238:157458](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2238-157458) |
+| 360 | **Главная** ✅ | [882:107882](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=882-107882) | — |
+| 1918 | Мега-меню каталога, 1 колонка | [953:121639](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-121639) | — |
+| 3446 | Мега-меню каталога, 3 колонки | [953:121756](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-121756) | — |
+| 5053 | **Каталог** ✅ | [953:121911](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-121911) | [2225:160540](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-160540) — **и дилерская шапка с нижней навигацией** |
+| 6935 | **Шторка «Наценка»**, выбрана «Оптовая цена» | — | [2225:163666](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-163666) |
+| 7328 | **Шторка «Наценка»**, выбрана «Своя наценка» | — | [2225:164865](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-164865) |
+| 7889 | Каталог: все фильтры | [953:121956](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-121956) | — |
+| 9462 | Каталог: один фильтр | [953:122063](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-122063) | — |
+| 10997 | Каталог: выбранные параметры | [953:122135](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-122135) | — |
+| 12484 | **PDP** ✅ | [953:122180](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-122180) | — |
+| 13989 | PDP: панель «Модули» ✅ | [1686:59341](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1686-59341) | — |
+| 15521 | PDP: панель «Документы» ✅ | [1686:59383](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1686-59383) | — |
+| 17239 | **Заказ** ✅ | [1209:95219](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1209-95219) | [2225:202954](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-202954) |
+| 18771 | **Заказ: b2b-доставка** ✅ | [1415:67609](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1415-67609) | [2225:167283](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-167283) |
+| 20695 | Заказ: шторка «Модули» (моб.) ✅ | — | [2225:201034](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-201034) |
+| 21597 | Заказ: подтверждение (моб.) ✅ | — | [2238:157458](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2238-157458) |
 
 Мобильных фреймов **нет** у: главной, мега-меню на 1440, трёх состояний
 фильтров каталога, PDP и обеих его панелей.
 
 ---
 
-## Секция `B2b additional` — [1334:57242](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1334-57242)
+## Секция `B2b additional` — [1334:57242](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1334-57242)
 
 Контентные страницы дилерского раздела — то, куда ведут ссылки из дилерского
 подвала («Полезная информация», «Для бизнеса», «Компания»).
@@ -85,18 +85,18 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 | X | Страница | 1440 | 360 |
 |---|---|---|---|
-| 2617 | Контакты | [1415:68377](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1415-68377) | [2225:104774](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-104774) |
-| 4704 | Доставка | [1167:79692](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1167-79692) | [2225:132262](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-132262) |
-| 7023 | Для интернет-магазинов | [1167:74233](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1167-74233) | [2209:104247](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2209-104247) + меню [2209:213627](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2209-213627) |
-| 9808 | Как с нами работать | [1167:98333](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1167-98333) | [2241:161193](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2241-161193) |
-| 12242 | Схемы сборки (свёрнуто) | [1463:60735](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1463-60735) | [2241:163440](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2241-163440) |
-| 14199 | Схемы сборки (развёрнуто) | [1463:63542](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1463-63542) | [2241:164062](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2241-164062) |
-| 16219 | Сертификаты | [1463:60803](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1463-60803) | [2241:164857](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2241-164857) |
-| 18390 | Техническая информация | [1463:60856](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1463-60856) | **—** |
-| 19894 | Методические пособия | [1488:127306](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1488-127306) | [2241:186252](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2241-186252) |
-| 22091 | Методические пособия (2) | [1488:69674](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1488-69674) | [2241:187453](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2241-187453) |
-| 24484 | Новости | [1463:67081](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1463-67081) | [2241:188212](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2241-188212) |
-| 27210 | Каталог (вариант) | [2338:254259](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2338-254259) | [2338:254303](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2338-254303) |
+| 2617 | Контакты | [1415:68377](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1415-68377) | [2225:104774](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-104774) |
+| 4704 | Доставка | [1167:79692](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-79692) | [2225:132262](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-132262) |
+| 7023 | Для интернет-магазинов | [1167:74233](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-74233) | [2209:104247](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-104247) + меню [2209:213627](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-213627) |
+| 9808 | Как с нами работать | [1167:98333](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-98333) | [2241:161193](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-161193) |
+| 12242 | Схемы сборки (свёрнуто) | [1463:60735](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60735) | [2241:163440](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-163440) |
+| 14199 | Схемы сборки (развёрнуто) | [1463:63542](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-63542) | [2241:164062](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-164062) |
+| 16219 | Сертификаты | [1463:60803](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60803) | [2241:164857](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-164857) |
+| 18390 | Техническая информация | [1463:60856](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60856) | **—** |
+| 19894 | Методические пособия | [1488:127306](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-127306) | [2241:186252](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-186252) |
+| 22091 | Методические пособия (2) | [1488:69674](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-69674) | [2241:187453](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-187453) |
+| 24484 | Новости | [1463:67081](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-67081) | [2241:188212](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-188212) |
+| 27210 | Каталог (вариант) | [2338:254259](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2338-254259) | [2338:254303](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2338-254303) |
 
 Все контентные страницы устроены одинаково: `site-header` → `breadcrumbs` →
 `general-container` / `main container` → `group` (блок «Производство») →
@@ -111,10 +111,10 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 | Окно | 1440 | 360 | Панель 1440 |
 |---|---|---|---|
-| «Стать дилером» — форма заявки ✅ | [1003:160435](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-160435) | [2209:213755](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2209-213755) | `1003:166072`, 485×701 |
-| «Войти в режим дилера» — вход по паролю ✅ | [1003:166631](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-166631) | [2209:216011](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2209-216011) | `1003:166682`, 485×323 |
-| «Подписаться на новости» ✅ | [1003:169259](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1003-169259) | [2225:96576](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-96576) | `1003:169310`, 485×343 |
-| `mail` — «Сообщение директору» ✅ | [1534:65836](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1534-65836) | [2225:97387](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-97387), [2225:98292](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-98292) | `1534:70720`, 485×811 |
+| «Стать дилером» — форма заявки ✅ | [1003:160435](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1003-160435) | [2209:213755](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-213755) | `1003:166072`, 485×701 |
+| «Войти в режим дилера» — вход по паролю ✅ | [1003:166631](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1003-166631) | [2209:216011](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-216011) | `1003:166682`, 485×323 |
+| «Подписаться на новости» ✅ | [1003:169259](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1003-169259) | [2225:96576](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-96576) | `1003:169310`, 485×343 |
+| `mail` — «Сообщение директору» ✅ | [1534:65836](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1534-65836) | [2225:97387](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-97387), [2225:98292](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-98292) | `1534:70720`, 485×811 |
 
 Кнопка в каждом окне одна: серая «Отмена» лежит в мастере
 `modal-button-container`, но инстансы её не рисуют — читать через
@@ -124,7 +124,7 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 ## Дилерская главная: разбор по блокам
 
-[882:107882](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=882-107882), 1440×7496. Сверху вниз, с реальными текстами (из `raw`) и с тем,
+[882:107882](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=882-107882), 1440×7496. Сверху вниз, с реальными текстами (из `raw`) и с тем,
 что из этого уже есть в проекте.
 
 | Y | Блок | Node | Что переиспользуем |

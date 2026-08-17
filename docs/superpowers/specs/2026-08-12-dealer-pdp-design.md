@@ -1,16 +1,16 @@
 # Дилерский PDP — спека
 
 **Дата:** 2026-08-12
-**Фреймы:** PDP [953:122180](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122180) (1440),
-панель «Модули» [1686:59341](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1686-59341),
-панель «Документы» [1686:59383](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1686-59383).
+**Фреймы:** PDP [953:122180](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-122180) (1440),
+панель «Модули» [1686:59341](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1686-59341),
+панель «Документы» [1686:59383](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1686-59383).
 Мобильных фреймов у всех трёх **нет**.
 
 Покупательский аналог, с которым всё сравнивалось: PDP
-[914:101099](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=914-101099),
-`PDP-package` [922:126723](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=922-126723),
-`PDP-docs` [942:34310](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=942-34310),
-360 — [1997:305719](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1997-305719).
+[914:101099](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=914-101099),
+`PDP-package` [922:126723](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=922-126723),
+`PDP-docs` [942:34310](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=942-34310),
+360 — [1997:305719](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1997-305719).
 
 ## Что строим
 

@@ -14,9 +14,9 @@
 
 | Node | Что это на самом деле |
 |---|---|
-| [2225:160540](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-160540) | Дилерская мобильная шапка целиком (138px) + дилерская нижняя навигация |
-| [2225:163666](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-163666) | Шторка «Наценка», состояние 1: выбрана «Оптовая цена» |
-| [2225:164865](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-164865) | Шторка «Наценка», состояние 2: выбрана «Своя наценка», поле ввода + «Применить» |
+| [2225:160540](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-160540) | Дилерская мобильная шапка целиком (138px) + дилерская нижняя навигация |
+| [2225:163666](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-163666) | Шторка «Наценка», состояние 1: выбрана «Оптовая цена» |
+| [2225:164865](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-164865) | Шторка «Наценка», состояние 2: выбрана «Своя наценка», поле ввода + «Применить» |
 
 Плюс два открытия в компонентах:
 

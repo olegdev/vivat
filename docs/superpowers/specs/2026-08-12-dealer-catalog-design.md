@@ -1,13 +1,13 @@
 # Дилерский каталог — спека
 
 **Дата:** 2026-08-12
-**Фреймы:** Catalog-default [953:121911](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121911) (1440),
-catalog [2225:160540](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-160540) (360),
-состояния фильтров [953:121956](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-121956) /
-[953:122063](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122063) /
-[953:122135](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=953-122135),
-шторки «Наценка» [2225:163666](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-163666) /
-[2225:164865](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=2225-164865) (уже свёрстаны).
+**Фреймы:** Catalog-default [953:121911](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-121911) (1440),
+catalog [2225:160540](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-160540) (360),
+состояния фильтров [953:121956](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-121956) /
+[953:122063](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-122063) /
+[953:122135](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-122135),
+шторки «Наценка» [2225:163666](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-163666) /
+[2225:164865](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-164865) (уже свёрстаны).
 
 ## Что строим
 
@@ -68,8 +68,8 @@ initCatalogListing({ products })   // сетка + фильтры + сортир
 
 ## Тумблер «Только модули»
 
-Figma: `text+toggle` [882:89379](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=882-89379)
-(1440) и [1806:238263](https://www.figma.com/design/t7qJcR7KNgLigitQwv3V5T/VIVAT?node-id=1806-238263) (360).
+Figma: `text+toggle` [882:89379](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=882-89379)
+(1440) и [1806:238263](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1806-238263) (360).
 Один DOM, две раскладки по брейкпоинту.
 
 **1440.** Строка `filters` 1360 остаётся `justify-between`. Правая группа —
