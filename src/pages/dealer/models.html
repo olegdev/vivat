@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Каталог 3D-моделей (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@100;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./models.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary" data-user="dealer">
+    <!-- «Каталог 3D-моделей» — Figma Catalog-default 2338:254259 (1440) и
+         catalog 2338:254303 (360).
+
+         В карте фрейм назван «Каталог (вариант)», и он действительно повторяет
+         дилерский каталог нода в ноду — кроме карточки: здесь компонент `3D`
+         322×418 с рендером, строкой формата, образцами цветов и «Скачать».
+         Левого меню раздела у него нет, поэтому это не контентная страница,
+         а каталог.
+
+         Фильтры и сортировка не подключены: карточки в макете — филлер (все
+         тридцать с одним заголовком), а шторки фильтров для этого фрейма нет.
+         См. BACKLOG. -->
+    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- <template>ы, которые клонируются в колонку ниже -->
+      
+
+      <!-- ==================== ЗАГОЛОВОК РАЗДЕЛА ========================
+           title-block 1167:79694 — spacing 24, строка 44, spacing 24. -->
+      <div class="px-10 py-6 max-md:hidden">
+        <div class="flex h-11 items-center">
+          <h1 class="text-h1 text-text-primary">Для бизнеса</h1>
+        </div>
+      </div>
+
+      <!-- ==================== ШАПКА РАЗДЕЛА НА 360 =====================
+           Ниже md заголовочный блок и левое меню заменяются этим блоком
+           (2225:132266, 104): «Для бизнеса» и селектор с именем страницы. -->
+      <!-- крошки 56 и заголовок 44 -->
+      <div class="px-10 max-md:px-4">
+        <nav class="flex items-center gap-2 py-4 text-body-s text-text-secondary max-md:hidden">
+          <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
+          <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
+          <span class="text-text-primary">Каталог 3D-моделей</span>
+        </nav>
+        <h1 class="text-h1 text-text-primary max-md:text-m-h1">Каталог 3D-моделей</h1>
+      </div>
+
+      <!-- catalog-settings 2338:254262 — воронка и пилюли, без чипсов -->
+      <div class="flex items-center gap-2 px-10 py-6 max-md:px-4 max-md:py-4">
+        <button type="button" class="filter-funnel flex h-11 shrink-0 items-center" aria-label="Открыть фильтры">
+          <span class="filter-funnel__circle">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M13 12c2.209 0 4 1.791 4 4s-1.791 4-4 4a4.002 4.002 0 0 1-3.876-3.009A1 1 0 0 1 9 17H3a1 1 0 1 1 0-2h6c.042 0 .083.003.124.008A4.002 4.002 0 0 1 13 12Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+              <path d="M21 15a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2h2Z" />
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2c2.209 0 4 1.791 4 4s-1.791 4-4 4a4.002 4.002 0 0 1-3.876-3.009A1 1 0 0 1 6 7H3a1 1 0 0 1 0-2h3c.042 0 .083.003.124.008A4.002 4.002 0 0 1 10 2Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+              <path d="M21 5a1 1 0 1 1 0 2h-5a1 1 0 1 1 0-2h5Z" />
+            </svg>
+          </span>
+        </button>
+        <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Коллекция</button>
+        <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Форма кухни</button>
+        <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цвет</button>
+      </div>
+
+      <!-- сетка: карточка 322, четыре в ряд на 1440 и две на 360 -->
+      <div class="grid grid-cols-4 gap-6 px-10 max-md:grid-cols-2 max-md:gap-2 max-md:px-4" data-models></div>
+
+      <!--#include partials/pagination.html -->
+
+      <!--#include partials/seo-kitchens.html -->
+
+      <div class="h-24 max-md:h-20"></div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- одна карточка 3D-модели (future @foreach($models as $m)) — Figma `3D`
+         2338:259535, 322×418: рендер с индикатором, название, строка формата,
+         образцы цветов и «Скачать». -->
+    <template data-model-card>
+      <article class="flex flex-col gap-3">
+        <img class="aspect-[322/242] w-full rounded-[var(--radius-l)] object-cover" alt="" data-model-img />
+        <p class="text-body-n text-text-primary max-md:text-m-body-n" data-model-title></p>
+        <p class="text-body-s text-text-secondary max-md:text-m-body-s" data-model-spec></p>
+        <div class="flex gap-2" data-model-swatches>
+          <span class="size-6 rounded-full border border-border-subtle bg-[#a98a63]"></span>
+          <span class="size-6 rounded-full border border-border-subtle bg-[#d9d9d9]"></span>
+          <span class="size-6 rounded-full border border-border-subtle bg-surface-inverted"></span>
+        </div>
+        <a href="#" class="flex w-fit items-center gap-2 text-body-n text-text-primary" data-model-action>
+          <span></span>
+          <img src="../../assets/header/chevron-down.svg" alt="" class="size-4" />
+        </a>
+      </article>
+    </template>
+
+    <!-- одна карточка декора (future @foreach($decors as $d)) -->
+    <template data-decor-card>
+      <article class="flex flex-col">
+        <img class="aspect-[207/155] w-full object-cover" alt="" data-decor-img />
+        <p class="px-1 py-3 text-body-s leading-6 text-text-primary max-md:text-m-body-n" data-decor-name></p>
+      </article>
+    </template>
+
+    <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
+    <!--#include partials/modals.html -->
+  </body>
+</html>
