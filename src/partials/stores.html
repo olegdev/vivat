@@ -51,7 +51,7 @@
 
         <div class="flex flex-col gap-2 border-b border-divider-light pb-4 pl-10 pr-6 pt-6" data-panel-head>
           <div class="flex h-8 items-center gap-1">
-            <span class="text-h3 text-text-primary underline decoration-dotted underline-offset-4">Москва</span>
+            <span class="text-h3 text-text-primary underline decoration-dotted decoration-1 underline-offset-4">Москва</span>
             <img src="../../assets/header/icon-pin.svg" alt="" class="size-6" />
           </div>
           <div class="flex items-center gap-2">
@@ -79,42 +79,55 @@
              вместо списка салонов один адрес. Показывается режимом
              contactPage в components/stores-map.js, там же и наполняется.
              general-container 440×442: padH=24, зазор между блоками 24. -->
-        <div class="hidden flex-col gap-6 px-6" data-store-detail>
-          <!-- top-container 392×56: отбивка 32 и название 24 -->
-          <p class="pt-8 text-h5 text-text-primary" data-detail-name></p>
+        <!-- Слот сегментов «Опт / Розница» на 360: в мобильном варианте
+             (2225:107318) они стоят внутри панели под шапкой, а на 1440 — над
+             всем блоком карты. Страница клонирует в него свой <template>. -->
+        <div class="hidden px-4 py-2 md:hidden" data-store-audience></div>
 
-          <!-- adress 392×104: описание 48 (адрес 24 + метро 18, зазор 6),
-               зазор 12, кнопка 44 -->
-          <div class="flex flex-col gap-3">
-            <div class="flex flex-col gap-1.5">
-              <p class="text-body-n text-text-primary" data-detail-address></p>
-              <span class="flex items-center gap-2 empty:hidden" data-detail-metro>
-                <img src="../../assets/home/icon-metro.svg" alt="" class="size-4 shrink-0" />
-                <span class="text-body-s text-text-secondary" data-detail-metro-name></span>
-              </span>
-            </div>
-            <a
-              href="#"
-              class="inline-flex h-11 w-fit items-center gap-2 rounded-pill bg-components-subtle px-4 text-button-m text-text-primary"
-              data-detail-route
-            >
-              <span data-detail-route-label></span>
-              <img src="../../assets/contacts/icon-route.svg" alt="" class="size-6 shrink-0" />
-            </a>
+        <!-- Второе тело панели — вариант `type=contact page` (1456:56787):
+             вместо списка салонов один адрес. Показывается режимом
+             contactPage в components/stores-map.js, там же и наполняется.
+             1440: general-container 440×442, padH=24, зазор 24.
+             360:  dealer-card 360×442, padH=16, зазор 16. -->
+        <div class="hidden flex-col gap-6 px-6 max-md:gap-4 max-md:px-4" data-store-detail>
+          <!-- top-container 392×56: отбивка 32 и название 24 -->
+          <p class="pt-8 text-h5 text-text-primary max-md:pt-3" data-detail-name></p>
+
+          <!-- adress: описание 48 (адрес 24 + метро 18, зазор 6) -->
+          <div class="flex flex-col gap-1.5">
+            <p class="text-body-n text-text-primary max-md:text-m-body-l" data-detail-address></p>
+            <span class="flex items-center gap-2 empty:hidden" data-detail-metro>
+              <img src="../../assets/home/icon-metro.svg" alt="" class="size-4 shrink-0" />
+              <span class="text-body-s text-text-secondary" data-detail-metro-name></span>
+            </span>
           </div>
 
+          <!-- Кнопка. На 1440 она идёт сразу за адресом и в 12 под ним (adress
+               392×104 = 48 + 12 + 44), поэтому -mt-3 гасит зазор колонки с 24
+               до 12. На 360 она уходит в самый низ карточки и растягивается на
+               всю ширину (2225:107919, 328×44, содержимое по центру). -->
+          <a
+            href="#"
+            class="-mt-3 inline-flex h-11 w-fit items-center gap-2 rounded-pill bg-components-subtle px-4 text-button-m text-text-primary max-md:order-last max-md:mt-0 max-md:w-full max-md:justify-center max-md:text-m-button-m"
+            data-detail-route
+          >
+            <span data-detail-route-label></span>
+            <img src="../../assets/contacts/icon-route.svg" alt="" class="size-6 shrink-0 max-md:size-5" />
+          </a>
+
           <!-- consult 392×108: заголовок 24, зазор 8, столбец 76 -->
-          <div class="flex flex-col gap-2">
-            <p class="text-h5 text-text-primary" data-detail-dept-title></p>
+          <div class="flex flex-col gap-2 max-md:gap-1">
+            <p class="text-h5 text-text-primary max-md:text-m-h4" data-detail-dept-title></p>
             <div class="flex flex-col gap-2" data-detail-dept-rows></div>
           </div>
 
-          <!-- wh 392×102: заголовок 24, зазор 8, две колонки 52 и 91 -->
-          <div class="flex flex-col gap-2">
-            <p class="text-h5 text-text-primary" data-detail-hours-title></p>
+          <!-- wh 392×102: заголовок 24, зазор 8, колонки 52 и 91.
+               На 360 колонки равные по 160 (row 328 = 160 + 8 + 160). -->
+          <div class="flex flex-col gap-2 max-md:gap-1">
+            <p class="text-h5 text-text-primary max-md:text-m-h4" data-detail-hours-title></p>
             <div class="flex gap-2">
-              <div class="flex w-[52px] flex-col gap-2" data-detail-hours-labels></div>
-              <div class="flex flex-col gap-2" data-detail-hours-values></div>
+              <div class="flex w-[52px] flex-col gap-2 max-md:w-40 max-md:gap-1" data-detail-hours-labels></div>
+              <div class="flex flex-col gap-2 max-md:w-40 max-md:gap-1" data-detail-hours-values></div>
             </div>
           </div>
         </div>

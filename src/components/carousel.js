@@ -192,6 +192,9 @@ export function initScrollProgress(sectionEl) {
 // Wires prev/next arrows to slide the track. Works on any section built by
 // buildCarouselSection(): [data-viewport] clips, [data-track] translates by one card.
 // Below `md` the viewport scrolls natively instead, so the transform is cleared.
+// Переполнение меньше этого — артефакт округления боксов макета, а не страница.
+const SCROLL_EPSILON = 8;
+
 export function initCarousel(sectionEl) {
   const viewport = sectionEl.querySelector("[data-viewport]");
   const track = sectionEl.querySelector("[data-track]");
@@ -229,7 +232,12 @@ export function initCarousel(sectionEl) {
     // When the cards fit the viewport there's nothing to scroll — hide both
     // arrows rather than leave them disabled-but-visible. This matters after a
     // tab filter trims the rail down to one or two cards.
-    const scrollable = maxOffset() > 1;
+    //
+    // Порог не 1px, а 8: рельс «Наш склад» на Контактах переполняется ровно на
+    // два пикселя (три снимка 438 с зазором 24 = 1362 в кадре 1360 — так же и
+    // в макете, там это просто обрезано). При пороге в пиксель стрелка
+    // показывалась, сдвигала рельс на 2px и гасла.
+    const scrollable = maxOffset() > SCROLL_EPSILON;
     prev.classList.toggle("hidden", !scrollable);
     next.classList.toggle("hidden", !scrollable);
 

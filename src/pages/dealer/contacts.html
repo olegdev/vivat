@@ -56,23 +56,8 @@
            «Опт» (882:55295, condition=active, #414141).
 
            На 360 этого блока нет — мобильный фрейм его не рисует. -->
-      <div class="px-10 pb-3 max-md:hidden" data-audience>
-        <div class="flex w-[322px] gap-2 py-4">
-          <button
-            type="button"
-            class="h-11 w-[157px] rounded-pill bg-components-subtle text-button-m text-text-primary transition-colors group-data-[audience=opt]/page:bg-components-active-muted group-data-[audience=opt]/page:text-text-inverse-primary"
-            data-audience-mode="opt"
-          >
-            Опт
-          </button>
-          <button
-            type="button"
-            class="h-11 w-[157px] rounded-pill bg-components-subtle text-button-m text-text-primary transition-colors group-data-[audience=retail]/page:bg-components-active-muted group-data-[audience=retail]/page:text-text-inverse-primary"
-            data-audience-mode="retail"
-          >
-            Розница
-          </button>
-        </div>
+      <div class="px-10 pb-3 max-md:hidden" data-audience-desktop>
+        <div class="py-4"></div>
       </div>
 
       <!-- ==================== КАРТА =====================================
@@ -141,10 +126,36 @@
       <!--#include partials/footer.html -->
     </div>
 
+    <!-- Сегменты «Опт / Розница» — Figma `segments` 1447:53433 (1440, 322 =
+         157 + 8 + 157) и 2225:107318 (360, 328 = 160 + 8 + 160). Активный
+         «Опт» — вариант condition=active, #414141.
+
+         Один <template> на два места: на 1440 блок стоит над картой (фрейм
+         `city` 1462:56195), на 360 — внутри панели карты под «Москвой».
+         В Blade это тот же @include, вставленный дважды. -->
+    <template data-audience-segments>
+      <div class="flex gap-2">
+        <button
+          type="button"
+          class="h-11 w-[157px] rounded-pill bg-components-subtle text-button-m text-text-primary transition-colors group-data-[audience=opt]/page:bg-components-active-muted group-data-[audience=opt]/page:text-text-inverse-primary max-md:w-40 max-md:text-m-button-m"
+          data-audience-mode="opt"
+        >
+          Опт
+        </button>
+        <button
+          type="button"
+          class="h-11 w-[157px] rounded-pill bg-components-subtle text-button-m text-text-primary transition-colors group-data-[audience=retail]/page:bg-components-active-muted group-data-[audience=retail]/page:text-text-inverse-primary max-md:w-40 max-md:text-m-button-m"
+          data-audience-mode="retail"
+        >
+          Розница
+        </button>
+      </div>
+    </template>
+
     <!-- одна карточка сотрудника (future @foreach($employees as $e)) -->
     <template data-employee-card>
       <div class="flex flex-col">
-        <p class="pt-4 text-body-l text-text-primary max-md:text-m-body-l" data-employee-name></p>
+        <p class="link-dotted pt-4 text-body-l text-text-primary max-md:text-m-body-l" data-employee-name></p>
         <p class="text-body-n text-text-primary max-md:text-m-body-n" data-employee-role></p>
       </div>
     </template>

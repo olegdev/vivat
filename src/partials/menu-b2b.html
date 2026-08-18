@@ -2,6 +2,9 @@
      Figma `menu-b2b` 1058:178109 — 298×776, #f8f8f8, padH=8 padV=16, зазор
      между блоками 12. Блок — заголовок плюс пункты, каждая строка 282×40.
 
+     Обычный пункт набран Regular, текущий — Medium. Снапшот .fig утверждает,
+     что Medium везде, но на живом рендере разница видна; Figma важнее экспорта.
+
      Блоки и пункты — вложенные <template>, будущие вложенные @foreach;
      components/menu-b2b.js их клонирует и никогда не собирает разметку из
      строк. Активный пункт помечается aria-current="page": в наборе нет
@@ -11,7 +14,7 @@
      Ниже md меню не сжимается, а заменяется другим компонентом —
      partials/for-business-header.html. -->
 <aside
-  class="flex w-[298px] shrink-0 flex-col gap-3 bg-bg-subtle px-2 py-4 max-md:hidden"
+  class="flex w-[298px] shrink-0 flex-col gap-3 self-start bg-bg-subtle px-2 py-4 max-md:hidden"
   data-menu-b2b
   aria-label="Разделы для дилеров"
 ></aside>
@@ -20,7 +23,10 @@
 <template data-menu-b2b-block>
   <nav class="flex flex-col">
     <p class="flex h-10 items-center px-4 text-body-n-accent text-text-muted max-md:h-11" data-block-title></p>
-    <div data-block-items></div>
+    <!-- В шторке пункты вложены в `menu` с padH=16 (2209:212892), поэтому
+         ниже md они сдвинуты на 16 относительно заголовка блока, а плашка
+         активного пункта не доходит до краёв панели. На 1440 обёртки нет. -->
+    <div class="max-md:px-4" data-block-items></div>
   </nav>
 </template>
 
@@ -28,7 +34,7 @@
 <template data-menu-b2b-item>
   <a
     href="#"
-    class="flex h-10 items-center px-4 text-body-n-accent text-text-primary transition-colors hover:bg-components-subtle-hover aria-[current=page]:bg-components-subtle-hover max-md:h-11"
+    class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover aria-[current=page]:bg-components-subtle-hover aria-[current=page]:font-medium max-md:h-11"
     data-menu-b2b-link
   ></a>
 </template>
@@ -72,6 +78,7 @@
       </form>
     </div>
 
-    <div class="pt-4" data-menu-b2b-sheet></div>
+    <!-- filters 352 из 360: 8 справа зарезервированы под полосу прокрутки -->
+    <div class="pr-2 pt-4" data-menu-b2b-sheet></div>
   </div>
 </div>

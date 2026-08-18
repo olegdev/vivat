@@ -128,6 +128,8 @@ function enterContactPageMode(anchor, detail) {
 
   q("[data-store-list]")?.classList.add("hidden");
   swap(q("[data-store-detail]"), ["hidden"], ["flex"]);
+  // Слот сегментов под шапкой панели — он существует только на 360.
+  q("[data-store-audience]")?.classList.remove("hidden");
 
   // На 360 (вариант 2225:106894, 360×902) блок перестаёт быть «панель слева,
   // карта справа»: полотно 360 сверху, панель во всю ширину под ним, и панель

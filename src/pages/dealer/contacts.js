@@ -39,10 +39,17 @@ if (fbh) {
 }
 
 // ---- «Опт / Розница» --------------------------------------------------------
-// Состояние живёт на <body data-audience>, кнопки своего класса не носят — тот
-// же приём, что у сегментов доставки на дилерском заказе. Что именно
-// переключается, макет не говорит: прототипа на сегментах нет (см. BACKLOG).
-document.querySelector("[data-audience]")?.addEventListener("click", (e) => {
+// Один <template> клонируется в два места: над картой на 1440 (фрейм `city`)
+// и внутрь панели карты на 360 (2225:107318). Состояние живёт на
+// <body data-audience>, кнопки своего класса не носят — тот же приём, что у
+// сегментов доставки на дилерском заказе. Что именно переключается, макет не
+// говорит: прототипа на сегментах нет (см. BACKLOG).
+const segTpl = document.querySelector("[data-audience-segments]");
+for (const sel of ["[data-audience-desktop] > div", "[data-store-audience]"]) {
+  const slot = document.querySelector(sel);
+  if (slot) slot.replaceChildren(segTpl.content.cloneNode(true));
+}
+document.addEventListener("click", (e) => {
   const btn = e.target.closest("[data-audience-mode]");
   if (btn) document.body.dataset.audience = btn.dataset.audienceMode;
 });
