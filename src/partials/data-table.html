@@ -1,0 +1,71 @@
+<!-- ==================== СПРАВОЧНАЯ ТАБЛИЦА ===========================
+     Figma `table-block` / `table-ordinary-column-cell` (1167:74253 на
+     «Для интернет-магазинов»). Блок — шапка 44 и строки по 44, колонки
+     207 и 655, отступ в ячейке 12, текст 14/18.
+
+     Строки чередуются белым и #f8f8f8, и счёт **сквозной по блоку**: подстроки
+     вложенной таблицы продолжают нумерацию родительских, а не начинают свою.
+     Поэтому фон проставляет компонент, а не `odd:`/`even:` на контейнере. Границы в Figma наложены друг на друга (`gap=-1`),
+     поэтому здесь их рисуют ячейки: блок берёт верхнюю и левую, ячейка —
+     нижнюю и правую, и линии не удваиваются.
+
+     Ниже md таблица не переносится, а прокручивается: колонка 207 + 655 в
+     328 не помещается ни при каком кегле. -->
+<template data-table-block>
+  <div class="max-md:scroll-rail max-md:-mx-4 max-md:px-4">
+    <div class="w-[862px] border-l border-t border-border-subtle" data-table-grid>
+      <div class="flex" data-table-head>
+        <span
+          class="w-[207px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-secondary"
+          data-th-1
+        ></span>
+        <span
+          class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-secondary"
+          data-th-2
+        ></span>
+      </div>
+      <div data-table-rows></div>
+    </div>
+  </div>
+</template>
+
+<!-- Строка с вложенной таблицей: метка объединена на всю высоту вложенного
+     блока (в макете `row` 208 рядом с `table-block` 655), внутри — свои две
+     колонки 208 и остальное. Чередование считается по подстрокам. -->
+<template data-table-row-nested>
+  <div class="flex">
+    <span
+      class="flex w-[207px] shrink-0 items-center border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary"
+      data-td-label
+    ></span>
+    <div class="flex-1" data-td-sub></div>
+  </div>
+</template>
+
+<!-- одна подстрока вложенной таблицы -->
+<template data-table-subrow>
+  <div class="flex">
+    <span
+      class="w-[205px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary"
+      data-sub-1
+    ></span>
+    <span
+      class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary"
+      data-sub-2
+    ></span>
+  </div>
+</template>
+
+<!-- одна строка (future @foreach($block->rows as $row)) -->
+<template data-table-row>
+  <div class="flex">
+    <span
+      class="w-[207px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary"
+      data-td-1
+    ></span>
+    <span
+      class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary"
+      data-td-2
+    ></span>
+  </div>
+</template>

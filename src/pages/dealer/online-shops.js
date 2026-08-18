@@ -9,7 +9,9 @@ import { renderMenuB2b } from "../../components/menu-b2b.js";
 import { ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { MENU_B2B } from "../../data/menu-b2b.js";
+import { renderDataTable } from "../../components/data-table.js";
 import { FORMATS, EXPORT_URLS, DOWNLOADS, FEATURES } from "../../data/online-shops.js";
+import { FORMAT_TABLE } from "../../data/format-table.js";
 
 // Для интернет-магазинов — контентная страница дилерского раздела.
 // Скрипт только проводка плюс один шов: выбор формата выгрузки.
@@ -112,6 +114,8 @@ document.querySelector("[data-features]").replaceChildren(
     return li;
   })
 );
+
+renderDataTable(document.querySelector("[data-format-table]"), FORMAT_TABLE);
 
 applyFormat("json");
 
