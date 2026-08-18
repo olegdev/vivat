@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Для интернет-магазинов (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@100;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./online-shops.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary" data-user="dealer">
+    <!-- Для интернет-магазинов — контентная страница дилерского раздела.
+         1440 — Figma dlya-internet-magazinov 1167:74233, 360 — 2209:104247.
+
+         Страница нарисована в состоянии активного формата JSON: у трёх
+         остальных табов (XML, YML, CSV) своих кадров нет, поэтому их
+         переключение — шов, а не готовые данные.
+
+         Это первая из одиннадцати страниц секции `B2b additional`, и оболочка
+         у них общая: заголовок раздела, general-container из меню и колонки,
+         отбивка 96, подвал. Оболочка живёт разметкой самой страницы — включения
+         в этом проекте не умеют оборачивать тело, а весь реальный объём в меню,
+         которое партиалом стало. См. docs/superpowers/specs/2026-08-17-*.
+
+         Заголовок раздела — «Для бизнеса», собственное имя страницы стоит
+         первой строкой правой колонки. -->
+    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- <template>ы, которые клонируются в колонку ниже -->
+      
+
+      <!-- ==================== ЗАГОЛОВОК РАЗДЕЛА ========================
+           title-block 1167:79694 — spacing 24, строка 44, spacing 24. -->
+      <div class="px-10 py-6 max-md:hidden">
+        <div class="flex h-11 items-center">
+          <h1 class="text-h1 text-text-primary">Для бизнеса</h1>
+        </div>
+      </div>
+
+      <!-- ==================== ШАПКА РАЗДЕЛА НА 360 =====================
+           Ниже md заголовочный блок и левое меню заменяются этим блоком
+           (2225:132266, 104): «Для бизнеса» и селектор с именем страницы. -->
+      <!--#include partials/for-business-header.html -->
+
+      <!-- ==================== МЕНЮ + КОЛОНКА ===========================
+           general-container 1167:79696 — 40 + 298 + 40 + 1022 + 40 = 1440. -->
+      <div class="flex gap-10 px-10 max-md:flex-col max-md:gap-0 max-md:px-0">
+        <!--#include partials/menu-b2b.html -->
+
+        <div class="w-[1022px] px-20 max-md:w-full max-md:px-4" data-content-column>
+          <!-- title-text-page 1167:77681 — отбивка 32 и заголовок 36 -->
+          <h2 class="pt-8 text-h2 text-text-primary max-md:hidden">Для интернет-магазинов</h2>
+
+          <!-- Ряд табов 1167:74240 — 898×48, таб 32, зазор 24. Ряд шире
+               колонки (898 против 862) и уезжает под градиентную заглушку у
+               правого края, поэтому он прокручивается, а не переносится. -->
+          <div class="scroll-rail relative -mr-9 flex gap-6 py-2 max-md:mr-0" data-formats></div>
+
+          <!-- section 1167:74241 — отбивка 32 и строка 24 -->
+          <p class="pt-8 text-body-n text-text-primary max-md:text-m-body-l" data-format-lead></p>
+
+          <!-- table-decor 2036:159010 — 521×252, пять строк по 44, padV=16.
+               Ссылка, пунктирный выносок, город. -->
+          <div class="flex flex-col py-4" data-export-urls></div>
+
+          <!-- add-block 1167:74244 — две строки по 24, зазор 12 -->
+          <div class="flex flex-col gap-3" data-downloads></div>
+
+          <!-- Block 1167:74247 — заголовок 56 и маркированный список -->
+          <h3 class="pt-8 text-h5 text-text-primary max-md:text-m-h4" data-features-title></h3>
+          <ul class="text-body-n text-text-primary max-md:text-m-body-n" data-features></ul>
+        </div>
+      </div>
+
+      <div class="h-24 max-md:h-20"></div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
+    <!--#include partials/modals.html -->
+  </body>
+</html>

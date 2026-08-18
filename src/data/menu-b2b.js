@@ -13,7 +13,7 @@ export const MENU_B2B = [
     items: [
       { label: "Как с нами работать?", href: "#" },
       { label: "Доставка", href: "delivery.html" },
-      { label: "Для интернет-магазинов", href: "#" },
+      { label: "Для интернет-магазинов", href: "online-shops.html" },
       { label: "Поставщикам", href: "#" },
     ],
   },
