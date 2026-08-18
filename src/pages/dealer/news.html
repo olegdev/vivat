@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Новости (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@100;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./news.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary" data-user="dealer">
+    <!-- «Новости» — контентная страница дилерского раздела.
+         1440 — Figma novosti 1463:67081, 360 — 2241:188212.
+
+         Заголовок, ряд рубрик, зелёная плашка подписки и список из двадцати
+         новостей с пагинацией. Кнопка «Подписаться» открывает готовую модалку
+         подписки. Рубрики фильтруют список — своих кадров у них нет, поэтому
+         это шов (см. BACKLOG). -->
+    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- <template>ы, которые клонируются в колонку ниже -->
+      
+
+      <!-- ==================== ЗАГОЛОВОК РАЗДЕЛА ========================
+           title-block 1167:79694 — spacing 24, строка 44, spacing 24. -->
+      <div class="px-10 py-6 max-md:hidden">
+        <div class="flex h-11 items-center">
+          <h1 class="text-h1 text-text-primary">Для бизнеса</h1>
+        </div>
+      </div>
+
+      <!-- ==================== ШАПКА РАЗДЕЛА НА 360 =====================
+           Ниже md заголовочный блок и левое меню заменяются этим блоком
+           (2225:132266, 104): «Для бизнеса» и селектор с именем страницы. -->
+      <!--#include partials/for-business-header.html -->
+
+      <!-- ==================== МЕНЮ + КОЛОНКА ===========================
+           general-container 1167:79696 — 40 + 298 + 40 + 1022 + 40 = 1440. -->
+      <div class="flex gap-10 px-10 max-md:flex-col max-md:gap-0 max-md:px-0">
+        <!--#include partials/menu-b2b.html -->
+
+        <div class="w-[1022px] px-20 max-md:w-full max-md:px-4" data-content-column>
+          <h2 class="pt-8 text-h2 text-text-primary max-md:hidden">Новости</h2>
+
+          <!-- Tab 1944:372179 — рубрики, 862×48; активная «Все новости» -->
+          <div class="scroll-rail flex gap-6 overflow-x-auto py-2 max-md:gap-4" data-news-tabs></div>
+
+          <div class="h-4"></div>
+
+          <!-- social 1463:70256 — плашка подписки 862×124 на #a4cebf -->
+          <div
+            class="flex items-center justify-between gap-6 rounded-[var(--radius-l)] bg-surface-accent-alt-subtle px-8 py-6 max-md:flex-col max-md:items-start max-md:gap-4 max-md:px-4"
+          >
+            <div>
+              <p class="text-h3 text-text-primary max-md:text-m-h3">Подпишитесь на рассылку</p>
+              <p class="text-body-n text-text-primary max-md:text-m-body-n">чтобы быть всегда в курсе!</p>
+            </div>
+            <button
+              type="button"
+              class="btn btn-m btn-primary shrink-0 max-md:w-full"
+              data-modal-open="subscribe"
+            >
+              Подписаться
+            </button>
+          </div>
+
+          <!-- news-content 1463:67089 — двадцать новостей -->
+          <div class="flex flex-col" data-news></div>
+
+          <!--#include partials/pagination.html -->
+        </div>
+      </div>
+
+      <div class="h-24 max-md:h-20"></div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- одна новость (future @foreach($news as $n)) — Figma `news-item`
+         1463:70349, layout=list: заголовок, дата, тело и ссылка со стрелкой.
+         Отбивка блока 24 сверху и снизу.
+
+         В derivedSymbolData дата идёт последней, но нарисована она сразу под
+         заголовком — порядок в раскладке не порядок на экране. -->
+    <template data-news-item>
+      <article class="flex flex-col py-6">
+        <p class="text-h3 text-text-primary max-md:text-m-h3" data-news-title></p>
+        <span class="pt-1 text-body-s text-text-secondary max-md:text-m-body-s" data-news-date></span>
+        <div
+          class="flex flex-col gap-3 pt-4 text-body-n text-text-primary max-md:text-m-body-n"
+          data-news-body
+        ></div>
+        <a
+          href="#"
+          class="flex w-fit items-center gap-2 pt-4 text-body-n text-text-primary"
+          data-news-action
+        >
+          <span></span>
+          <img src="../../assets/header/chevron-right.svg" alt="" class="size-4" />
+        </a>
+      </article>
+    </template>
+
+    <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
+    <!--#include partials/modals.html -->
+  </body>
+</html>

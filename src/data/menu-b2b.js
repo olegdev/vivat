@@ -35,7 +35,7 @@ export const MENU_B2B = [
     title: "Компания",
     items: [
       { label: "Адреса", href: "contacts.html" },
-      { label: "Новости", href: "#" },
+      { label: "Новости", href: "news.html" },
       { label: "Письмо директору", href: "#", modal: "director" },
     ],
   },
