@@ -21,7 +21,7 @@ export const MENU_B2B = [
     title: "Документы",
     items: [
       { label: "Сертификаты", href: "certificates.html" },
-      { label: "Схемы сборки", href: "#" },
+      { label: "Схемы сборки", href: "schemes.html" },
       { label: "Техническая информация", href: "#" },
       { label: "Прайс-листы", href: "#" },
       { label: "Каталог мебели", href: "#" },
