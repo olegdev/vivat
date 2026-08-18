@@ -11,7 +11,7 @@ export const MENU_B2B = [
   {
     title: "Помощь",
     items: [
-      { label: "Как с нами работать?", href: "#" },
+      { label: "Как с нами работать?", href: "howto.html" },
       { label: "Доставка", href: "delivery.html" },
       { label: "Для интернет-магазинов", href: "online-shops.html" },
       { label: "Поставщикам", href: "#" },
