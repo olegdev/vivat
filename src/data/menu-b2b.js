@@ -22,7 +22,7 @@ export const MENU_B2B = [
     items: [
       { label: "Сертификаты", href: "certificates.html" },
       { label: "Схемы сборки", href: "schemes.html" },
-      { label: "Техническая информация", href: "#" },
+      { label: "Техническая информация", href: "tech-info.html" },
       { label: "Прайс-листы", href: "#" },
       { label: "Каталог мебели", href: "#" },
       // В макете «Каталог декторов» — опечатка, чиним (см. BACKLOG.md).

@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Техническая информация (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@100;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./tech-info.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary" data-user="dealer">
+    <!-- «Техническая информация» — контентная страница дилерского раздела.
+         1440 — Figma tehnicheskaya-informaciya 1463:60856.
+
+         **Мобильного фрейма у страницы нет.** Ниже md она построена по тем же
+         правилам, что «Сертификаты» и «Схемы сборки», у которых кадры есть:
+         заголовок и поле поиска скрыты, имя страницы несёт селектор в шапке
+         раздела, дальше сразу дерево. Решение записано в BACKLOG. -->
+    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- <template>ы, которые клонируются в колонку ниже -->
+      
+
+      <!-- ==================== ЗАГОЛОВОК РАЗДЕЛА ========================
+           title-block 1167:79694 — spacing 24, строка 44, spacing 24. -->
+      <div class="px-10 py-6 max-md:hidden">
+        <div class="flex h-11 items-center">
+          <h1 class="text-h1 text-text-primary">Для бизнеса</h1>
+        </div>
+      </div>
+
+      <!-- ==================== ШАПКА РАЗДЕЛА НА 360 =====================
+           Ниже md заголовочный блок и левое меню заменяются этим блоком
+           (2225:132266, 104): «Для бизнеса» и селектор с именем страницы. -->
+      <!--#include partials/doc-tree.html -->
+
+      <!--#include partials/for-business-header.html -->
+
+      <!-- ==================== МЕНЮ + КОЛОНКА ===========================
+           general-container 1167:79696 — 40 + 298 + 40 + 1022 + 40 = 1440. -->
+      <div class="flex gap-10 px-10 max-md:flex-col max-md:gap-0 max-md:px-0">
+        <!--#include partials/menu-b2b.html -->
+
+        <div class="w-[1022px] px-20 max-md:w-full max-md:px-4" data-content-column>
+          <h2 class="pt-8 text-h2 text-text-primary max-md:hidden">Техническая информация</h2>
+
+          <!-- Поле поиска 1463:60811 — 862×44, белое, с линией снизу и
+               иконкой у правого края. Что оно ищет, макет не описывает:
+               прототипа на нём нет (см. BACKLOG).
+
+               Ниже md поля нет вовсе: мобильный фрейм начинается сразу с
+               дерева документов, а имя страницы несёт селектор в шапке. -->
+          <form
+            action="/search"
+            method="get"
+            role="search"
+            class="flex h-11 items-center gap-4 border-b border-border-subtle px-4 max-md:hidden"
+          >
+            <input
+              type="search"
+              name="q"
+              placeholder="Поиск по документам"
+              aria-label="Поиск по документам"
+              autocomplete="off"
+              class="min-w-0 flex-1 bg-transparent text-body-n text-text-primary outline-none placeholder:text-text-secondary max-md:text-m-body-n"
+            />
+            <img src="../../assets/header/icon-search.svg" alt="" class="size-6 shrink-0" />
+          </form>
+
+          <!-- documents-content 1463:60818 — padV 24, зазор между группами 8 -->
+          <div class="flex flex-col gap-2 py-6 max-md:py-4" data-doc-tree></div>
+        </div>
+      </div>
+
+      <div class="h-24 max-md:h-20"></div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
+    <!--#include partials/modals.html -->
+  </body>
+</html>

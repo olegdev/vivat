@@ -1,12 +1,6 @@
-// «Схемы сборки» — Figma shemy-sborki-collapsed 1463:60735 (всё свёрнуто) и
-// shemy-sborki 1463:63542 (первая группа раскрыта); 360 — 2241:163440 и
-// 2241:164062.
-//
-// Это одна страница в двух состояниях, а не два экрана: по умолчанию свёрнуто
-// всё. Дерево рекурсивное — узел либо ветка с детьми, либо документ с датой;
-// в макете доходит до 4 уровней.
-//
-// Собрано: node gen-schemes.mjs
+// Дерево документов, вычитанное из макета (1463:63557).
+// Узел — либо ветка с детьми, либо документ с датой; глубина 4.
+// Собрано: node scripts/fig-doc-tree.mjs 1463:63557 src/data/schemes.js SCHEME_TREE
 
 export const SCHEME_TREE = [
   {
@@ -15,12 +9,15 @@ export const SCHEME_TREE = [
     "children": [
       {
         "title": "Каркасы",
+        "open": false,
         "children": [
           {
             "title": "Верхние шкафы",
+            "open": false,
             "children": [
               {
                 "title": "360 мм",
+                "open": false,
                 "children": [
                   {
                     "title": "Каркас верхнего горизонтального шкафа ВГ 500. Инструкция по сборке.",
@@ -50,6 +47,7 @@ export const SCHEME_TREE = [
               },
               {
                 "title": "460 мм",
+                "open": false,
                 "children": [
                   {
                     "title": "Каркас верхнего горизонтального шкафа ВГ 509. Инструкция по сборке.",
@@ -67,6 +65,7 @@ export const SCHEME_TREE = [
               },
               {
                 "title": "720 мм",
+                "open": false,
                 "children": [
                   {
                     "title": "Каркас верхнего прямого углового горизонтального шкафа ВУГ 1000. Инструкция по сборке.",
@@ -124,6 +123,7 @@ export const SCHEME_TREE = [
               },
               {
                 "title": "920 мм",
+                "open": false,
                 "children": [
                   {
                     "title": "Каркас верхнего прямого углового шкафа ВУ 709. Инструкция по сборке.",
@@ -175,6 +175,7 @@ export const SCHEME_TREE = [
           },
           {
             "title": "Нижние шкафы",
+            "open": false,
             "children": [
               {
                 "title": "Каркас нижнего торцевого шкафа НТ 300. Инструкция по сборке.",
@@ -280,9 +281,11 @@ export const SCHEME_TREE = [
           },
           {
             "title": "Шкафы-пеналы",
+            "open": false,
             "children": [
               {
                 "title": "2 132 мм",
+                "open": false,
                 "children": [
                   {
                     "title": "Каркас шкафа-пенала ШП 400. Инструкция по сборке.",
@@ -300,6 +303,7 @@ export const SCHEME_TREE = [
               },
               {
                 "title": "2 336 мм",
+                "open": false,
                 "children": [
                   {
                     "title": "Каркас шкафа-пенала ШП 400Н. Инструкция по сборке.",
@@ -321,6 +325,7 @@ export const SCHEME_TREE = [
       },
       {
         "title": "Комплектующие для кухни",
+        "open": false,
         "children": [
           {
             "title": "Ручки мебельные. Стандартная комплектация.",
@@ -352,6 +357,7 @@ export const SCHEME_TREE = [
     "children": [
       {
         "title": "Стиль",
+        "open": false,
         "children": [
           {
             "title": "Вешалка «Стиль» ВШ-800. Инструкция по сборке.",
@@ -377,6 +383,7 @@ export const SCHEME_TREE = [
       },
       {
         "title": "Холл",
+        "open": false,
         "children": [
           {
             "title": "Вешалка «Холл» ВШ-100М. Инструкция по сборке.",
