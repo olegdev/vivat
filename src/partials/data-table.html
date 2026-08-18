@@ -9,18 +9,21 @@
      поэтому здесь их рисуют ячейки: блок берёт верхнюю и левую, ячейка —
      нижнюю и правую, и линии не удваиваются.
 
-     Ниже md таблица не переносится, а прокручивается: колонка 207 + 655 в
-     328 не помещается ни при каком кегле. -->
+     Ниже md таблица не прокручивается — макет (2209:169154) её перестраивает,
+     и ширина у неё всегда по колонке, а не фиксированные 862. Колонки там
+     другие: у шапки 207 + 121, у строк поровну (164 + 164), у вложенной
+     строки метка 108 и подколонки по половине; текст в ячейке 12/16. Шапка и строки в макете не
+     выровнены между собой — воспроизведено как есть. -->
 <template data-table-block>
-  <div class="max-md:scroll-rail max-md:-mx-4 max-md:px-4">
-    <div class="w-[862px] border-l border-t border-border-subtle" data-table-grid>
+  <div>
+    <div class="w-full border-l border-t border-border-subtle" data-table-grid>
       <div class="flex" data-table-head>
         <span
-          class="w-[207px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-secondary"
+          class="w-[207px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-secondary max-md:py-3 max-md:text-m-body-s"
           data-th-1
         ></span>
         <span
-          class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-secondary"
+          class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-secondary max-md:py-3 max-md:text-m-body-s"
           data-th-2
         ></span>
       </div>
@@ -35,7 +38,7 @@
 <template data-table-row-nested>
   <div class="flex">
     <span
-      class="flex w-[207px] shrink-0 items-center border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary"
+      class="flex w-[207px] shrink-0 items-center border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:w-[108px] max-md:py-3 max-md:text-m-body-s"
       data-td-label
     ></span>
     <div class="flex-1" data-td-sub></div>
@@ -46,11 +49,11 @@
 <template data-table-subrow>
   <div class="flex">
     <span
-      class="w-[205px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary"
+      class="w-[205px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:w-1/2 max-md:py-3 max-md:text-m-body-s"
       data-sub-1
     ></span>
     <span
-      class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary"
+      class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:py-3 max-md:text-m-body-s"
       data-sub-2
     ></span>
   </div>
@@ -60,11 +63,11 @@
 <template data-table-row>
   <div class="flex">
     <span
-      class="w-[207px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary"
+      class="w-[207px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:w-1/2 max-md:py-3 max-md:text-m-body-s"
       data-td-1
     ></span>
     <span
-      class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary"
+      class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:py-3 max-md:text-m-body-s"
       data-td-2
     ></span>
   </div>

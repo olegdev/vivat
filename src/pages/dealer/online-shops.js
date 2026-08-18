@@ -39,12 +39,17 @@ renderMenuB2b(MENU_B2B, { current: "online-shops.html" });
 // Единственный шов страницы. В макете нарисовано только состояние JSON, у
 // XML / YML / CSV кадров нет, поэтому смена формата пока лишь переписывает
 // подписи и адреса; на бэке здесь будет запрос за содержимым формата.
-const tabsEl = document.querySelector("[data-formats]");
+// Ряд табов стоит в двух местах: в колонке на 1440 и в шапке раздела на 360
+// (там он и есть та третья часть, из-за которой шапка вырастает до 150).
+const tabMounts = [
+  document.querySelector("[data-formats]"),
+  document.querySelector("[data-fbh-tabs]"),
+].filter(Boolean);
 
 function applyFormat(id) {
   const fmt = FORMATS.find((f) => f.id === id) || FORMATS[0];
 
-  for (const btn of tabsEl.querySelectorAll("[data-format]")) {
+  for (const btn of document.querySelectorAll("[data-format]")) {
     btn.setAttribute("aria-current", String(btn.dataset.format === fmt.id));
   }
 
@@ -60,16 +65,16 @@ function applyFormat(id) {
       const row = document.createElement("div");
       row.className = "flex min-h-11 items-baseline gap-4";
       const left = document.createElement("span");
-      left.className = "flex w-[351px] items-baseline gap-3 max-md:w-auto max-md:flex-1";
+      left.className = "flex w-[351px] items-baseline gap-3 max-md:w-[206px] max-md:flex-none";
       const a = document.createElement("a");
       a.href = e.url.replace("/json/", `/${fmt.id}/`);
-      a.className = "text-body-n text-text-primary underline max-md:text-m-body-n";
+      a.className = "[overflow-wrap:anywhere] text-body-n text-text-primary underline max-md:text-m-body-n";
       a.textContent = a.href;
       const lead = document.createElement("span");
       lead.className = "spec-leader flex-1 max-md:hidden";
       left.append(a, lead);
       const city = document.createElement("span");
-      city.className = "w-[154px] shrink-0 text-body-n text-text-primary max-md:w-auto max-md:text-m-body-n";
+      city.className = "w-[154px] shrink-0 text-body-n text-text-primary max-md:w-[106px] max-md:text-m-body-n";
       city.textContent = e.city;
       row.append(left, city);
       return row;
@@ -87,8 +92,8 @@ function applyFormat(id) {
   );
 }
 
-tabsEl.replaceChildren(
-  ...FORMATS.map((f) => {
+const buildTabs = () =>
+  FORMATS.map((f) => {
     const b = document.createElement("button");
     b.type = "button";
     b.dataset.format = f.id;
@@ -98,8 +103,9 @@ tabsEl.replaceChildren(
     b.textContent = f.label;
     b.addEventListener("click", () => applyFormat(f.id));
     return b;
-  })
-);
+  });
+
+for (const mount of tabMounts) mount.replaceChildren(...buildTabs());
 
 document.querySelector("[data-features]").replaceChildren(
   ...FEATURES.map((t) => {
