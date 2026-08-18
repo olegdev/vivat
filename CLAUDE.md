@@ -289,10 +289,20 @@ and only on order screens — customer and dealer alike; the catalog, PDP, home
 and search frames carry no active item. Pages set `aria-current="page"`;
 `.nav-item[aria-current]` in `app.css` does the rest.
 
-There are no stubs left in `src/pages/` — every file there is a finished page.
-What remains unbuilt is the rest of `B2b additional`: its four modals, Доставка
-and Контакты are done, nine content pages are not. See `BACKLOG.md` ›
-"Not started".
+There are no stubs left in `src/pages/` — every file there is a finished page,
+and **`B2b additional` is now built out**: the four modals plus Доставка,
+Контакты, Для интернет-магазинов, Как с нами работать, Сертификаты, Схемы
+сборки, Техническая информация, Каталог декоров, Новости and Каталог
+3D-моделей. What is left is what the design does not draw — «Методические
+пособия» and four other menu entries have no frames. See `BACKLOG.md`.
+
+Three of those pages share **`partials/doc-tree.html`** — a recursive tree of
+document groups (four levels deep on Схемы сборки). Two more share the
+catalog-shaped grid. Their fixtures are not typed by hand: `scripts/
+fig-doc-tree.mjs` and `scripts/fig-table.mjs` read the copy straight out of the
+export, because a cell's text lives in an instance override and is only visible
+through `inst` — and calling `raw` per node re-inflates the .fig every time (an
+hour against five seconds).
 
 **Search is not a page — it is an overlay every page carries.** Figma's `search`
 section (2324:120596) holds four frames: 2337:156356 / 2338:235809 (nothing

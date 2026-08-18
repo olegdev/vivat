@@ -87,16 +87,21 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 |---|---|---|---|
 | 2617 | **Контакты** ✅ | [1415:68377](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1415-68377) | [2225:104774](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-104774) |
 | 4704 | **Доставка** ✅ | [1167:79692](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-79692) | [2225:132262](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-132262) |
-| 7023 | Для интернет-магазинов | [1167:74233](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-74233) | [2209:104247](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-104247) + меню [2209:213627](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-213627) |
-| 9808 | Как с нами работать | [1167:98333](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-98333) | [2241:161193](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-161193) |
-| 12242 | Схемы сборки (свёрнуто) | [1463:60735](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60735) | [2241:163440](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-163440) |
-| 14199 | Схемы сборки (развёрнуто) | [1463:63542](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-63542) | [2241:164062](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-164062) |
-| 16219 | Сертификаты | [1463:60803](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60803) | [2241:164857](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-164857) |
-| 18390 | Техническая информация | [1463:60856](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60856) | **—** |
-| 19894 | **Каталог декоров** (имя фрейма врёт) | [1488:127306](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-127306) | [2241:186252](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-186252) |
-| 22091 | **Каталог декоров**, второе состояние | [1488:69674](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-69674) | [2241:187453](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-187453) |
-| 24484 | Новости | [1463:67081](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-67081) | [2241:188212](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-188212) |
-| 27210 | Каталог (вариант) | [2338:254259](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2338-254259) | [2338:254303](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2338-254303) |
+| 7023 | **Для интернет-магазинов** ✅ | [1167:74233](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-74233) | [2209:104247](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-104247) + меню [2209:213627](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-213627) |
+| 9808 | **Как с нами работать** ✅ | [1167:98333](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-98333) | [2241:161193](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-161193) |
+| 12242 | **Схемы сборки** ✅ (свёрнуто) | [1463:60735](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60735) | [2241:163440](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-163440) |
+| 14199 | **Схемы сборки** ✅ (развёрнуто) | [1463:63542](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-63542) | [2241:164062](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-164062) |
+| 16219 | **Сертификаты** ✅ | [1463:60803](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60803) | [2241:164857](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-164857) |
+| 18390 | **Техническая информация** ✅ | [1463:60856](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60856) | **—** |
+| 19894 | **Каталог декоров** ✅ (имя фрейма врёт) | [1488:127306](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-127306) | [2241:186252](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-186252) |
+| 22091 | **Каталог декоров** ✅, второе состояние | [1488:69674](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-69674) | [2241:187453](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-187453) |
+| 24484 | **Новости** ✅ | [1463:67081](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-67081) | [2241:188212](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-188212) |
+| 27210 | **Каталог 3D-моделей** ✅ (в имени «Каталог (вариант)») | [2338:254259](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2338-254259) | [2338:254303](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2338-254303) |
+
+**Секция свёрстана целиком.** Единственный пункт меню без страницы —
+«Методические пособия»: фрейма у него нет. Остальные заглушки меню
+(Поставщикам, Прайс-листы, Каталог мебели, Обучающие материалы) тоже без
+фреймов, см. `BACKLOG.md`.
 
 Все контентные страницы устроены одинаково: `site-header` → `title-block`
 (`type=H1`) → `general-container` → отбивка 96 → подвал. То есть это один
