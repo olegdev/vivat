@@ -20,7 +20,7 @@ export const MENU_B2B = [
   {
     title: "Документы",
     items: [
-      { label: "Сертификаты", href: "#" },
+      { label: "Сертификаты", href: "certificates.html" },
       { label: "Схемы сборки", href: "#" },
       { label: "Техническая информация", href: "#" },
       { label: "Прайс-листы", href: "#" },

@@ -1,0 +1,47 @@
+<!-- ==================== ДЕРЕВО ДОКУМЕНТОВ =============================
+     Figma `documents-content` / `lvl1` / `link-list` (1463:60818 на странице
+     «Сертификаты»). Группа — заголовок 40 с шевроном и список документов;
+     документ — ссылка и дата под ней (46 в одну строку ссылки, 70 в две).
+
+     Заголовок раскрытой группы тёмный и без подчёркивания, свёрнутой —
+     подчёркнутый; шеврон смотрит вверх и вниз соответственно. Оба состояния
+     выражены через aria-expanded, глиф один и поворачивается.
+
+     Размеры: группа 40 заголовок + 12 снизу (свёрнутая = 52), список отбит от
+     заголовка на 8 и разделяет документы теми же 8, у документа своей верхней
+     отбивки нет. Документ уже колонки на 16 с каждой стороны: 830 из 862 на
+     1440 и 296 из 328 на 360 — от этого и зависит, во сколько строк ляжет
+     длинное название. -->
+<template data-doc-group>
+  <section class="pb-3">
+    <button
+      type="button"
+      aria-expanded="false"
+      class="group/doc flex h-10 items-center gap-2 text-left"
+      data-doc-toggle
+    >
+      <span
+        class="text-h5 text-text-primary underline group-aria-expanded/doc:no-underline max-md:text-m-h4"
+        data-doc-title
+      ></span>
+      <img
+        src="../../assets/header/chevron-down.svg"
+        alt=""
+        class="size-4 shrink-0 transition-transform group-aria-expanded/doc:rotate-180"
+      />
+    </button>
+    <div class="flex flex-col gap-2 px-4 pt-2" data-doc-items hidden></div>
+  </section>
+</template>
+
+<!-- один документ (future @foreach($group->items as $doc)) -->
+<template data-doc-item>
+  <div class="flex flex-col gap-1">
+    <a
+      href="#"
+      class="text-body-n text-text-primary underline max-md:text-m-body-n"
+      data-doc-link
+    ></a>
+    <span class="text-body-s text-text-secondary max-md:text-m-body-s" data-doc-date></span>
+  </div>
+</template>
