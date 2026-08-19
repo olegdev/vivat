@@ -61,20 +61,28 @@ function applyFormat(id) {
     ...EXPORT_URLS.map((e) => {
       // table-decor 2036:159010 — 521 = left-side 351 (ссылка + выносок,
       // зазор 12) + 16 + right-side 154 (город). Ссылка в 351 переносится,
-      // как и в макете у последней строки.
+      // как и в макете у последней строки. Стиль ссылки — «Link M dotted»,
+      // то есть пунктир, а не сплошное подчёркивание.
+      //
+      // На 360 (2209:104255) колонки меняются местами: город 106 идёт первым,
+      // ссылка 206 второй, строка 40, выноска нет, а сама ссылка серая 12/16 и
+      // без подчёркивания. Это тот же ряд, перевёрнутый `flex-row-reverse`.
       const row = document.createElement("div");
-      row.className = "flex min-h-11 items-baseline gap-4";
+      row.className =
+        "flex min-h-11 items-baseline gap-4 max-md:min-h-10 max-md:flex-row-reverse max-md:items-center";
       const left = document.createElement("span");
       left.className = "flex w-[351px] items-baseline gap-3 max-md:w-[206px] max-md:flex-none";
       const a = document.createElement("a");
       a.href = e.url.replace("/json/", `/${fmt.id}/`);
-      a.className = "[overflow-wrap:anywhere] text-body-n text-text-primary underline max-md:text-m-body-n";
+      a.className =
+        "link-dotted [overflow-wrap:anywhere] text-body-n text-text-primary " +
+        "max-md:text-m-body-s max-md:text-text-secondary max-md:no-underline";
       a.textContent = a.href;
       const lead = document.createElement("span");
       lead.className = "spec-leader flex-1 max-md:hidden";
       left.append(a, lead);
       const city = document.createElement("span");
-      city.className = "w-[154px] shrink-0 text-body-n text-text-primary max-md:w-[106px] max-md:text-m-body-n";
+      city.className = "w-[154px] shrink-0 text-body-n text-text-primary max-md:w-[106px] max-md:text-m-body-s";
       city.textContent = e.city;
       row.append(left, city);
       return row;
@@ -83,40 +91,64 @@ function applyFormat(id) {
 
   document.querySelector("[data-downloads]").replaceChildren(
     ...DOWNLOADS.map((label) => {
+      // «Link M dotted» кораллом (1167:74245/74246): пунктир, не сплошная.
       const a = document.createElement("a");
       a.href = "#";
-      a.className = "w-fit text-body-n text-text-primary underline max-md:text-m-body-n";
+      a.className =
+        "link-dotted w-fit text-body-n text-text-link-highlighted max-md:text-m-body-n";
       a.textContent = label.replace("JSON", up);
       return a;
     })
   );
 }
 
-const buildTabs = () =>
-  FORMATS.map((f) => {
+// Таб `tab` (759:86813 / mobile 1806:236442): 24/28 SemiBold в коробке 32,
+// на 360 — 16/22 в коробке 26. Неактивный #808080, активный (variant
+// condition=pressed 759:86815) — #292929 и нижняя граница #141414 по ширине
+// подписи (`borderBottomWeight: 2`).
+const TAB_CLASS =
+  "flex h-8 shrink-0 items-start whitespace-nowrap border-b-2 border-transparent " +
+  "text-h3 text-text-secondary transition-colors max-md:h-[26px] max-md:text-m-h4 " +
+  "aria-[current=true]:border-text-pressed aria-[current=true]:text-text-primary";
+
+const buildTabs = () => {
+  const tabs = FORMATS.map((f) => {
     const b = document.createElement("button");
     b.type = "button";
     b.dataset.format = f.id;
-    b.className =
-      "shrink-0 whitespace-nowrap px-0 py-1 text-body-n text-text-secondary transition-colors " +
-      "aria-[current=true]:text-text-pressed aria-[current=true]:underline aria-[current=true]:underline-offset-8";
+    b.className = TAB_CLASS;
     b.textContent = f.label;
     b.addEventListener("click", () => applyFormat(f.id));
     return b;
   });
 
+  // Пятый таб — «Где купить»: подпись, не переопределённая от таб-бара PDP.
+  // Форматом он не является и потому не участвует в `applyFormat`; что он
+  // должен делать на странице про фиды, макет не говорит — вопрос в BACKLOG.
+  const link = document.createElement("button");
+  link.type = "button";
+  link.className = TAB_CLASS;
+  link.textContent = "Где купить";
+  tabs.push(link);
+
+  return tabs;
+};
+
 for (const mount of tabMounts) mount.replaceChildren(...buildTabs());
 
+// `list` 1167:74249 — номер в колонке 24 по правому краю, зазор 8, отбивка 12.
 document.querySelector("[data-features]").replaceChildren(
-  ...FEATURES.map((t) => {
+  ...FEATURES.map((t, i) => {
     const li = document.createElement("li");
-    li.className = "flex gap-1 pt-3";
-    li.innerHTML =
-      '<span class="flex size-6 shrink-0 items-center justify-center" aria-hidden="true">' +
-      '<span class="size-1 rounded-full bg-text-primary"></span></span>';
+    li.className = "flex gap-2 pt-3";
+    const num = document.createElement("span");
+    num.className = "w-6 shrink-0 text-right";
+    num.setAttribute("aria-hidden", "true");
+    num.textContent = `${i + 1}.`;
     const span = document.createElement("span");
+    span.className = "flex-1";
     span.textContent = t;
-    li.append(span);
+    li.append(num, span);
     return li;
   })
 );

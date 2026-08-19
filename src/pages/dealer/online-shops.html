@@ -18,7 +18,9 @@
 
          Страница нарисована в состоянии активного формата JSON: у трёх
          остальных табов (XML, YML, CSV) своих кадров нет, поэтому их
-         переключение — шов, а не готовые данные.
+         переключение — шов, а не готовые данные. Пятым в ряду стоит «Где
+         купить» — подпись из таб-бара PDP, форматом она не является и
+         поведения у неё нет; вопрос в BACKLOG.
 
          Это первая из одиннадцати страниц секции `B2b additional`, и оболочка
          у них общая: заголовок раздела, general-container из меню и колонки,
@@ -45,7 +47,7 @@
       <!--#include partials/price-mode.html -->
 
       <!-- <template>ы, которые клонируются в колонку ниже -->
-      
+      <!--#include partials/data-table.html -->
 
       <!-- ==================== ЗАГОЛОВОК РАЗДЕЛА ========================
            title-block 1167:79694 — spacing 24, строка 44, spacing 24. -->
@@ -57,9 +59,8 @@
 
       <!-- ==================== ШАПКА РАЗДЕЛА НА 360 =====================
            Ниже md заголовочный блок и левое меню заменяются этим блоком
-           (2225:132266, 104): «Для бизнеса» и селектор с именем страницы. -->
-      <!--#include partials/data-table.html -->
-
+           (2209:104251, 150): «Для бизнеса», селектор с именем страницы и
+           третьей частью — ряд табов, который наполняет скрипт страницы. -->
       <!--#include partials/for-business-header.html -->
 
       <!-- ==================== МЕНЮ + КОЛОНКА ===========================
@@ -76,24 +77,26 @@
                правого края, поэтому он прокручивается, а не переносится. -->
           <div class="scroll-rail relative -mr-9 flex gap-6 py-2 max-md:hidden" data-formats></div>
 
-          <!-- section 1167:74241 — отбивка 32 и строка 24 -->
-          <p class="pt-8 text-body-n text-text-primary max-md:text-m-body-l" data-format-lead></p>
+          <!-- section 1167:74241 — отбивка 32 и строка 24; текст 20/24 SemiBold
+               (на 360 — 16/22), это подзаголовок, а не абзац. -->
+          <p class="pt-8 text-h4 text-text-primary max-md:pt-6 max-md:text-m-h4" data-format-lead></p>
 
           <!-- table-decor 2036:159010 — 521×252, пять строк по 44, padV=16.
                Ссылка, пунктирный выносок, город. -->
-          <div class="flex flex-col py-4" data-export-urls></div>
+          <div class="flex flex-col py-4 max-md:pb-0 max-md:pt-3" data-export-urls></div>
 
           <!-- add-block 1167:74244 — две строки по 24, зазор 12 -->
-          <div class="flex flex-col gap-3" data-downloads></div>
+          <div class="flex flex-col gap-3 max-md:pt-3" data-downloads></div>
 
-          <!-- Block 1167:74247 — заголовок 56 и маркированный список -->
-          <h3 class="pt-8 text-h5 text-text-primary max-md:text-m-h4" data-features-title></h3>
-          <ul class="text-body-n text-text-primary max-md:text-m-body-n" data-features></ul>
+          <!-- Block 1167:74247 — заголовок 56 и нумерованный список (`list`
+               759:59490: колонка номера 24 по правому краю, зазор 8). -->
+          <h3 class="pt-8 text-h4 text-text-primary max-md:pt-9 max-md:text-m-h4" data-features-title></h3>
+          <ol class="text-body-n text-text-primary max-md:text-m-body-n" data-features></ol>
 
           <!-- Block 1167:74251 — заголовок 56 и справочная таблица 862×5852:
                одиннадцать блоков, 124 строки. -->
-          <h3 class="pt-8 text-h5 text-text-primary max-md:text-m-h4">Описание формата</h3>
-          <div class="flex flex-col gap-4 py-6" data-format-table></div>
+          <h3 class="pt-8 text-h4 text-text-primary max-md:pt-9 max-md:text-m-h4">Описание формата</h3>
+          <div class="flex flex-col gap-4 py-6 max-md:gap-2 max-md:pb-0 max-md:pt-3" data-format-table></div>
         </div>
       </div>
 
