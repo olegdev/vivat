@@ -57,11 +57,14 @@ const buildTabs = () =>
     b.type = "button";
     b.setAttribute("aria-current", String(i === 0));
     // `tab` size=M (759:86905 / pressed 759:86912): 16/24 SemiBold в коробке
-    // 28, активный — #292929 и нижняя граница 2px #141414 по ширине подписи.
+    // 28, текст прижат книзу, активный — #292929 и нижняя граница 2px #141414
+    // по ширине подписи. Линия внутренняя, поэтому это тень, а не `border-b`
+    // (иначе текст поднимается на два пикселя) — как у форматов выгрузки.
     b.className =
-      "flex h-7 shrink-0 items-start whitespace-nowrap border-b-2 border-transparent " +
+      "flex h-7 shrink-0 items-end whitespace-nowrap " +
       "text-h5 text-text-secondary transition-colors max-md:h-[26px] max-md:text-m-h4 " +
-      "aria-[current=true]:border-text-pressed aria-[current=true]:text-text-primary";
+      "aria-[current=true]:text-text-primary " +
+      "aria-[current=true]:shadow-[inset_0_-2px_0_var(--color-text-pressed)]";
     b.textContent = label;
     b.dataset.rubric = String(i);
     b.addEventListener("click", () => {

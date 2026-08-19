@@ -3,27 +3,38 @@
      «Для интернет-магазинов»). Блок — шапка 44 и строки по 44, колонки
      207 и 655, отступ в ячейке 12, текст 14/18.
 
-     Строки чередуются белым и #f8f8f8, и счёт **сквозной по блоку**: подстроки
-     вложенной таблицы продолжают нумерацию родительских, а не начинают свою.
-     Поэтому фон проставляет компонент, а не `odd:`/`even:` на контейнере. Границы в Figma наложены друг на друга (`gap=-1`),
-     поэтому здесь их рисуют ячейки: блок берёт верхнюю и левую, ячейка —
-     нижнюю и правую, и линии не удваиваются.
+     Строки чередуются белым и #f8f8f8 **строго через одну**, и строка с
+     вложенной таблицей считается одной: её метка берёт цвет строки, а
+     подстроки продолжают чередование от него же (1167:74289 — id белая,
+     title серая, parent_id белая, pictures серая вместе с первой подстрокой,
+     position снова белая). Поэтому фон проставляет компонент, а не
+     `odd:`/`even:` на контейнере.
+
+     Вертикальных линий в таблице **две штуки на строку и ни одной в шапке**:
+     ячейки несут только горизонтальные границы (у шапки нижняя, у строки
+     верхняя и нижняя), а разделитель колонок — это левая граница второй
+     ячейки, которой у шапки нет (1167:74257 против 1167:74263). Рамка блока
+     своя, #e7e7e7 против #eeeeee внутри. Границы в Figma наложены друг на
+     друга (`gap=-1`), поэтому здесь нижнюю рисует ячейка, а блок берёт левую,
+     правую и верхнюю — линии не удваиваются.
 
      Ниже md таблица не прокручивается — макет (2209:169154) её перестраивает,
      и ширина у неё всегда по колонке, а не фиксированные 862. Колонки там
-     другие: у шапки 207 + 121, у строк поровну (164 + 164), у вложенной
-     строки метка 108 и подколонки по половине; текст в ячейке 12/16. Шапка и строки в макете не
-     выровнены между собой — воспроизведено как есть. -->
+     другие: у шапки 207 + 121, у строк **107 + 221**, у вложенной строки
+     метка 108 и подколонки по половине от 221; текст в ячейке 12/16, отступ
+     по вертикали 6 при минимальной высоте строки 40 (однострочная строка
+     центрируется в 40, трёхстрочная вырастает до 60). Шапка и строки в макете
+     не выровнены между собой — воспроизведено как есть. -->
 <template data-table-block>
   <div>
-    <div class="w-full border-l border-t border-border-subtle" data-table-grid>
+    <div class="w-full border-l border-r border-t border-border-light" data-table-grid>
       <div class="flex" data-table-head>
         <span
-          class="w-[207px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-secondary max-md:py-3 max-md:text-m-body-s"
+          class="w-[207px] shrink-0 border-b border-border-subtle px-3 py-3 text-body-s text-text-secondary max-md:min-h-10 max-md:py-1.5 max-md:text-m-body-s"
           data-th-1
         ></span>
         <span
-          class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-secondary max-md:py-3 max-md:text-m-body-s"
+          class="flex-1 border-b border-border-subtle px-3 py-3 text-body-s text-text-secondary max-md:min-h-10 max-md:py-1.5 max-md:text-m-body-s"
           data-th-2
         ></span>
       </div>
@@ -34,11 +45,12 @@
 
 <!-- Строка с вложенной таблицей: метка объединена на всю высоту вложенного
      блока (в макете `row` 208 рядом с `table-block` 655), внутри — свои две
-     колонки 208 и остальное. Чередование считается по подстрокам. -->
+     колонки 208 и остальное. Метка красится в цвет своей строки, подстроки
+     продолжают чередование от неё. -->
 <template data-table-row-nested>
   <div class="flex">
     <span
-      class="flex w-[207px] shrink-0 items-center border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:w-[108px] max-md:py-3 max-md:text-m-body-s"
+      class="flex w-[207px] shrink-0 items-center border-b border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:w-[108px] max-md:min-h-10 max-md:py-1.5 max-md:text-m-body-s"
       data-td-label
     ></span>
     <div class="flex-1" data-td-sub></div>
@@ -49,11 +61,11 @@
 <template data-table-subrow>
   <div class="flex">
     <span
-      class="w-[205px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:w-1/2 max-md:py-3 max-md:text-m-body-s"
+      class="w-[205px] shrink-0 border-b border-l border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:w-1/2 max-md:min-h-10 max-md:py-1.5 max-md:text-m-body-s"
       data-sub-1
     ></span>
     <span
-      class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:py-3 max-md:text-m-body-s"
+      class="flex-1 border-b border-l border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:min-h-10 max-md:py-1.5 max-md:text-m-body-s"
       data-sub-2
     ></span>
   </div>
@@ -63,11 +75,11 @@
 <template data-table-row>
   <div class="flex">
     <span
-      class="w-[207px] shrink-0 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:w-1/2 max-md:py-3 max-md:text-m-body-s"
+      class="w-[207px] shrink-0 border-b border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:w-[107px] max-md:min-h-10 max-md:py-1.5 max-md:text-m-body-s"
       data-td-1
     ></span>
     <span
-      class="flex-1 border-b border-r border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:py-3 max-md:text-m-body-s"
+      class="flex-1 border-b border-l border-border-subtle px-3 py-3 text-body-s text-text-primary max-md:min-h-10 max-md:py-1.5 max-md:text-m-body-s"
       data-td-2
     ></span>
   </div>

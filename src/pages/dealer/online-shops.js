@@ -62,21 +62,23 @@ function applyFormat(id) {
       // table-decor 2036:159010 — 521 = left-side 351 (ссылка + выносок,
       // зазор 12) + 16 + right-side 154 (город). Ссылка в 351 переносится,
       // как и в макете у последней строки. Стиль ссылки — «Link M dotted»,
-      // то есть пунктир, а не сплошное подчёркивание.
+      // то есть пунктир, а не сплошное подчёркивание; набрана она серым
+      // #808080, тогда как город рядом — #292929. Строка 44 центрирует
+      // содержимое, а выноска идёт по базовой линии ссылки.
       //
       // На 360 (2209:104255) колонки меняются местами: город 106 идёт первым,
       // ссылка 206 второй, строка 40, выноска нет, а сама ссылка серая 12/16 и
       // без подчёркивания. Это тот же ряд, перевёрнутый `flex-row-reverse`.
       const row = document.createElement("div");
       row.className =
-        "flex min-h-11 items-baseline gap-4 max-md:min-h-10 max-md:flex-row-reverse max-md:items-center";
+        "flex min-h-11 items-center gap-4 max-md:min-h-10 max-md:flex-row-reverse";
       const left = document.createElement("span");
       left.className = "flex w-[351px] items-baseline gap-3 max-md:w-[206px] max-md:flex-none";
       const a = document.createElement("a");
       a.href = e.url.replace("/json/", `/${fmt.id}/`);
       a.className =
-        "link-dotted [overflow-wrap:anywhere] text-body-n text-text-primary " +
-        "max-md:text-m-body-s max-md:text-text-secondary max-md:no-underline";
+        "link-dotted [overflow-wrap:anywhere] text-body-n text-text-secondary " +
+        "max-md:text-m-body-s max-md:no-underline";
       a.textContent = a.href;
       const lead = document.createElement("span");
       lead.className = "spec-leader flex-1 max-md:hidden";
@@ -104,12 +106,18 @@ function applyFormat(id) {
 
 // Таб `tab` (759:86813 / mobile 1806:236442): 24/28 SemiBold в коробке 32,
 // на 360 — 16/22 в коробке 26. Неактивный #808080, активный (variant
-// condition=pressed 759:86815) — #292929 и нижняя граница #141414 по ширине
-// подписи (`borderBottomWeight: 2`).
+// condition=pressed 759:86815) — #292929 и нижняя граница 2px #141414 по
+// ширине подписи.
+//
+// Текст в коробке прижат книзу (padV 4 сверху), а обводка в Figma внутренняя и
+// ложится поверх этих же двух пикселей. `border-b` съел бы их у текста, поэтому
+// линия — внутренняя тень: коробка остаётся 32, текст встаёт ровно как в
+// макете. См. SOLUTIONS.md › «Обводка в Figma внутренняя».
 const TAB_CLASS =
-  "flex h-8 shrink-0 items-start whitespace-nowrap border-b-2 border-transparent " +
+  "flex h-8 shrink-0 items-end whitespace-nowrap " +
   "text-h3 text-text-secondary transition-colors max-md:h-[26px] max-md:text-m-h4 " +
-  "aria-[current=true]:border-text-pressed aria-[current=true]:text-text-primary";
+  "aria-[current=true]:text-text-primary " +
+  "aria-[current=true]:shadow-[inset_0_-2px_0_var(--color-text-pressed)]";
 
 const buildTabs = () => {
   const tabs = FORMATS.map((f) => {

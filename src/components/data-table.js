@@ -7,28 +7,37 @@ const clone = (sel) => document.querySelector(sel).content.cloneNode(true);
 
 // Строка бывает парой [элемент, описание] либо объектом { label, sub } —
 // элементом с вложенной таблицей, у которой свои две колонки.
-// `stripe` — сквозной счётчик строк блока: подстроки продолжают нумерацию
-// родительских, поэтому фон нельзя отдать `odd:`/`even:` на контейнере.
+//
+// `stripe` — счётчик строк блока, и **строка с вложенной таблицей считается
+// одной**: её метка красится в цвет строки, подстроки продолжают чередование
+// от него, а следующая строка блока идёт так, будто вложенной таблицы не было
+// (1167:74289: id белая, title серая, parent_id белая, pictures серая, position
+// снова белая). Отсюда и невозможность отдать фон `odd:`/`even:` контейнеру.
 const shade = (el, i) => {
   el.classList.add(i % 2 ? "bg-bg-subtle" : "bg-bg-page");
   return el;
 };
 
 function buildRow(r, stripe) {
+  const i = stripe.i++;
+
   if (Array.isArray(r)) {
     const row = clone("[data-table-row]").firstElementChild;
     row.querySelector("[data-td-1]").textContent = r[0];
     row.querySelector("[data-td-2]").textContent = r[1];
-    return shade(row, stripe.i++);
+    return shade(row, i);
   }
+
   const row = clone("[data-table-row-nested]").firstElementChild;
-  row.querySelector("[data-td-label]").textContent = r.label;
+  const label = row.querySelector("[data-td-label]");
+  label.textContent = r.label;
+  shade(label, i);
   row.querySelector("[data-td-sub]").replaceChildren(
-    ...r.sub.map((s) => {
+    ...r.sub.map((s, k) => {
       const sub = clone("[data-table-subrow]").firstElementChild;
       sub.querySelector("[data-sub-1]").textContent = s[0];
       sub.querySelector("[data-sub-2]").textContent = s[1];
-      return shade(sub, stripe.i++);
+      return shade(sub, i + k);
     })
   );
   return row;
