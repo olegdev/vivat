@@ -988,7 +988,10 @@
    decoration, exactly the kind of thing that ends up behind a `max-md:` or a
    `group-data-` variant, and those silently emit nothing for a plain class. */
 @utility link-dotted {
-  @apply underline decoration-dotted underline-offset-2;
+  /* Толщину задаём явно: у `auto` Chrome берёт ~2px при 16px кегля, и точки
+     выходят вдвое крупнее и грубее, чем в макете, где линия набрана
+     «через пиксель». */
+  @apply underline decoration-dotted decoration-1 underline-offset-2;
 }
 
 /* Строка списка прайс-листов (`dropdown-item` 606:26531). Выбранная получает
