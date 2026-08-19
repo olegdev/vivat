@@ -62,12 +62,14 @@
         <!--#include partials/menu-b2b.html -->
 
         <div class="w-[1022px] px-20 max-md:w-full max-md:px-4" data-content-column>
-          <h2 class="pt-8 text-h2 text-text-primary max-md:hidden">Каталог декоров</h2>
+          <!-- title-text-page 1488:127313 — 862×36, без верхней отбивки:
+               панель настроек начинается сразу под заголовком. -->
+          <h2 class="text-h2 text-text-primary max-md:hidden">Каталог декоров</h2>
 
           <!-- catalog-settings 1488:127314 — 862×92. Ниже md (2241:186647,
                360×68) именованные пилюли схлопываются в одну воронку, как и в
                каталоге, а тумблер остаётся. -->
-          <div class="flex items-center gap-2 py-6 max-md:py-4">
+          <div class="flex items-center gap-2 py-6 max-md:py-3">
             <button
               type="button"
               class="filter-funnel flex h-11 shrink-0 items-center"
@@ -87,7 +89,7 @@
             <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цвет</button>
 
             <label class="group/sw ml-auto flex shrink-0 cursor-pointer items-center gap-3">
-              <span class="text-body-n text-text-primary max-md:text-m-body-n">Товары в этом цвете</span>
+              <span class="text-body-n-accent text-text-primary max-md:text-m-body-n-accent">Товары в этом цвете</span>
               <input type="checkbox" class="peer sr-only" data-decor-color-only />
               <span class="relative block h-6 w-10 shrink-0 rounded-full bg-components-disabled transition-colors peer-checked:bg-components-red">
                 <span class="absolute left-0.5 top-0.5 size-5 rounded-full bg-surface-inverted transition-transform peer-checked:translate-x-4"></span>
@@ -97,9 +99,16 @@
 
           <!-- сетка 1488:127315 — 4 колонки по 207, шаг 8 -->
           <div
-            class="grid grid-cols-[repeat(4,207px)] gap-2 pb-6 max-md:grid-cols-2 max-md:gap-2"
+            class="grid grid-cols-[repeat(4,207px)] gap-2 max-md:grid-cols-2 max-md:gap-2"
             data-decors
           ></div>
+
+          <!-- pagination 1488:127364 — тот же блок, что у каталога, но
+               страниц в инстансе три, а не семь. На 360 постранички нет вовсе:
+               в кадре (2241:186255) за сеткой сразу идёт отбивка и подвал. -->
+          <div class="max-md:hidden">
+            <!--#include partials/pagination.html -->
+          </div>
         </div>
       </div>
 
@@ -116,7 +125,9 @@
     <template data-decor-card>
       <article class="flex flex-col">
         <img class="aspect-[207/155] w-full object-cover" alt="" data-decor-img />
-        <p class="px-1 py-3 text-body-s leading-6 text-text-primary max-md:text-m-body-n" data-decor-name></p>
+        <!-- Info 1488:66003 — 48 = 12 + строка 16/24 + 12, отступ по бокам 4;
+             на 360 (1821:326452) тот же кегль и та же коробка. -->
+        <p class="px-1 py-3 text-body-n text-text-primary max-md:text-m-body-l" data-decor-name></p>
       </article>
     </template>
 

@@ -44,23 +44,35 @@ const RUBRICS = [
   "Распродажа",
   "Прочее",
 ];
-const tabsEl = document.querySelector("[data-news-tabs]");
-tabsEl.replaceChildren(
-  ...RUBRICS.map((label, i) => {
+// Ряд рубрик стоит в двух местах: в колонке на 1440 и в шапке раздела на 360
+// (2241:188715) — как форматы выгрузки у «Для интернет-магазинов».
+const tabMounts = [
+  document.querySelector("[data-news-tabs]"),
+  document.querySelector("[data-fbh-tabs]"),
+].filter(Boolean);
+
+const buildTabs = () =>
+  RUBRICS.map((label, i) => {
     const b = document.createElement("button");
     b.type = "button";
     b.setAttribute("aria-current", String(i === 0));
+    // `tab` size=M (759:86905 / pressed 759:86912): 16/24 SemiBold в коробке
+    // 28, активный — #292929 и нижняя граница 2px #141414 по ширине подписи.
     b.className =
-      "shrink-0 whitespace-nowrap py-1 text-body-n text-text-secondary transition-colors " +
-      "aria-[current=true]:text-text-primary aria-[current=true]:underline aria-[current=true]:underline-offset-8 " +
-      "max-md:text-m-body-n";
+      "flex h-7 shrink-0 items-start whitespace-nowrap border-b-2 border-transparent " +
+      "text-h5 text-text-secondary transition-colors max-md:h-[26px] max-md:text-m-h4 " +
+      "aria-[current=true]:border-text-pressed aria-[current=true]:text-text-primary";
     b.textContent = label;
+    b.dataset.rubric = String(i);
     b.addEventListener("click", () => {
-      for (const x of tabsEl.children) x.setAttribute("aria-current", String(x === b));
+      for (const x of document.querySelectorAll("[data-rubric]")) {
+        x.setAttribute("aria-current", String(x.dataset.rubric === b.dataset.rubric));
+      }
     });
     return b;
-  })
-);
+  });
+
+for (const mount of tabMounts) mount.replaceChildren(...buildTabs());
 
 // ---- список новостей --------------------------------------------------------
 const tpl = document.querySelector("[data-news-item]");
@@ -77,6 +89,20 @@ document.querySelector("[data-news]").replaceChildren(
         return el;
       })
     );
+    const phones = node.querySelector("[data-news-phones]");
+    if (n.phones) {
+      phones.hidden = false;
+      phones.querySelector("[data-news-phone-list]").replaceChildren(
+        ...n.phones.map((t) => {
+          const el = document.createElement("span");
+          el.textContent = t;
+          return el;
+        })
+      );
+    } else {
+      phones.remove();
+    }
+
     const action = node.querySelector("[data-news-action]");
     if (n.action) action.querySelector("span").textContent = n.action;
     else action.remove();

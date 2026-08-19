@@ -8,6 +8,8 @@ import { initModals } from "../../components/modals.js";
 import { ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { MODELS_LIST, MODEL_SPEC, MODEL_ACTION } from "../../data/models.js";
+import { mountCarousel } from "../../components/carousel.js";
+import { popularItems } from "../../data/catalog.js";
 
 // «Каталог 3D-моделей». Не контентная страница: левого меню раздела у фрейма
 // нет, это каталог со своей карточкой. Фильтры и сортировка не подключены —
@@ -42,7 +44,7 @@ document.querySelector("[data-models]").replaceChildren(
     } else {
       img.replaceWith(
         Object.assign(document.createElement("div"), {
-          className: "aspect-[322/242] w-full rounded-[var(--radius-l)] bg-bg-subtle",
+          className: "aspect-[322/242] w-full bg-bg-subtle",
         })
       );
     }
@@ -51,6 +53,19 @@ document.querySelector("[data-models]").replaceChildren(
     node.querySelector("[data-model-action] span").textContent = MODEL_ACTION;
     return node;
   })
+);
+
+// ---- Популярные товары ------------------------------------------------------
+// Рельс с сегментами (2338:254296) — тот же, что закрывает каталог.
+mountCarousel(
+  document.querySelector('[data-section="popular"]'),
+  {
+    title: "Популярные товары для кухни",
+    desc: "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.",
+    tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
+    endpoint: "/catalog/popular",
+  },
+  popularItems
 );
 
 initModals();

@@ -41,32 +41,30 @@
       <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
       <!--#include partials/price-mode.html -->
 
+      <!-- <template>ы карусели «Популярные товары» -->
+      <!--#include partials/product-card.html -->
+      <!--#include partials/carousel-section.html -->
+
       <!-- <template>ы, которые клонируются в колонку ниже -->
       
 
-      <!-- ==================== ЗАГОЛОВОК РАЗДЕЛА ========================
-           title-block 1167:79694 — spacing 24, строка 44, spacing 24. -->
-      <div class="px-10 py-6 max-md:hidden">
-        <div class="flex h-11 items-center">
-          <h1 class="text-h1 text-text-primary">Для бизнеса</h1>
-        </div>
-      </div>
+      <!-- Крошки 56 (2338:254261) и заголовок 44 (2338:254262). Имя страницы
+           в кадре — «3D модели», а не «Каталог 3D-моделей»: так набраны и
+           последняя крошка, и H1.
 
-      <!-- ==================== ШАПКА РАЗДЕЛА НА 360 =====================
-           Ниже md заголовочный блок и левое меню заменяются этим блоком
-           (2225:132266, 104): «Для бизнеса» и селектор с именем страницы. -->
-      <!-- крошки 56 и заголовок 44 -->
+           Ниже md (2338:254303) остаются **крошки**, а заголовка нет вовсе —
+           наоборот к дилерскому каталогу, где нет ни того, ни другого. -->
       <div class="px-10 max-md:px-4">
-        <nav class="flex items-center gap-2 py-4 text-body-s text-text-secondary max-md:hidden">
+        <nav class="flex items-center gap-2 py-4 text-body-n-accent leading-6 text-text-secondary max-md:py-2 max-md:text-m-body-s">
           <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
-          <img src="../../assets/header/chevron-right-s.svg" alt="" class="size-4 opacity-60" />
-          <span class="text-text-primary">Каталог 3D-моделей</span>
+          <span aria-hidden="true">•</span>
+          <span class="text-text-primary">3D модели</span>
         </nav>
-        <h1 class="text-h1 text-text-primary max-md:text-m-h1">Каталог 3D-моделей</h1>
+        <h1 class="flex h-11 items-center text-h1 text-text-primary max-md:hidden">3D модели</h1>
       </div>
 
       <!-- catalog-settings 2338:254262 — воронка и пилюли, без чипсов -->
-      <div class="flex items-center gap-2 px-10 py-6 max-md:px-4 max-md:py-4">
+      <div class="flex items-center gap-2 px-10 py-6 max-md:px-4 max-md:py-3">
         <button type="button" class="filter-funnel flex h-11 shrink-0 items-center" aria-label="Открыть фильтры">
           <span class="filter-funnel__circle">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -83,9 +81,18 @@
       </div>
 
       <!-- сетка: карточка 322, четыре в ряд на 1440 и две на 360 -->
-      <div class="grid grid-cols-4 gap-6 px-10 max-md:grid-cols-2 max-md:gap-2 max-md:px-4" data-models></div>
+      <!-- products 2338:254264 — 4 × 322 с зазором 24 на 1440; на 360
+           (2338:254306) две колонки по 168, зазор 8 и поля 8. -->
+      <div class="grid grid-cols-4 gap-6 px-10 max-md:grid-cols-2 max-md:gap-2 max-md:px-2" data-models></div>
 
       <!--#include partials/pagination.html -->
+
+      <!-- ==================== CAROUSEL: Популярные товары =============
+           Блок `H2` 2338:254296 (360 — 2338:254338…254341): тот же рельс с
+           сегментами, что закрывает каталог, и та же копия. -->
+      <div data-section="popular"></div>
+
+      <div class="h-20 max-md:h-8"></div>
 
       <!--#include partials/seo-kitchens.html -->
 
@@ -101,20 +108,30 @@
     <!-- одна карточка 3D-модели (future @foreach($models as $m)) — Figma `3D`
          2338:259535, 322×418: рендер с индикатором, название, строка формата,
          образцы цветов и «Скачать». -->
+    <!-- Карточка `3D` 2338:259414 — снимок 322×242 без скругления и Info 152:
+         отступы 4/12, зазор 4, название и характеристики оба 16/24 (второе
+         серым), палитра 28 в коробке 36, ссылка «Скачать» 32 со стрелкой вниз
+         (`arrow-down` 961:37194 — тот же арроу, что справа, повёрнутый). -->
     <template data-model-card>
-      <article class="flex flex-col gap-3">
-        <img class="aspect-[322/242] w-full rounded-[var(--radius-l)] object-cover" alt="" data-model-img />
-        <p class="text-body-n text-text-primary max-md:text-m-body-n" data-model-title></p>
-        <p class="text-body-s text-text-secondary max-md:text-m-body-s" data-model-spec></p>
-        <div class="flex gap-2" data-model-swatches>
-          <span class="size-6 rounded-full border border-border-subtle bg-[#a98a63]"></span>
-          <span class="size-6 rounded-full border border-border-subtle bg-[#d9d9d9]"></span>
-          <span class="size-6 rounded-full border border-border-subtle bg-surface-inverted"></span>
+      <article class="flex flex-col">
+        <img class="aspect-[322/242] w-full object-cover" alt="" data-model-img />
+        <div class="flex flex-col gap-1 px-1 py-3">
+          <p class="text-body-n text-text-primary max-md:text-m-body-n" data-model-title></p>
+          <p class="text-body-n text-text-secondary max-md:text-m-body-n" data-model-spec></p>
+          <div class="flex items-center gap-2 py-1 max-md:gap-1" data-model-swatches>
+            <span class="size-7 rounded-full border border-border-subtle bg-[#a98a63] max-md:size-[18px]"></span>
+            <span class="size-7 rounded-full border border-border-subtle bg-[#d9d9d9] max-md:size-[18px]"></span>
+            <span class="size-7 rounded-full border border-border-subtle bg-surface-inverted max-md:size-[18px]"></span>
+          </div>
+          <a
+            href="#"
+            class="flex h-8 w-fit items-center gap-1 text-body-n text-text-primary"
+            data-model-action
+          >
+            <span></span>
+            <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-4 rotate-90" />
+          </a>
         </div>
-        <a href="#" class="flex w-fit items-center gap-2 text-body-n text-text-primary" data-model-action>
-          <span></span>
-          <img src="../../assets/header/chevron-down.svg" alt="" class="size-4" />
-        </a>
       </article>
     </template>
 

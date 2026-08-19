@@ -39,9 +39,13 @@ renderMenuB2b(MENU_B2B, { current: "howto.html" });
 function paragraph(runs, first) {
   const p = document.createElement("p");
   // Заголовок отбивается сверху на 32, первый абзац на 16, следующие на 8
-  // (в макете это paragraphSpacing внутри одного текстового блока). На 360
-  // отбивка первого абзаца 12, а текст 14/20 против 16/24 на 1440.
-  p.className = `${first ? "pt-4 max-md:pt-3" : "pt-2"} text-body-n text-text-primary max-md:text-m-body-n`;
+  // (в макете это paragraphSpacing внутри одного текстового блока — шаг между
+  // базовыми линиями 32 против 24 внутри абзаца). На 360 отбивка первого
+  // абзаца 12, текст 14/20, а **между абзацами ничего**: там все двадцать
+  // базовых линий идут ровно через 20 (2241:162280).
+  p.className =
+    `${first ? "pt-4 max-md:pt-3" : "pt-2 max-md:pt-0"} ` +
+    "text-body-n text-text-primary max-md:text-m-body-n";
   p.append(
     ...runs.map((r) => {
       if (typeof r === "string") return document.createTextNode(r);

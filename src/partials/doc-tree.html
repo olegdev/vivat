@@ -3,25 +3,45 @@
      «Сертификаты»). Группа — заголовок 40 с шевроном и список документов;
      документ — ссылка и дата под ней (46 в одну строку ссылки, 70 в две).
 
-     Заголовок раскрытой группы тёмный и без подчёркивания, свёрнутой —
-     подчёркнутый; шеврон смотрит вверх и вниз соответственно. Оба состояния
-     выражены через aria-expanded, глиф один и поворачивается.
+     Заголовок — два разных **текстовых стиля**, а не одна строка с
+     подчёркиванием: свёрнутая группа (`condition=default`) это «Link L dotted»
+     20/32 Regular с пунктиром, раскрытая (`condition=pressed`) — «Body L
+     semibold» 20/32 SemiBold без линии. На 360 те же два стиля в 16/24. Кегль
+     и интерлиньяж у них общие, поэтому в разметке меняется только начертание и
+     подчёркивание; шеврон один и поворачивается.
+
+     **Со второго уровня заголовок мельче**: на «Схемах сборки» вложенная ветка
+     набрана «Link M dotted» / «H5», то есть 16/24 против 20/32 у корневой
+     (1434:57347 и 1434:57357 против 1434:57288 и 1434:57304). Уровень едет
+     атрибутом `data-doc-depth`, кегль — вариантом при нём. На 360 вложенных
+     веток макет не рисует вовсе, и там оба уровня остаются в 16/24.
 
      Размеры: группа 40 заголовок + 12 снизу (свёрнутая = 52), список отбит от
-     заголовка на 8 и разделяет документы теми же 8, у документа своей верхней
-     отбивки нет. Документ уже колонки на 16 с каждой стороны: 830 из 862 на
-     1440 и 296 из 328 на 360 — от этого и зависит, во сколько строк ляжет
-     длинное название. -->
+     заголовка на 8, между документами 8 на 1440 и **16** на 360, у документа
+     своей верхней отбивки нет. **Между вложенными ветками зазора нет** — их
+     разводят те самые 12 снизу (1463:60874, 1463:63560: списки веток идут с
+     `gap=0`, списки документов — с 8). Отсюда `data-doc-kind`: зазор ставит
+     список, а не строка. Заголовок в 40 не заперт: если подпись легла в
+     две строки (на 360 это «Протоколы испытаний…», 2241:165260), строка
+     вырастает до 48 — отсюда `min-h-10`, а не `h-10`.
+
+     Документ уже колонки на 16 с каждой стороны: 830 из 862 на 1440 и 296 из
+     328 на 360 — от этого и зависит, во сколько строк ляжет длинное название.
+     Ссылка документа набрана «Link M dotted», то есть пунктиром; дата под ней
+     отбита на 4 на 1440 и на 6 на 360. -->
 <template data-doc-group>
   <section class="pb-3">
     <button
       type="button"
       aria-expanded="false"
-      class="group/doc flex h-10 items-center gap-2 text-left"
+      class="group/doc flex min-h-10 items-center gap-0.5 text-left"
       data-doc-toggle
+      data-doc-depth="root"
     >
       <span
-        class="text-h5 text-text-primary underline group-aria-expanded/doc:no-underline max-md:text-m-h4"
+        class="link-dotted text-body-l text-text-primary max-md:text-m-body-l
+               group-aria-expanded/doc:font-semibold group-aria-expanded/doc:no-underline
+               group-data-[doc-depth=nested]/doc:text-body-n"
         data-doc-title
       ></span>
       <img
@@ -30,16 +50,20 @@
         class="size-4 shrink-0 transition-transform group-aria-expanded/doc:rotate-180"
       />
     </button>
-    <div class="flex flex-col gap-2 px-4 pt-2" data-doc-items hidden></div>
+    <div
+      class="flex flex-col px-4 pt-2 data-[doc-kind=docs]:gap-2 data-[doc-kind=docs]:max-md:gap-4"
+      data-doc-items
+      hidden
+    ></div>
   </section>
 </template>
 
 <!-- один документ (future @foreach($group->items as $doc)) -->
 <template data-doc-item>
-  <div class="flex flex-col gap-1">
+  <div class="flex flex-col gap-1 max-md:gap-1.5">
     <a
       href="#"
-      class="text-body-n text-text-primary underline max-md:text-m-body-n"
+      class="link-dotted text-body-n text-text-primary max-md:text-m-body-n"
       data-doc-link
     ></a>
     <span class="text-body-s text-text-secondary max-md:text-m-body-s" data-doc-date></span>

@@ -52,30 +52,43 @@
            (2225:132266, 104): «Для бизнеса» и селектор с именем страницы. -->
       <!--#include partials/for-business-header.html -->
 
+      <!-- Отбивка 96 между заголовком раздела и колонкой: у «Новостей» она
+           есть (spacing 1463:67208), у остальных страниц секции нет. -->
+      <div class="h-24 max-md:hidden"></div>
+
       <!-- ==================== МЕНЮ + КОЛОНКА ===========================
            general-container 1167:79696 — 40 + 298 + 40 + 1022 + 40 = 1440. -->
       <div class="flex gap-10 px-10 max-md:flex-col max-md:gap-0 max-md:px-0">
         <!--#include partials/menu-b2b.html -->
 
         <div class="w-[1022px] px-20 max-md:w-full max-md:px-4" data-content-column>
-          <h2 class="pt-8 text-h2 text-text-primary max-md:hidden">Новости</h2>
+          <!-- title-text-page 1463:67088 — 862×36, без верхней отбивки -->
+          <h2 class="text-h2 text-text-primary max-md:hidden">Новости</h2>
 
-          <!-- Tab 1944:372179 — рубрики, 862×48; активная «Все новости» -->
-          <div class="scroll-rail flex gap-6 overflow-x-auto py-2 max-md:gap-4" data-news-tabs></div>
+          <!-- Tab 1944:372179 — рубрики, 862×48: коробка таба 28 и по 10
+               сверху и снизу, зазор 24. Ниже md этот ряд переезжает в шапку
+               раздела (2241:188715, та же третья часть, что у «Для
+               интернет-магазинов»), поэтому здесь он скрыт. -->
+          <div
+            class="scroll-rail flex gap-6 overflow-x-auto py-[10px] max-md:hidden"
+            data-news-tabs
+          ></div>
 
           <div class="h-4"></div>
 
-          <!-- social 1463:70256 — плашка подписки 862×124 на #a4cebf -->
+          <!-- social 1463:70256 — плашка подписки 862×124 на #a4cebf:
+               отступы 40/32, заголовок 24/28 SemiBold, строка под ним 20/32
+               Regular, кнопка большая (56). -->
           <div
-            class="flex items-center justify-between gap-6 rounded-[var(--radius-l)] bg-surface-accent-alt-subtle px-8 py-6 max-md:flex-col max-md:items-start max-md:gap-4 max-md:px-4"
+            class="flex items-center justify-between gap-4 rounded-[var(--radius-l)] bg-surface-accent-alt-subtle px-10 py-8 max-md:flex-col max-md:items-center max-md:gap-4 max-md:px-4 max-md:py-4"
           >
-            <div>
+            <div class="max-md:text-center">
               <p class="text-h3 text-text-primary max-md:text-m-h3">Подпишитесь на рассылку</p>
-              <p class="text-body-n text-text-primary max-md:text-m-body-n">чтобы быть всегда в курсе!</p>
+              <p class="text-body-l text-text-primary max-md:text-m-body-l">чтобы быть всегда в курсе!</p>
             </div>
             <button
               type="button"
-              class="btn btn-m btn-primary shrink-0 max-md:w-full"
+              class="btn btn-l btn-primary shrink-0 max-md:h-11 max-md:w-full max-md:text-m-button-m"
               data-modal-open="subscribe"
             >
               Подписаться
@@ -85,7 +98,11 @@
           <!-- news-content 1463:67089 — двадцать новостей -->
           <div class="flex flex-col" data-news></div>
 
-          <!--#include partials/pagination.html -->
+          <!-- На 360 постранички нет: в кадре (2241:188215) за списком сразу
+               идёт отбивка и подвал. -->
+          <div class="max-md:hidden">
+            <!--#include partials/pagination.html -->
+          </div>
         </div>
       </div>
 
@@ -107,18 +124,31 @@
     <template data-news-item>
       <article class="flex flex-col py-6">
         <p class="text-h3 text-text-primary max-md:text-m-h3" data-news-title></p>
-        <span class="pt-1 text-body-s text-text-secondary max-md:text-m-body-s" data-news-date></span>
+        <span class="pt-2 text-body-s text-text-secondary max-md:text-m-body-s" data-news-date></span>
+        <!-- `description` 1463:70358 — абзацы одним текстовым блоком, между
+             ними 8 (paragraphSpacing), а не 12; на 360 (1821:326574) отбивки
+             между абзацами нет вовсе, как и в «Как с нами работать». -->
         <div
-          class="flex flex-col gap-3 pt-4 text-body-n text-text-primary max-md:text-m-body-n"
+          class="flex flex-col gap-2 pt-3 text-body-n text-text-primary max-md:gap-0 max-md:text-m-body-n"
           data-news-body
         ></div>
+        <!-- `phones` 1463:70510 — «Телефоны для связи:» и номера под ним;
+             есть у девяти новостей из двадцати. Второй столбец мастера
+             («Консультация» с графиком) не разложен ни в одном инстансе. -->
+        <div class="flex flex-col gap-2 pt-3" data-news-phones hidden>
+          <p class="text-body-n-accent text-text-primary max-md:text-m-body-n-accent">
+            Телефоны для связи:
+          </p>
+          <div class="flex flex-col gap-1 text-body-n text-text-primary max-md:text-m-body-n" data-news-phone-list></div>
+        </div>
+        <!-- `text-action` 585:27809 — подпись, зазор 4 и стрелка 20 -->
         <a
           href="#"
-          class="flex w-fit items-center gap-2 pt-4 text-body-n text-text-primary"
+          class="mt-3 flex h-8 w-fit items-center gap-1 text-body-n text-text-primary"
           data-news-action
         >
           <span></span>
-          <img src="../../assets/header/chevron-right.svg" alt="" class="size-4" />
+          <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-5" />
         </a>
       </article>
     </template>

@@ -46,4 +46,7 @@ document.querySelector("[data-decors]").replaceChildren(
   })
 );
 
+// Постраничка у этой страницы на три страницы, а не на семь (1488:127364).
+document.querySelector("[data-pagination]").dataset.pages = "3";
+
 initModals();
