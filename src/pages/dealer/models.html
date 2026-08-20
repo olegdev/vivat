@@ -65,7 +65,12 @@
 
       <!-- catalog-settings 2338:254262 — воронка и пилюли, без чипсов -->
       <div class="flex items-center gap-2 px-10 py-6 max-md:px-4 max-md:py-3">
-        <button type="button" class="filter-funnel flex h-11 shrink-0 items-center" aria-label="Открыть фильтры">
+        <button
+          type="button"
+          data-filter-open
+          class="filter-funnel flex h-11 shrink-0 items-center"
+          aria-label="Открыть фильтры"
+        >
           <span class="filter-funnel__circle">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path fill-rule="evenodd" clip-rule="evenodd" d="M13 12c2.209 0 4 1.791 4 4s-1.791 4-4 4a4.002 4.002 0 0 1-3.876-3.009A1 1 0 0 1 9 17H3a1 1 0 1 1 0-2h6c.042 0 .083.003.124.008A4.002 4.002 0 0 1 13 12Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
@@ -74,15 +79,16 @@
               <path d="M21 5a1 1 0 1 1 0 2h-5a1 1 0 1 1 0-2h5Z" />
             </svg>
           </span>
+          <span data-filter-badge class="badge-number badge-number--outline -ml-3 hidden self-start">0</span>
         </button>
         <!-- Пилюли те же шесть, что у каталога (882:89341): Коллекция, Форма
              кухни, Фасады, Цвет, Стиль, Цена. Сортировки в этом кадре нет. -->
-        <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Коллекция</button>
-        <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Форма кухни</button>
-        <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Фасады</button>
-        <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цвет</button>
-        <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Стиль</button>
-        <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цена</button>
+        <button type="button" data-filter-open="collection" data-filter-pill="collection" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Коллекция<span data-pill-count class="hidden text-text-muted"></span></button>
+        <button type="button" data-filter-open="form" data-filter-pill="form" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Форма кухни<span data-pill-count class="hidden text-text-muted"></span></button>
+        <button type="button" data-filter-open="facade" data-filter-pill="facade" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Фасады<span data-pill-count class="hidden text-text-muted"></span></button>
+        <button type="button" data-filter-open="color" data-filter-pill="color" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цвет<span data-pill-count class="hidden text-text-muted"></span></button>
+        <button type="button" data-filter-open="style" data-filter-pill="style" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Стиль<span data-pill-count class="hidden text-text-muted"></span></button>
+        <button type="button" data-filter-open="price" data-filter-pill="price" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цена<span data-pill-count class="hidden text-text-muted"></span></button>
       </div>
 
       <!-- сетка: карточка 322, четыре в ряд на 1440 и две на 360 -->
@@ -130,7 +136,7 @@
           </div>
           <a
             href="#"
-            class="flex h-8 w-fit items-center gap-1 text-body-n text-text-primary"
+            class="link-dotted flex h-8 w-fit items-center gap-1 text-body-n text-text-primary"
             data-model-action
           >
             <span></span>
@@ -147,6 +153,13 @@
         <p class="px-1 py-3 text-body-s leading-6 text-text-primary max-md:text-m-body-n" data-decor-name></p>
       </article>
     </template>
+
+    <!-- ==================== ШТОРКА ФИЛЬТРОВ ============================
+         Своей шторки кадр «3D-моделей» не рисует, но пилюли в панели те же
+         шесть, что у каталога (882:89341), и группы каталожной шторки с ними
+         совпадают один в один — поэтому здесь стоит она. Ряда чипсов в кадре
+         нет, занятые группы показывают счётчики на пилюлях и бейдж воронки. -->
+    <!--#include partials/catalog-filters.html -->
 
     <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
     <!--#include partials/modals.html -->

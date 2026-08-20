@@ -10,6 +10,7 @@ import { dealerMenuSections } from "../../data/dealer-home.js";
 import { MODELS_LIST, MODEL_SPEC, MODEL_ACTION } from "../../data/models.js";
 import { mountCarousel } from "../../components/carousel.js";
 import { popularItems } from "../../data/catalog.js";
+import { initFiltersPanel } from "../../components/filters-panel.js";
 
 // «Каталог 3D-моделей». Не контентная страница: левого меню раздела у фрейма
 // нет, это каталог со своей карточкой. Фильтры и сортировка не подключены —
@@ -54,6 +55,13 @@ document.querySelector("[data-models]").replaceChildren(
     return node;
   })
 );
+
+// ---- фильтры ----------------------------------------------------------------
+// Шторка каталожная (группы совпадают с пилюлями), ряда чипсов у страницы нет.
+initFiltersPanel({
+  groups: ["collection", "form", "facade", "color", "style"],
+  price: true,
+});
 
 // ---- Популярные товары ------------------------------------------------------
 // Рельс с сегментами (2338:254296) — тот же, что закрывает каталог.

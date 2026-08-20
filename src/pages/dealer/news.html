@@ -95,8 +95,10 @@
             </button>
           </div>
 
-          <!-- news-content 1463:67089 — двадцать новостей -->
-          <div class="flex flex-col" data-news></div>
+          <!-- news-content 1463:67089 — двадцать новостей. Секция с
+               заголовком, табами и плашкой в кадре 240 при содержимом 224:
+               последние 16 — отбивка перед первой новостью. -->
+          <div class="flex flex-col pt-4" data-news></div>
 
           <!-- На 360 постранички нет: в кадре (2241:188215) за списком сразу
                идёт отбивка и подвал. -->
@@ -140,20 +142,20 @@
              есть у девяти новостей из двадцати. Второй столбец мастера
              («Консультация» с графиком) не разложен ни в одном инстансе. -->
         <div class="flex flex-col gap-2 pt-3" data-news-phones hidden>
-          <!-- Подпись: 16 обычного начертания в строке 22. В .fig у стиля
-               стоит Medium, но живой рендер даёт ту же толщину штриха, что у
-               номеров под ней (Figma старше снимка — см. CLAUDE.md о цвете);
-               интерлиньяж при этом 22, а не 24, иначе блок телефонов растёт
-               с 82 до 84. -->
-          <p class="text-body-n leading-[22px] text-text-primary max-md:text-m-body-n max-md:leading-5">
+          <!-- Подпись — 16/22 Medium (1463:70512), номера под ней обычные.
+               Мерено по плотности чернил: у подписи в кадре её на 16% больше,
+               чем у номеров, при том что весь наш снимок на 5% темнее из-за
+               субпиксельного сглаживания. -->
+          <p class="text-body-n-accent text-text-primary max-md:text-m-body-n-accent">
             Телефоны для связи:
           </p>
           <div class="flex flex-col gap-1 text-body-n text-text-primary max-md:text-m-body-n" data-news-phone-list></div>
         </div>
-        <!-- `text-action` 585:27809 — подпись, зазор 4 и стрелка 20 -->
+        <!-- `text-action` 585:27809 — подпись 16/24 Medium (585:27813), зазор 4
+             и стрелка 20. -->
         <a
           href="#"
-          class="mt-3 flex h-8 w-fit items-center gap-1 text-body-n text-text-primary"
+          class="mt-3 flex h-8 w-fit items-center gap-1 text-button-m text-text-primary max-md:text-m-button-m"
           data-news-action
         >
           <span></span>

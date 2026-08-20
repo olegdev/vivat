@@ -457,8 +457,8 @@ into pages at build time by `scripts/vite-plugin-includes.mjs` via
 works in both `npm run dev` and `npm run build`). One partial == one future
 Blade partial — the port to `@include('partials.name')` is mechanical. Current
 partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
-`catalog-filters`, `catalog-settings`, `catalog-grid`, `decor-filters`,
-`pagination`,
+`catalog-filters` (её же берут «3D-модели»), `catalog-settings`,
+`catalog-grid`, `decor-filters`, `pagination`,
 `chip-close`, `stores`, `hero`, `carousel-section`,
 `product-card`, `promo-card`, `review-card`, `pdp-summary`, `pdp-specs`,
 `pdp-photo-overlay`, `sticky-price`, `seo-kitchens`, `cart-card`,
