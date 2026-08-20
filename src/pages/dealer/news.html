@@ -122,7 +122,11 @@
          В derivedSymbolData дата идёт последней, но нарисована она сразу под
          заголовком — порядок в раскладке не порядок на экране. -->
     <template data-news-item>
-      <article class="flex flex-col py-6">
+      <!-- У новости снизу линия #cbcbcb (мастер 1463:70349 и мобильный
+           1821:326563 — `borderBottomWeight: 1`). Обводка в Figma внутренняя,
+           поэтому это внутренняя тень: коробка остаётся 24 + содержимое + 24,
+           а `border-b` добавил бы пиксель сверх. -->
+      <article class="flex flex-col py-6 shadow-[inset_0_-1px_0_var(--color-border-default)]">
         <p class="text-h3 text-text-primary max-md:text-m-h3" data-news-title></p>
         <span class="pt-2 text-body-s text-text-secondary max-md:text-m-body-s" data-news-date></span>
         <!-- `description` 1463:70358 — абзацы одним текстовым блоком, между
@@ -136,7 +140,12 @@
              есть у девяти новостей из двадцати. Второй столбец мастера
              («Консультация» с графиком) не разложен ни в одном инстансе. -->
         <div class="flex flex-col gap-2 pt-3" data-news-phones hidden>
-          <p class="text-body-n-accent text-text-primary max-md:text-m-body-n-accent">
+          <!-- Подпись: 16 обычного начертания в строке 22. В .fig у стиля
+               стоит Medium, но живой рендер даёт ту же толщину штриха, что у
+               номеров под ней (Figma старше снимка — см. CLAUDE.md о цвете);
+               интерлиньяж при этом 22, а не 24, иначе блок телефонов растёт
+               с 82 до 84. -->
+          <p class="text-body-n leading-[22px] text-text-primary max-md:text-m-body-n max-md:leading-5">
             Телефоны для связи:
           </p>
           <div class="flex flex-col gap-1 text-body-n text-text-primary max-md:text-m-body-n" data-news-phone-list></div>
