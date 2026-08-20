@@ -22,8 +22,10 @@
          Панель настроек здесь — тот же компонент, что у каталога, но в другой
          сборке: воронка и три пилюли, справа тумблер «Товары в этом цвете»
          вместо сортировки. Второй кадр (1488:69674) показывает её с чипсами
-         выбранных параметров, но шторки фильтров для этой страницы макет не
-         рисует, поэтому фильтры не подключены — см. BACKLOG. -->
+         выбранных параметров и счётчиками у пилюль — это состояние собрано, а
+         шторка сделана по каталожной, потому что своей макет не рисует:
+         названия групп с пилюль, значения — только названные в кадре
+         («ДСП», «Светлые»), у «Структуры» пусто. См. BACKLOG. -->
     <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
       <!-- ==================== SITE HEADER ============================== -->
       <!--#include partials/header.html -->
@@ -69,32 +71,41 @@
           <!-- catalog-settings 1488:127314 — 862×92. Ниже md (2241:186647,
                360×68) именованные пилюли схлопываются в одну воронку, как и в
                каталоге, а тумблер остаётся. -->
-          <div class="flex items-center gap-2 py-6 max-md:py-3">
-            <button
-              type="button"
-              class="filter-funnel flex h-11 shrink-0 items-center"
-              aria-label="Открыть фильтры"
-            >
-              <span class="filter-funnel__circle">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M13 12c2.209 0 4 1.791 4 4s-1.791 4-4 4a4.002 4.002 0 0 1-3.876-3.009A1 1 0 0 1 9 17H3a1 1 0 1 1 0-2h6c.042 0 .083.003.124.008A4.002 4.002 0 0 1 13 12Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
-                  <path d="M21 15a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2h2Z" />
-                  <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2c2.209 0 4 1.791 4 4s-1.791 4-4 4a4.002 4.002 0 0 1-3.876-3.009A1 1 0 0 1 6 7H3a1 1 0 0 1 0-2h3c.042 0 .083.003.124.008A4.002 4.002 0 0 1 10 2Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
-                  <path d="M21 5a1 1 0 1 1 0 2h-5a1 1 0 1 1 0-2h5Z" />
-                </svg>
-              </span>
-            </button>
-            <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Структура</button>
-            <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Материал</button>
-            <button type="button" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цвет</button>
+          <div class="flex flex-col gap-3 py-6 max-md:py-3">
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                data-filter-open
+                class="filter-funnel flex h-11 shrink-0 items-center"
+                aria-label="Открыть фильтры"
+              >
+                <span class="filter-funnel__circle">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M13 12c2.209 0 4 1.791 4 4s-1.791 4-4 4a4.002 4.002 0 0 1-3.876-3.009A1 1 0 0 1 9 17H3a1 1 0 1 1 0-2h6c.042 0 .083.003.124.008A4.002 4.002 0 0 1 13 12Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+                    <path d="M21 15a1 1 0 1 1 0 2h-2a1 1 0 1 1 0-2h2Z" />
+                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10 2c2.209 0 4 1.791 4 4s-1.791 4-4 4a4.002 4.002 0 0 1-3.876-3.009A1 1 0 0 1 6 7H3a1 1 0 0 1 0-2h3c.042 0 .083.003.124.008A4.002 4.002 0 0 1 10 2Zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+                    <path d="M21 5a1 1 0 1 1 0 2h-5a1 1 0 1 1 0-2h5Z" />
+                  </svg>
+                </span>
+                <span data-filter-badge class="badge-number badge-number--outline -ml-3 hidden self-start">0</span>
+              </button>
+              <button type="button" data-filter-open="structure" data-filter-pill="structure" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Структура<span data-pill-count class="hidden text-text-muted"></span></button>
+              <button type="button" data-filter-open="material" data-filter-pill="material" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Материал<span data-pill-count class="hidden text-text-muted"></span></button>
+              <button type="button" data-filter-open="color" data-filter-pill="color" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цвет<span data-pill-count class="hidden text-text-muted"></span></button>
 
-            <label class="group/sw ml-auto flex shrink-0 cursor-pointer items-center gap-3">
-              <span class="text-body-n-accent text-text-primary max-md:text-m-body-n-accent">Товары в этом цвете</span>
-              <input type="checkbox" class="peer sr-only" data-decor-color-only />
-              <span class="relative block h-6 w-10 shrink-0 rounded-full bg-components-disabled transition-colors peer-checked:bg-components-red">
-                <span class="absolute left-0.5 top-0.5 size-5 rounded-full bg-surface-inverted transition-transform peer-checked:translate-x-4"></span>
-              </span>
-            </label>
+              <label class="group/sw ml-auto flex shrink-0 cursor-pointer items-center gap-3">
+                <span class="text-body-n-accent text-text-primary max-md:text-m-body-n-accent">Товары в этом цвете</span>
+                <input type="checkbox" class="peer sr-only" data-decor-color-only />
+                <span class="relative block h-6 w-10 shrink-0 rounded-full bg-components-disabled transition-colors peer-checked:bg-components-red">
+                  <span class="absolute left-0.5 top-0.5 size-5 rounded-full bg-surface-inverted transition-transform peer-checked:translate-x-4"></span>
+                </span>
+              </label>
+            </div>
+
+            <!-- Ряд выбранных параметров: чипсы значений и «Очистить все»
+                 (1488:69674). Наполняет decor-filters.js; пустой ряд прячет
+                 себя сам, поэтому по умолчанию панель остаётся 92. -->
+            <div data-chips class="flex flex-wrap items-center gap-2 empty:hidden"></div>
           </div>
 
           <!-- сетка 1488:127315 — 4 колонки по 207, шаг 8 -->
@@ -130,6 +141,9 @@
         <p class="px-1 py-3 text-body-n text-text-primary max-md:text-m-body-l" data-decor-name></p>
       </article>
     </template>
+
+    <!-- ==================== ШТОРКА ФИЛЬТРОВ ============================ -->
+    <!--#include partials/decor-filters.html -->
 
     <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
     <!--#include partials/modals.html -->

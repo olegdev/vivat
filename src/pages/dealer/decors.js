@@ -9,6 +9,7 @@ import { renderMenuB2b } from "../../components/menu-b2b.js";
 import { ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { MENU_B2B } from "../../data/menu-b2b.js";
+import { initDecorFilters } from "../../components/decor-filters.js";
 import { DECORS } from "../../data/decors.js";
 
 // «Каталог декоров» — контентная страница дилерского раздела.
@@ -45,6 +46,11 @@ document.querySelector("[data-decors]").replaceChildren(
     return node;
   })
 );
+
+// ---- фильтры ----------------------------------------------------------------
+// Панель, шторка и единственный шов applyDecorFilters(); сетку он сегодня не
+// трогает — признаков у образцов в макете нет, состав придёт с сервера.
+initDecorFilters();
 
 // Постраничка у этой страницы на три страницы, а не на семь (1488:127364).
 document.querySelector("[data-pagination]").dataset.pages = "3";

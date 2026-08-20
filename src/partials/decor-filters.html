@@ -1,0 +1,139 @@
+<!-- ==================== DECOR FILTER DRAWER ============================
+     Шторка фильтров «Каталога декоров». Устроена как каталожная
+     (partials/catalog-filters.html): одна форма, каждое поле — будущий
+     параметр запроса, поведение в components/decor-filters.js, применение
+     идёт через единственный шов applyDecorFilters().
+
+     **Шторки для этой страницы макет не рисует.** Названия групп берутся с
+     пилюль панели (1488:127314), а значения — только те, что названы в кадре
+     выбранных параметров (1488:69674): «ДСП» у Материала и «Светлые» у Цвета.
+     У «Структуры» не названо ни одного значения, поэтому её список пуст —
+     слот стоит на месте, заполнять его выдумкой нельзя (см. BACKLOG).
+
+     Разметка группы — та же, что в каталоге, чтобы порт в Blade был общим:
+     <details> для сворачивания и по <label> на значение → @foreach. -->
+<div data-filter-drawer class="filter-drawer fixed inset-0 z-50">
+  <!-- scrim -->
+  <div data-filter-dismiss class="filter-drawer__scrim absolute inset-0 bg-overlay-strong"></div>
+
+  <!-- panel -->
+  <aside
+    class="filter-drawer__panel absolute left-0 top-0 flex h-full w-[478px] max-w-full flex-col bg-surface-inverted shadow-dropdown"
+  >
+    <!-- header -->
+    <div class="flex h-16 shrink-0 items-center justify-between px-10 max-md:px-4">
+      <h2 class="text-h4 text-text-primary">Фильтры</h2>
+      <button
+        type="button"
+        data-filter-close
+        class="flex size-6 items-center justify-center"
+        aria-label="Закрыть фильтры"
+      >
+        <img src="../../assets/header/icon-close.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <!-- form: the request payload. `name`s are the query contract. -->
+    <form data-filter-form class="flex-1 overflow-y-auto px-10 max-md:px-4">
+      <!-- ---- Структура ----
+           Значений макет не называет: в кадре выбранных параметров у этой
+           пилюли нет ни счётчика, ни чипса. Список пуст намеренно. -->
+      <details data-filter-section="structure" open class="group border-t border-divider-soft">
+        <summary
+          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+        >
+          <span class="text-body-n-accent text-text-primary">Структура</span>
+          <span class="flex items-center gap-3">
+            <button
+              type="button"
+              data-filter-clear-group="structure"
+              class="text-body-xs uppercase text-text-secondary transition-colors hover:text-text-primary"
+            >
+              очистить
+            </button>
+            <img
+              src="../../assets/header/chevron-down.svg"
+              alt=""
+              class="size-6 transition-transform group-open:rotate-180"
+            />
+          </span>
+        </summary>
+        <div class="pb-4" data-filter-options="structure"></div>
+      </details>
+
+      <!-- ---- Материал ---- -->
+      <details data-filter-section="material" open class="group border-t border-divider-soft">
+        <summary
+          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+        >
+          <span class="text-body-n-accent text-text-primary">Материал</span>
+          <span class="flex items-center gap-3">
+            <button
+              type="button"
+              data-filter-clear-group="material"
+              class="text-body-xs uppercase text-text-secondary transition-colors hover:text-text-primary"
+            >
+              очистить
+            </button>
+            <img
+              src="../../assets/header/chevron-down.svg"
+              alt=""
+              class="size-6 transition-transform group-open:rotate-180"
+            />
+          </span>
+        </summary>
+        <div class="pb-4" data-filter-options="material">
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="material[]" value="dsp" class="filter-check" /><span class="text-body-n text-text-primary">ДСП</span></label>
+        </div>
+      </details>
+
+      <!-- ---- Цвет ---- -->
+      <details data-filter-section="color" open class="group border-t border-divider-soft">
+        <summary
+          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+        >
+          <span class="text-body-n-accent text-text-primary">Цвет</span>
+          <span class="flex items-center gap-3">
+            <button
+              type="button"
+              data-filter-clear-group="color"
+              class="text-body-xs uppercase text-text-secondary transition-colors hover:text-text-primary"
+            >
+              очистить
+            </button>
+            <img
+              src="../../assets/header/chevron-down.svg"
+              alt=""
+              class="size-6 transition-transform group-open:rotate-180"
+            />
+          </span>
+        </summary>
+        <div class="pb-4" data-filter-options="color">
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="color[]" value="svetlye" class="filter-check" /><span class="text-body-n text-text-primary">Светлые</span></label>
+        </div>
+      </details>
+    </form>
+
+    <!-- footer: reset + apply. «Показать N» держит applyDecorFilters(). -->
+    <div class="flex h-16 shrink-0 items-center justify-between gap-6 bg-surface-default px-10 max-md:px-4">
+      <button
+        type="button"
+        data-filter-clear
+        class="flex items-center gap-2 text-body-n text-text-primary transition-colors hover:text-text-hover"
+      >
+        Очистить
+        <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />
+      </button>
+      <button type="button" data-filter-apply class="btn btn-m btn-primary min-w-[188px]">
+        Показать <span data-filter-count>0</span>
+      </button>
+    </div>
+  </aside>
+</div>
+
+<!-- один чипс выбранного параметра (future @foreach($selected as $chip)) -->
+<template data-decor-chip>
+  <button type="button" class="catalog-chip catalog-chip--active">
+    <span data-chip-label></span><!--#include partials/chip-close.html -->
+  </button>
+</template>
