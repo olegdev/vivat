@@ -36,6 +36,10 @@ mountCarousel(
     desc: "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.",
     tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
     endpoint: "/catalog/popular", // tab seam target (see carousel.js initTabs)
+    // У title-block этого рельса пустой `buttons` (758:57416, 2338:254297), а
+    // на 360 за карточками сразу идёт отбивка — кнопок нет ни там, ни там.
+    desktopAction: false,
+    mobileAction: false,
   },
   popularItems
 );

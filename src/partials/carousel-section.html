@@ -48,8 +48,10 @@
           </a>
         </div>
       </div>
-      <div data-cs-chips-slot></div>
-      <div class="h-6 max-md:h-3"></div>
+      <!-- Слот ряда сегментов. Пустой (у рельсов без табов) он и есть та
+           отбивка 24, что стояла тут раньше; с табами отбивки приносит сам ряд
+           (`segments` 644:44577 — 16 сверху, 44 ряд, 16 снизу). -->
+      <div data-cs-chips-slot class="empty:h-6 max-md:empty:h-3"></div>
     </div>
     <div class="relative w-[1440px] px-10 max-md:w-full max-md:px-4">
       <div
@@ -77,15 +79,16 @@
   </section>
 </template>
 
-<!-- Tab chips over a rail (Популярные товары). Mobile turns the row into a 56px
-     edge-to-edge rail (Figma `segments` 1968:201371) — the negative margin lets
-     it bleed past the section padding. The trailing "еще" chip is part of the
+<!-- Tab chips over a rail (Популярные товары). Блок `segments` (644:44577 на
+     1440, 2338:254339 на 360) это 16 + ряд 44 + 16 сверху вниз, на 360 — 8 + 44
+     + 16; ряд едет краем в край, и отрицательные поля выпускают его за
+     отступы секции. The trailing "еще" chip is part of the
      row, not a tab; the component inserts one [data-carousel-chip] per tab
      before it. -->
 <template data-carousel-chips>
   <div
     data-chips
-    class="flex items-center gap-2 pt-6 max-md:scroll-rail max-md:-mx-4 max-md:h-14 max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:px-4 max-md:pt-0 *:max-md:snap-start"
+    class="flex items-center gap-2 pb-4 pt-10 max-md:scroll-rail max-md:-mx-4 max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:px-4 max-md:pb-4 max-md:pt-2 *:max-md:snap-start"
   >
     <button data-cs-more class="chip gap-1 border border-border-light bg-bg-page text-text-muted">
       еще <span class="tracking-widest">···</span>
