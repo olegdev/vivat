@@ -167,7 +167,9 @@ function fillDetail(anchor, d) {
   text("[data-detail-name]", d.name);
   text("[data-detail-address]", d.address);
   text("[data-detail-metro-name]", d.metro || "");
-  if (!d.metro) q("[data-detail-metro]")?.classList.add("hidden");
+  // toggle, а не add: карточка перерисовывается при смене режима «Опт /
+  // Розница», и у второго адреса метро может быть, когда у первого его нет.
+  q("[data-detail-metro]")?.classList.toggle("hidden", !d.metro);
   text("[data-detail-route-label]", d.routeLabel);
   text("[data-detail-dept-title]", d.dept.title);
   text("[data-detail-hours-title]", d.hours.title);
@@ -449,6 +451,16 @@ export function renderStoresMap(anchor, opts) {
     // ymaps measures a zero-height container. Call this when the step opens.
     refresh() {
       map?.container.fitToViewport();
+    },
+    // Режим `contact page` показывает один адрес, и Контакты переключают его
+    // сегментами «Опт / Розница»: карточка перезаполняется, на карте остаётся
+    // одна метка — та, что соответствует адресу, — и карта едет к ней.
+    showDetail(store) {
+      const item = items.find((s) => s.name === store.name) || items[0];
+      fillDetail(anchor, store);
+      visible = items.filter((s) => s.id === item.id);
+      syncMarkers();
+      map?.setCenter(item.ll, currentZoom, { duration: 450 });
     },
   };
 }

@@ -9,7 +9,7 @@ import { renderMenuB2b } from "../../components/menu-b2b.js";
 import { ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { MENU_B2B } from "../../data/menu-b2b.js";
-import { renderDocTree } from "../../components/doc-tree.js";
+import { renderDocTree, initDocSearch } from "../../components/doc-tree.js";
 import { SCHEME_TREE } from "../../data/schemes.js";
 
 // «Схемы сборки» — контентная страница дилерского раздела.
@@ -35,6 +35,10 @@ initCart();
 renderMenuB2b(MENU_B2B, { current: "schemes.html" });
 
 // ---- дерево документов ------------------------------------------------------
-renderDocTree(document.querySelector("[data-doc-tree]"), SCHEME_TREE);
+const tree = document.querySelector("[data-doc-tree]");
+renderDocTree(tree, SCHEME_TREE);
+
+// Поиск по документам — клиентский: всё дерево уже на странице.
+initDocSearch(document.querySelector("[data-doc-search]"), tree);
 
 initModals();

@@ -113,4 +113,8 @@ document.querySelector("[data-news]").replaceChildren(
   })
 );
 
+// Кнопка постранички считает новости, а не товары (в макете там подпись
+// мастера — см. BACKLOG).
+document.querySelector("[data-grid-noun]").textContent = "новостей";
+
 initModals();

@@ -9,7 +9,7 @@ import { renderMenuB2b } from "../../components/menu-b2b.js";
 import { ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { MENU_B2B } from "../../data/menu-b2b.js";
-import { renderDocTree } from "../../components/doc-tree.js";
+import { renderDocTree, initDocSearch } from "../../components/doc-tree.js";
 import { CERT_GROUPS } from "../../data/certificates.js";
 
 // «Сертификаты» — контентная страница дилерского раздела.
@@ -35,6 +35,10 @@ initCart();
 renderMenuB2b(MENU_B2B, { current: "certificates.html" });
 
 // ---- дерево документов ------------------------------------------------------
-renderDocTree(document.querySelector("[data-doc-tree]"), CERT_GROUPS);
+const tree = document.querySelector("[data-doc-tree]");
+renderDocTree(tree, CERT_GROUPS);
+
+// Поиск по документам — клиентский: всё дерево уже на странице.
+initDocSearch(document.querySelector("[data-doc-search]"), tree);
 
 initModals();

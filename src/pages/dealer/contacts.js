@@ -9,7 +9,7 @@ import { renderStoresMap, setBases } from "../../components/stores-map.js";
 import { initCarousel } from "../../components/carousel.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
-import { WAREHOUSE, EMPLOYEES, WAREHOUSE_PHOTOS } from "../../data/contacts.js";
+import { WAREHOUSE, AUDIENCES, EMPLOYEES, WAREHOUSE_PHOTOS } from "../../data/contacts.js";
 
 // Контакты — контентная страница дилерского раздела. Скрипт только проводка.
 
@@ -51,19 +51,27 @@ for (const sel of ["[data-audience-desktop] > div", "[data-store-audience]"]) {
 }
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("[data-audience-mode]");
-  if (btn) document.body.dataset.audience = btn.dataset.audienceMode;
+  if (!btn) return;
+  const mode = btn.dataset.audienceMode;
+  document.body.dataset.audience = mode;
+  // Переключение меняет карточку в панели и точку на карте. Розничные данные
+  // макетом не нарисованы и собраны нами — см. BACKLOG.
+  map.showDetail(AUDIENCES[mode]);
 });
 
 // ---- карта в режиме contactPage ---------------------------------------------
 setBases({ home: HOME });
-renderStoresMap(document.querySelector('[data-section="map"]'), {
-  stores: [WAREHOUSE],
+const map = renderStoresMap(document.querySelector('[data-section="map"]'), {
+  stores: Object.values(AUDIENCES),
   detail: WAREHOUSE,
   contactPage: true,
   apiKey: import.meta.env?.VITE_YANDEX_MAPS_KEY || "73abf802-7fa6-4da1-bc36-7dd3457e4673",
   center: [WAREHOUSE.coords[1], WAREHOUSE.coords[0]],
   zoom: 11,
 });
+// Стартовый режим — оптовый: на карте остаётся одна метка, та же, что в
+// карточке (сегмент «Опт» активен и в макете).
+map.showDetail(WAREHOUSE);
 
 // ---- сотрудники -------------------------------------------------------------
 const cardTpl = document.querySelector("[data-employee-card]");

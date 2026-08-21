@@ -32,6 +32,9 @@
       <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
 
       <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!-- Оверлею поиска нужны <template> карточек: рекомендации в пустом
+           состоянии и результаты клонируют их. -->
+      <!--#include partials/product-card.html -->
       <!--#include partials/search-overlay.html -->
 
       <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
@@ -154,8 +157,15 @@
 
     <!-- одна карточка сотрудника (future @foreach($employees as $e)) -->
     <template data-employee-card>
-      <div class="flex flex-col">
-        <p class="link-dotted pt-4 text-body-l text-text-primary max-md:text-m-body-l" data-employee-name></p>
+      <div class="flex flex-col items-start">
+        <!-- Имя набрано пунктирной ссылкой, значит это кнопка, а не абзац:
+             курсор и фокус с клавиатуры идут вместе с ролью. Куда она ведёт,
+             макет не говорит — вопрос в BACKLOG. -->
+        <button
+          type="button"
+          class="link-dotted pt-4 text-left text-body-l text-text-primary max-md:text-m-body-l"
+          data-employee-name
+        ></button>
         <p class="text-body-n text-text-primary max-md:text-m-body-n" data-employee-role></p>
       </div>
     </template>

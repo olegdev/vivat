@@ -3,6 +3,10 @@
      блок презентационный — настоящая постраничка серверная и приходит тем
      же швом, что и фильтры.
 
+     Существительное в подписи кнопки — слот: на «Новостях» это «новостей».
+     В макете там везде «товаров» (мастер `pagination` не переопределён ни в
+     одном инстансе), но на странице новостей это ошибка копии — см. BACKLOG.
+
      Страниц в макете семь везде, кроме «Каталога декоров» (1488:127364), где
      инстанс оставляет три. Число объявляет страница — `data-pages="3"` на
      секции, — а разметка гасит лишние кнопки вариантом при нём. -->
@@ -11,7 +15,7 @@
   data-pagination
 >
   <button type="button" class="btn btn-m btn-primary max-md:w-full max-md:text-m-button-m">
-    Показать еще 40 товаров из <span data-grid-total>123</span>
+    Показать еще 40 <span data-grid-noun>товаров</span> из <span data-grid-total>123</span>
   </button>
   <nav class="flex items-center gap-6 text-body-n">
     <a href="#" class="flex items-center gap-2 text-text-secondary transition-colors hover:text-text-primary max-md:hidden">
