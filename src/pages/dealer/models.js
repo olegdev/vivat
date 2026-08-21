@@ -11,6 +11,7 @@ import { MODELS_LIST, MODEL_SPEC, MODEL_ACTION } from "../../data/models.js";
 import { mountCarousel } from "../../components/carousel.js";
 import { popularItems } from "../../data/catalog.js";
 import { initFiltersPanel } from "../../components/filters-panel.js";
+import { fillGallery, initProductCards } from "../../components/product-card.js";
 
 // «Каталог 3D-моделей». Не контентная страница: левого меню раздела у фрейма
 // нет, это каталог со своей карточкой. Фильтры и сортировка не подключены —
@@ -35,26 +36,19 @@ const tpl = document.querySelector("[data-model-card]");
 document.querySelector("[data-models]").replaceChildren(
   ...MODELS_LIST.map((m) => {
     const node = tpl.content.cloneNode(true).firstElementChild;
+    // Галерея карточки — та же, что у товарной: три кадра и точки по низу.
     // У двух карточек из тридцати рендера нет ни в инстансе, ни в мастере —
-    // в экспорте его просто нет. Пустой src даёт битую иконку, поэтому слот
-    // остаётся пустой плашкой (см. BACKLOG).
-    const img = node.querySelector("[data-model-img]");
-    if (m.img) {
-      img.src = m.img;
-      img.alt = m.title;
-    } else {
-      img.replaceWith(
-        Object.assign(document.createElement("div"), {
-          className: "aspect-[322/242] w-full bg-bg-subtle",
-        })
-      );
-    }
+    // в экспорте его просто нет, поэтому у них галерея остаётся пустой
+    // плашкой (см. BACKLOG).
+    if (m.img) fillGallery(node, { image: m.img, title: m.title });
     node.querySelector("[data-model-title]").textContent = m.title;
     node.querySelector("[data-model-spec]").textContent = MODEL_SPEC;
     node.querySelector("[data-model-action] span").textContent = MODEL_ACTION;
     return node;
   })
 );
+// Жесты и точки галереи — общий инициализатор товарных карточек.
+initProductCards(document.querySelector("[data-models]"));
 
 // ---- фильтры ----------------------------------------------------------------
 // Шторка каталожная (группы совпадают с пилюлями), ряда чипсов у страницы нет.

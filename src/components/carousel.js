@@ -222,7 +222,12 @@ export function initCarousel(sectionEl) {
     const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
     return card.offsetWidth + gap;
   };
-  const maxIndex = () => Math.ceil(maxOffset() / step());
+  // Конец считаем достигнутым, когда до него осталось меньше SCROLL_EPSILON.
+  // Иначе последний шаг оказывался куском в пару пикселей: лента почти не
+  // двигалась, а стрелка гасла только после него — то есть на шаг позже, чем
+  // нужно (у рельса «Популярные товары» maxOffset 3236 при шаге 462: индекс 7
+  // давал 3234, восьмой добирал два пикселя).
+  const maxIndex = () => Math.max(0, Math.ceil((maxOffset() - SCROLL_EPSILON) / step()));
 
   function apply() {
     if (MOBILE.matches) {
@@ -242,7 +247,10 @@ export function initCarousel(sectionEl) {
     next.classList.toggle("hidden", !scrollable);
 
     index = Math.min(Math.max(index, 0), maxIndex());
-    track.style.transform = `translateX(${-Math.min(index * step(), maxOffset())}px)`;
+    // На последнем шаге едем ровно в конец, а не на index * step: остаток
+    // меньше шага, и лента должна встать вплотную к краю.
+    const offset = index >= maxIndex() ? maxOffset() : Math.min(index * step(), maxOffset());
+    track.style.transform = `translateX(${-offset}px)`;
     prev.disabled = index <= 0;
     next.disabled = index >= maxIndex();
   }

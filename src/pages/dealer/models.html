@@ -124,8 +124,26 @@
          серым), палитра 28 в коробке 36, ссылка «Скачать» 32 со стрелкой вниз
          (`arrow-down` 961:37194 — тот же арроу, что справа, повёрнутый). -->
     <template data-model-card>
-      <article class="flex flex-col">
-        <img class="aspect-[322/242] w-full object-cover" alt="" data-model-img />
+      <article class="flex flex-col" data-card>
+        <!-- Снимок 322×242 с галереей: в макете у карточки три кадра и ряд
+             точек по низу (`carousel` 2338:259420, 322×16 на 226). Разметка та
+             же, что у товарной карточки, и наполняет её тот же fillGallery. -->
+        <div class="relative w-full overflow-hidden bg-bg-subtle">
+          <div
+            class="relative aspect-[322/242] w-full touch-pan-y overflow-hidden"
+            data-card-gallery
+          >
+            <div
+              class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform"
+              data-card-track
+            ></div>
+            <div class="card-zones" data-card-zones></div>
+          </div>
+          <div
+            class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto"
+            data-card-dots
+          ></div>
+        </div>
         <div class="flex flex-col gap-1 px-1 py-3">
           <p class="text-body-n text-text-primary max-md:text-m-body-n" data-model-title></p>
           <p class="text-body-n text-text-secondary max-md:text-m-body-n" data-model-spec></p>
