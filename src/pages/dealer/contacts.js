@@ -10,7 +10,7 @@ import { initCarousel } from "../../components/carousel.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { WAREHOUSE, WHOLESALE_CITIES, EMPLOYEES, WAREHOUSE_PHOTOS } from "../../data/contacts.js";
-import { RETAIL_REGIONS } from "../../data/contacts-retail.js";
+import { RETAIL_REGIONS, ALL_CITIES } from "../../data/contacts-retail.js";
 
 // Контакты — контентная страница дилерского раздела. Скрипт только проводка.
 
@@ -81,11 +81,27 @@ const regionBtn = head.querySelector("[data-region-toggle]");
 const regionLabel = head.querySelector("[data-panel-region]");
 const menu = head.querySelector("[data-place-menu]");
 const optionTpl = document.querySelector("[data-place-option]");
+const empty = document.querySelector("[data-store-empty]");
 
+// По умолчанию — как на сайте: Московская область и «Все города».
 let audience = "opt";
 let region = RETAIL_REGIONS[0];
-let retailCity = region.cities[0];
+let retailCity = ALL_CITIES;
 let optCity = WHOLESALE_CITIES[0];
+
+// Магазины показанного места: либо весь регион, либо один город. Город
+// дописываем в карточку — по нему геокодер карты находит адрес.
+function shopsOf() {
+  const cities =
+    retailCity === ALL_CITIES ? region.cities : region.cities.filter((c) => c.city === retailCity);
+  return cities.flatMap((c) => c.shops.map((shop) => ({ ...shop, city: c.city })));
+}
+
+function placeCenter() {
+  if (retailCity === ALL_CITIES) return { center: region.center, zoom: region.zoom };
+  const city = region.cities.find((c) => c.city === retailCity);
+  return { center: city?.center, zoom: 11 };
+}
 
 function closeMenu() {
   menu.classList.add("hidden");
@@ -111,18 +127,23 @@ function paintPlace() {
   const retail = audience === "retail";
   regionBtn.classList.toggle("hidden", !retail);
   regionBtn.classList.toggle("flex", retail);
-  cityLabel.textContent = retail ? retailCity.city : optCity.city;
+  cityLabel.textContent = retail ? retailCity : optCity.city;
   regionLabel.textContent = region.region;
 }
 
 function applyPlace() {
   paintPlace();
   if (audience === "retail") {
+    const shops = shopsOf();
     map.setPanel("list");
-    map.setStores(retailCity.shops, { center: retailCity.center, zoom: 11 });
+    map.setStores(shops, placeCenter());
+    // Магазины регионов, кроме Московской области, отдаёт бэк — пока список
+    // пуст, панель говорит об этом словами каталога.
+    empty.classList.toggle("hidden", shops.length > 0);
   } else {
     map.setPanel("detail");
     map.showDetail(optCity.detail);
+    empty.classList.add("hidden");
   }
 }
 
@@ -135,14 +156,10 @@ function setAudience(mode) {
 cityBtn.addEventListener("click", () => {
   if (!menu.classList.contains("hidden")) return closeMenu();
   if (audience === "retail") {
-    openMenu(
-      region.cities.map((c) => c.city),
-      retailCity.city,
-      (label) => {
-        retailCity = region.cities.find((c) => c.city === label);
-        applyPlace();
-      }
-    );
+    openMenu([ALL_CITIES, ...region.cities.map((c) => c.city)], retailCity, (label) => {
+      retailCity = label;
+      applyPlace();
+    });
   } else {
     openMenu(
       WHOLESALE_CITIES.map((c) => c.city),
@@ -162,7 +179,7 @@ regionBtn.addEventListener("click", () => {
     region.region,
     (label) => {
       region = RETAIL_REGIONS.find((r) => r.region === label);
-      retailCity = region.cities[0];
+      retailCity = ALL_CITIES;
       applyPlace();
     }
   );
