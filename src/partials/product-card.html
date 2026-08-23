@@ -11,14 +11,19 @@
                             full-width "в корзину" pill on mobile (Популярные)
 
      The gallery track and dots are filled per image, badges/swatches per datum;
-     everything else is static markup. -->
+     everything else is static markup.
+
+     Подложка #f8f8f8 стоит и на обёртке, и на самой дорожке. Дорожка едет
+     трансформацией, а значит создаёт свой контекст наложения: `mix-blend-multiply`
+     у снимка смешивается с тем, что нарисовано **внутри** этого контекста, и
+     без фона на дорожке белый фон фотографии просто закрывал подложку. -->
 
 <!-- full / swatch card -->
 <template data-pcard>
   <article class="flex w-[438px] shrink-0 flex-col max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
-        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
@@ -57,7 +62,7 @@
   <article class="flex w-[438px] shrink-0 flex-col max-md:w-[152px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[111px]" data-card-gallery>
-        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
@@ -98,7 +103,7 @@
   <article class="flex w-[438px] shrink-0 flex-col max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
-        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
@@ -137,7 +142,7 @@
   <article class="flex w-[322px] shrink-0 flex-col max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
-        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
@@ -185,7 +190,7 @@
   <article class="flex w-[322px] shrink-0 flex-col max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
-        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
@@ -230,7 +235,7 @@
   <article class="flex w-[322px] shrink-0 flex-col max-md:w-[152px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:aspect-[152/111] max-md:h-auto" data-card-gallery>
-        <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
+        <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>

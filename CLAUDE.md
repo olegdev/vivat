@@ -417,6 +417,13 @@ time here:
   of the dealer list — and below `md` the block turns into canvas-on-top /
   panel-under, which is why the frame gets `flex-col-reverse` there.
 
+  The page drives that body from the «Опт / Розница» segments: **опт** keeps the
+  single address card (the warehouse), **розница** switches the panel back to the
+  store list and fills it from `data/contacts-retail.js` — region → city →
+  shops, read off the live site because the design draws no retail state. The
+  city in the panel header is the selector (region is a second line under it),
+  and the map API grew `setStores` / `setPanel` / `showDetail` for it.
+
 Their own parts are `partials/benefit-tile.html` (the Figma component is called
 `benefit`; its numeral is Onest **Thin**, a weight no other page loads) and
 `partials/accordion.html` (plus/minus, never a chevron; the expanded question

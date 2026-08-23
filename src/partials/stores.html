@@ -49,11 +49,32 @@
           <span class="h-1 w-8 rounded-full bg-surface-raised"></span>
         </div>
 
-        <div class="flex flex-col gap-2 border-b border-divider-light pb-4 pl-10 pr-6 pt-6" data-panel-head>
-          <div class="flex h-8 items-center gap-1">
-            <span class="text-h3 text-text-primary underline decoration-dotted decoration-1 underline-offset-4">Москва</span>
+        <div class="relative flex flex-col gap-2 border-b border-divider-light pb-4 pl-10 pr-6 pt-6" data-panel-head>
+          <!-- Город в шапке панели — он же селектор: на Контактах по нему
+               выбирают город (в опте) или город области (в рознице). На
+               остальных страницах это просто подпись, меню там никто не
+               наполняет и кнопка ведёт себя как текст. -->
+          <button type="button" class="flex h-8 items-center gap-1" data-city-toggle>
+            <span
+              class="text-h3 text-text-primary underline decoration-dotted decoration-1 underline-offset-4"
+              data-panel-city
+              >Москва</span
+            >
             <img src="../../assets/header/icon-pin.svg" alt="" class="size-6" />
-          </div>
+          </button>
+          <!-- Область — вторая строка селектора, её показывает только розница -->
+          <button type="button" class="hidden h-6 items-center gap-1" data-region-toggle>
+            <span
+              class="text-body-n text-text-secondary underline decoration-dotted decoration-1 underline-offset-4"
+              data-panel-region
+            ></span>
+            <img src="../../assets/header/chevron-down.svg" alt="" class="size-4 opacity-60" />
+          </button>
+          <!-- Меню обоих селекторов: один <template> строки на оба -->
+          <div
+            class="absolute left-10 top-16 z-20 hidden max-h-80 w-[280px] overflow-y-auto rounded-[var(--radius-l)] bg-surface-inverted py-2 shadow-dropdown"
+            data-place-menu
+          ></div>
           <div class="flex items-center gap-2">
             <span class="text-body-n text-text-primary">Только фирменные магазины</span>
             <label class="relative inline-flex cursor-pointer items-center">
@@ -169,6 +190,14 @@
         <span data-store-phone class="text-body-s text-text-primary"></span>
       </div>
     </button>
+  </template>
+
+  <!-- одна строка меню города/области (future @foreach) -->
+  <template data-place-option>
+    <button
+      type="button"
+      class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle aria-[current=true]:bg-components-subtle"
+    ></button>
   </template>
 
   <!-- one metro chip (future @foreach($store->metro as $m)) -->

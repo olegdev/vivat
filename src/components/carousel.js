@@ -311,16 +311,49 @@ function initTabs(anchor, track, carousel, cfg, items, cardOpts, render = render
   if (!chipsRow) return;
   // chips() also renders a trailing "еще" more-button — the tabs are the first
   // cfg.tabs.length chips.
-  const tabChips = [...chipsRow.querySelectorAll(".chip")].slice(0, cfg.tabs.length);
+  const chips = [...chipsRow.querySelectorAll(".chip")].slice(0, cfg.tabs.length);
+  const more = chipsRow.querySelector("[data-cs-more]");
 
-  tabChips.forEach((chip, i) => {
-    chip.addEventListener("click", () => {
-      tabChips.forEach((c) => c.setAttribute("aria-selected", String(c === chip)));
-      const label = cfg.tabs[i];
-      // --- SEAM: load this tab's products (swap the body for a fetch, above) ---
-      const shown = i === 0 ? items : items.filter((p) => p.tab === label);
-      render(track, shown, cardOpts);
-      carousel.reset();
-    });
-  });
+  // Подпись чипса — это рубрика: у товара она лежит либо в `tab`, либо в
+  // категории под ценой. Первый чипс («Все сразу») ничего не фильтрует.
+  const belongs = (p, label) => p.tab === label || p.category?.label === label;
+
+  function select(chip, label, all = false) {
+    for (const c of chips) c.setAttribute("aria-selected", String(c === chip));
+    // --- SEAM: load this tab's products (swap the body for a fetch, above) ---
+    render(track, all ? items : items.filter((p) => belongs(p, label)), cardOpts);
+    carousel.reset();
+  }
+
+  function wire(chip, label, all = false) {
+    chips.push(chip);
+    chip.addEventListener("click", () => select(chip, label, all));
+  }
+
+  chips.forEach((chip, i) => chip.addEventListener("click", () => select(chip, cfg.tabs[i], i === 0)));
+
+  // «еще ···» дописывает в ряд остальные рубрики и уходит сам. Что именно за
+  // ними прячется, макет не говорит: подписей у него ровно шесть. Берём то, что
+  // есть в данных, — рубрики показанных товаров, которых ещё нет в ряду
+  // (см. BACKLOG). Ряд от этого становится длиннее ширины секции и прокручивается
+  // вбок, оставаясь одной строкой.
+  const extra =
+    cfg.moreTabs ||
+    [...new Set(items.map((p) => p.category?.label).filter(Boolean))].filter(
+      (label) => !cfg.tabs.includes(label)
+    );
+
+  if (more) {
+    if (!extra.length) more.remove();
+    else
+      more.addEventListener("click", () => {
+        for (const label of extra) {
+          const chip = clone("[data-carousel-chip]").firstElementChild;
+          chip.textContent = label;
+          chipsRow.insertBefore(chip, more);
+          wire(chip, label);
+        }
+        more.remove();
+      });
+  }
 }

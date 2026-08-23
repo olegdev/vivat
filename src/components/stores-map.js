@@ -238,11 +238,11 @@ export function renderStoresMap(anchor, opts) {
   if (contactPage) enterContactPageMode(anchor, detail);
 
   // id + [lat, lon] (flip from the [lon, lat] authored in the data).
-  const items = stores.map((s, i) => ({
-    ...s,
-    id: String(i),
-    ll: [s.coords[1], s.coords[0]],
-  }));
+  // Координат может не быть — у розничных магазинов на Контактах их нет ни на
+  // сайте-источнике, ни в макете; такие карточки живут в списке без метки.
+  const withIds = (list) =>
+    list.map((s, i) => ({ ...s, id: String(i), ll: s.coords ? [s.coords[1], s.coords[0]] : null }));
+  let items = withIds(stores);
 
   const listEl = anchor.querySelector("[data-store-list]");
   const mapEl = anchor.querySelector("[data-map]");
@@ -280,12 +280,18 @@ export function renderStoresMap(anchor, opts) {
   }
 
   // -- list ------------------------------------------------------------------
-  function paintList() {
-    // В режиме contactPage списка нет — панель занимает карточка адреса.
-    // Маркеры при этом строятся как обычно, из тех же items.
-    if (contactPage) return;
+  function renderList() {
     listEl.replaceChildren(...visible.map(buildStoreCard));
     applySelection({ scroll: false });
+  }
+
+  function paintList() {
+    // В режиме contactPage списка при загрузке нет — панель занимает карточка
+    // адреса. Маркеры при этом строятся как обычно, из тех же items. Список
+    // всё же появляется, когда Контакты переключаются в розницу: там его
+    // рисует setStores() напрямую.
+    if (contactPage) return;
+    renderList();
   }
 
   function applySelection({ scroll = false } = {}) {
@@ -400,8 +406,36 @@ export function renderStoresMap(anchor, opts) {
     if (tpl) mapEl.replaceChildren(tpl.content.cloneNode(true));
   }
 
+  let ymapsApi = null;
+  let PinLayout = null;
+
+  // Метки строятся по текущему `items` — и при первой загрузке, и когда список
+  // заменили (переключение города в рознице).
+  function buildMarkers() {
+    if (!ymapsApi || !map) return;
+    for (const { placemark } of marks.values()) map.geoObjects.remove(placemark);
+    marks.clear();
+    for (const store of items) {
+      if (!store.ll) continue;
+      const placemark = new ymapsApi.Placemark(
+        store.ll,
+        { selected: false, storeName: store.name, storeAddress: store.address },
+        {
+          iconLayout: PinLayout,
+          iconShape: { type: "Rectangle", coordinates: [[-10, -45], [18, 0]] },
+          hideIconOnBalloonOpen: false,
+        }
+      );
+      placemark.events.add("click", () => select(store.id, { scroll: true }));
+      marks.set(store.id, { placemark, attached: true });
+      map.geoObjects.add(placemark);
+    }
+    syncMarkers();
+  }
+
   loadYmaps(apiKey)
     .then((ymaps) => {
+      ymapsApi = ymaps;
       map = new ymaps.Map(
         mapEl,
         { center, zoom, controls: [] },
@@ -411,7 +445,7 @@ export function renderStoresMap(anchor, opts) {
       // Pin matches the Figma mock: blue Yandex-style teardrop with a hollow
       // white centre; the selected one turns VIVAT-red. aria-selected drives
       // the swap + balloon, exactly like the list cards (see app.css).
-      const PinLayout = ymaps.templateLayoutFactory.createClass(
+      PinLayout = ymaps.templateLayoutFactory.createClass(
         `<div class="store-pin" aria-selected="{{ properties.selected }}">
            <img class="store-pin__img" src="${HOME}/pin-store.svg" alt="" />
            <img class="store-pin__img store-pin__img--active" src="${HOME}/pin-store-active.svg" alt="" />
@@ -422,26 +456,11 @@ export function renderStoresMap(anchor, opts) {
          </div>`
       );
 
-      for (const store of items) {
-        const placemark = new ymaps.Placemark(
-          store.ll,
-          { selected: false, storeName: store.name, storeAddress: store.address },
-          {
-            iconLayout: PinLayout,
-            iconShape: { type: "Rectangle", coordinates: [[-10, -45], [18, 0]] },
-            hideIconOnBalloonOpen: false,
-          }
-        );
-        placemark.events.add("click", () => select(store.id, { scroll: true }));
-        marks.set(store.id, { placemark, attached: true });
-        map.geoObjects.add(placemark);
-      }
-
       map.events.add("boundschange", () => {
         currentZoom = map.getZoom();
       });
 
-      syncMarkers();
+      buildMarkers();
     })
     .catch(mapFailed);
 
@@ -451,6 +470,24 @@ export function renderStoresMap(anchor, opts) {
     // ymaps measures a zero-height container. Call this when the step opens.
     refresh() {
       map?.container.fitToViewport();
+    },
+    // Розничный режим Контактов заменяет весь список: другой город — другие
+    // магазины, свои метки и своя точка карты.
+    setStores(next, { center: c, zoom: z } = {}) {
+      items = withIds(next);
+      visible = items;
+      selectedId = null;
+      renderList();
+      buildMarkers();
+      if (c) map?.setCenter(c, z ?? currentZoom, { duration: 450 });
+    },
+    // Панель показывает либо одну карточку адреса (опт), либо список магазинов
+    // (розница) — это те же два тела, что у режимов `contact page` и обычного.
+    setPanel(mode) {
+      anchor.querySelector("[data-store-list]")?.classList.toggle("hidden", mode !== "list");
+      const detail = anchor.querySelector("[data-store-detail]");
+      detail?.classList.toggle("hidden", mode !== "detail");
+      detail?.classList.toggle("flex", mode === "detail");
     },
     // Режим `contact page` показывает один адрес, и Контакты переключают его
     // сегментами «Опт / Розница»: карточка перезаполняется, на карте остаётся

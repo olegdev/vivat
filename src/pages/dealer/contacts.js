@@ -9,7 +9,8 @@ import { renderStoresMap, setBases } from "../../components/stores-map.js";
 import { initCarousel } from "../../components/carousel.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
-import { WAREHOUSE, AUDIENCES, EMPLOYEES, WAREHOUSE_PHOTOS } from "../../data/contacts.js";
+import { WAREHOUSE, WHOLESALE_CITIES, EMPLOYEES, WAREHOUSE_PHOTOS } from "../../data/contacts.js";
+import { RETAIL_REGIONS } from "../../data/contacts-retail.js";
 
 // Контакты — контентная страница дилерского раздела. Скрипт только проводка.
 
@@ -42,8 +43,11 @@ if (fbh) {
 // Один <template> клонируется в два места: над картой на 1440 (фрейм `city`)
 // и внутрь панели карты на 360 (2225:107318). Состояние живёт на
 // <body data-audience>, кнопки своего класса не носят — тот же приём, что у
-// сегментов доставки на дилерском заказе. Что именно переключается, макет не
-// говорит: прототипа на сегментах нет (см. BACKLOG).
+// сегментов доставки на дилерском заказе.
+//
+// Что меняется: в опте панель показывает карточку склада, в рознице —
+// список магазинов выбранного города. Прототипа у сегментов в макете нет, и
+// поведение взято с живого сайта (см. BACKLOG).
 const segTpl = document.querySelector("[data-audience-segments]");
 for (const sel of ["[data-audience-desktop] > div", "[data-store-audience]"]) {
   const slot = document.querySelector(sel);
@@ -51,27 +55,124 @@ for (const sel of ["[data-audience-desktop] > div", "[data-store-audience]"]) {
 }
 document.addEventListener("click", (e) => {
   const btn = e.target.closest("[data-audience-mode]");
-  if (!btn) return;
-  const mode = btn.dataset.audienceMode;
-  document.body.dataset.audience = mode;
-  // Переключение меняет карточку в панели и точку на карте. Розничные данные
-  // макетом не нарисованы и собраны нами — см. BACKLOG.
-  map.showDetail(AUDIENCES[mode]);
+  if (btn) setAudience(btn.dataset.audienceMode);
 });
 
 // ---- карта в режиме contactPage ---------------------------------------------
 setBases({ home: HOME });
 const map = renderStoresMap(document.querySelector('[data-section="map"]'), {
-  stores: Object.values(AUDIENCES),
+  stores: [WAREHOUSE],
   detail: WAREHOUSE,
   contactPage: true,
   apiKey: import.meta.env?.VITE_YANDEX_MAPS_KEY || "73abf802-7fa6-4da1-bc36-7dd3457e4673",
   center: [WAREHOUSE.coords[1], WAREHOUSE.coords[0]],
   zoom: 11,
 });
-// Стартовый режим — оптовый: на карте остаётся одна метка, та же, что в
-// карточке (сегмент «Опт» активен и в макете).
-map.showDetail(WAREHOUSE);
+
+
+// ---- селекторы места --------------------------------------------------------
+// Опт: город (пять городов, как на сайте-источнике; склад там один — московский).
+// Розница: область и город, а список магазинов панели меняется вместе с ними.
+// Оба селектора — это подпись в шапке панели, по клику открывающая меню.
+const head = document.querySelector("[data-panel-head]");
+const cityBtn = head.querySelector("[data-city-toggle]");
+const cityLabel = head.querySelector("[data-panel-city]");
+const regionBtn = head.querySelector("[data-region-toggle]");
+const regionLabel = head.querySelector("[data-panel-region]");
+const menu = head.querySelector("[data-place-menu]");
+const optionTpl = document.querySelector("[data-place-option]");
+
+let audience = "opt";
+let region = RETAIL_REGIONS[0];
+let retailCity = region.cities[0];
+let optCity = WHOLESALE_CITIES[0];
+
+function closeMenu() {
+  menu.classList.add("hidden");
+}
+
+function openMenu(options, current, onPick) {
+  menu.replaceChildren(
+    ...options.map((label) => {
+      const item = optionTpl.content.firstElementChild.cloneNode(true);
+      item.textContent = label;
+      item.setAttribute("aria-current", String(label === current));
+      item.addEventListener("click", () => {
+        closeMenu();
+        onPick(label);
+      });
+      return item;
+    })
+  );
+  menu.classList.remove("hidden");
+}
+
+function paintPlace() {
+  const retail = audience === "retail";
+  regionBtn.classList.toggle("hidden", !retail);
+  regionBtn.classList.toggle("flex", retail);
+  cityLabel.textContent = retail ? retailCity.city : optCity.city;
+  regionLabel.textContent = region.region;
+}
+
+function applyPlace() {
+  paintPlace();
+  if (audience === "retail") {
+    map.setPanel("list");
+    map.setStores(retailCity.shops, { center: retailCity.center, zoom: 11 });
+  } else {
+    map.setPanel("detail");
+    map.showDetail(optCity.detail);
+  }
+}
+
+function setAudience(mode) {
+  audience = mode;
+  document.body.dataset.audience = mode;
+  applyPlace();
+}
+
+cityBtn.addEventListener("click", () => {
+  if (!menu.classList.contains("hidden")) return closeMenu();
+  if (audience === "retail") {
+    openMenu(
+      region.cities.map((c) => c.city),
+      retailCity.city,
+      (label) => {
+        retailCity = region.cities.find((c) => c.city === label);
+        applyPlace();
+      }
+    );
+  } else {
+    openMenu(
+      WHOLESALE_CITIES.map((c) => c.city),
+      optCity.city,
+      (label) => {
+        optCity = WHOLESALE_CITIES.find((c) => c.city === label);
+        applyPlace();
+      }
+    );
+  }
+});
+
+regionBtn.addEventListener("click", () => {
+  if (!menu.classList.contains("hidden")) return closeMenu();
+  openMenu(
+    RETAIL_REGIONS.map((r) => r.region),
+    region.region,
+    (label) => {
+      region = RETAIL_REGIONS.find((r) => r.region === label);
+      retailCity = region.cities[0];
+      applyPlace();
+    }
+  );
+});
+
+document.addEventListener("click", (e) => {
+  if (!head.contains(e.target)) closeMenu();
+});
+
+setAudience("opt");
 
 // ---- сотрудники -------------------------------------------------------------
 const cardTpl = document.querySelector("[data-employee-card]");
