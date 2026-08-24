@@ -238,8 +238,7 @@ export function renderStoresMap(anchor, opts) {
   if (contactPage) enterContactPageMode(anchor, detail);
 
   // id + [lat, lon] (flip from the [lon, lat] authored in the data).
-  // Координат может не быть — у розничных магазинов на Контактах их нет ни на
-  // сайте-источнике, ни в макете; такие карточки живут в списке без метки.
+  // Координат может не быть — тогда карточка живёт в списке без метки.
   const withIds = (list) =>
     list.map((s, i) => ({ ...s, id: String(i), ll: s.coords ? [s.coords[1], s.coords[0]] : null }));
   let items = withIds(stores);
@@ -432,44 +431,6 @@ export function renderStoresMap(anchor, opts) {
     marks.clear();
     for (const store of items) if (store.ll) addMarker(store);
     syncMarkers();
-    geocodeMissing();
-  }
-
-  // Точки без координат (розничные магазины на Контактах: ни на сайте-источнике,
-  // ни в макете координат нет) досылаются геокодером той же карты — адрес у нас
-  // есть, и метка появляется, как только он ответит. Результаты кешируются, а
-  // за один показ спрашиваем не больше `GEOCODE_LIMIT` адресов: список «Все
-  // города» это семьдесят магазинов, и класть столько запросов сразу незачем.
-  //
-  // **С нашим ключом геокодер сегодня молчит**: запрос к
-  // `api-maps.yandex.ru/services/search` браузер блокирует (ERR_BLOCKED_BY_ORB) —
-  // у ключа JS API геокодер не подключён, ему нужен свой. Ошибка проглатывается,
-  // карточка просто остаётся без метки. Придут координаты из базы — этот код и
-  // не понадобится (см. BACKLOG).
-  const GEOCODE_LIMIT = 30;
-  const geoCache = new Map();
-
-  async function geocodeMissing() {
-    if (!ymapsApi || !map || !ymapsApi.geocode) return;
-    const pending = items.filter((s) => !s.ll).slice(0, GEOCODE_LIMIT);
-    for (const store of pending) {
-      const query = [store.city, store.address].filter(Boolean).join(", ");
-      let ll = geoCache.get(query);
-      if (!ll) {
-        try {
-          const res = await ymapsApi.geocode(query, { results: 1 });
-          ll = res.geoObjects.get(0)?.geometry.getCoordinates();
-        } catch {
-          ll = null;
-        }
-        if (!ll) continue;
-        geoCache.set(query, ll);
-      }
-      // Пока ответ шёл, список могли сменить — тогда метка уже не нужна.
-      if (!items.includes(store)) continue;
-      store.ll = ll;
-      addMarker(store);
-    }
   }
 
   loadYmaps(apiKey)

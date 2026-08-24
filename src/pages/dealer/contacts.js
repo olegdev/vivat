@@ -100,7 +100,9 @@ function shopsOf() {
 function placeCenter() {
   if (retailCity === ALL_CITIES) return { center: region.center, zoom: region.zoom };
   const city = region.cities.find((c) => c.city === retailCity);
-  return { center: city?.center, zoom: 11 };
+  // Центр города — среднее по координатам его магазинов; у города с одной
+  // точкой это она сама, поэтому зум крупнее.
+  return { center: city?.center, zoom: city && city.shops.length > 1 ? 11 : 13 };
 }
 
 function closeMenu() {

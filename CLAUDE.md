@@ -420,7 +420,9 @@ time here:
   The page drives that body from the «Опт / Розница» segments: **опт** keeps the
   single address card (the warehouse), **розница** switches the panel back to the
   store list and fills it from `data/contacts-retail.js` — region → city →
-  shops, read off the live site because the design draws no retail state. The
+  shops (32 regions, 118 cities, 210 shops **with coordinates**), scraped off
+  the live site because the design draws no retail state; the default is
+  «Московская область» + «Все города», as there. The
   city in the panel header is the selector (region is a second line under it),
   and the map API grew `setStores` / `setPanel` / `showDetail` for it.
 
