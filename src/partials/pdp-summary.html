@@ -16,13 +16,19 @@
      master — and the notice below the button is gone. Those four `hidden`s under
      `group-data-[user=dealer]` are the whole 441 → 392 difference.
 
+     **Панель плавает по колонке фотографий.** Дизайн этого не рисует — это
+     решение клиента: выше `md` карточка `sticky` в 24px от верха окна и едет
+     вместе со скроллом внутри секции `#photos`, то есть останавливается у
+     нижнего края третьего снимка. Ниже `md` панель обычная: там кнопки в ней
+     нет вовсе, CTA живёт в нижней панели.
+
      Structure only; pdp.js fills the swatches from data and drives the two
      controls. The `service-icons` slot next to the desktop title is
      white-on-white in the design — an invisible element, so it is not rendered
      (CLAUDE.md › don't invent elements); mobile's share action lives on the
      photo instead (partials/pdp-photo-overlay.html). -->
 <aside
-  class="flex w-[412px] shrink-0 flex-col self-start rounded-n border border-border-light bg-surface-inverted max-md:w-full max-md:rounded-none max-md:border-0 max-md:pt-2"
+  class="flex w-[412px] shrink-0 flex-col self-start rounded-n border border-border-light bg-surface-inverted md:sticky md:top-6 max-md:w-full max-md:rounded-none max-md:border-0 max-md:pt-2"
   data-pdp-summary
 >
   <!-- `contents` below `md` so the four blocks become direct flex children of
