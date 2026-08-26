@@ -5,6 +5,7 @@ import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
+import { initCitySelect } from "../../components/city-select.js";
 import { renderStoresMap, setBases } from "../../components/stores-map.js";
 import { initCarousel } from "../../components/carousel.js";
 import { HOME, ICON } from "../../data/asset-base.js";
@@ -216,3 +217,4 @@ document.querySelector("[data-gallery-section] [data-track]").replaceChildren(
 initCarousel(document.querySelector("[data-gallery-section]"));
 
 initModals();
+initCitySelect();

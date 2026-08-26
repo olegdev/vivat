@@ -18,6 +18,7 @@ import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { product, modules, addToCart, reviews, collection } from "../../data/pdp.js";
 import { initModals } from "../../components/modals.js";
+import { initCitySelect } from "../../components/city-select.js";
 
 // ---- shared chrome (header mega-menu + burger), same wiring as main.js ------
 setCatalogIconBase(ICON);
@@ -177,3 +178,4 @@ document.querySelector("[data-seo-title]").textContent =
   "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.";
 
 initModals();
+initCitySelect();

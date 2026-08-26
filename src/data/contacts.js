@@ -8,6 +8,8 @@
 
 import { ASSET_ROOT } from "./asset-base.js";
 
+import { CITIES } from "./cities.js";
+
 const CONTACTS = `${ASSET_ROOT}/contacts`;
 
 // Карточка в левой панели карты — вариант `type=contact page` (1456:56787).
@@ -44,13 +46,7 @@ export const WAREHOUSE = {
 // (mebel.com/contacts?type=dealer). Склад там один, московский: страница в
 // любом городе показывает его же, и мы повторяем это поведение. Появятся
 // адреса складов в остальных городах — они встают сюда (см. BACKLOG).
-export const WHOLESALE_CITIES = [
-  { city: "Москва", detail: WAREHOUSE },
-  { city: "Санкт-Петербург", detail: WAREHOUSE },
-  { city: "Нижний Новгород", detail: WAREHOUSE },
-  { city: "Ростов-на-Дону", detail: WAREHOUSE },
-  { city: "Рязань", detail: WAREHOUSE },
-];
+export const WHOLESALE_CITIES = CITIES.map((city) => ({ city, detail: WAREHOUSE }));
 
 // Сетка 4×3, карточка 322×72: имя (48) и должность (24), зазор 24.
 // Порядок — по строкам, как в макете.

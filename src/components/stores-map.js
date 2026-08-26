@@ -284,6 +284,16 @@ export function renderStoresMap(anchor, opts) {
   // весь экран с листом, крестик сворачивает обратно. Выбирающий режим этого не
   // получает — он и так раскрыт, а на Контактах кнопки нет.
   if (!selectable && !contactPage) {
+    // «Москва» в шапке панели на читающих страницах — тот же селектор, что в
+    // шапке сайта. Атрибут вешаем отсюда, а не в партиале: на Контактах у этой
+    // же кнопки свой селектор (город опта / город области), и два обработчика
+    // на одном элементе конфликтовали бы.
+    const cityBtn = anchor.querySelector("[data-city-toggle]");
+    if (cityBtn) {
+      cityBtn.setAttribute("data-city-open", "");
+      cityBtn.querySelector("[data-panel-city]")?.setAttribute("data-city-label", "");
+    }
+
     let sheet = null;
     const closeBtn = anchor.querySelector("[data-map-close]");
     const open = (on) => {

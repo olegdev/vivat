@@ -10,6 +10,7 @@ import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { LINES } from "../../data/order.js";
 import { initModals } from "../../components/modals.js";
+import { initCitySelect } from "../../components/city-select.js";
 
 // ---- shared chrome (header mega-menu + burger), same wiring as action.js ----
 setCatalogIconBase(ICON);
@@ -165,3 +166,4 @@ page.querySelector("[data-order-form]")?.addEventListener("submit", (e) => {
 setStep(0, { scroll: false });
 
 initModals();
+initCitySelect();

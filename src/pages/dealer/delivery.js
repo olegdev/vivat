@@ -5,6 +5,7 @@ import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
+import { initCitySelect } from "../../components/city-select.js";
 import { renderMenuB2b } from "../../components/menu-b2b.js";
 import { renderBenefitTiles } from "../../components/benefit-tile.js";
 import { renderAccordions } from "../../components/accordion.js";
@@ -42,3 +43,4 @@ renderBenefitTiles(document.querySelector("[data-benefit-tiles]"), DELIVERY_TILE
 renderAccordions(document.querySelector("[data-faq]"), DELIVERY_FAQ);
 
 initModals();
+initCitySelect();

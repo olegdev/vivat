@@ -5,6 +5,7 @@ import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
+import { initCitySelect } from "../../components/city-select.js";
 import { renderMenuB2b } from "../../components/menu-b2b.js";
 import { ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
@@ -74,3 +75,4 @@ document.querySelector("[data-howto]").replaceChildren(
 document.querySelector("[data-howto-outro]").textContent = HOWTO_OUTRO;
 
 initModals();
+initCitySelect();

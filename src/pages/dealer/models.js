@@ -5,6 +5,7 @@ import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
+import { initCitySelect } from "../../components/city-select.js";
 import { ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { MODELS_LIST, MODEL_SPEC, MODEL_ACTION } from "../../data/models.js";
@@ -75,3 +76,4 @@ mountCarousel(
 );
 
 initModals();
+initCitySelect();

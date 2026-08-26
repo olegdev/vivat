@@ -8,6 +8,7 @@ import { initCart } from "../../components/cart.js";
 import { ICON } from "../../data/asset-base.js";
 import { promos, actionItems } from "../../data/action.js";
 import { initModals } from "../../components/modals.js";
+import { initCitySelect } from "../../components/city-select.js";
 
 // ---- shared chrome (header mega-menu + burger), same wiring as main.js ------
 setCatalogIconBase(ICON);
@@ -48,3 +49,4 @@ mountCarousel(
 );
 
 initModals();
+initCitySelect();

@@ -70,6 +70,12 @@
             ></span>
             <img src="../../assets/header/chevron-down.svg" alt="" class="size-4 opacity-60" />
           </button>
+          <!-- Выпадашка городов для читающих страниц: у Контактов свой
+               селектор и своё меню ниже, поэтому это отдельный контейнер. -->
+          <div
+            class="absolute left-10 top-16 z-30 hidden max-h-80 w-[280px] overflow-y-auto rounded-[var(--radius-l)] bg-surface-inverted py-2 shadow-dropdown"
+            data-city-menu
+          ></div>
           <!-- Меню обоих селекторов: один <template> строки на оба -->
           <div
             class="absolute left-10 top-16 z-20 hidden max-h-80 w-[280px] overflow-y-auto rounded-[var(--radius-l)] bg-surface-inverted py-2 shadow-dropdown"

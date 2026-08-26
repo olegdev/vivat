@@ -3,12 +3,14 @@
      subtle fill, then burger / centred logo / profile. -->
 <header class="md:hidden">
   <div class="flex h-[38px] items-center justify-between bg-surface-subtle px-4">
-    <a class="flex items-center gap-1" href="#">
-      <span class="text-m-body-n text-text-primary underline decoration-dotted underline-offset-2"
+    <button type="button" class="flex items-center gap-1" data-city-open aria-expanded="false">
+      <span
+        class="text-m-body-n text-text-primary underline decoration-dotted underline-offset-2"
+        data-city-label
         >Москва</span
       >
       <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5" />
-    </a>
+    </button>
     <a
       class="text-m-body-n text-text-primary underline decoration-from-font underline-offset-2 group-data-[user=dealer]:hidden"
       href="#"
@@ -103,13 +105,24 @@
     <div class="border-b border-divider-soft">
       <div class="page-x flex h-11 items-center justify-between">
       <div class="flex items-center gap-3">
-        <a class="flex items-center gap-1" href="#">
-          <span
-            class="text-body-s text-text-primary underline decoration-dotted underline-offset-2"
-            >Москва</span
-          >
-          <img src="../../assets/header/icon-pin.svg" alt="" class="size-4" />
-        </a>
+        <!-- «Москва» — селектор: выше `md` открывает выпадашку рядом с собой,
+             ниже — общий лист. Меню лежит здесь, а не в партиале выбора города,
+             потому что позиционируется от триггера — тем же приёмом, что
+             дилерская панель прайс-листа. -->
+        <div class="relative">
+          <button type="button" class="flex items-center gap-1" data-city-open aria-expanded="false">
+            <span
+              class="text-body-s text-text-primary underline decoration-dotted underline-offset-2"
+              data-city-label
+              >Москва</span
+            >
+            <img src="../../assets/header/icon-pin.svg" alt="" class="size-4" />
+          </button>
+          <div
+            class="absolute left-0 top-8 z-50 hidden max-h-80 w-[280px] overflow-y-auto rounded-[var(--radius-l)] bg-surface-inverted py-2 shadow-dropdown"
+            data-city-menu
+          ></div>
+        </div>
         <a class="text-body-s-accent text-text-primary" href="tel:+74951356565"
           >+7 (495) 135-65-65</a
         >
@@ -310,3 +323,6 @@
     </div>
   </div>
 </header>
+
+<!-- Список городов для «Москвы» — общий для шапки и панели «Где купить» -->
+<!--#include partials/city-select.html -->

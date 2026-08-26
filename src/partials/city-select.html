@@ -1,0 +1,52 @@
+<!-- ==================== ВЫБОР ГОРОДА ==============================
+     Список городов, который открывает «Москва» — в шапке на любой странице и в
+     панели «Где купить».
+
+     Ниже `md` это лист (Figma `left-side type=city` 1859:335134): ручка 20,
+     строки `menu-item` 350×44 с полем 16, зазор 8, поля блока 10 по бокам и 24
+     сверху. Выше `md` тот же список показывается выпадашкой рядом с триггером —
+     собственного фрейма у неё нет, это решение клиента (см. BACKLOG.md).
+
+     Текущий город в списке не повторяется: во фрейме при выбранной Москве
+     ровно четыре строки. Список — data/cities.js, поведение —
+     components/city-select.js.
+
+     Хаб включается один раз рядом с шапкой, потому что «Москва» есть на каждой
+     странице; в Blade это @include('partials.city-select'). -->
+
+<!-- `hidden` уже внутри `.modal-scrim` — свой писать нельзя: он утилита, а
+     `.is-open` компонентное правило, и слой утилит его перебьёт (лист
+     открывался, но оставался невидимым). `md:hidden` оставлен намеренно: выше
+     `md` город выбирают выпадашкой. -->
+<div class="modal-scrim md:hidden" data-city-sheet>
+  <div class="modal-panel max-md:pb-2" role="dialog" aria-modal="true" aria-label="Выбор города">
+    <!-- ручка листа — та же, что у листа «Где купить» -->
+    <div class="flex h-5 shrink-0 items-center justify-center pt-1">
+      <span class="h-1 w-8 rounded-full bg-surface-raised"></span>
+    </div>
+    <!-- В шапке этого состояния макет не пишет заголовка: там стоит текущий
+         город с пином (1859:335085 → «Москва»), а слева стрелка назад — она
+         нужна панели «Где купить», где список подменяет тело, и не нужна
+         отдельному листу, который закрывается подложкой. Своей копии не
+         сочиняем: показываем город. -->
+    <div class="flex items-center gap-1 px-4 pb-1 pt-2">
+      <span class="text-m-h4 text-text-primary" data-city-label>Москва</span>
+      <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5" />
+    </div>
+    <div class="flex flex-col gap-2 px-2.5 pb-6 pt-4" data-city-sheet-list></div>
+  </div>
+</div>
+
+<!-- одна строка города (future @foreach($cities as $city)) -->
+<template data-city-row>
+  <button type="button" class="mobile-menu-item text-body-n text-text-primary" data-city-pick></button>
+</template>
+
+<!-- одна строка выпадашки на десктопе -->
+<template data-city-option>
+  <button
+    type="button"
+    class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle"
+    data-city-pick
+  ></button>
+</template>

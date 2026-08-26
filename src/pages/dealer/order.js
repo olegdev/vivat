@@ -12,6 +12,7 @@ import { rub } from "../../data/catalog.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { LINES, DELIVERY } from "../../data/dealer-order.js";
 import { initModals } from "../../components/modals.js";
+import { initCitySelect } from "../../components/city-select.js";
 
 // Дилерский заказ — та же корзина и та же сводка, что у покупателя, плюс
 // модули строки и форма из четырёх карточек. Шагов нет: оба фрейма на 1440 —
@@ -74,3 +75,4 @@ page.querySelector("[data-order-summary] [data-order-submit]")?.addEventListener
 );
 
 initModals();
+initCitySelect();
