@@ -18,8 +18,17 @@
      `.is-open` компонентное правило, и слой утилит его перебьёт (лист
      открывался, но оставался невидимым). `md:hidden` оставлен намеренно: выше
      `md` город выбирают выпадашкой. -->
-<div class="modal-scrim md:hidden" data-city-sheet>
-  <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Выбор города">
+<div class="modal-scrim max-md:items-stretch md:hidden" data-city-sheet>
+  <!-- Из шапки страницы это оверлей во весь экран, а не лист по содержимому:
+       во фрейме (1859:335134) панель занимает всю высоту, шапка вверху и
+       список под ней. Общая оболочка модалок прижимает панель к низу и режет
+       её по 95vh — здесь это снимается. -->
+  <div
+    class="modal-panel max-md:h-full max-md:max-h-none max-md:rounded-none"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Выбор города"
+  >
     <!-- Шапка панели — 64 = ручка 20 + ряд 40, поля 16, снизу линия 1px #e7e7e7
          (`header` 1859:335347, borderBottomWeight 1). В ряду стрелка назад
          прижата влево, город с пином — вправо: во фрейме `text-action` стоит на
