@@ -416,9 +416,64 @@
   }
 
   /* ---- Icon button (circular) ------------------------------------------ */
+  /* ---- Серая подложка под фото карточки ----------------------------------
+     Figma `Img-container` 632:27848 — плита #f8f8f8 под снимком. Снимки лежат
+     на ней с `mix-blend-multiply`, чтобы белый фон предметной съёмки сливался
+     с плитой, а не выделялся белым прямоугольником.
+
+     Ловушка: `transform` на дорожке создаёт контекст наложения, поэтому
+     подложкой для снимков служит фон САМОЙ дорожки — а она шириной ровно в
+     один кадр. Со второго снимка подложки не оставалось, и белый фон оставался
+     белым; фон обёртки в наложении не участвует, он вне контекста. Проверяется
+     это так: покрасить дорожку в красный — первый кадр краснеет, второй нет.
+
+     Псевдоэлемент растягивает плиту на все кадры внутри того же контекста, а
+     `z-index:-1` кладёт её под снимки, не трогая арифметику слайдера
+     (translateX считает проценты от ширины дорожки, и она не меняется). */
+  [data-card-track] {
+    position: relative;
+  }
+  [data-card-track]::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    width: 1000%;
+    z-index: -1;
+    background: var(--color-bg-subtle);
+  }
+
   .icon-btn {
     @apply flex size-11 shrink-0 items-center justify-center rounded-full;
     @apply bg-components-subtle transition-colors hover:bg-components-subtle-hover;
+  }
+
+  /* ---- Товар уже в корзине ------------------------------------------------
+     Figma `icon-button` condition=active-hover 881:51240 (круг #414141, белая
+     иконка order-ok) и `button` size=s condition=active 1739:220745 (та же
+     заливка, белая подпись «в корзине»). Отдельного варианта `active` без
+     hover в наборе нет — это то же соглашение, что у пунктов menu-b2b, где
+     текущий пункт помечен вариантом hover.
+
+     Состояние живёт атрибутом на кнопке, а обе иконки и обе подписи лежат в
+     разметке — переключает их CSS. Менять `src` из JS нельзя: карточка
+     переживает ресайз, а разные ширины берут разные размеры иконки. Тот же
+     приём, что у корзинного степпера (SOLUTIONS.md). */
+  [data-add-to-cart] [data-in-cart-only] {
+    display: none;
+  }
+  [data-add-to-cart][data-in-cart] [data-idle-only] {
+    display: none;
+  }
+  [data-add-to-cart][data-in-cart] [data-in-cart-only] {
+    display: revert;
+  }
+  [data-add-to-cart][data-in-cart],
+  [data-add-to-cart][data-in-cart]:hover {
+    @apply bg-components-active-muted;
+  }
+  [data-add-to-cart][data-in-cart] span {
+    @apply text-text-inverse-primary;
   }
 
   /* ---- Carousel arrow --------------------------------------------------- */

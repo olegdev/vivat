@@ -71,9 +71,12 @@ export function buildCarouselSection({
     b.style.top = `${arrowTop}px`;
   });
 
+  // Слот несёт хвостовой отступ 24 из `title-block` (spacing 766:28333) — он
+  // есть у КАЖДОЙ секции, с чипсами и без. Раньше пустой слот удалялся, и все
+  // секции без чипсов теряли эти 24: «Модульные кухни» рисовались 599 вместо
+  // 628. Пустым он и должен оставаться — высоту ему даёт `empty:h-6`.
   const chipsSlot = section.querySelector("[data-cs-chips-slot]");
-  if (tabs?.length) chipsSlot.replaceWith(buildChips(tabs));
-  else chipsSlot.remove();
+  if (tabs?.length) chipsSlot.after(buildChips(tabs));
 
   return section;
 }

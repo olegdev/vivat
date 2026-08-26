@@ -30,7 +30,8 @@
           <p data-card-title class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-compact"></p>
         </div>
         <button type="button" data-add-to-cart class="icon-btn max-md:hidden" aria-label="В корзину">
-          <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" />
+          <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" data-idle-only />
+          <img src="../../assets/header/icon-order-ok-light.svg" alt="" class="size-6" data-in-cart-only />
         </button>
       </div>
       <div class="flex items-center gap-4 py-1 max-md:gap-2 max-md:py-0.5">
@@ -45,8 +46,10 @@
       </div>
       <!-- full-width "в корзину" pill — mobile only (Figma малая плитка) -->
       <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-1 max-md:flex">
-        <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" />
-        <span class="text-m-button-s text-text-primary">в корзину</span>
+        <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" data-idle-only />
+        <img src="../../assets/header/icon-order-ok-light.svg" alt="" class="size-4" data-in-cart-only />
+        <span class="text-m-button-s text-text-primary" data-idle-only>в корзину</span>
+        <span class="text-m-button-s" data-in-cart-only>в корзине</span>
       </button>
     </div>
   </article>

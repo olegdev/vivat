@@ -18,8 +18,22 @@
 // Buttons are matched by delegation, so cards rendered later (carousels, the
 // catalog grid) are covered without re-wiring.
 const KEY = "vivat:cart-count";
+// Что именно лежит в корзине — нужно карточкам: у той, чей товар уже добавлен,
+// кнопка переходит в состояние «в корзине» (Figma section `active cards`
+// 2462:212312). В Blade-сборке этот список приходит с сервера вместе со
+// счётчиком; здесь он живёт рядом со счётчиком в localStorage.
+const ITEMS = "vivat:cart-items";
 
 const getCount = () => Number(localStorage.getItem(KEY)) || 0;
+
+const getItems = () => {
+  try {
+    const v = JSON.parse(localStorage.getItem(ITEMS) || "[]");
+    return new Set(Array.isArray(v) ? v.map(String) : []);
+  } catch {
+    return new Set();
+  }
+};
 
 // Repaint every count badge (header + bottom-nav share `[data-cart-count]`).
 function paint(n = getCount()) {
@@ -29,15 +43,35 @@ function paint(n = getCount()) {
   });
 }
 
+// Пометить кнопки тех товаров, что уже в корзине. Вызывается и на старте, и
+// после каждой отрисовки карточек — рельсы и сетка каталога рисуются позже.
+export function paintCartState(root = document) {
+  const items = getItems();
+  root.querySelectorAll("[data-add-to-cart]").forEach((b) => {
+    const id = b.dataset.productId;
+    if (id && items.has(String(id))) b.setAttribute("data-in-cart", "");
+    else b.removeAttribute("data-in-cart");
+  });
+}
+
 // THE SEAM. `id` / `qty` are the payload the server will receive.
 function addToCart(id, qty = 1) {
-  void id; // (the prototype doesn't need the id; the server will)
   localStorage.setItem(KEY, String(getCount() + qty));
+  if (id != null && id !== "") {
+    const items = getItems();
+    items.add(String(id));
+    localStorage.setItem(ITEMS, JSON.stringify([...items]));
+  }
   paint();
+  paintCartState();
 }
 
 export function initCart(root = document) {
   paint();
+  paintCartState(root);
+  // Карточки появляются и после загрузки — рельсы, вкладки «Популярных»,
+  // страницы каталога. Слушаем то же событие, что и дилерский прайс-лист.
+  document.addEventListener("cards:rendered", (e) => paintCartState(e.detail?.root || document));
   // One delegated listener covers every current and future add button.
   root.addEventListener("click", (e) => {
     const btn = e.target.closest("[data-add-to-cart]");
