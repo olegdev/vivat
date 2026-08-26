@@ -64,7 +64,12 @@
   </article>
 </template>
 
-<!-- compact / category card -->
+<!-- compact / category card.
+     Отступ 6 между строкой-ссылкой и пилюлей — это нижний паддинг `container`
+     в макете (padV=6, cards-other mobile size=s 1884:363402): пилюля лежит там
+     СНАРУЖИ контейнера, поэтому под ней отступа нет вовсе. У нас все три строки
+     в одной колонке, поэтому тот же отступ висит на самой пилюле, а низ обёртки
+     погашен. -->
 <template data-pcard-compact>
   <article class="flex w-[438px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[152px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
@@ -75,7 +80,7 @@
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto max-md:gap-1" data-card-dots></div>
     </div>
-    <div class="flex flex-col gap-1 px-1 py-3 max-md:gap-0 max-md:py-1.5">
+    <div class="flex flex-col gap-1 px-1 py-3 max-md:gap-0 max-md:pb-0 max-md:pt-1.5">
       <div class="flex items-start gap-4 max-md:gap-0">
         <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
           <div class="flex items-center gap-2 max-md:gap-1">
@@ -93,7 +98,7 @@
       <div class="flex items-center gap-4 py-1 max-md:gap-0.5">
         <a href="#" class="text-body-s text-text-secondary underline decoration-from-font underline-offset-2 max-md:truncate max-md:text-m-body-xs" data-card-category></a>
       </div>
-      <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:flex">
+      <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-1.5 max-md:flex">
         <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" data-idle-only />
         <img src="../../assets/header/icon-order-ok-light.svg" alt="" class="size-4" data-in-cart-only />
         <span class="text-m-button-s text-text-primary" data-idle-only>в корзину</span>
@@ -254,7 +259,7 @@
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto max-md:gap-1" data-card-dots></div>
     </div>
-    <div class="flex flex-col gap-1 px-1 py-3 max-md:gap-0 max-md:py-1.5">
+    <div class="flex flex-col gap-1 px-1 py-3 max-md:gap-0 max-md:pb-0 max-md:pt-1.5">
       <div class="flex items-start gap-4 max-md:gap-0">
         <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
           <div class="flex items-center gap-2 max-md:gap-1">
@@ -281,7 +286,7 @@
       <div class="flex items-center gap-4 py-1 max-md:gap-0.5 has-[:empty]:hidden">
         <a href="#" class="text-body-s text-text-secondary underline decoration-from-font underline-offset-2 max-md:truncate max-md:text-m-body-xs" data-card-category></a>
       </div>
-      <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:flex">
+      <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-1.5 max-md:flex">
         <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" data-idle-only />
         <img src="../../assets/header/icon-order-ok-light.svg" alt="" class="size-4" data-in-cart-only />
         <span class="text-m-button-s text-text-primary" data-idle-only>в корзину</span>

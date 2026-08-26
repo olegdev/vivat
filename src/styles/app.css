@@ -448,34 +448,6 @@
     @apply bg-components-subtle transition-colors hover:bg-components-subtle-hover;
   }
 
-  /* ---- Товар уже в корзине ------------------------------------------------
-     Figma `icon-button` condition=active-hover 881:51240 (круг #414141, белая
-     иконка order-ok) и `button` size=s condition=active 1739:220745 (та же
-     заливка, белая подпись «в корзине»). Отдельного варианта `active` без
-     hover в наборе нет — это то же соглашение, что у пунктов menu-b2b, где
-     текущий пункт помечен вариантом hover.
-
-     Состояние живёт атрибутом на кнопке, а обе иконки и обе подписи лежат в
-     разметке — переключает их CSS. Менять `src` из JS нельзя: карточка
-     переживает ресайз, а разные ширины берут разные размеры иконки. Тот же
-     приём, что у корзинного степпера (SOLUTIONS.md). */
-  [data-add-to-cart] [data-in-cart-only] {
-    display: none;
-  }
-  [data-add-to-cart][data-in-cart] [data-idle-only] {
-    display: none;
-  }
-  [data-add-to-cart][data-in-cart] [data-in-cart-only] {
-    display: revert;
-  }
-  [data-add-to-cart][data-in-cart],
-  [data-add-to-cart][data-in-cart]:hover {
-    @apply bg-components-active-muted;
-  }
-  [data-add-to-cart][data-in-cart] span {
-    @apply text-text-inverse-primary;
-  }
-
   /* ---- Carousel arrow --------------------------------------------------- */
   .carousel-arrow {
     @apply flex size-12 items-center justify-center rounded-full transition-colors;
@@ -1117,6 +1089,43 @@
   &[aria-selected="true"] {
     @apply bg-components-subtle-hover;
     min-height: 44px;
+  }
+}
+
+/* Правила состояния живут в `utilities`, а не в `components`, по той же
+   причине, что и `.rail-2row` ниже: они обязаны перебить утилиты на самой
+   кнопке. У пилюли «в корзину» фон и ховер записаны классами
+   (`bg-components-subtle`, `hover:bg-components-subtle-hover`), а слой утилит
+   идёт после компонентного — из `components` проигрывает любая специфичность,
+   и пилюля оставалась светлой. Внутри одного слоя решает специфичность:
+   [data-add-to-cart][data-in-cart] сильнее одиночного класса. */
+@layer utilities {
+  /* ---- Товар уже в корзине ------------------------------------------------
+     Figma `icon-button` condition=active-hover 881:51240 (круг #414141, белая
+     иконка order-ok) и `button` size=s condition=active 1739:220745 (та же
+     заливка, белая подпись «в корзине»). Отдельного варианта `active` без
+     hover в наборе нет — это то же соглашение, что у пунктов menu-b2b, где
+     текущий пункт помечен вариантом hover.
+
+     Состояние живёт атрибутом на кнопке, а обе иконки и обе подписи лежат в
+     разметке — переключает их CSS. Менять `src` из JS нельзя: карточка
+     переживает ресайз, а разные ширины берут разные размеры иконки. Тот же
+     приём, что у корзинного степпера (SOLUTIONS.md). */
+  [data-add-to-cart] [data-in-cart-only] {
+    display: none;
+  }
+  [data-add-to-cart][data-in-cart] [data-idle-only] {
+    display: none;
+  }
+  [data-add-to-cart][data-in-cart] [data-in-cart-only] {
+    display: revert;
+  }
+  [data-add-to-cart][data-in-cart],
+  [data-add-to-cart][data-in-cart]:hover {
+    @apply bg-components-active-muted;
+  }
+  [data-add-to-cart][data-in-cart] span {
+    @apply text-text-inverse-primary;
   }
 }
 
