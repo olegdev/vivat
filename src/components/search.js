@@ -206,5 +206,8 @@ export function initSearch(root = document) {
     f.addEventListener("submit", open);
     field?.addEventListener("focus", open);
     field?.addEventListener("click", open);
+    // Планшетная шапка (2477:181419) даёт не поле, а иконку: [data-search] без
+    // input — это просто кнопка, открывающая ту же панель.
+    if (!field) f.addEventListener("click", open);
   });
 }

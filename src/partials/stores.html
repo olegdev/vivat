@@ -19,10 +19,10 @@
      `renderStoresMap({ selectable: true })` adds `.stores-select`, which also
      turns the block into a full-screen map + bottom sheet below `md`
      (2032:158435 / 2059:169141) — see app.css. -->
-<section id="where" class="flex w-[1440px] flex-col bg-surface-accent pb-16 max-md:w-full max-md:bg-bg-page max-md:pb-10" data-stores-section>
-  <div class="px-10 max-md:px-4" data-stores-head>
+<section id="where" class="flex w-full flex-col bg-surface-accent pb-16 max-md:bg-bg-page max-md:pb-10" data-stores-section>
+  <div class="page-x" data-stores-head>
     <div class="h-20 max-md:h-10"></div>
-    <div class="flex w-[783px] flex-col max-md:w-full">
+    <div class="flex w-[783px] flex-col max-xl:w-auto max-xl:min-w-0 max-xl:flex-1 max-md:w-full">
       <div class="flex min-h-11 items-center max-md:min-h-6">
         <h2 class="text-h2 text-text-primary max-md:text-m-h2" data-stores-title>Наши салоны</h2>
       </div>
@@ -35,7 +35,7 @@
     <div class="h-6 max-md:h-3"></div>
   </div>
 
-  <div class="px-10 max-md:px-4" data-map-wrap>
+  <div class="page-x max-xl:px-0" data-map-wrap>
     <div class="relative flex overflow-hidden rounded-[var(--radius-l)] shadow-dropdown max-md:shadow-none" data-map-frame>
       <!-- left panel -->
       <aside class="flex h-[680px] w-[440px] shrink-0 flex-col bg-surface-inverted max-md:hidden" data-store-panel>

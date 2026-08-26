@@ -89,12 +89,19 @@
 </header>
 
 <!-- ==================== SITE HEADER (desktop) ====================== -->
-<header class="flex flex-col gap-4 pb-3 max-md:hidden">
-  <div class="flex flex-col gap-3">
+<!-- Одна шапка на десктоп и планшет. Верхняя служебная строка у них общая —
+     содержимое совпадает буквально, меняются только поля (40 → 24) — а нижний
+     ряд разный, поэтому их два и каждый прячется вариантом. Планшетный
+     оригинал: site-header `device=tablet, type=b2c` 2477:180969, 768x108 =
+     44 + 64, без зазора между рядами и без нижнего отступа. -->
+<header class="flex flex-col gap-4 pb-3 max-md:hidden max-xl:gap-0 max-xl:pb-0">
+  <div class="flex flex-col gap-3 max-xl:gap-0">
     <!-- top utility bar -->
-    <div
-      class="flex h-11 w-[1440px] items-center justify-between border-b border-divider-soft px-10"
-    >
+    <!-- Разделительная линия идёт во всю ширину окна, а содержимое упирается
+         в 1900 — отсюда вложенная пара вместо одного div. Это же построение
+         повторяют все блоки с фоновой полосой. -->
+    <div class="border-b border-divider-soft">
+      <div class="page-x flex h-11 items-center justify-between">
       <div class="flex items-center gap-3">
         <a class="flex items-center gap-1" href="#">
           <span
@@ -121,7 +128,7 @@
       <!-- Dealer strip — `header-dealer` 586:57343 variant2, instanced at
            877:93261: fixed 1013x44, flush to the canvas edge. -->
       <div
-        class="-mr-10 hidden h-11 w-[1013px] shrink-0 items-center gap-6 rounded-l-[32px] bg-components-strong px-6 group-data-[user=dealer]:flex"
+        class="-mr-10 hidden h-11 w-[1013px] shrink-0 max-xl:-mr-6 items-center gap-6 rounded-l-[32px] bg-components-strong px-6 group-data-[user=dealer]:flex"
       >
         <button
           type="button"
@@ -188,10 +195,55 @@
 
         <a class="shrink-0 text-body-s-accent text-text-inverse-primary" href="#">Выход</a>
       </div>
+      </div>
+    </div>
+
+    <!-- ---- Нижний ряд, планшет (2477:181373, 768x64) --------------------
+         Поля здесь 16, а не 24, как у строки выше, — это не описка макета, а
+         его цифра, поэтому page-x тут не годится. Бургер слева, логотип по
+         центру ОКНА (в макете 278 + 212/2 = 384 = 768/2, поэтому центрируем
+         абсолютно, а не space-between: боковые группы разной ширины), справа
+         поиск и профиль. Корзины в этом ряду нет — она в тапбаре. -->
+    <div class="relative hidden h-16 items-center justify-between px-4 max-xl:flex">
+      <button
+        class="flex h-8 w-10 items-center justify-center"
+        data-mobile-menu
+        aria-label="Меню"
+        aria-expanded="false"
+      >
+        <img src="../../assets/header/icon-burger-bold.svg" alt="" class="size-6" />
+      </button>
+
+      <a
+        href="main.html"
+        class="absolute left-1/2 flex w-[212px] -translate-x-1/2 flex-col items-center gap-0.5"
+      >
+        <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[27px] w-[124px]" />
+        <span
+          class="w-full whitespace-nowrap text-center text-[9px] font-medium uppercase leading-4 tracking-[0.08em] text-icon-primary"
+          >фабрика мебели. Официальный сайт</span
+        >
+      </a>
+
+      <div class="flex items-center gap-4">
+        <!-- Иконка поиска — такой же вход в оверлей, как поле у десктопа:
+             components/search.js открывает его от любого [data-search]. -->
+        <button
+          type="button"
+          class="flex h-8 w-10 items-center justify-center"
+          data-search
+          aria-label="Поиск"
+        >
+          <img src="../../assets/header/icon-search.svg" alt="" class="size-6" />
+        </button>
+        <button class="flex h-8 w-10 items-center justify-center" aria-label="Профиль">
+          <img src="../../assets/header/icon-profile.svg" alt="" class="size-6" />
+        </button>
+      </div>
     </div>
 
     <!-- main nav bar -->
-    <div class="flex items-center justify-between px-10">
+    <div class="page-x flex items-center justify-between max-xl:hidden">
       <div class="flex items-center gap-16">
         <div class="flex items-center gap-10">
           <!-- logo -->
@@ -209,7 +261,7 @@
               aria-expanded="false"
             >
               <img src="../../assets/header/icon-burger.svg" alt="" class="size-6" data-catalog-icon />
-              <span class="text-button-m text-text-inverse-primary">Весь каталог</span>
+              <span class="text-button-m text-text-inverse-primary">Каталог</span>
             </button>
             <!-- Набор пунктов у покупателя и у дилера разный, и это разные
                  варианты одного компонента: menu-items 604:23352 у b2c

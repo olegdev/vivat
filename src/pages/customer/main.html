@@ -13,12 +13,17 @@
     <script type="module" src="./main.js"></script>
   </head>
   <body class="bg-bg-page text-text-primary">
-    <!-- Two canvases, one DOM: fluid below `md` (Figma customer/body, 360px)
-         and the fixed 1440px desktop canvas (Figma customer/Main) at and above
-         it. Shared chrome (header, menus, bottom-nav, footer) lives in
-         src/partials/ and is spliced in at build time by the html-includes
-         plugin — see the PHP Blade note in CLAUDE.md. -->
-    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+    <!-- Три слоя, один DOM: мобильный ниже `md` (Figma customer/body, 360),
+         планшетный до `xl` (Main 2477:114191, 768) и текучий десктопный выше
+         (Main 2395:105837 на 1440, 2397:117243 на 1900). Холста больше нет:
+         страница во всю ширину окна, а ширину держит каждый блок сам —
+         утилитой `page-x`, которая заодно упирает содержимое в 1900.
+         Разбор: docs/superpowers/specs/2026-08-26-responsive-tablet-wide-design.md
+
+         Общий chrome (шапка, меню, тапбар, подвал) лежит в src/partials/ и
+         вклеивается на сборке — см. про Blade в CLAUDE.md. Тапбар теперь и на
+         планшете, поэтому резерв высоты под него стал `max-xl:`. -->
+    <div class="w-full max-xl:pb-[72px]">
       <!-- ==================== SITE HEADER (mobile + desktop) ============ -->
       <!--#include partials/header.html -->
 
@@ -52,7 +57,7 @@
 
       <!-- ============================ ALERT ============================= -->
       <div
-        class="flex h-10 w-full items-center justify-center bg-accent-yellow-200 px-4 max-md:h-auto max-md:min-h-12 max-md:py-1 md:w-[1440px]"
+        class="flex h-10 w-full items-center justify-center bg-accent-yellow-200 px-4 max-md:h-auto max-md:min-h-12 max-md:py-1"
       >
         <p class="text-center text-body-s text-text-primary max-md:text-m-body-n">
           Обращаем внимание покупателей, что 22.07.2026 мы работаем по сокращенному графику!

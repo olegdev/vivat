@@ -12,9 +12,14 @@
      (a <br> between the two lines), so it prints unescaped — {!! $slide['title'] !!}.
 -->
 
+<!-- Высоты: 640 на десктопе (607:29214), 560 на планшете (2477:166184), 508 на
+     мобиле (1821:327006). Выше 1440 работает комментарий дизайнера «этот блок с
+     шапкой занимает 100% высоты и ширины экрана»: шапка 116 + алерт 40 = 156,
+     остальное отдаётся баннеру. Полем `page-x` герой не ограничивается — он
+     один из двух блоков во всю ширину окна. -->
 <template data-hero-section>
   <section
-    class="relative h-[640px] w-[1440px] touch-pan-y select-none overflow-hidden bg-surface-default max-md:h-[508px] max-md:w-full"
+    class="relative h-[640px] w-full touch-pan-y select-none overflow-hidden bg-surface-default wide:h-[calc(100vh-156px)] max-xl:h-[560px] max-md:h-[508px]"
   >
     <div data-track class="absolute inset-0"></div>
 
@@ -24,14 +29,14 @@
     <button
       data-prev
       aria-label="Назад"
-      class="carousel-arrow absolute left-6 top-1/2 z-20 -translate-y-1/2 max-md:bottom-1 max-md:left-2 max-md:top-auto max-md:translate-y-0"
+      class="carousel-arrow absolute left-6 top-1/2 z-20 -translate-y-1/2 max-xl:hidden max-md:bottom-1 max-md:left-2 max-md:top-auto max-md:flex max-md:translate-y-0"
     >
       <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
     </button>
     <button
       data-next
       aria-label="Вперёд"
-      class="carousel-arrow absolute right-6 top-1/2 z-20 -translate-y-1/2 max-md:bottom-1 max-md:right-2 max-md:top-auto max-md:translate-y-0"
+      class="carousel-arrow absolute right-6 top-1/2 z-20 -translate-y-1/2 max-xl:hidden max-md:bottom-1 max-md:right-2 max-md:top-auto max-md:flex max-md:translate-y-0"
     >
       <img src="../../assets/header/chevron-right.svg" alt="" class="size-6" />
     </button>
@@ -49,7 +54,7 @@
   <div data-slide class="absolute inset-0 opacity-0 transition-opacity duration-700 pointer-events-none">
     <div
       data-hero-copy
-      class="absolute inset-y-0 left-0 flex w-[619px] flex-col justify-center gap-2 py-2 pl-[155px] pr-2 max-md:inset-y-auto max-md:top-0 max-md:w-full max-md:justify-start max-md:px-4 max-md:pb-2 max-md:pt-8"
+      class="absolute inset-y-0 left-0 flex w-[619px] flex-col justify-center gap-2 py-2 pl-[155px] pr-2 max-xl:w-1/2 max-xl:px-4 max-md:inset-y-auto max-md:top-0 max-md:w-full max-md:justify-start max-md:px-4 max-md:pb-2 max-md:pt-8"
     >
       <div class="flex flex-col gap-6 max-md:gap-4">
         <div class="flex flex-col gap-3 max-md:gap-1">

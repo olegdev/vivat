@@ -1,8 +1,8 @@
-// Screenshots of the built pages, so "verify in the browser at both 1440 and
+// Screenshots of the built pages, so "verify in the browser at 1900, 1440, 768 and
 // 390" (CLAUDE.md) is a command and not a good intention.
 //
-//   npm run shot                    every page, both widths
-//   npm run shot dealer/main        one page, both widths
+//   npm run shot                    every page, every width
+//   npm run shot dealer/main        one page, every width
 //   npm run shot dealer/main 1440   one page, one width
 //   npm run shot -- --no-build      skip the staleness rebuild
 //   npm run shot -- --dpr 3         sharper (heavier) capture
@@ -47,7 +47,7 @@ const targets = positional.length
   ? positional.filter((p) => !/^\d+$/.test(p))
   : pages;
 const widths = positional.filter((p) => /^\d+$/.test(p)).map(Number);
-const sizes = widths.length ? widths : [1440, 390];
+const sizes = widths.length ? widths : [1900, 1440, 768, 390];
 
 const unknown = targets.filter((t) => !pages.includes(t));
 if (unknown.length) {

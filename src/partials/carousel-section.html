@@ -30,10 +30,12 @@
 
 <template data-carousel-section>
   <section class="flex flex-col">
-    <div class="px-10 max-md:px-4">
-      <div class="h-20 max-md:h-10"></div>
+    <div class="page-x">
+      <!-- Отступ над заголовком секции: 80 на десктопе, 64 на планшете
+           (spacing 2477:151418), 40 на мобиле. -->
+      <div class="h-20 max-xl:h-16 max-md:h-10"></div>
       <div class="flex items-start justify-between">
-        <div class="flex w-[783px] flex-col max-md:w-full">
+        <div class="flex w-[783px] flex-col max-xl:w-auto max-xl:min-w-0 max-xl:flex-1 max-md:w-full">
           <div class="flex min-h-11 items-center gap-3 max-md:min-h-6 max-md:gap-2">
             <h2 data-cs-title class="text-h2 text-text-primary max-md:text-m-h2"></h2>
             <span data-cs-count class="text-h2 text-text-muted max-md:text-m-h2"></span>
@@ -53,23 +55,28 @@
            (`segments` 644:44577 — 16 сверху, 44 ряд, 16 снизу). -->
       <div data-cs-chips-slot class="empty:h-6 max-md:empty:h-3"></div>
     </div>
-    <div class="relative w-[1440px] px-10 max-md:w-full max-md:px-4">
+    <!-- Ниже `xl` рельс перестаёт быть каруселью со стрелками и становится
+         нативным скроллом с индикатором — так он нарисован и на планшете
+         (rows 2477:146694 + scroll 720x32), и на мобиле. -->
+    <div class="page-x relative">
       <div
-        class="overflow-hidden max-md:scroll-rail max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto"
+        class="overflow-hidden max-xl:scroll-rail max-xl:snap-x max-xl:snap-proximity max-xl:scroll-pl-6 max-xl:overflow-x-auto max-md:scroll-pl-4"
         data-viewport
       >
         <div class="flex gap-6 transition-transform duration-500 ease-out will-change-transform max-md:gap-2" data-track></div>
       </div>
-      <button data-prev aria-label="Назад" class="carousel-arrow absolute left-4 max-md:hidden">
+      <button data-prev aria-label="Назад" class="carousel-arrow absolute left-4 max-xl:hidden">
         <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
       </button>
-      <button data-next aria-label="Вперёд" class="carousel-arrow absolute right-4 max-md:hidden">
+      <button data-next aria-label="Вперёд" class="carousel-arrow absolute right-4 max-xl:hidden">
         <img src="../../assets/header/chevron-right.svg" alt="" class="size-6" />
       </button>
     </div>
-    <div class="hidden max-md:block">
-      <div data-cs-progress class="scroll-progress" data-progress><span><i></i></span></div>
-      <div data-cs-mobile-action class="px-4 pt-2">
+    <div class="hidden max-xl:block">
+      <div data-cs-progress class="scroll-progress max-xl:px-6 max-md:px-4" data-progress><span><i></i></span></div>
+      <!-- Кнопка под рельсом — мобильная: на планшете действие остаётся
+           справа от заголовка, как на десктопе (buttons в title-block). -->
+      <div data-cs-mobile-action class="px-4 pt-2 max-xl:hidden max-md:block">
         <a data-cs-action class="btn btn-m btn-secondary w-full" href="#">
           <span data-cs-action-label></span>
           <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />

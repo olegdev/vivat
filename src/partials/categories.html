@@ -2,35 +2,43 @@
 <!-- Below `md` the two desktop rows collapse (`contents`) into one 2-col
      grid, so the seven tiles reflow into the six-tile mobile order
      (Figma Tiles 1968:230570) — `order-*` handles the reshuffle and the
-     "весь каталог" tile drops out. -->
+     "весь каталог" tile drops out.
+
+     На планшете (categor 2477:114198) рядов по-прежнему два, но плитки
+     равные: большая «Кухни» теряет свои 668 и становится такой же, как
+     соседние, вместе с их типографикой. Седьмая плитка отсюда тоже уходит —
+     во фрейме её просто нет; вопрос дизайнеру записан в BACKLOG.md.
+
+     Поля у этого блока 16, а не 24, как у остальных планшетных блоков, —
+     это цифра фрейма (padH=16), поэтому `page-x` здесь не годится. -->
 <section
-  class="flex flex-col items-center gap-6 px-10 max-md:grid max-md:grid-cols-2 max-md:gap-x-3 max-md:gap-y-4 max-md:px-4 max-md:pt-8"
+  class="flex flex-col items-center gap-6 px-10 max-xl:gap-4 max-xl:px-4 max-md:grid max-md:grid-cols-2 max-md:gap-x-3 max-md:gap-y-4 max-md:pt-8"
 >
   <!-- row 1 -->
-  <div class="flex h-[387px] w-[1360px] items-center gap-6 max-md:contents">
+  <div class="flex h-[387px] w-full items-center gap-6 max-xl:h-[276px] max-xl:gap-4 max-md:contents">
     <!-- kitchen (double width) -->
     <article
-      class="relative h-full w-[668px] shrink-0 overflow-hidden rounded-n bg-surface-default max-md:order-1 max-md:h-[210.67px] max-md:w-auto"
+      class="relative h-full w-[668px] shrink-0 overflow-hidden rounded-n bg-surface-default max-xl:w-auto max-xl:min-w-0 max-xl:flex-1 max-md:order-1 max-md:h-[210.67px]"
     >
-      <video class="cat-media" style="--l:-34.78px;--t:-107px;--w:1102px;--h:620px;--ml:-147.2px;--mt:-21.94px;--mw:613.5px;--mh:345.16px" src="../../assets/home/cat-kitchen.mp4" poster="../../assets/home/cat-kitchen-poster.jpg" autoplay muted loop playsinline></video>
+      <video class="cat-media" style="--b:668px;--l:-34.78px;--t:-107px;--w:1102px;--h:620px;--ml:-147.2px;--mt:-21.94px;--mw:613.5px;--mh:345.16px;--tl:-178.58px;--tt:-29.5px;--tw:826.5px;--th:465px" src="../../assets/home/cat-kitchen.mp4" poster="../../assets/home/cat-kitchen-poster.jpg" autoplay muted loop playsinline></video>
       <div class="relative flex h-full flex-col justify-between px-6 py-4 max-md:px-4 max-md:py-3">
         <div class="flex flex-col">
-          <h2 class="text-[56px] font-semibold leading-none text-text-primary max-md:text-[16px] max-md:leading-[21px]">Кухни</h2>
+          <h2 class="text-[56px] font-semibold leading-none text-text-primary max-xl:text-h3 max-xl:leading-7 max-md:text-[16px] max-md:leading-[21px]">Кухни</h2>
           <div class="flex items-center gap-[7px]">
-            <span class="text-body-l text-text-primary max-md:text-m-body-n-accent">Скидки</span>
-            <span class="badge badge-l badge-discount">- 15%</span>
+            <span class="text-body-l text-text-primary max-xl:text-body-n-accent max-md:text-m-body-n-accent">Скидки</span>
+            <span class="badge badge-l badge-discount max-xl:h-6 max-xl:py-0 max-xl:pb-px max-xl:text-body-s-accent">- 15%</span>
           </div>
         </div>
         <a href="#" class="btn btn-m btn-white w-fit gap-3 max-md:h-8 max-md:w-full max-md:px-3">
-          <span class="text-h3 text-text-primary max-md:text-m-body-n-accent">321 модель</span>
-          <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6 max-md:hidden" />
+          <span class="text-h3 text-text-primary max-xl:text-button-m max-md:text-m-body-n-accent">321 модель</span>
+          <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6 max-xl:size-5 max-md:hidden" />
         </a>
       </div>
     </article>
 
     <!-- sink -->
     <article class="relative h-full min-w-0 flex-1 overflow-hidden rounded-n bg-surface-default max-md:order-3 max-md:h-[210.67px]">
-      <video class="cat-media" style="--l:-35.05px;--t:-273px;--w:410.71px;--h:730px;--ml:-30.57px;--mt:-155.22px;--mw:229px;--mh:407.03px" src="../../assets/home/cat-sink.mp4" poster="../../assets/home/cat-sink-poster.jpg" autoplay muted loop playsinline></video>
+      <video class="cat-media" style="--b:322px;--l:-35.05px;--t:-273px;--w:410.71px;--h:730px;--ml:-30.57px;--mt:-155.22px;--mw:229px;--mh:407.03px;--tl:-27.72px;--tt:-192.53px;--tw:308.03px;--th:547.5px" src="../../assets/home/cat-sink.mp4" poster="../../assets/home/cat-sink-poster.jpg" autoplay muted loop playsinline></video>
       <div class="relative flex h-full flex-col gap-4 px-6 py-4 max-md:justify-between max-md:px-4 max-md:py-3">
         <div class="flex flex-col gap-1">
           <h2 class="text-h3 text-text-primary max-md:text-m-h4">Мойки</h2>
@@ -48,7 +56,7 @@
 
     <!-- appliances -->
     <article class="relative h-full min-w-0 flex-1 overflow-hidden rounded-n bg-surface-default max-md:order-4 max-md:h-[210.67px]">
-      <video class="cat-media" style="--l:-42.99px;--t:-237px;--w:407.75px;--h:724.74px;--ml:-35px;--mt:-135.15px;--mw:227.35px;--mh:404.09px" src="../../assets/home/cat-appliances.mp4" poster="../../assets/home/cat-appliances-poster.jpg" autoplay muted loop playsinline></video>
+      <video class="cat-media" style="--b:322px;--l:-42.99px;--t:-237px;--w:407.75px;--h:724.74px;--ml:-35px;--mt:-135.15px;--mw:227.35px;--mh:404.09px;--tl:-36.03px;--tt:-161.78px;--tw:305.81px;--th:543.55px" src="../../assets/home/cat-appliances.mp4" poster="../../assets/home/cat-appliances-poster.jpg" autoplay muted loop playsinline></video>
       <div class="relative flex h-full flex-col justify-between px-6 py-4 max-md:px-4 max-md:py-3">
         <h2 class="text-h3 text-text-primary max-md:text-m-h4">Бытовая техника</h2>
         <a href="#" class="btn btn-m btn-white w-fit gap-3 max-md:h-8 max-md:w-full max-md:px-3">
@@ -60,10 +68,10 @@
   </div>
 
   <!-- row 2 -->
-  <div class="flex h-[387px] w-[1360px] items-center gap-6 max-md:contents">
+  <div class="flex h-[387px] w-full items-center gap-6 max-xl:h-[276px] max-xl:gap-4 max-md:contents">
     <!-- tables -->
     <article class="relative h-full min-w-0 flex-1 overflow-hidden rounded-n bg-surface-default max-md:order-5 max-md:h-[210.67px]">
-      <video class="cat-media" style="--l:-19px;--t:-403px;--w:478px;--h:850px;--ml:-20.66px;--mt:-226.35px;--mw:266.23px;--mh:473.2px" src="../../assets/home/cat-tables.mp4" poster="../../assets/home/cat-tables-poster.jpg" autoplay muted loop playsinline></video>
+      <video class="cat-media" style="--b:322px;--l:-19px;--t:-403px;--w:478px;--h:850px;--ml:-20.66px;--mt:-226.35px;--mw:266.23px;--mh:473.2px;--tl:-12.67px;--tt:-274.62px;--tw:327.02px;--th:581.24px" src="../../assets/home/cat-tables.mp4" poster="../../assets/home/cat-tables-poster.jpg" autoplay muted loop playsinline></video>
       <div class="relative flex h-full flex-col justify-between px-6 py-4 max-md:px-4 max-md:py-3">
         <div class="flex flex-col gap-1">
           <h2 class="text-h3 text-text-primary max-md:text-m-h4">Столы</h2>
@@ -81,7 +89,7 @@
 
     <!-- chairs -->
     <article class="relative h-full min-w-0 flex-1 overflow-hidden rounded-n bg-surface-default max-md:order-6 max-md:h-[210.67px]">
-      <video class="cat-media" style="--l:-18.6px;--t:-192.9px;--w:380.2px;--h:675.78px;--ml:-20.38px;--mt:-109.38px;--mw:211.66px;--mh:376.21px" src="../../assets/home/cat-chairs.mp4" poster="../../assets/home/cat-chairs-poster.jpg" autoplay muted loop playsinline></video>
+      <video class="cat-media" style="--b:322px;--l:-18.6px;--t:-192.9px;--w:380.2px;--h:675.78px;--ml:-20.38px;--mt:-109.38px;--mw:211.66px;--mh:376.21px;--tl:-1.19px;--tt:-99.96px;--tw:229.03px;--th:407.08px" src="../../assets/home/cat-chairs.mp4" poster="../../assets/home/cat-chairs-poster.jpg" autoplay muted loop playsinline></video>
       <div class="relative flex h-full flex-col justify-between px-6 py-4 max-md:px-4 max-md:py-3">
         <div class="flex flex-col gap-1">
           <h2 class="text-h3 text-text-primary max-md:text-m-h4">Стулья</h2>
@@ -99,7 +107,7 @@
 
     <!-- worktops -->
     <article class="relative h-full min-w-0 flex-1 overflow-hidden rounded-n bg-surface-default max-md:order-2 max-md:h-[210.67px]">
-      <video class="cat-media" style="--l:0px;--t:-165px;--w:326.25px;--h:579.89px;--ml:-10.02px;--mt:-93.85px;--mw:181.63px;--mh:322.83px" src="../../assets/home/cat-worktops.mp4" poster="../../assets/home/cat-worktops-poster.jpg" autoplay muted loop playsinline></video>
+      <video class="cat-media" style="--b:322px;--l:0px;--t:-165px;--w:326.25px;--h:579.89px;--ml:-10.02px;--mt:-93.85px;--mw:181.63px;--mh:322.83px;--tl:8.73px;--tt:-83.2px;--tw:208.19px;--th:370.05px" src="../../assets/home/cat-worktops.mp4" poster="../../assets/home/cat-worktops-poster.jpg" autoplay muted loop playsinline></video>
       <div class="relative flex h-full flex-col justify-between px-6 py-4 max-md:px-4 max-md:py-3">
         <div class="flex flex-col gap-1">
           <h2 class="text-h3 text-text-primary max-md:text-m-h4">Столешницы</h2>
@@ -116,7 +124,7 @@
     </article>
 
     <!-- all catalog (desktop only — absent from the 360px frame) -->
-    <article class="flex h-full min-w-0 flex-1 items-center justify-center overflow-hidden rounded-n border border-border-light bg-surface-inverted px-6 py-4 max-md:hidden">
+    <article class="flex h-full min-w-0 flex-1 items-center justify-center overflow-hidden rounded-n border border-border-light bg-surface-inverted px-6 py-4 max-xl:hidden">
       <a href="#" class="btn btn-m btn-white gap-3">
         <span class="text-button-m text-text-primary">56 моделей</span>
         <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-5" />
