@@ -1,3 +1,9 @@
+<!-- Ширина карточки НЕ текучая. На 1900 рельс растягивается до 1820, но карточка
+     остаётся 438 — просто помещается четвёртая (4×438 + 3×24 = 1824). Тянутся
+     только плитки категорий, у которых ряд обязан заполнить ширину.
+     На планшете любая карточка становится 322 и картинка в ней — 242
+     (cards-kitchen 2477:125565, Img-container 322x242).
+-->
 <!-- ==================== PRODUCT CARD templates ========================
      Figma UI SYSTEM "cards-kitchen". Two variants, each a clean HTML unit the
      carousel clones per product (components/product-card.js) — the future Blade
@@ -20,9 +26,9 @@
 
 <!-- full / swatch card -->
 <template data-pcard>
-  <article class="flex w-[calc((100%-48px)/3)] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
+  <article class="flex w-[438px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
+      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-xl:h-[242px] max-md:h-[238px]" data-card-gallery>
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>
@@ -59,9 +65,9 @@
 
 <!-- compact / category card -->
 <template data-pcard-compact>
-  <article class="flex w-[calc((100%-48px)/3)] shrink-0 flex-col max-xl:w-[322px] max-md:w-[152px] max-md:snap-start" data-card>
+  <article class="flex w-[438px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[152px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[111px]" data-card-gallery>
+      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-xl:h-[242px] max-md:h-[111px]" data-card-gallery>
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>
@@ -100,9 +106,9 @@
      and the cart action stays an icon button (no full-width pill). Used by the
      Акции page's "Популярные товары на акции" rail. -->
 <template data-pcard-compact-l>
-  <article class="flex w-[calc((100%-48px)/3)] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
+  <article class="flex w-[438px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
+      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-xl:h-[242px] max-md:h-[238px]" data-card-gallery>
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>
@@ -139,7 +145,7 @@
      image box as the other mobile cards. Sizes come from the Figma frames, not
      from scaling the 438px card. -->
 <template data-pcard-modul>
-  <article class="flex w-[calc((100%-72px)/4)] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
+  <article class="flex w-[322px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
@@ -187,7 +193,7 @@
      Below `md` it is the same 320px / 238px tile as `data-pcard-compact-l`
      (1821:291701): a single-row rail, cart stays an icon button. -->
 <template data-pcard-other-s>
-  <article class="flex w-[calc((100%-72px)/4)] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
+  <article class="flex w-[322px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
@@ -232,7 +238,7 @@
      the query state lays the same tile out two-up in a grid rather than in the
      152px rail — see SOLUTIONS.md › "One rail, two mobile layouts". -->
 <template data-pcard-search>
-  <article class="flex w-[calc((100%-72px)/4)] shrink-0 flex-col max-xl:w-[322px] max-md:w-[152px] max-md:snap-start" data-card>
+  <article class="flex w-[322px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[152px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
       <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:aspect-[152/111] max-md:h-auto" data-card-gallery>
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
