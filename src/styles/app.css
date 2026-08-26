@@ -1062,9 +1062,16 @@
    `title-block padH` равен 40 и на 1440, и на 1900, и 24 на 768.
 
    Ограничитель 1900 живёт здесь же, поэтому «выше 1900 растут поля» получается
-   само. Два full-bleed блока — герой и «Производство» — эту утилиту не берут. */
+   само. Блокам без полей — шапке, алерту, герою и «Производству» — нужен только
+   ограничитель: они берут `page-max`. Их полноэкранность по ширине отменена
+   решением клиента (26.08.2026), см. BACKLOG.md; по высоте `100vh` выше 1440
+   остаётся. */
+@utility page-max {
+  @apply mx-auto w-full max-w-[1900px];
+}
+
 @utility page-x {
-  @apply mx-auto w-full max-w-[1900px] px-10 max-xl:px-6 max-md:px-4;
+  @apply page-max px-10 max-xl:px-6 max-md:px-4;
 }
 
 /* Horizontal rails. Desktop carousels translate a track behind arrows; mobile
