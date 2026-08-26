@@ -59,6 +59,7 @@ const swap = (el, off, on) => {
 };
 
 import { initStoreSheet } from "./store-sheet.js";
+import { fillCityRows, isMobileCity } from "./city-select.js";
 
 // Полноэкранная карта на мобиле для ЧИТАЮЩИХ страниц (главная, PDP): Figma
 // `state=ordinary-min` 1859:334569 и `-max` 1859:334571. Та же трансформация,
@@ -76,7 +77,7 @@ const FULLMAP_SNAPS = [0.495, 0.0985];
 const FULLMAP = [
   ["[data-stores-section]", ["bg-surface-accent", "max-md:pb-10"], ["max-md:fixed", "max-md:inset-0", "max-md:z-50", "max-md:overflow-hidden", "max-md:bg-bg-page"]],
   ["[data-stores-head]", [], ["max-md:hidden"]],
-  ["[data-map-wrap]", [], ["max-md:h-full"]],
+  ["[data-map-wrap]", [], ["max-md:h-full", "max-md:px-0"]],
   ["[data-map-frame]", [], ["max-md:h-full", "max-md:rounded-none"]],
   ["[data-map-pane]", ["max-md:h-80"], ["max-md:absolute", "max-md:inset-0", "max-md:h-full"]],
   ["[data-map-cta]", [], ["max-md:hidden"]],
@@ -290,8 +291,46 @@ export function renderStoresMap(anchor, opts) {
     // на одном элементе конфликтовали бы.
     const cityBtn = anchor.querySelector("[data-city-toggle]");
     if (cityBtn) {
-      cityBtn.setAttribute("data-city-open", "");
       cityBtn.querySelector("[data-panel-city]")?.setAttribute("data-city-label", "");
+      // Выше `md` город выбирают выпадашкой — её открывает общий компонент по
+      // этому атрибуту. Ниже `md` выпадашки нет: список ПОДМЕНЯЕТ тело панели,
+      // как нарисовано в `type=city` 1859:335134, а в шапке появляется стрелка
+      // назад. Поэтому атрибут вешаем только для десктопа, а мобильный путь
+      // ведём здесь.
+      const cityPanel = anchor.querySelector("[data-city-panel]");
+      const backBtn = anchor.querySelector("[data-city-back]");
+      const head = anchor.querySelector("[data-panel-head]");
+      const search = anchor.querySelector("[data-sheet-search]");
+      const hideForCity = [
+        anchor.querySelector("[data-store-list]"),
+        anchor.querySelector("[data-brand-only]")?.closest("div.flex.items-center"),
+      ];
+
+      const showCities = (on) => {
+        fillCityRows(cityPanel, document);
+        cityPanel?.classList.toggle("hidden", !on);
+        cityPanel?.classList.toggle("flex", on);
+        backBtn?.classList.toggle("hidden", !on);
+        backBtn?.classList.toggle("flex", on);
+        hideForCity.forEach((el) => el?.classList.toggle("hidden", on));
+        // Поле поиска показано вариантом `max-md:flex` — снять с него `hidden`
+        // мало, утилита с вариантом всё равно победит; гасим сам вариант.
+        search?.classList.toggle("max-md:flex", !on);
+        // Шапка панели в этом состоянии — одна строка: стрелка слева от города
+        // (`type=city` 1859:335134, icon-container 40 перед контентом), а не
+        // колонка, как в обычном состоянии с тумблером под городом.
+        head?.classList.toggle("max-md:flex-row", on);
+        head?.classList.toggle("max-md:items-center", on);
+        head?.classList.toggle("max-md:gap-1", on);
+      };
+
+      cityBtn.setAttribute("data-city-open", "");
+      cityBtn.addEventListener("click", () => {
+        if (isMobileCity()) showCities(true);
+      });
+      backBtn?.addEventListener("click", () => showCities(false));
+      // Город выбран — список городов свою работу сделал.
+      document.addEventListener("city:change", () => showCities(false));
     }
 
     let sheet = null;

@@ -28,7 +28,24 @@ function setCity(city) {
   document.dispatchEvent(new CustomEvent("city:change", { detail: { city } }));
 }
 
-const isMobile = () => window.matchMedia("(max-width: 47.99rem)").matches;
+export const isMobileCity = () => window.matchMedia("(max-width: 47.99rem)").matches;
+const isMobile = isMobileCity;
+
+// Наполнить любой контейнер строками городов. Публично, потому что этим же
+// списком панель «Где купить» подменяет своё тело (Figma `type=city`
+// 1859:335134), а не открывает поверх себя ещё один лист.
+export function fillCityRows(box, root = document) {
+  const tpl = root.querySelector("[data-city-row]");
+  if (!box || !tpl) return;
+  box.replaceChildren(
+    ...CITIES.filter((c) => c !== getCity()).map((city) => {
+      const row = tpl.content.firstElementChild.cloneNode(true);
+      row.textContent = city;
+      row.dataset.cityPick = city;
+      return row;
+    })
+  );
+}
 
 export function initCitySelect(root = document) {
   const sheet = root.querySelector("[data-city-sheet]");
@@ -62,13 +79,55 @@ export function initCitySelect(root = document) {
       .forEach((t) => t.setAttribute("aria-expanded", "false"));
   };
 
+  // Ручка листа должна тянуться, иначе она врёт: у листа нет второй высоты —
+  // он ровно по содержимому, — поэтому жест один, вниз, и он его закрывает.
+  // Захват указателя берём только когда перетаскивание уже началось: иначе
+  // следующий `click` уходит в захвативший элемент и строки перестают
+  // нажиматься (SOLUTIONS.md › Touch gestures).
+  const panel = sheet?.querySelector(".modal-panel");
+  const grip = sheet?.querySelector("[data-city-grip]");
+  if (panel && grip) {
+    let startY = null;
+    let moved = false;
+    grip.addEventListener("pointerdown", (e) => {
+      startY = e.clientY;
+      moved = false;
+      panel.style.transition = "";
+    });
+    grip.addEventListener("pointermove", (e) => {
+      if (startY == null) return;
+      const dy = e.clientY - startY;
+      if (!moved && Math.abs(dy) < 4) return;
+      if (!moved) {
+        moved = true;
+        grip.setPointerCapture?.(e.pointerId);
+      }
+      panel.style.translate = `0 ${Math.max(0, dy)}px`;
+    });
+    const end = (e) => {
+      if (startY == null) return;
+      const dy = e.clientY - startY;
+      startY = null;
+      if (moved) grip.releasePointerCapture?.(e.pointerId);
+      panel.style.transition = "translate 200ms cubic-bezier(0.22, 0.61, 0.36, 1)";
+      panel.style.translate = "0 0";
+      if (dy > 60) closeAll();
+    };
+    grip.addEventListener("pointerup", end);
+    grip.addEventListener("pointercancel", end);
+  }
+
+
   function open(trigger) {
     const menu = trigger.parentElement?.querySelector("[data-city-menu]");
     // Ниже `md` листом пользуются и те триггеры, у которых выпадашки нет вовсе
     // (мобильная полоска шапки), поэтому лист — общий запасной путь.
+    // У панели «Где купить» ниже `md` список городов — её собственное тело
+    // (stores-map.js), лист туда не лезет.
+    if (isMobile() && trigger.hasAttribute("data-city-toggle")) return;
     if (isMobile() || !menu) {
       if (!sheet || !sheetList) return;
-      fill(sheetList, rowTpl);
+      fillCityRows(sheetList, root);
       sheet.classList.add("is-open");
       return;
     }

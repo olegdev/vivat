@@ -35,8 +35,12 @@
     <div class="h-6 max-md:h-3"></div>
   </div>
 
-  <div class="page-x max-xl:px-0" data-map-wrap>
-    <div class="relative flex overflow-hidden rounded-[var(--radius-l)] shadow-dropdown max-xl:rounded-n max-md:shadow-none" data-map-frame>
+  <!-- Карта уходит в край ТОЛЬКО на планшете (map 2477:114285, padH=0, радиус 4).
+       На 360 она вставлена на 16 со скруглением 8 (Наши салоны 2395:106203:
+       `Frame 2087325510` 328x320 @16), поэтому вариант ограничен диапазоном
+       планшета — `max-xl:` один покрывал бы и мобилу. -->
+  <div class="page-x md:max-xl:px-0" data-map-wrap>
+    <div class="relative flex overflow-hidden rounded-[var(--radius-l)] shadow-dropdown md:max-xl:rounded-n max-md:shadow-none" data-map-frame>
       <!-- left panel -->
       <aside class="flex h-[680px] w-[440px] shrink-0 flex-col bg-surface-inverted max-md:hidden" data-store-panel>
         <!-- Sheet-only chrome (Figma 1821:331970 / 2059:169141): a drag handle
@@ -54,6 +58,17 @@
                выбирают город (в опте) или город области (в рознице). На
                остальных страницах это просто подпись, меню там никто не
                наполняет и кнопка ведёт себя как текст. -->
+          <!-- Стрелка назад — только в состоянии «список городов»
+               (`type=city` 1859:335134: icon-container 40 слева от города).
+               Возвращает панель к списку салонов. -->
+          <button
+            type="button"
+            class="hidden size-10 shrink-0 items-center justify-center self-start"
+            data-city-back
+            aria-label="Назад к списку салонов"
+          >
+            <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
+          </button>
           <button type="button" class="flex h-8 items-center gap-1" data-city-toggle>
             <span
               class="text-h3 text-text-primary underline decoration-dotted decoration-1 underline-offset-4"
@@ -106,6 +121,12 @@
         </label>
 
         <div data-store-list class="stores-scroll h-[580px] overflow-y-auto pl-4 max-md:min-h-0 max-md:flex-1 max-md:pl-0"></div>
+
+        <!-- Третье тело панели — список городов (`type=city` 1859:335134,
+             блок `Cities`: поля 10 по бокам и 24 сверху, строки 44, зазор 8).
+             Подменяет список салонов ниже `md`; выше `md` город выбирают
+             выпадашкой, поэтому это тело там не показывается. -->
+        <div class="hidden flex-col gap-2 overflow-y-auto px-2.5 pb-6 pt-6" data-city-panel></div>
 
         <!-- Второе тело панели — вариант `type=contact page` (1456:56787):
              вместо списка салонов один адрес. Показывается режимом

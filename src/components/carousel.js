@@ -39,6 +39,7 @@ export function buildCarouselSection({
   desktopAction = true,
   mobileAction = true,
   mobileProgress = true,
+  actionMobile,
   arrowTop = 139,
   id,
 }) {
@@ -61,10 +62,15 @@ export function buildCarouselSection({
   if (!mobileAction) drop(section, "[data-cs-mobile-action]");
   if (!mobileProgress) drop(section, "[data-cs-progress]");
 
-  // Both action buttons (desktop row, mobile full-width) carry the same copy.
+  // Обычно у обеих кнопок (ряд заголовка и мобильная во всю ширину) копия одна,
+  // но не всегда: у «Акций и скидок» на 1440 написано «В каталог»
+  // (title-block 2395:105923), а на 360 — «В раздел» (buttons 1968:150249).
+  // Поэтому мобильная подпись — отдельный параметр со значением по умолчанию.
   section.querySelectorAll("[data-cs-action]").forEach((a) => {
     a.href = href;
-    a.querySelector("[data-cs-action-label]").textContent = action;
+    const mobile = a.closest("[data-cs-mobile-action]");
+    a.querySelector("[data-cs-action-label]").textContent =
+      mobile && actionMobile ? actionMobile : action;
   });
 
   section.querySelectorAll("[data-prev], [data-next]").forEach((b) => {
