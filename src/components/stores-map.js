@@ -58,6 +58,49 @@ const swap = (el, off, on) => {
   el.classList.add(...on);
 };
 
+import { initStoreSheet } from "./store-sheet.js";
+
+// Полноэкранная карта на мобиле для ЧИТАЮЩИХ страниц (главная, PDP): Figma
+// `state=ordinary-min` 1859:334569 и `-max` 1859:334571. Та же трансформация,
+// что у шага 1 заказа, только включается не при монтировании, а по кнопке
+// «Где купить» — и снимается крестиком, поэтому список правок описан таблицей
+// и проигрывается в обе стороны.
+//
+// Лист прилипает к 402 и 80 из 812 (доли 0.495 и 0.0985 — это верхний край
+// листа в долях экрана, ровно как их считает store-sheet.js).
+const FULLMAP_SNAPS = [0.495, 0.0985];
+
+// z-50, а не z-40 как у шага 1 заказа: во фреймах `ordinary-*` тапбара нет
+// вовсе — лист доходит до нижнего края экрана (402 + 410 = 812), — а тапбар
+// живёт на z-40, поэтому карта должна лечь поверх него.
+const FULLMAP = [
+  ["[data-stores-section]", ["bg-surface-accent", "max-md:pb-10"], ["max-md:fixed", "max-md:inset-0", "max-md:z-50", "max-md:overflow-hidden", "max-md:bg-bg-page"]],
+  ["[data-stores-head]", [], ["max-md:hidden"]],
+  ["[data-map-wrap]", [], ["max-md:h-full"]],
+  ["[data-map-frame]", [], ["max-md:h-full", "max-md:rounded-none"]],
+  ["[data-map-pane]", ["max-md:h-80"], ["max-md:absolute", "max-md:inset-0", "max-md:h-full"]],
+  ["[data-map-cta]", [], ["max-md:hidden"]],
+  ["[data-map-close]", ["hidden"], ["max-md:flex"]],
+  ["[data-store-panel]", ["max-md:hidden"], ["max-md:absolute", "max-md:inset-x-0", "max-md:bottom-0", "max-md:z-20", "max-md:w-full", "max-md:rounded-t-xl", "max-md:shadow-dropdown"]],
+  ["[data-sheet-grip]", [], ["max-md:flex"]],
+  ["[data-sheet-search]", [], ["max-md:flex"]],
+  ["[data-panel-head]", [], ["max-md:border-0", "max-md:px-4", "max-md:pb-2", "max-md:pt-2"]],
+];
+
+function setFullMap(anchor, on) {
+  const section = anchor.matches("[data-stores-section]")
+    ? anchor
+    : anchor.querySelector("[data-stores-section]");
+  for (const [sel, off, add] of FULLMAP) {
+    const el = sel === "[data-stores-section]" ? section : anchor.querySelector(sel);
+    if (!el) continue;
+    el.classList.remove(...(on ? off : add));
+    el.classList.add(...(on ? add : off));
+  }
+  // Страница под раскрытой картой скроллиться не должна.
+  document.body.classList.toggle("overflow-hidden", on);
+}
+
 function enterSelectMode(anchor) {
   const q = (sel) => anchor.querySelector(sel);
   // Pages mount the partial either directly or inside a wrapper (main.js hands
@@ -236,6 +279,42 @@ export function renderStoresMap(anchor, opts) {
   if (description) anchor.querySelector("[data-stores-desc]").textContent = description;
   if (selectable) enterSelectMode(anchor);
   if (contactPage) enterContactPageMode(anchor, detail);
+
+  // Читающие страницы: коралловая «Где купить» посреди карты раскрывает её на
+  // весь экран с листом, крестик сворачивает обратно. Выбирающий режим этого не
+  // получает — он и так раскрыт, а на Контактах кнопки нет.
+  if (!selectable && !contactPage) {
+    let sheet = null;
+    const closeBtn = anchor.querySelector("[data-map-close]");
+    const open = (on) => {
+      setFullMap(anchor, on);
+      if (on) {
+        sheet =
+          sheet ||
+          initStoreSheet({
+            sheet: anchor.querySelector("[data-store-panel]"),
+            track: anchor.querySelector("[data-map-frame]"),
+            grip: anchor.querySelector("[data-sheet-grip]"),
+            snaps: FULLMAP_SNAPS,
+          });
+        // Дорожка до раскрытия имела нулевую высоту — лист надо перемерить,
+        // ровно та же причина, по которой `sync` публичен для шага 1 заказа.
+        sheet?.collapse?.();
+        sheet?.sync?.();
+      }
+      // Полотно меняет размер — карте надо пересчитаться, иначе она остаётся
+      // с прежними границами и метки уезжают за край.
+      requestAnimationFrame(() => map?.container?.fitToViewport?.());
+    };
+    anchor.querySelector("[data-map-cta]")?.addEventListener("click", (e) => {
+      e.preventDefault();
+      open(true);
+    });
+    closeBtn?.addEventListener("click", () => open(false));
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && closeBtn && !closeBtn.classList.contains("hidden")) open(false);
+    });
+  }
 
   // id + [lat, lon] (flip from the [lon, lat] authored in the data).
   // Координат может не быть — тогда карточка живёт в списке без метки.

@@ -11,9 +11,15 @@
 // or the browser dispatches the following `click` on the capturing element and
 // everything inside the sheet goes dead for mouse users (SOLUTIONS.md › Touch
 // gestures).
-const SNAPS = [0.557, 0.223]; // top edge as a fraction of the sheet's track
+// Точки прилипания — доля высоты дорожки, на которой стоит ВЕРХНИЙ край листа.
+// У шага 1 заказа дорожка это область карты 722 при листе 402/161. У читающих
+// страниц карта раскрывается на весь экран (812), и лист стоит на 402 и 80
+// (Figma state=ordinary-min 1859:334569 / -max 1859:334571) — отсюда второй
+// набор. Поэтому набор передаётся, а не зашит.
+const SNAPS_ORDER = [0.557, 0.223];
 
-export function initStoreSheet({ sheet, track, grip, onSnap }) {
+export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER }) {
+  const SNAPS = snaps;
   if (!sheet || !track) return null;
 
   let index = 0; // 0 = collapsed, 1 = expanded

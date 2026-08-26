@@ -163,7 +163,18 @@
       <div class="relative h-[680px] flex-1 max-md:h-80" data-map-pane>
         <div data-map class="size-full"></div>
         <div class="pointer-events-none absolute inset-x-0 top-0 z-10 hidden h-10 bg-linear-to-b from-alpha-black-100 to-transparent max-md:block"></div>
-        <a href="#" class="btn btn-m btn-accent absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 px-6 max-md:flex" data-map-cta>Где купить</a>
+        <button type="button" class="btn btn-m btn-accent absolute left-1/2 top-1/2 z-10 hidden -translate-x-1/2 -translate-y-1/2 px-6 max-md:flex" data-map-cta>Где купить</button>
+        <!-- Крышка раскрытой карты — `close-panel` 1859:338372: полоса 40 с
+             тёмным круглым крестиком у правого края (контейнер 28 на #141414/0.9,
+             поле 8). Видна только пока карта раскрыта на весь экран. -->
+        <button
+          type="button"
+          class="absolute right-2 top-2 z-30 hidden size-7 items-center justify-center rounded-full bg-overlay-strong"
+          data-map-close
+          aria-label="Закрыть карту"
+        >
+          <img src="../../assets/header/icon-close.svg" alt="" class="size-6" />
+        </button>
         <div class="absolute bottom-6 right-6 z-10 flex flex-col gap-2 max-md:hidden">
           <button type="button" data-zoom="1" class="map-ctrl" aria-label="Приблизить">+</button>
           <button type="button" data-zoom="-1" class="map-ctrl" aria-label="Отдалить">−</button>
