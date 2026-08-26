@@ -319,12 +319,15 @@ export function renderStoresMap(anchor, opts) {
         // Поле поиска показано вариантом `max-md:flex` — снять с него `hidden`
         // мало, утилита с вариантом всё равно победит; гасим сам вариант.
         search?.classList.toggle("max-md:flex", !on);
-        // Шапка панели в этом состоянии — одна строка: стрелка слева от города
-        // (`type=city` 1859:335134, icon-container 40 перед контентом), а не
-        // колонка, как в обычном состоянии с тумблером под городом.
+        // Шапка в этом состоянии — одна строка, и стрелка с городом РАЗНЕСЕНЫ
+        // по краям: во фрейме `text-action` стоит на x=233 из 360, у правого
+        // края контента, а `icon-container` 40 — у левого (1859:335134).
         head?.classList.toggle("max-md:flex-row", on);
         head?.classList.toggle("max-md:items-center", on);
-        head?.classList.toggle("max-md:gap-1", on);
+        head?.classList.toggle("max-md:justify-between", on);
+        // И под шапкой возвращается линия: полноэкранный режим её снимает
+        // (`max-md:border-0`), а в состоянии города она есть — 1px #e7e7e7.
+        head?.classList.toggle("max-md:border-0", !on);
       };
 
       cityBtn.setAttribute("data-city-open", "");
@@ -335,16 +338,6 @@ export function renderStoresMap(anchor, opts) {
       // Город выбран — список городов свою работу сделал.
       document.addEventListener("city:change", () => showCities(false));
 
-      // «Москва» в шапке сайта ниже `md` открывает ЭТУ ЖЕ поверхность: карту на
-      // весь экран со списком городов в панели. Компонент выбора города сначала
-      // спрашивает страницу, есть ли кому это показать, и свой лист достаёт
-      // только если никто не отозвался (страницы без блока салонов).
-      document.addEventListener("city:request", (e) => {
-        if (e.detail.handled) return;
-        e.detail.handled = true;
-        open(true);
-        showCities(true);
-      });
     }
 
     let sheet = null;
@@ -369,6 +362,22 @@ export function renderStoresMap(anchor, opts) {
       // с прежними границами и метки уезжают за край.
       requestAnimationFrame(() => map?.container?.fitToViewport?.());
     };
+    // Лист, растянутый на весь экран, сворачивается кликом по карте — иначе
+    // из раскрытого состояния можно выйти только ручкой.
+    // Ловим `pointerdown` в фазе перехвата, а не `click`: полотно Яндекса
+    // обрабатывает указатель само и click до нас не доходит вовсе — проверено,
+    // до документа не долетает даже перехватывающий слушатель. Побочный эффект
+    // осознанный: не только тап, но и начало панорамирования карты сворачивает
+    // лист — это то же «пользователь пошёл в карту».
+    anchor.querySelector("[data-map-pane]")?.addEventListener(
+      "pointerdown",
+      (e) => {
+        if (e.target.closest("[data-map-cta], [data-map-close], [data-zoom]")) return;
+        sheet?.collapse?.();
+      },
+      true
+    );
+
     anchor.querySelector("[data-map-cta]")?.addEventListener("click", (e) => {
       e.preventDefault();
       open(true);

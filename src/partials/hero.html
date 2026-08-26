@@ -23,20 +23,21 @@
   >
     <div data-track class="absolute inset-0"></div>
 
-    <!-- Desktop parks the controls on the vertical centre line; the 360px frame
-         (1821:327514) drops them onto the dots row instead, one at each edge of
-         the 8px gutter. -->
+    <!-- Стрелки есть только на десктопе. В мобильном мастере (1821:327006) обе
+         `carousel-controls` скрыты, и инстанс на странице (1968:71495) их не
+         включает — то есть на 360 у баннера только точки. В планшетном мастере
+         (2477:166184) их нет вовсе. Поэтому ниже `xl` стрелок не рисуем. -->
     <button
       data-prev
       aria-label="Назад"
-      class="carousel-arrow absolute left-6 top-1/2 z-20 -translate-y-1/2 max-xl:hidden max-md:bottom-1 max-md:left-2 max-md:top-auto max-md:flex max-md:translate-y-0"
+      class="carousel-arrow absolute left-6 top-1/2 z-20 -translate-y-1/2 max-xl:hidden max-md:bottom-1 max-md:left-2 max-md:top-auto max-md:translate-y-0"
     >
       <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
     </button>
     <button
       data-next
       aria-label="Вперёд"
-      class="carousel-arrow absolute right-6 top-1/2 z-20 -translate-y-1/2 max-xl:hidden max-md:bottom-1 max-md:right-2 max-md:top-auto max-md:flex max-md:translate-y-0"
+      class="carousel-arrow absolute right-6 top-1/2 z-20 -translate-y-1/2 max-xl:hidden max-md:bottom-1 max-md:right-2 max-md:top-auto max-md:translate-y-0"
     >
       <img src="../../assets/header/chevron-right.svg" alt="" class="size-6" />
     </button>

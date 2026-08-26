@@ -19,21 +19,34 @@
      открывался, но оставался невидимым). `md:hidden` оставлен намеренно: выше
      `md` город выбирают выпадашкой. -->
 <div class="modal-scrim md:hidden" data-city-sheet>
-  <div class="modal-panel max-md:pb-2" role="dialog" aria-modal="true" aria-label="Выбор города">
-    <!-- ручка листа — та же, что у листа «Где купить» -->
-    <div class="flex h-8 shrink-0 cursor-grab touch-none items-center justify-center pt-1" data-city-grip>
-      <span class="h-1 w-8 rounded-full bg-surface-raised"></span>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Выбор города">
+    <!-- Шапка панели — 64 = ручка 20 + ряд 40, поля 16, снизу линия 1px #e7e7e7
+         (`header` 1859:335347, borderBottomWeight 1). В ряду стрелка назад
+         прижата влево, город с пином — вправо: во фрейме `text-action` стоит на
+         x=233 из 360, то есть у правого края контента, а `icon-container` 40 —
+         у левого. -->
+    <div class="flex h-16 flex-col border-b border-divider-light px-4">
+      <div class="flex h-5 shrink-0 cursor-grab touch-none items-center justify-center" data-city-grip>
+        <span class="h-1 w-8 rounded-full bg-surface-raised"></span>
+      </div>
+      <div class="flex h-10 items-center justify-between">
+        <button
+          type="button"
+          class="flex size-10 shrink-0 items-center justify-start"
+          data-city-sheet-back
+          aria-label="Назад"
+        >
+          <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
+        </button>
+        <span class="flex items-center gap-1">
+          <span class="text-m-h4 text-text-primary" data-city-label>Москва</span>
+          <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5" />
+        </span>
+      </div>
     </div>
-    <!-- В шапке этого состояния макет не пишет заголовка: там стоит текущий
-         город с пином (1859:335085 → «Москва»), а слева стрелка назад — она
-         нужна панели «Где купить», где список подменяет тело, и не нужна
-         отдельному листу, который закрывается подложкой. Своей копии не
-         сочиняем: показываем город. -->
-    <div class="flex items-center gap-1 px-4 pb-1 pt-2">
-      <span class="text-m-h4 text-text-primary" data-city-label>Москва</span>
-      <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5" />
-    </div>
-    <div class="flex flex-col gap-2 px-2.5 pb-6 pt-4" data-city-sheet-list></div>
+    <!-- Список: поля 10 по бокам и 24 сверху/снизу, строки 44 с зазором 8
+         (`Cities` 1859:335138). -->
+    <div class="flex flex-col gap-2 px-2.5 py-6" data-city-sheet-list></div>
   </div>
 </div>
 

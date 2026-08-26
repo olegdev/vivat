@@ -126,12 +126,9 @@ export function initCitySelect(root = document) {
     // (stores-map.js), лист туда не лезет.
     if (isMobile() && trigger.hasAttribute("data-city-toggle")) return;
     if (isMobile() || !menu) {
-      // Сначала спрашиваем страницу: если на ней есть блок салонов, город
-      // выбирают в нём — той же картой на весь экран, что открывает «Где
-      // купить». Свой лист остаётся для страниц, где блока салонов нет.
-      const ask = new CustomEvent("city:request", { detail: { handled: false } });
-      document.dispatchEvent(ask);
-      if (ask.detail.handled) return;
+      // «Москва» в шапке страницы показывает ровно выбор города и ничего
+      // больше: карту она не открывает. (Была попытка вести её в полноэкранную
+      // карту — клиент это отменил.)
       if (!sheet || !sheetList) return;
       fillCityRows(sheetList, root);
       sheet.classList.add("is-open");
@@ -162,6 +159,8 @@ export function initCitySelect(root = document) {
     if (!e.target.closest("[data-city-menu]")) closeAll();
   });
 
+  // Клик мимо списка закрывает лист; стрелка назад во фрейме есть, и здесь ей
+  // некуда возвращать — она делает то же, что подложка.
   sheet?.addEventListener("click", (e) => {
     if (!e.target.closest("[data-city-sheet-list]")) closeAll();
   });

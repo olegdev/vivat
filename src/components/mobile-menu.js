@@ -73,6 +73,13 @@ function buildRow(item, index) {
 export function initMobileMenu(anchor, { toggle, catalogToggle, rootSections = defaultRootSections } = {}) {
   if (!anchor) return;
 
+  // Бургеров в шапке ДВА — в мобильном ряду и в планшетном (site-header
+  // device=tablet 2477:180969), и виден в каждый момент ровно один. Страница
+  // передаёт первый попавшийся, поэтому здесь добираем все: иначе на планшете
+  // кнопка есть, а обработчик висит на скрытой мобильной.
+  const toggles = [...document.querySelectorAll("[data-mobile-menu]")];
+  if (toggle && !toggles.includes(toggle)) toggles.push(toggle);
+
   const overlay = anchor.querySelector("[data-mm-overlay]");
   const scrim = anchor.querySelector("[data-mm-scrim]");
   const panel = anchor.querySelector("[data-mm-panel]");
@@ -142,17 +149,19 @@ export function initMobileMenu(anchor, { toggle, catalogToggle, rootSections = d
       render();
     }
     overlay.classList.toggle("hidden", !open);
-    toggle?.setAttribute("aria-expanded", String(open));
+    toggles.forEach((t) => t.setAttribute("aria-expanded", String(open)));
     catalogToggle?.setAttribute("aria-expanded", String(open));
     document.documentElement.classList.toggle("overflow-hidden", open);
     if (open) focusables()[0]?.focus();
     else lastFocused?.focus?.();
   }
 
-  toggle?.addEventListener("click", (e) => {
-    e.preventDefault();
-    setOpen(!isOpen());
-  });
+  toggles.forEach((t) =>
+    t.addEventListener("click", (e) => {
+      e.preventDefault();
+      setOpen(!isOpen());
+    })
+  );
   catalogToggle?.addEventListener("click", (e) => {
     e.preventDefault();
     setOpen(!isOpen(), "catalog");
