@@ -75,7 +75,10 @@ const FULLMAP_SNAPS = [0.495, 0.0985];
 // вовсе — лист доходит до нижнего края экрана (402 + 410 = 812), — а тапбар
 // живёт на z-40, поэтому карта должна лечь поверх него.
 const FULLMAP = [
-  ["[data-stores-section]", ["bg-surface-accent", "max-md:pb-10"], ["max-md:fixed", "max-md:inset-0", "max-md:z-50", "max-md:overflow-hidden", "max-md:bg-bg-page"]],
+  // Заливку не трогаем вовсе: ниже `md` секция и так белая своим
+  // `max-md:bg-bg-page` из разметки. Раньше этот класс стоял в списке
+  // добавляемых — и закрытие карты его снимало, оголяя коралловый.
+  ["[data-stores-section]", ["max-md:pb-10"], ["max-md:fixed", "max-md:inset-0", "max-md:z-50", "max-md:overflow-hidden"]],
   ["[data-stores-head]", [], ["max-md:hidden"]],
   ["[data-map-wrap]", [], ["max-md:h-full", "max-md:px-0"]],
   ["[data-map-frame]", [], ["max-md:h-full", "max-md:rounded-none"]],
@@ -331,6 +334,17 @@ export function renderStoresMap(anchor, opts) {
       backBtn?.addEventListener("click", () => showCities(false));
       // Город выбран — список городов свою работу сделал.
       document.addEventListener("city:change", () => showCities(false));
+
+      // «Москва» в шапке сайта ниже `md` открывает ЭТУ ЖЕ поверхность: карту на
+      // весь экран со списком городов в панели. Компонент выбора города сначала
+      // спрашивает страницу, есть ли кому это показать, и свой лист достаёт
+      // только если никто не отозвался (страницы без блока салонов).
+      document.addEventListener("city:request", (e) => {
+        if (e.detail.handled) return;
+        e.detail.handled = true;
+        open(true);
+        showCities(true);
+      });
     }
 
     let sheet = null;

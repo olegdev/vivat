@@ -49,7 +49,10 @@
              `.stores-select` brings them back below `md`. The city and the
              "только фирменные" toggle are shared — the sheet shows the same
              ones, so there is one input, not two. -->
-        <div class="hidden h-5 shrink-0 items-center justify-center pt-1" data-sheet-grip>
+        <!-- `touch-none` обязателен: без него браузер на тач-экране считает жест
+             скроллом и обрывает pointermove — лист «не тянется», хотя мышью
+             всё работает. -->
+        <div class="hidden h-5 shrink-0 cursor-grab touch-none items-center justify-center pt-1" data-sheet-grip>
           <span class="h-1 w-8 rounded-full bg-surface-raised"></span>
         </div>
 
