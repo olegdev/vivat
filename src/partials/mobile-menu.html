@@ -5,7 +5,7 @@
 <div data-mm-overlay class="fixed inset-0 z-50 hidden xl:hidden">
   <div data-mm-scrim class="absolute inset-0 bg-overlay-middle"></div>
   <div data-mm-panel class="absolute inset-0 flex flex-col bg-bg-page" role="dialog" aria-modal="true" aria-label="Меню">
-    <div class="flex h-12 shrink-0 flex-col border-b border-divider-light bg-surface-inverted px-4 pt-1">
+    <div class="flex h-12 shrink-0 flex-col justify-center border-b border-divider-light bg-surface-inverted px-4 pt-1 md:h-16 md:pt-0">
       <div class="flex h-10 items-center">
         <button type="button" data-mm-back class="hidden size-10 shrink-0 items-center" aria-label="Назад">
           <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
@@ -17,8 +17,8 @@
       </div>
     </div>
 
-    <div data-mm-body class="flex min-h-0 flex-1 flex-col overflow-y-auto pb-10">
-      <div class="px-4 pt-4">
+    <div data-mm-body class="flex min-h-0 flex-1 flex-col overflow-y-auto pb-10 md:pb-6">
+      <div class="px-4 pt-4 md:px-6 md:pt-6">
         <!-- the mobile entry point into the search overlay: same `data-search`
              contract as the desktop header's field, so components/search.js
              opens the overlay from either one (the mobile frames draw no search
@@ -35,8 +35,19 @@
           <img src="../../assets/header/icon-search.svg" alt="" class="size-6 shrink-0" />
         </form>
       </div>
-      <div class="mt-8 flex flex-1 flex-col justify-between px-4">
-        <nav data-mm-list class="flex flex-col"></nav>
+      <div class="mt-8 flex flex-1 flex-col justify-between px-4 md:mt-4 md:px-6">
+        <nav data-mm-list class="flex flex-col md:gap-2"></nav>
+        <!-- Кнопка над соцсетями есть только в планшетном меню
+             (buttons 2483:194640: 720x44, заливка #292929, стрелка справа);
+             в 360-фрейме её нет, поэтому она `hidden md:flex`. -->
+        <a
+          href="#"
+          class="btn btn-m btn-primary mt-auto hidden w-full gap-2 md:flex"
+          data-mm-cabinet
+        >
+          <span>Личный кабинет</span>
+          <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-6" />
+        </a>
         <div data-mm-social class="mt-8 flex shrink-0 items-center gap-2">
           <a href="#" aria-label="Дзен" class="social-icon size-10"><span class="size-8 social-zen"></span></a>
           <a href="#" aria-label="ВКонтакте" class="social-icon size-10"><span class="size-8 social-vk"></span></a>
