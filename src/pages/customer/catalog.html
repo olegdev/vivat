@@ -19,7 +19,16 @@
          at the call site, exactly like main.html. Shared chrome (header, menus,
          bottom-nav, footer) is spliced from src/partials/; see the PHP Blade note
          in CLAUDE.md. -->
-    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+    <!-- Три слоя, один DOM: мобильный ниже `md` (1997:267656), планшетный до
+         `xl` (Catalog-default 2483:202337) и текучий десктопный выше
+         (759:60482 на 1440, 2397:122033 на 1900). Ширину держит каждый блок
+         сам — `page-x`; разбор в
+         docs/superpowers/specs/2026-08-26-responsive-tablet-wide-design.md
+
+         В широком фрейме шапка, крошки, заголовок и панель настроек остались
+         на 1440 — дизайнер их не растянул. Делаем как на главной: тянутся до
+         1900, как остальные блоки. -->
+    <div class="w-full max-xl:pb-[72px]">
       <!-- ==================== SITE HEADER ============================== -->
       <!--#include partials/header.html -->
 
@@ -39,7 +48,7 @@
       <!--#include partials/carousel-section.html -->
 
       <!-- ==================== BREADCRUMBS ============================== -->
-      <nav class="flex items-center gap-2 px-10 py-4 text-body-n-accent leading-6 text-text-secondary max-md:px-4 max-md:py-2 max-md:text-m-body-s">
+      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent leading-6 text-text-secondary max-md:py-2 max-md:text-m-body-s">
         <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
         <span aria-hidden="true">•</span>
         <a href="#" class="transition-colors hover:text-text-primary">Каталог</a>
@@ -48,7 +57,7 @@
       </nav>
 
       <!-- ==================== TITLE BLOCK ============================== -->
-      <div class="px-10 pt-2 max-md:px-4 max-md:pt-1">
+      <div class="page-x pt-2 max-md:pt-1">
         <h1 class="text-h1 text-text-primary max-md:text-m-h1">Кухни VIVAT</h1>
       </div>
 

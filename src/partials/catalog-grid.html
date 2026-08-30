@@ -9,7 +9,11 @@
 <template data-card-tpl>
   <article class="flex flex-col" data-card>
     <div class="relative overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:aspect-[168/125] max-md:h-auto" data-card-gallery>
+      <!-- Коробка снимка задана пропорцией, а не высотой: карточка на десктопе
+           тянется (322 → 404 на 1785), и 322/242 = 404/303.63 = 224/168.24 —
+           одно и то же отношение на всех ширинах (2338:259415, 2500:178269,
+           2483:232001). -->
+      <div class="relative aspect-[322/242] w-full touch-pan-y overflow-hidden max-md:aspect-[168/125]" data-card-gallery>
         <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>
@@ -23,11 +27,15 @@
         <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
           <div class="flex items-center gap-2 max-md:gap-1">
             <!-- у дилера цена идёт без «от» (Figma dealer/Catalog 953:121911) -->
-            <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-md:text-m-body-n-accent">от</span>
-            <span data-card-price class="text-h3 font-medium text-text-primary max-md:text-m-body-n-accent"></span>
-            <span data-card-oldprice class="text-body-n text-text-muted line-through max-md:text-m-body-s-crossed max-md:text-text-secondary empty:hidden"></span>
+            <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-xl:text-m-body-n-accent">от</span>
+            <span data-card-price class="text-h3 font-medium text-text-primary max-xl:text-m-body-n-accent"></span>
+            <span data-card-oldprice class="text-body-n text-text-muted line-through max-xl:text-m-body-s-crossed max-xl:text-text-secondary empty:hidden"></span>
           </div>
-          <p data-card-title class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-compact"></p>
+          <!-- На планшете карточка берёт мобильную типографику: во фрейме
+               (2483:237851) строка цены 22 высотой при кегле 16 и «от» 14,
+               описание 40 — две строки по 20. Десктопные 24 в 224-й карточке
+               просто не помещаются и ломают цену на две строки. -->
+          <p data-card-title class="line-clamp-2 h-12 text-body-n text-text-primary max-xl:h-10 max-xl:text-m-body-compact"></p>
         </div>
         <button type="button" data-add-to-cart class="icon-btn max-md:hidden" aria-label="В корзину">
           <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" data-idle-only />
@@ -37,10 +45,10 @@
       <div class="flex items-center gap-4 py-1 max-md:gap-2 max-md:py-0.5">
         <div class="flex min-w-0 flex-1 items-center gap-2 max-md:gap-1">
           <div data-card-swatches class="flex items-center gap-2 max-md:gap-1"></div>
-          <span data-card-more class="text-body-s text-text-secondary empty:hidden max-md:text-m-body-xs"></span>
+          <span data-card-more class="text-body-s text-text-secondary empty:hidden max-xl:text-m-body-xs"></span>
         </div>
         <div class="flex items-center gap-1">
-          <span data-card-comments class="text-body-s text-text-secondary max-md:text-m-body-xs"></span>
+          <span data-card-comments class="text-body-s text-text-secondary max-xl:text-m-body-xs"></span>
           <img src="../../assets/header/icon-comment.svg" alt="" class="size-4" />
         </div>
       </div>
@@ -55,7 +63,16 @@
   </article>
 </template>
 
-<div data-grid class="grid grid-cols-4 gap-6 px-10 max-md:grid-cols-2 max-md:gap-2 max-md:px-2"></div>
+<!-- Колонки: на десктопе сетка ДОБИРАЕТ их сама — карточка не уже 322, а
+     свободное место делится поровну. Это ровно то, что показывает
+     последовательность 1440 → 1785 → 1786 (2500:170534 / 172560 / 168101):
+     четыре по 322, четыре растянутых, пять снова по 322 на 1786 = 40 + 5×322 +
+     4×24 + 40. На планшете правило другое и своё: три колонки по 224
+     (2483:234511), это ниже минимума 322, поэтому диапазон задан явно. -->
+<div
+  data-grid
+  class="page-x grid gap-6 [grid-template-columns:repeat(auto-fill,minmax(322px,1fr))] max-xl:grid-cols-3 max-md:grid-cols-2 max-md:gap-2 max-md:px-2"
+></div>
 
 <!-- empty state (shown by catalog-listing.js when a filter matches nothing) -->
 <div data-grid-empty class="hidden px-10 py-24 text-center max-md:px-4 max-md:py-16">

@@ -7,11 +7,12 @@
 
      Все элементы этой панели открывают или ведут один и тот же ящик фильтров
      и состояние URL; обвязка — в components/catalog-listing.js. -->
-<div data-catalog-settings class="flex flex-col gap-3 px-10 py-6 max-md:px-4 max-md:py-3">
+<div data-catalog-settings class="page-x flex flex-col gap-3 py-6 max-md:py-3">
   <div class="flex items-center justify-between max-md:flex-wrap max-md:gap-2">
-    <!-- filter openers. Below `md` the named pills collapse to the single
-         funnel button (Figma catalog-settings 1806:237128) — the drawer is
-         the only way into the filters on mobile. -->
+    <!-- filter openers. Ниже `xl` именованные пилюли схлопываются в одну
+         воронку (Figma catalog-settings 1806:237128 на 360, 2483:206306 на
+         768) — ящик фильтров становится единственным входом. На планшете ряд
+         тот же, что на мобиле: воронка 44 слева, сортировка 280 справа. -->
     <div class="flex items-center gap-2">
       <!-- funnel. `icon-button` (881:51240) is an auto-layout ROW — 44px
            circle + 20px badge at gap -12, badge top-aligned — so the whole
@@ -34,12 +35,12 @@
       </button>
       <!-- named pills. A group with a selection takes the `condition=active`
            pill (Figma 752:63467): #414141 border + a muted count. -->
-      <button type="button" data-filter-open="collection" data-filter-pill="collection" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Коллекция<span data-pill-count class="hidden text-text-muted"></span></button>
-      <button type="button" data-filter-open="form" data-filter-pill="form" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Форма кухни<span data-pill-count class="hidden text-text-muted"></span></button>
-      <button type="button" data-filter-open="facade" data-filter-pill="facade" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Фасады<span data-pill-count class="hidden text-text-muted"></span></button>
-      <button type="button" data-filter-open="color" data-filter-pill="color" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цвет<span data-pill-count class="hidden text-text-muted"></span></button>
-      <button type="button" data-filter-open="style" data-filter-pill="style" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Стиль<span data-pill-count class="hidden text-text-muted"></span></button>
-      <button type="button" data-filter-open="price" data-filter-pill="price" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-md:hidden">Цена<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="collection" data-filter-pill="collection" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Коллекция<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="form" data-filter-pill="form" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Форма кухни<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="facade" data-filter-pill="facade" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Фасады<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="color" data-filter-pill="color" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Цвет<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="style" data-filter-pill="style" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Стиль<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="price" data-filter-pill="price" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Цена<span data-pill-count class="hidden text-text-muted"></span></button>
     </div>
 
     <!-- правая группа. На 1440 это фрейм `popular` 480 = текст+тумблер 168,
@@ -115,7 +116,7 @@
        scroll rail; the selected row wraps (the mock shows two rows). -->
   <div
     data-chips
-    class="flex flex-wrap items-center gap-2 max-md:flex-nowrap max-md:overflow-x-auto max-md:scroll-rail max-md:[&>button]:shrink-0 max-md:data-selected:flex-wrap max-md:data-selected:overflow-visible"
+    class="flex flex-wrap items-center gap-2 max-xl:flex-nowrap max-xl:overflow-x-auto max-xl:scroll-rail max-xl:[&>button]:shrink-0 max-md:data-selected:flex-wrap max-md:data-selected:overflow-visible"
   >
     <button type="button" class="catalog-chip" data-quickfilter="form=pryamaya">Прямые кухни<!--#include partials/chip-close.html --></button>
     <button type="button" class="catalog-chip" data-quickfilter="form=uglovaya">Угловые кухни<!--#include partials/chip-close.html --></button>

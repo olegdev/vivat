@@ -16,7 +16,10 @@
      the live render is inverse (see CLAUDE.md › verify colour against the live
      render). The band's green is deliberately darker than the home page's
      accent-green-200. -->
-<section class="flex justify-center bg-surface-accent-alt px-10 py-16 max-md:px-4 max-md:py-10">
+<!-- Полоса во всю ширину окна, содержимое — в `page-x`; на планшете поля 40,
+     а не 24 (Frame 2087325443 2483:202379, padH 40). -->
+<section class="flex w-full justify-center bg-surface-accent-alt py-16 max-md:py-10">
+  <div class="page-x max-xl:px-10 flex justify-center">
   <div class="flex w-[896px] max-w-full flex-col gap-6 text-text-inverse-primary max-md:gap-4">
     <h2 class="text-h2 max-md:text-m-h2" data-seo-title>Кухни VIVAT — сочетание стиля и функциональности</h2>
     <p class="text-body-l max-md:text-m-body-l">
@@ -53,4 +56,5 @@
       фабрики VIVAT отлично вписываются в любой интерьер.
     </p>
   </div>
+</div>
 </section>
