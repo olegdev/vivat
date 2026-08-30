@@ -69,7 +69,7 @@
     </button>
   </div>
 
-  <div class="flex h-[60px] items-center justify-between px-4">
+  <div class="flex h-[60px] items-center justify-between border-b border-divider-light px-4">
     <button
       class="flex size-10 items-center justify-center rounded-pill"
       data-mobile-menu
@@ -217,7 +217,7 @@
          центру ОКНА (в макете 278 + 212/2 = 384 = 768/2, поэтому центрируем
          абсолютно, а не space-between: боковые группы разной ширины), справа
          поиск и профиль. Корзины в этом ряду нет — она в тапбаре. -->
-    <div class="relative hidden h-16 items-center justify-between px-4 max-xl:flex">
+    <div class="relative hidden h-16 items-center justify-between border-b border-divider-light px-4 max-xl:flex">
       <button
         class="flex h-8 w-10 items-center justify-center"
         data-mobile-menu
@@ -247,7 +247,11 @@
           data-search
           aria-label="Поиск"
         >
-          <img src="../../assets/header/icon-search.svg" alt="" class="size-6" />
+          <!-- тёмная, как и профиль рядом: во фрейме это `size=24 Bold,
+               name=search, color=dark` (960:37194). Серая `icon-search.svg`
+               остаётся у поля поиска на десктопе, где она и должна быть
+               приглушённой. -->
+          <img src="../../assets/header/icon-search-dark.svg" alt="" class="size-6" />
         </button>
         <button class="flex h-8 w-10 items-center justify-center" aria-label="Профиль">
           <img src="../../assets/header/icon-profile.svg" alt="" class="size-6" />
