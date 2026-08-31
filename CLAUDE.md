@@ -111,6 +111,27 @@ One deliberate deviation: the mobile frame titles the stores block **"Наши
 pointing at it, whereas the mobile instance only overrides the *description*,
 which reads as a component that was never re-titled. Say so if it comes up.
 
+`src/pages/customer/pdp-module.html` — страница модуля. Три ширины сразу:
+1440 (Figma `PDP module` 2488:127146), 768 (2488:136015) и 360 (2488:128722);
+широкого фрейма нет, выше 1440 всё тянется до 1900 по общему правилу.
+
+Это **не состояние кухонной PDP**, а более короткая страница, и различий
+ровно четыре:
+
+- одно фото вместо трёх — `media` 671 против 2041, поэтому колонка снимков
+  здесь не рельс, а один кадр;
+- **своя сводка без цены** (`partials/pdp-module-summary.html`): сегменты
+  «Комплектация, мм.» вместо геометрии, ДВЕ группы образцов — «Каркас» и
+  «Фасад», у каждой своя подпись, — и вместо блока цены ссылка «Получить
+  оптовую цену» под кнопкой;
+- ровно один рельс, «Модули композиции …». Второй блок с рельсами, отзывами и
+  картой салонов в макете есть, но скрыт (2488:127174), то есть не рендерится;
+- нижнего бара CTA нет ни в одном фрейме: кнопка живёт в сводке на всех
+  ширинах, поэтому снизу резервируется только тапбар.
+
+Блок характеристик — тот же партиал, что у кухни; у модуля вкладок четыре, и
+«Документы» с «Отзывами» снимает `dropSpecTabs()`, а не второй партиал.
+
 `src/pages/customer/order.html` — оформление заказа. Desktop (Figma Order
 942:110179) and mobile (2029:126838 and the frames after it) are both done.
 Figma draws `Order-step0/1/2` as separate frames, but they are three states of

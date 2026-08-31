@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Шкаф нижний с 2-мя дверцами Флэт</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./pdp-module.js"></script>
+  </head>
+  <body class="bg-bg-page text-text-primary">
+    <!-- Страница модуля — Figma `PDP module` 2488:127146 (1440),
+         2488:136015 (768) и 2488:128722 (360).
+
+         Это не состояние кухонной PDP, а более короткая страница. Что от неё
+         отличается:
+
+         - одно фото вместо трёх (media 671 против 2041), поэтому и колонка
+           фотографий здесь не рельс, а один кадр;
+         - своя сводка без цены — partials/pdp-module-summary.html;
+         - ровно ОДИН рельс, «Модули композиции …». Второй блок с рельсами,
+           отзывами и картой салонов в макете есть, но скрыт (2488:127174
+           ⃠hidden-in-master), то есть не рендерится;
+         - нижнего бара CTA нет ни в одном фрейме: кнопка живёт в сводке на
+           всех трёх ширинах, поэтому снизу резервируется только тапбар.
+
+         Общее с кухонной PDP — шапка, крошки, якорный бар, блок
+         характеристик, зелёная полоса и подвал. -->
+    <div class="w-full max-xl:pb-[72px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- <template>s cloned by the sections below (inert markup) -->
+      <!--#include partials/product-card.html -->
+      <!--#include partials/carousel-section.html -->
+
+      <!-- ==================== BREADCRUMBS ============================== -->
+      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent leading-6 text-text-secondary max-md:py-2 max-md:text-m-body-s">
+        <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
+        <span aria-hidden="true">•</span>
+        <a href="catalog.html" class="transition-colors hover:text-text-primary">Каталог</a>
+        <span aria-hidden="true">•</span>
+        <a href="catalog.html" class="transition-colors hover:text-text-primary">Кухни</a>
+        <span aria-hidden="true">•</span>
+        <a href="pdp.html" class="transition-colors hover:text-text-primary">Флэт</a>
+        <span aria-hidden="true">•</span>
+        <span class="text-text-primary">Модули Флэт</span>
+      </nav>
+
+      <!-- ==================== SECTION ANCHOR BAR ======================
+           Tab 2488:127149 — те же пять ярлыков, что у кухонной PDP. Два из них,
+           «Отзывы» и «Где купить», ведут в разделы, которых на этой странице
+           нет: соответствующий блок в макете скрыт. Построено по фрейму,
+           вопрос записан в BACKLOG.md. Ниже `md` бара нет вовсе. -->
+      <div
+        class="page-x flex h-[50px] items-center gap-6 max-xl:overflow-x-auto max-xl:scroll-rail max-xl:[&>a]:shrink-0 max-md:hidden"
+        data-section-nav
+      >
+        <a href="#photos" class="pdp-tab" aria-selected="true">Фото</a>
+        <a href="#specs" class="pdp-tab">Характеристики</a>
+        <a href="#modules" class="pdp-tab">Модули</a>
+        <a href="#reviews" class="pdp-tab">Отзывы</a>
+        <a href="#where" class="pdp-tab">Где купить</a>
+      </div>
+
+      <!-- ==================== MEDIA (фото + сводка) ====================
+           На 1440 это ряд: кадр 900x671 и сводка 412 (media 2488:127150).
+           Ниже `xl` они складываются в колонку — кадр 720x536.8 на планшете
+           (2488:136015) и 344x255.9 на мобиле (2488:128727), сводка под ним во
+           всю ширину. -->
+      <section class="page-x flex gap-12 max-xl:flex-col max-xl:gap-0 max-xl:px-0" id="photos">
+        <div class="min-w-0 flex-1 max-xl:w-full max-xl:flex-none max-xl:px-6 max-md:px-2">
+          <div class="aspect-[900/671] overflow-hidden rounded-n bg-bg-subtle">
+            <img
+              src="../../assets/pdp/module-base-2door-src.png"
+              alt="Шкаф нижний с 2-мя дверцами Флэт"
+              class="size-full object-cover"
+              data-module-photo
+            />
+          </div>
+        </div>
+
+        <!--#include partials/pdp-module-summary.html -->
+      </section>
+
+      <!-- ==================== ХАРАКТЕРИСТИКИ ==========================
+           Тот же партиал, что у кухонной PDP. У модуля вкладок четыре —
+           «Описание», «Модули», «Состав» и «Где купить» (Tab 2488:127161), —
+           поэтому «Документы» и «Отзывы» снимает pdp-module.js. -->
+      <!--#include partials/pdp-specs.html -->
+
+      <!-- ==================== РЕЛЬС: Модули композиции ================= -->
+      <div data-section="modules" id="modules"></div>
+
+      <!-- 80px отбивка перед зелёной полосой (spacing 2488:132755) -->
+      <div class="h-20"></div>
+
+      <!-- ==================== ЗЕЛЁНАЯ ПОЛОСА ========================== -->
+      <!--#include partials/seo-kitchens.html -->
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
+    <!--#include partials/modals.html -->
+  </body>
+</html>

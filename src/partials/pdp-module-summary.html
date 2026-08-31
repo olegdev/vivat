@@ -1,0 +1,86 @@
+<!-- ==================== СВОДКА МОДУЛЯ ==============================
+     Figma `summary` внутри `PDP module`: 2488:130058 (412x620 на 1440),
+     2488:136034 (768x552) и 2488:128734 (360x502).
+
+     От кухонной сводки отличается по существу, а не размерами, поэтому это
+     отдельный партиал, а не вариант:
+
+     - **цены нет вовсе.** Вместо блока с ценой под кнопкой стоит ссылка
+       «Получить оптовую цену» со значком внимания (2488:130340);
+     - **две группы цветов** — «Каркас» и «Фасад», у каждой свои образцы и своя
+       подпись (2488:130198 / 2488:130165), тогда как у кухни группа одна;
+     - сегменты называются «Комплектация, мм.» и это размеры 600/800
+       (2488:130223), а не геометрия «Прямая/Угловая»;
+     - иконка «поделиться» рядом с заголовком здесь ВИДНА (2488:130062): у
+       кухни этот слот белым по белому и потому не рендерится.
+
+     Порядок блоков одинаков на всех трёх ширинах, меняются только поля:
+     24 на десктопе и планшете, 16 на мобиле. Ниже `xl` панель разворачивается
+     во всю ширину и теряет рамку — как и кухонная. Кнопка остаётся ВНУТРИ
+     сводки на всех ширинах: нижнего бара у этой страницы нет ни в одном
+     фрейме.
+
+     Структура — HTML, поведение (выбор сегмента и образца) —
+     components/pdp-module.js. -->
+<aside
+  class="flex w-[412px] shrink-0 flex-col self-start rounded-n border border-border-light bg-surface-inverted xl:sticky xl:top-6 max-xl:w-full max-xl:rounded-none max-xl:border-0"
+  data-module-summary
+>
+  <div class="flex flex-col gap-4 p-6 max-xl:px-6 max-xl:py-4 max-md:px-4">
+    <div class="flex items-start gap-3">
+      <h1 class="min-w-0 flex-1 text-h3 text-text-primary" data-module-title></h1>
+      <button type="button" class="flex size-6 shrink-0 items-center justify-center" aria-label="Поделиться">
+        <img src="../../assets/pdp/icon-share.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <!-- комплектация: подпись и сегменты `segments` size=l outline=on -->
+    <div class="flex flex-col gap-2">
+      <p class="text-body-n text-text-primary" data-module-packaging-label></p>
+      <div class="flex items-center gap-1" role="radiogroup" aria-label="Комплектация" data-module-packaging></div>
+    </div>
+
+    <!-- по одной группе на «Каркас» и «Фасад» -->
+    <div class="flex flex-col gap-4" data-module-colors></div>
+
+    <div class="flex flex-col">
+      <p class="text-body-n text-text-primary" data-module-size></p>
+      <a
+        href="#specs"
+        class="w-fit text-body-n text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+        >Подробнее</a
+      >
+    </div>
+  </div>
+
+  <!-- Низ: разделитель, кнопка во всю ширину и ссылка под ней
+       (bottom 2488:130076 — padH 24, отбивка 24). -->
+  <div class="flex flex-col gap-3 border-t border-divider-light px-6 py-6 max-xl:py-4 max-md:px-4">
+    <button type="button" class="btn btn-m btn-primary w-full" data-module-order></button>
+    <p class="flex items-center justify-center gap-2 text-body-s text-text-secondary">
+      <img src="../../assets/pdp/icon-warning.svg" alt="" class="size-4 shrink-0" />
+      <a href="#" class="link-dotted" data-module-notice></a>
+    </p>
+  </div>
+</aside>
+
+<!-- одна группа цветов (future @foreach($product->colorGroups as $group)) -->
+<template data-module-color-group>
+  <div class="flex flex-col gap-2.5">
+    <p class="text-body-n text-text-primary" data-group-label></p>
+    <div class="flex items-center gap-3" data-group-colors></div>
+    <p class="text-body-s text-text-secondary" data-group-name></p>
+  </div>
+</template>
+
+<!-- один образец цвета -->
+<template data-module-swatch>
+  <button type="button" class="pdp-swatch" role="radio" aria-checked="false">
+    <img alt="" class="size-full rounded-full object-cover" />
+  </button>
+</template>
+
+<!-- один сегмент комплектации -->
+<template data-module-segment>
+  <button type="button" class="pdp-segment" role="radio" aria-checked="false"></button>
+</template>
