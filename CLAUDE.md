@@ -563,13 +563,13 @@ gets re-hit on the next page.
 
 ## Reading the design
 
-The canonical Figma file is **`locvXJpmVZqIMVwPoumae3`**
-(https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT) — pass this fileKey
+The canonical Figma file is **`nFfeXrx9LR1B5kEY4nXKGI`**
+(https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT) — pass this fileKey
 to the MCP tools. Top-level pages: `Design` (189:10790), `UI SYSTEM`
-(922:83156). Older copies `t7qJcR7KNgLigitQwv3V5T`, `odPx3t2xUNTnIx09J9DpIS`,
-`9d9EunlGqwIMf5hPZI3kmf` and `J5GoY36VJIg79HSzfDVn3f` also exist — ignore them.
-Node ids are unchanged across each move, so ids quoted anywhere in these docs
-still resolve.
+(922:83156). Older copies `locvXJpmVZqIMVwPoumae3`, `t7qJcR7KNgLigitQwv3V5T`,
+`odPx3t2xUNTnIx09J9DpIS`, `9d9EunlGqwIMf5hPZI3kmf` and `J5GoY36VJIg79HSzfDVn3f`
+also exist — ignore them. Node ids are unchanged across each move, so ids
+quoted anywhere in these docs still resolve.
 
 Two sources. **Reach for the local export first, fall back to the Figma MCP
 server for whatever it doesn't have.**
@@ -614,6 +614,17 @@ retrying.
 keyed by content hash. `scripts/fig.mjs` builds `canvas.index.json` next to it on
 first run and reuses it while `canvas.fig` is unchanged — ~0.5s per query
 instead of ~2.7s. Re-export and run `index --rebuild` when Figma has moved on.
+Since it's gitignored, the dev copy on `market` needs a manual sync after any
+re-export:
+
+```bash
+rsync -avz VIVAT_SOURCES/ market:/srv/vivat/dev/VIVAT_SOURCES/
+ssh market "chown -R dev:dev /srv/vivat/dev/VIVAT_SOURCES && chmod -R u+rwX,go+rX /srv/vivat/dev/VIVAT_SOURCES"
+```
+
+The chown/chmod step is not optional — the Mac's `rsync` is `openrsync`, which
+has no working `--chown`, so a sync alone leaves the tree owned by the Mac's
+numeric UID and unreadable by `dev` (see `docs/DEV_SERVER.md` › «Грабли» #7).
 
 Format note: block 0 is the kiwi schema (raw deflate), block 1 is the document
 (**ZSTD** in current exports). Off-the-shelf .fig parsers assume deflate for both
