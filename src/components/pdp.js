@@ -79,11 +79,10 @@ export function initSpecTabs(data) {
     col.forEach((row) => wrap.append(specRow(row)));
   });
 
-  // Состав — TODO: no Figma frame yet, placeholder rows in Описание's shape.
-  (data.sostav || []).forEach((col, n) => {
-    const wrap = section.querySelector(`[data-sostav-col="${n}"]`);
-    col.forEach((row) => wrap.append(specRow(row)));
-  });
+  // Панелей «Состав» и «Документы» в блоке больше нет: клиент убрал их вместе
+  // с «Отзывами» из ряда ярлыков (31.08.2026). Данные под них страницы больше
+  // не передают, но вызовы терпимы к их отсутствию — так порт на Blade не
+  // упрётся в порядок правок.
 
   const pkg = section.querySelector("[data-package-list]");
   data.package.forEach((row) => {
@@ -92,14 +91,6 @@ export function initSpecTabs(data) {
     node.querySelector("[data-package-value]").textContent = row.value;
     node.querySelector("[data-package-qty]").textContent = row.qty;
     pkg.append(node);
-  });
-
-  const docs = section.querySelector("[data-doc-list]");
-  data.docs.forEach((doc) => {
-    const node = clone("[data-doc-link]");
-    node.querySelector("[data-doc-name]").textContent = doc.name;
-    node.querySelector("[data-doc-href]").href = doc.href;
-    docs.append(node);
   });
 
   // Panels are `hidden`/`flex` rather than display-toggled from a style, so the

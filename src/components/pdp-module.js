@@ -53,16 +53,3 @@ export function initModuleSummary(product) {
     colorsWrap.append(node);
   });
 }
-
-// У модуля вкладок четыре — «Описание», «Модули», «Состав» и «Где купить»
-// (Tab 2488:127161). «Документы» и «Отзывы» из общего партиала снимаем здесь,
-// а не заводим второй партиал: разница ровно в двух ярлыках.
-export function dropSpecTabs(names) {
-  const section = document.querySelector("#specs");
-  if (!section) return;
-  names.forEach((name) => {
-    section.querySelector(`[data-spec-tabs] [data-panel="${name}"]`)?.remove();
-    section.querySelector(`[data-spec-panels] > [data-panel="${name}"]`)?.remove();
-    section.querySelector(`[data-spec-tabs] [href="#${name}"]`)?.remove();
-  });
-}

@@ -3,19 +3,24 @@
      same 940px width as the photos (Figma's 941 is a rounding artefact of the
      40px padding).
 
-     Six labels, two kinds. Описание / Модули / Состав / Документы switch the
-     panel below; Отзывы and Где купить are anchors into sections further down
-     the page — the design draws no panel for them, and both sections exist.
-     Состав has no Figma frame either: it borrows Описание's row shape and
-     carries placeholder rows until the design lands (marked TODO below).
+     Три ярлыка, два вида. «Описание» и «Комплектация» переключают панель
+     ниже; «Где купить» — якорь в раздел дальше по странице, панели у него нет.
+
+     Так решил клиент (31.08.2026) по новой версии блока: «Состав» убран
+     совсем — он и раньше был заглушкой без фрейма, — «Документы» и «Отзывы»
+     из ряда ушли, а «Модули» переименованы в «Комплектация». Содержимое той
+     панели не менялось: это и был список комплектации (PDP-package 922:126723
+     подчёркивает «Модули», хотя список там именно комплектации).
+
+     Сам новый фрейм (2567:158700) прочитать не удалось: он новее экспорта
+     canvas.fig, а файл по ссылке недоступен аккаунту MCP. Поэтому изменён
+     только набор ярлыков, который клиент назвал словами; вёрстка панелей
+     осталась прежней. Записано в BACKLOG.md.
 
      Panels, left to right:
-       Описание  → the dotted-leader spec table, two column groups (1686:58549)
-       Модули    → the комплектация list: name · value · quantity (PDP-package
-                   922:126723 — the frame underlines "Модули", which is the tab
-                   this content belongs to)
-       Состав    → same row shape, placeholder — TODO: no design yet
-       Документы → file links on `bg-subtle` (PDP-docs 942:34310)
+       Описание     → the dotted-leader spec table, two column groups (1686:58549)
+       Комплектация → the комплектация list: name · value · quantity
+                      (PDP-package 922:126723)
 
      Rows are <template>s cloned by components/pdp.js per datum (the future
      Blade @foreach); the shell below is static structure. -->
@@ -40,10 +45,7 @@
       data-spec-tabs
     >
       <button type="button" class="pdp-tab" role="tab" aria-selected="true" data-panel="opisanie">Описание</button>
-      <button type="button" class="pdp-tab" role="tab" aria-selected="false" data-panel="moduli">Модули</button>
-      <button type="button" class="pdp-tab" role="tab" aria-selected="false" data-panel="sostav">Состав</button>
-      <button type="button" class="pdp-tab" role="tab" aria-selected="false" data-panel="dokumenty">Документы</button>
-      <a href="#reviews" class="pdp-tab">Отзывы</a>
+      <button type="button" class="pdp-tab" role="tab" aria-selected="false" data-panel="moduli">Комплектация</button>
       <a href="#where" class="pdp-tab">Где купить</a>
     </div>
   </div>
@@ -80,18 +82,6 @@
       </div>
     </div>
 
-    <!-- ---- Состав: TODO — no Figma frame; Описание's row shape, placeholder
-         copy, so the tab the design draws is not silently dropped. ---------- -->
-    <div class="hidden flex-col gap-2" data-panel="sostav">
-      <div class="grid grid-cols-2 gap-x-12 max-md:grid-cols-1">
-        <div class="flex flex-col" data-sostav-col="0"></div>
-        <div class="flex flex-col" data-sostav-col="1"></div>
-      </div>
-    </div>
-
-    <!-- ---- Документы: file links on bg-subtle (doc-container 942:34317,
-         mobile 2029:116837 — the same card at 16px padding) ---------------- -->
-    <div class="hidden flex-col gap-2 rounded-n bg-bg-subtle px-10 py-6 max-md:px-4 max-md:py-4" data-panel="dokumenty" data-doc-list></div>
   </div>
 </section>
 
@@ -119,12 +109,3 @@
   </div>
 </template>
 
-<!-- one document link (942:34319 / mobile 2029:116838) -->
-<template data-doc-link>
-  <div class="flex h-11 items-center max-md:h-auto max-md:py-1.5">
-    <a href="#" class="flex items-center gap-1 text-body-n text-text-primary max-md:items-start max-md:text-m-body-l" data-doc-href>
-      <img src="../../assets/pdp/icon-doc.svg" alt="" class="size-5 shrink-0" />
-      <span class="underline decoration-from-font underline-offset-2" data-doc-name></span>
-    </a>
-  </div>
-</template>

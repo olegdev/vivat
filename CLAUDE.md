@@ -96,11 +96,13 @@ Mobile is not a narrower desktop — four things genuinely change:
 
 Two design decisions worth not re-litigating, both confirmed with the client:
 
-- The Характеристики bar mixes **four panels and two anchors**. Описание /
-  Модули / Состав / Документы switch the panel; Отзывы and Где купить scroll to
-  the sections further down. Figma draws panels for only three of the four —
-  **Состав has no frame** and carries placeholder rows marked TODO in
-  `partials/pdp-specs.html`; replace them when the design lands.
+- The Характеристики bar is **two panels and one anchor**: Описание /
+  Комплектация switch the panel, Где купить scrolls to the section below.
+  Клиент сократил ряд 31.08.2026 по новой версии блока (2567:158700): «Состав»
+  убран совсем, «Документы» и «Отзывы» ушли из ряда, «Модули» переименованы в
+  «Комплектация» — содержимое той панели и было списком комплектации. Сам
+  новый фрейм прочитать не удалось (см. BACKLOG.md), так что переделан только
+  набор ярлыков, а вёрстка панелей ждёт доступа к макету.
 - `PDP-package` underlines **Модули**, and that is the tab its комплектация list
   belongs to, even though the frame's name says otherwise. The Модули *carousel*
   further down the page is a separate section.

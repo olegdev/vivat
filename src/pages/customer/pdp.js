@@ -76,25 +76,6 @@ initSpecTabs({
     { name: "Столешница Hard-38U Прямая (упак.)", value: "2170*600*38", qty: "1 шт." },
   ],
 
-  // TODO: Состав has no Figma frame (see partials/pdp-specs.html). Placeholder
-  // rows in Описание's shape so the tab the design draws is not dropped.
-  sostav: [
-    [
-      { label: "Корпус:", value: "ЛДСП 16 мм" },
-      { label: "Фасады:", value: "МДФ 16 мм" },
-      { label: "Кромка:", value: "ПВХ" },
-    ],
-    [
-      { label: "Задняя стенка:", value: "ХДФ 3 мм" },
-      { label: "Фурнитура:", value: "Blum" },
-      { label: "Столешница:", value: "ЛДСП 38 мм" },
-    ],
-  ],
-
-  docs: [
-    { name: "Кухни. Схема высоты кухонного гарнитура (без учета шкафов-пеналов).", href: "#" },
-    { name: "Фьюжн-05", href: "#" },
-  ],
 });
 
 // =============================================================================
