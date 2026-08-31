@@ -22,7 +22,9 @@
 <!-- Figma's `container` 1686:58457 has 40px padding on the LEFT only, so the
      901px table runs to the same right edge as the 900px photo column above it
      rather than stopping 40px short. Hence `pl-10` with no right padding. -->
-<section id="specs" class="flex w-[940px] flex-col max-md:w-full">
+<!-- На 1440 блок 941 широкий, ниже `xl` — во всю ширину (Characteristics
+     2483:243436, 768x411 с полем 24). -->
+<section id="specs" class="flex w-[940px] flex-col max-xl:w-full">
   <div class="h-8 max-md:h-6"></div>
 
   <!-- Tab 1686:58455 / mobile 1997:314997 — 24px SemiBold labels, 24px gaps,
@@ -31,9 +33,9 @@
        360px frame, with a white gradient over the right edge to show there is
        more. `.pdp-tab-row` carries the fade so the row itself stays a plain
        scroll rail. -->
-  <div class="pdp-tab-row max-md:relative">
+  <div class="pdp-tab-row max-xl:relative">
     <div
-      class="flex items-center gap-6 pl-10 max-md:scroll-rail max-md:gap-4 max-md:overflow-x-auto max-md:px-4"
+      class="flex items-center gap-6 pl-10 max-xl:scroll-rail max-xl:overflow-x-auto max-xl:px-6 max-xl:[&>*]:shrink-0 max-md:gap-4 max-md:px-4"
       role="tablist"
       data-spec-tabs
     >
@@ -99,7 +101,7 @@
   <div class="flex h-11 items-center gap-3 max-md:h-10">
     <span class="shrink-0 text-body-n text-text-secondary max-md:text-m-body-s" data-spec-label></span>
     <span class="spec-leader flex-1"></span>
-    <span class="ml-1 w-[116px] shrink-0 text-body-n text-text-primary max-md:w-[110px] max-md:text-m-body-s" data-spec-value></span>
+    <span class="ml-1 w-[116px] shrink-0 text-body-n text-text-primary max-xl:w-auto max-md:w-[110px] max-md:text-m-body-s" data-spec-value></span>
   </div>
 </template>
 
@@ -110,9 +112,9 @@
      lead across. -->
 <template data-package-row>
   <div class="flex h-11 items-center gap-3 max-md:h-auto max-md:min-h-10 max-md:items-start max-md:gap-2 max-md:py-1">
-    <span class="shrink-0 text-body-n text-text-secondary max-md:w-[170px] max-md:text-m-body-s" data-package-name></span>
+    <span class="shrink-0 text-body-n text-text-secondary max-xl:min-w-0 max-md:w-[170px] max-md:text-m-body-s" data-package-name></span>
     <span class="spec-leader flex-1 max-md:hidden"></span>
-    <span class="ml-1 w-[130px] shrink-0 text-body-n text-text-primary max-md:ml-0 max-md:w-[100px] max-md:text-m-body-s" data-package-value></span>
+    <span class="ml-1 w-[130px] shrink-0 text-body-n text-text-primary max-xl:w-auto max-md:ml-0 max-md:w-[100px] max-md:text-m-body-s" data-package-value></span>
     <span class="w-[53px] shrink-0 text-body-n text-text-primary max-md:w-10 max-md:text-m-body-s" data-package-qty></span>
   </div>
 </template>

@@ -12,8 +12,10 @@
      price reduced to the one line the b2b summary draws — no «от», no old price.
      Their price carries `data-price-base`, so it follows the price list like
      every card price. See BACKLOG. -->
-<div class="pdp-sticky fixed inset-x-0 bottom-0 z-40 hidden h-12 bg-surface-inverted shadow-navbar md:block" data-sticky-price>
-  <div class="mx-auto flex h-full w-[1440px] items-center justify-between px-10">
+<!-- Бар, открываемый скроллом, — только десктопный: ниже `xl` всегда виден
+     другой, `modal-button-container` (на планшете 2483:246944, 768x64). -->
+<div class="pdp-sticky fixed inset-x-0 bottom-0 z-40 hidden h-12 bg-surface-inverted shadow-navbar xl:block" data-sticky-price>
+  <div class="page-x flex h-full items-center justify-between">
     <div class="flex items-center gap-4">
       <a href="#where" class="flex items-center gap-1 text-body-s text-text-primary transition-colors hover:text-text-secondary">
         <span>Где посмотреть / купить</span>
@@ -47,13 +49,18 @@
 
      It stacks directly on top of the bottom nav (60px bar over the 72px nav,
      which is why the page reserves 132px at the bottom below `md`). -->
-<div class="fixed inset-x-0 bottom-[72px] z-40 flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 md:hidden">
-  <a href="#where" class="flex items-center gap-1 px-2 text-m-body-n text-text-secondary">
+<!-- На планшете этот же бар 64 высотой с полем 24, и две его части делят
+     ширину пополам (text-action 356 + buttons 356 в 2483:246944). -->
+<div class="fixed inset-x-0 bottom-[72px] z-40 flex h-16 items-center justify-center gap-2 bg-surface-inverted px-6 xl:hidden max-md:h-[60px] max-md:px-4">
+  <a
+    href="#where"
+    class="flex items-center gap-1 px-2 text-m-body-n text-text-secondary max-xl:min-w-0 max-xl:flex-1 max-md:flex-none"
+  >
     <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5 shrink-0 opacity-60" />
     <span>Где купить</span>
   </a>
   <!-- The button's icon slot renders empty in the live frame — text only. -->
-  <button type="button" class="btn btn-m btn-accent text-m-button-m" data-pdp-order>
+  <button type="button" class="btn btn-m btn-accent text-m-button-m max-xl:flex-1 max-md:flex-none" data-pdp-order>
     <span
       >Оформить&nbsp;•
       <span class="group-data-[user=dealer]:hidden">от </span

@@ -28,7 +28,12 @@
 
          Below `md` the page reserves 132px: the 72px bottom nav plus the 60px
          CTA bar stacked on top of it. -->
-    <div class="mx-auto w-full max-md:pb-[132px] md:w-[1440px]">
+    <!-- Три слоя: мобильный ниже `md` (1997:305719), планшетный до `xl`
+         (PDP 2483:238824 и витрина 2483:246910) и текучий десктопный выше.
+         Широкого фрейма у PDP нет — сделано по аналогии с каталогом: что
+         тянется, тянется до 1900, пропорции кадров сохраняются.
+         Резерв снизу — тапбар 72 плюс бар CTA 60/64 — теперь и на планшете. -->
+    <div class="w-full max-xl:pb-[136px] max-md:pb-[132px]">
       <!-- ==================== SITE HEADER ============================== -->
       <!--#include partials/header.html -->
 
@@ -49,7 +54,7 @@
       <!--#include partials/carousel-section.html -->
 
       <!-- ==================== BREADCRUMBS ============================== -->
-      <nav class="flex items-center gap-2 px-10 py-4 text-body-n-accent leading-6 text-text-secondary max-md:px-4 max-md:py-2 max-md:text-m-body-s">
+      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent leading-6 text-text-secondary max-md:py-2 max-md:text-m-body-s">
         <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
         <span aria-hidden="true">•</span>
         <a href="catalog.html" class="transition-colors hover:text-text-primary">Кухни VIVAT</a>
@@ -63,7 +68,9 @@
            the "sticky price" frame shows the page scrolled well past it with
            no bar in sight. The design's sixth `tab` instance renders empty, so
            it is absent here (CLAUDE.md › don't invent elements). -->
-      <div class="flex h-[50px] w-[940px] items-center gap-6 px-10 max-md:hidden" data-section-nav>
+      <!-- На планшете якорный бар остаётся (Tab 2483:238827, 768x50 с полем 24),
+           а на мобиле его нет вовсе. -->
+      <div class="page-x flex h-[50px] items-center gap-6 max-xl:overflow-x-auto max-xl:scroll-rail max-xl:[&>a]:shrink-0 max-md:hidden" data-section-nav>
         <a href="#photos" class="pdp-tab" aria-selected="true">Фото</a>
         <a href="#specs" class="pdp-tab">Характеристики</a>
         <a href="#modules" class="pdp-tab">Модули</a>
@@ -81,27 +88,34 @@
            slides (Figma 1997:308027), with the badges and the share action on
            each slide and a dot per photo underneath — one DOM, the column just
            turns into a snapping row. -->
-      <section class="flex justify-between px-10 max-md:flex-col max-md:px-0" id="photos">
+      <!-- Ниже `xl` колонка фотографий становится одним свайпающимся рядом:
+           на планшете это кадр 720x536.8 с точками (image-container
+           2483:238830), на мобиле — 344x256. Одна и та же разметка, меняется
+           только размер слайда. -->
+      <!-- Зазор 48 задан явно: колонка фото стала `flex-1`, и без него она
+           съедала бы промежуток. На 1440 это даёт нарисованные 900 + 48 + 412,
+           на 1900 колонка растёт до 1360, а сводка остаётся 412. -->
+      <section class="page-x flex gap-12 max-xl:flex-col max-xl:gap-0 max-xl:px-0" id="photos">
         <div
-          class="flex w-[900px] flex-col gap-3.5 max-md:w-full max-md:snap-x max-md:snap-mandatory max-md:scroll-pl-2 max-md:flex-row max-md:gap-2 max-md:overflow-x-auto max-md:px-2 max-md:scroll-rail"
+          class="flex min-w-0 flex-1 flex-col gap-3.5 max-xl:w-full max-xl:flex-none max-xl:snap-x max-xl:snap-mandatory max-xl:flex-row max-xl:overflow-x-auto max-xl:scroll-rail max-xl:scroll-pl-6 max-xl:gap-6 max-xl:px-6 max-md:scroll-pl-2 max-md:gap-2 max-md:px-2"
           data-photo-rail
         >
-          <div class="h-[671px] overflow-hidden rounded-n max-md:relative max-md:h-64 max-md:w-full max-md:shrink-0 max-md:snap-start max-md:bg-bg-subtle">
+          <div class="aspect-[900/671] overflow-hidden rounded-n max-xl:relative max-xl:aspect-[720/537] max-xl:w-full max-xl:shrink-0 max-xl:snap-start max-xl:bg-bg-subtle max-md:aspect-[344/256]">
             <img src="../../assets/pdp/photo-1-src.png" alt="Кухня Фьюжн-05" class="size-full object-cover" />
             <!--#include partials/pdp-photo-overlay.html -->
           </div>
-          <div class="h-[671px] overflow-hidden rounded-n max-md:relative max-md:h-64 max-md:w-full max-md:shrink-0 max-md:snap-start max-md:bg-bg-subtle">
+          <div class="aspect-[900/671] overflow-hidden rounded-n max-xl:relative max-xl:aspect-[720/537] max-xl:w-full max-xl:shrink-0 max-xl:snap-start max-xl:bg-bg-subtle max-md:aspect-[344/256]">
             <img src="../../assets/pdp/photo-3-src.png" alt="Кухня Фьюжн-05, открытые фасады" class="size-full object-cover" />
             <!--#include partials/pdp-photo-overlay.html -->
           </div>
-          <div class="h-[671px] overflow-hidden rounded-n max-md:relative max-md:h-64 max-md:w-full max-md:shrink-0 max-md:snap-start max-md:bg-bg-subtle">
+          <div class="aspect-[900/671] overflow-hidden rounded-n max-xl:relative max-xl:aspect-[720/537] max-xl:w-full max-xl:shrink-0 max-xl:snap-start max-xl:bg-bg-subtle max-md:aspect-[344/256]">
             <img src="../../assets/pdp/photo-2-src.png" alt="Кухня Фьюжн-05, ящик с органайзером" class="size-full object-cover" />
             <!--#include partials/pdp-photo-overlay.html -->
           </div>
         </div>
 
         <!-- one dot per photo, mobile only; pdp.js mirrors the rail's scroll -->
-        <div class="hidden items-center justify-center gap-2 pt-0 max-md:flex" data-photo-dots></div>
+        <div class="hidden items-center justify-center gap-2 pt-0 max-xl:flex" data-photo-dots></div>
 
         <!--#include partials/pdp-summary.html -->
       </section>
