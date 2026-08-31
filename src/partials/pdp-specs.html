@@ -71,8 +71,34 @@
     </div>
 
     <!-- ---- Модули: комплектация, one full-width group + quantity --------- -->
+    <!-- ---- Комплектация: таблица в пять колонок (Figma 2567:158700).
+         Ширины из фрейма — 517 / 120 / 100 / 100 / 32 при зазоре 8 в 901; имя
+         пакета занимает остаток, последняя колонка прижата вправо (align=MAX).
+         Строки по 44. Шапка и «Итого» — те же пять ячеек, поэтому один
+         <template> на строку и одна сетка на все три роли.
+
+         Ниже `xl` таблица прокручивается вбок: своего фрейма у этого блока на
+         768 и 360 ещё нет (см. BACKLOG.md), а пять колонок туда не влезают. -->
     <div class="hidden flex-col gap-2" data-panel="moduli">
-      <div class="flex flex-col" data-package-list></div>
+      <div class="max-xl:scroll-rail max-xl:overflow-x-auto">
+        <div class="min-w-[901px]" data-package-table>
+          <div class="package-row text-body-s text-text-secondary" data-package-head>
+            <span>Пакет</span>
+            <span>В*Ш*Г, мм</span>
+            <span>Вес, кг</span>
+            <span>Объём, м³</span>
+            <span class="text-right">Шт.</span>
+          </div>
+          <div class="flex flex-col" data-package-list></div>
+          <div class="package-row text-body-n-accent text-text-primary" data-package-total>
+            <span>Итого:</span>
+            <span></span>
+            <span data-total-weight></span>
+            <span data-total-volume></span>
+            <span class="text-right" data-total-qty></span>
+          </div>
+        </div>
+      </div>
       <div class="pdp-alert" data-alert>
         <img src="../../assets/pdp/icon-warning-dark.svg" alt="" class="size-4 shrink-0" />
         <span class="flex-1 text-body-s text-text-primary max-md:text-m-body-s">Внимание! Ручка в комплект не входит.</span>
@@ -100,12 +126,14 @@
      is fixed at 170px and WRAPS to two lines — and with it the dotted leader
      goes away, exactly as the mobile frame draws it: there is no gap left to
      lead across. -->
+<!-- одна строка комплектации (future @foreach($package as $row)) -->
 <template data-package-row>
-  <div class="flex h-11 items-center gap-3 max-md:h-auto max-md:min-h-10 max-md:items-start max-md:gap-2 max-md:py-1">
-    <span class="shrink-0 text-body-n text-text-secondary max-xl:min-w-0 max-md:w-[170px] max-md:text-m-body-s" data-package-name></span>
-    <span class="spec-leader flex-1 max-md:hidden"></span>
-    <span class="ml-1 w-[130px] shrink-0 text-body-n text-text-primary max-xl:w-auto max-md:ml-0 max-md:w-[100px] max-md:text-m-body-s" data-package-value></span>
-    <span class="w-[53px] shrink-0 text-body-n text-text-primary max-md:w-10 max-md:text-m-body-s" data-package-qty></span>
+  <div class="package-row text-body-n text-text-primary">
+    <span data-package-name></span>
+    <span data-package-size></span>
+    <span data-package-weight></span>
+    <span data-package-volume></span>
+    <span class="text-right" data-package-qty></span>
   </div>
 </template>
 

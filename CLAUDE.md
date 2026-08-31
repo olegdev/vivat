@@ -101,8 +101,10 @@ Two design decisions worth not re-litigating, both confirmed with the client:
   Клиент сократил ряд 31.08.2026 по новой версии блока (2567:158700): «Состав»
   убран совсем, «Документы» и «Отзывы» ушли из ряда, «Модули» переименованы в
   «Комплектация» — содержимое той панели и было списком комплектации. Сам
-  новый фрейм прочитать не удалось (см. BACKLOG.md), так что переделан только
-  набор ярлыков, а вёрстка панелей ждёт доступа к макету.
+  панель «Комплектация» переделана по нему же в таблицу пяти колонок —
+  517/120/100/100/32 при зазоре 8, строки 44, снизу «Итого». Итоги считаются из
+  строк, а не хранятся: в макете они не сходятся с собственными числами
+  (см. BACKLOG.md).
 - `PDP-package` underlines **Модули**, and that is the tab its комплектация list
   belongs to, even though the frame's name says otherwise. The Модули *carousel*
   further down the page is a separate section.
@@ -569,7 +571,10 @@ to the MCP tools. Top-level pages: `Design` (189:10790), `UI SYSTEM`
 (922:83156). Older copies `locvXJpmVZqIMVwPoumae3`, `t7qJcR7KNgLigitQwv3V5T`,
 `odPx3t2xUNTnIx09J9DpIS`, `9d9EunlGqwIMf5hPZI3kmf` and `J5GoY36VJIg79HSzfDVn3f`
 also exist — ignore them. Node ids are unchanged across each move, so ids
-quoted anywhere in these docs still resolve.
+quoted anywhere in these docs still resolve. Ключ менялся дважды, и ссылки,
+которые присылает клиент, могут вести на старую копию — MCP тогда отвечает
+«нет доступа на редактирование». В этом случае берите ключ отсюда, а не из
+ссылки.
 
 Two sources. **Reach for the local export first, fall back to the Figma MCP
 server for whatever it doesn't have.**

@@ -69,11 +69,11 @@ initSpecTabs({
   // verbatim (a placeholder in the design); the column holds each module's
   // dimensions, which is what its first row actually shows.
   package: [
-    { name: "Шкаф нижний с 2-мя дверцами Евро", value: "820*600*500", qty: "1 шт." },
-    { name: "Шкаф нижний с 2-мя дверцами и ящиком Фьюжн", value: "820*800*500", qty: "1 шт." },
-    { name: "Шкаф верхний с 2-мя дверцами Фьюжн", value: "720*600*300", qty: "1 шт." },
-    { name: "Шкаф верхний с 1-ой дверцей Фьюжн", value: "720*400*300", qty: "1 шт." },
-    { name: "Столешница Hard-38U Прямая (упак.)", value: "2170*600*38", qty: "1 шт." },
+    { name: "Шкаф нижний с 2-мя дверцами Евро", size: "816*800*478", weight: "27.064", volume: "0.04715", qty: "1" },
+    { name: "Шкаф нижний с 1-ой дверцей и ящиком Евро", size: "816*400*478", weight: "19.009", volume: "0.03206", qty: "1" },
+    { name: "Шкаф нижний с 1-ой дверцей Евро", size: "716*800*318", weight: "17.032", volume: "0.03232", qty: "2" },
+    { name: "Шкаф верхний с 1-ой дверцей Евро Лайн", size: "716*800*318", weight: "22.064", volume: "0.03828", qty: "1" },
+    { name: "Столешница Hard-38U Прямая (упак.)", size: "38*3050*600", weight: "46", volume: "0.0695", qty: "1" },
   ],
 
 });

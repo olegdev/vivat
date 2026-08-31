@@ -906,6 +906,15 @@
     background-repeat: repeat-x;
   }
 
+  /* ---- Строка таблицы комплектации (Figma 2567:158700) --------------------
+     Пять колонок: имя занимает остаток, дальше 120 / 100 / 100 / 32 при зазоре
+     8, строка 44 высотой. Одна и та же сетка обслуживает шапку, данные и
+     «Итого», поэтому колонки не разъезжаются между ними. */
+  .package-row {
+    @apply grid h-11 items-center gap-2;
+    grid-template-columns: 1fr 120px 100px 100px 32px;
+  }
+
   /* ---- Alert (`alert` size=l accent=yes, 922:126604; mobile 1997:313656) --- */
   .pdp-alert {
     @apply flex h-10 items-center gap-4 rounded-n bg-surface-accent-subtle px-4;

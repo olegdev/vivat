@@ -84,14 +84,33 @@ export function initSpecTabs(data) {
   // не передают, но вызовы терпимы к их отсутствию — так порт на Blade не
   // упрётся в порядок правок.
 
+  // Комплектация — таблица в пять колонок с итоговой строкой (2567:158700).
+  // Итоги считаем, а не храним: в макете «Итого» это сумма столбцов, и держать
+  // её в фикстуре значит завести второй источник правды.
   const pkg = section.querySelector("[data-package-list]");
-  data.package.forEach((row) => {
+  const rows = data.package || [];
+  rows.forEach((row) => {
     const node = clone("[data-package-row]");
     node.querySelector("[data-package-name]").textContent = row.name;
-    node.querySelector("[data-package-value]").textContent = row.value;
+    node.querySelector("[data-package-size]").textContent = row.size;
+    node.querySelector("[data-package-weight]").textContent = row.weight;
+    node.querySelector("[data-package-volume]").textContent = row.volume;
     node.querySelector("[data-package-qty]").textContent = row.qty;
     pkg.append(node);
   });
+
+  const sum = (key) =>
+    rows.reduce((acc, r) => acc + Number(String(r[key]).replace(",", ".")) * Number(r.qty || 1), 0);
+  const total = section.querySelector("[data-package-total]");
+  if (total && rows.length) {
+    // Хвостовые нули не печатаем: в макете 145.201 кг и 0.24334 м³.
+    const trim = (n, digits) => String(Number(n.toFixed(digits)));
+    total.querySelector("[data-total-weight]").textContent = `${trim(sum("weight"), 3)} кг`;
+    total.querySelector("[data-total-volume]").textContent = `${trim(sum("volume"), 5)} м³`;
+    total.querySelector("[data-total-qty]").textContent = String(
+      rows.reduce((acc, r) => acc + Number(r.qty || 1), 0)
+    );
+  }
 
   // Panels are `hidden`/`flex` rather than display-toggled from a style, so the
   // markup stays the single source of which panel is open.
