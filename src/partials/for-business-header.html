@@ -16,7 +16,10 @@
      Тычок в селектор открывает шторку меню — она живёт в partials/menu-b2b.html
      вместе с самим меню, потому что это и есть меню на 360. У Контактов меню
      нет, значит нет и шторки: страница подключает только эту шапку. -->
-<div class="group/fbh flex flex-col gap-1.5 md:hidden" data-for-business-header>
+<!-- Ниже `xl`, а не только `md`: на планшете колонка меню 298 съедает
+     половину ширины, поэтому там работает та же замена — «Для бизнеса» с
+     пилюлей текущей страницы, открывающая раздел листом. -->
+<div class="group/fbh flex flex-col gap-1.5 xl:hidden" data-for-business-header>
   <div class="px-4 pb-2 pt-3">
     <p class="text-m-h2 text-text-primary" data-fbh-title>Для бизнеса</p>
   </div>

@@ -19,7 +19,7 @@
          Самая простая страница секции: семь одинаковых секций «заголовок 24 +
          текст 16» и завершающая строка. Ссылки в тексте коралловые
          (#ff5546), одна из них — «Excel» — с пунктирным подчёркиванием. -->
-    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+    <div class="w-full max-xl:pb-[72px]">
       <!-- ==================== SITE HEADER ============================== -->
       <!--#include partials/header.html -->
 
@@ -43,7 +43,7 @@
 
       <!-- ==================== ЗАГОЛОВОК РАЗДЕЛА ========================
            title-block 1167:79694 — spacing 24, строка 44, spacing 24. -->
-      <div class="px-10 py-6 max-md:hidden">
+      <div class="page-x py-6 max-md:hidden">
         <div class="flex h-11 items-center">
           <h1 class="text-h1 text-text-primary">Для бизнеса</h1>
         </div>
@@ -56,10 +56,10 @@
 
       <!-- ==================== МЕНЮ + КОЛОНКА ===========================
            general-container 1167:79696 — 40 + 298 + 40 + 1022 + 40 = 1440. -->
-      <div class="flex gap-10 px-10 max-md:flex-col max-md:gap-0 max-md:px-0">
+      <div class="page-x flex gap-10 max-xl:flex-col max-xl:gap-0 max-xl:px-0">
         <!--#include partials/menu-b2b.html -->
 
-        <div class="w-[1022px] px-20 max-md:w-full max-md:px-4" data-content-column>
+        <div class="min-w-0 flex-1 px-20 max-xl:w-full max-xl:flex-none max-xl:px-6 max-md:px-4" data-content-column>
           <h2 class="text-h2 text-text-primary max-md:hidden">Как с нами работать?</h2>
           <div data-howto></div>
           <!-- Финальная строка 1167:98363 — отбивка 24 и 24/32 Medium

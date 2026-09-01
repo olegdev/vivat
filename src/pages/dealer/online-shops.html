@@ -30,7 +30,7 @@
 
          Заголовок раздела — «Для бизнеса», собственное имя страницы стоит
          первой строкой правой колонки. -->
-    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+    <div class="w-full max-xl:pb-[72px]">
       <!-- ==================== SITE HEADER ============================== -->
       <!--#include partials/header.html -->
 
@@ -54,7 +54,7 @@
 
       <!-- ==================== ЗАГОЛОВОК РАЗДЕЛА ========================
            title-block 1167:79694 — spacing 24, строка 44, spacing 24. -->
-      <div class="px-10 py-6 max-md:hidden">
+      <div class="page-x py-6 max-md:hidden">
         <div class="flex h-11 items-center">
           <h1 class="text-h1 text-text-primary">Для бизнеса</h1>
         </div>
@@ -68,10 +68,10 @@
 
       <!-- ==================== МЕНЮ + КОЛОНКА ===========================
            general-container 1167:79696 — 40 + 298 + 40 + 1022 + 40 = 1440. -->
-      <div class="flex gap-10 px-10 max-md:flex-col max-md:gap-0 max-md:px-0">
+      <div class="page-x flex gap-10 max-xl:flex-col max-xl:gap-0 max-xl:px-0">
         <!--#include partials/menu-b2b.html -->
 
-        <div class="w-[1022px] px-20 max-md:w-full max-md:px-4" data-content-column>
+        <div class="min-w-0 flex-1 px-20 max-xl:w-full max-xl:flex-none max-xl:px-6 max-md:px-4" data-content-column>
           <!-- title-text-page 1167:77681 — 862×68: заголовок 36 сверху и
                отбивка 32 **под** ним, ряд табов начинается на 68. -->
           <h2 class="pb-8 text-h2 text-text-primary max-md:hidden">Для интернет-магазинов</h2>
@@ -79,7 +79,10 @@
           <!-- Ряд табов 1167:74240 — 898×48, таб 32, зазор 24. Ряд шире
                колонки (898 против 862) и уезжает под градиентную заглушку у
                правого края, поэтому он прокручивается, а не переносится. -->
-          <div class="scroll-rail relative -mr-9 flex gap-6 py-2 max-md:hidden" data-formats></div>
+          <!-- Отрицательное поле выпускает ряд за правый край колонки только на
+               десктопе: ниже `xl` колонка сама во всю ширину страницы, и −36
+               вылезали бы за экран. -->
+          <div class="scroll-rail relative -mr-9 flex gap-6 overflow-x-auto py-2 max-xl:mr-0 max-md:hidden" data-formats></div>
 
           <!-- section 1167:74241 — отбивка 32 и строка 24; текст 20/24 SemiBold
                (на 360 — 16/22), это подзаголовок, а не абзац. -->
