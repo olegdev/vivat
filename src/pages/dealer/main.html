@@ -17,7 +17,7 @@
          у дилерской главной нет: мобильная обвязка выведена из дилерского
          каталога 2225:160540, а новости, бургер-меню и подвал собраны без
          фрейма — см. BACKLOG.md. -->
-    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+    <div class="w-full max-xl:pb-[72px]">
       <!-- ==================== SITE HEADER ================================ -->
       <!--#include partials/header.html -->
 
@@ -73,7 +73,7 @@
            становится рельсом из 320-х карточек — тем же, что у мобильных
            «Акций», — а два действия уходят строкой под заголовок. -->
       <section class="flex flex-col" data-section="news">
-        <div class="px-10 max-md:px-4">
+        <div class="page-x">
           <div class="h-20 max-md:h-10"></div>
           <div class="flex items-start justify-between max-md:flex-col max-md:gap-3">
             <h2 class="text-h2 text-text-primary max-md:text-m-h2">Новости</h2>
@@ -92,11 +92,11 @@
           <div class="h-6 max-md:h-3"></div>
         </div>
         <div
-          class="px-10 max-md:scroll-rail max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto max-md:px-4"
+          class="page-x max-md:scroll-rail max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto"
           data-viewport
         >
           <div
-            class="grid grid-cols-3 gap-6 max-md:flex max-md:gap-3 max-md:*:w-[320px] max-md:*:shrink-0 max-md:*:snap-start"
+            class="grid grid-cols-3 gap-6 max-xl:grid-cols-2 max-md:flex max-md:gap-3 max-md:*:w-[320px] max-md:*:shrink-0 max-md:*:snap-start"
             data-news-track
           ></div>
         </div>

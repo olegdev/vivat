@@ -20,7 +20,10 @@
          component the other two pages already own: the promo tile (the home
          page's "А как вам вот такое" tiles, hover and all), the carousel rail,
          the green SEO band, and the shared chrome from src/partials/. -->
-    <div class="mx-auto w-full max-md:pb-[72px] md:w-[1440px]">
+    <!-- Планшетного и широкого фреймов у «Акций» нет — страница собрана из
+         частей, которые уже переведены, поэтому по общему правилу: до 1900
+         тянется, ниже `xl` сетка плиток идёт в два столбца, ниже `md` в один. -->
+    <div class="w-full max-xl:pb-[72px]">
       <!-- ==================== SITE HEADER ============================== -->
       <!--#include partials/header.html -->
 
@@ -41,7 +44,7 @@
       <!--#include partials/carousel-section.html -->
 
       <!-- ==================== BREADCRUMBS ============================== -->
-      <nav class="flex items-center gap-2 px-10 py-4 text-body-n-accent leading-6 text-text-secondary max-md:px-4 max-md:py-2 max-md:text-m-body-s">
+      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent leading-6 text-text-secondary max-md:py-2 max-md:text-m-body-s">
         <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
         <span aria-hidden="true">•</span>
         <span class="text-text-primary">Акции</span>
@@ -51,7 +54,7 @@
            Figma title-block 2248:97194 — 24px lead-in, H1, and an empty
            `buttons` frame: no controls next to the title (see CLAUDE.md ›
            don't invent elements). -->
-      <div class="px-10 pt-6 max-md:px-4 max-md:pt-3">
+      <div class="page-x pt-6 max-md:pt-3">
         <h1 class="text-h1 text-text-primary max-md:text-m-h1">Акции</h1>
       </div>
 
@@ -61,7 +64,7 @@
            `md` it is one tile per row (2248:112626). The unit is the
            <template> in partials/promo-card.html, cloned per promo by
            action.js — the future Blade @foreach body. -->
-      <div class="grid grid-cols-3 gap-6 px-10 pt-1 max-md:grid-cols-1 max-md:gap-6 max-md:px-4" data-promo-grid></div>
+      <div class="page-x grid grid-cols-3 gap-6 pt-1 max-xl:grid-cols-2 max-md:grid-cols-1 max-md:gap-6" data-promo-grid></div>
 
       <!-- ==================== CN: Подпишитесь на нас ===================
            Figma social 2248:110142 — same block as the home page's, in its
@@ -71,7 +74,7 @@
            a partial copy — so below `md` this follows the home page's mobile
            block instead (1968:220411): m-h3 / m-body-l, 40px icon boxes over a
            32px glyph, and the same 64/32 lead-in and tail. -->
-      <section class="flex px-10 pt-24 max-md:px-4 max-md:pb-8 max-md:pt-16">
+      <section class="page-x flex pt-24 max-md:pb-8 max-md:pt-16">
         <div class="flex w-full flex-col items-center gap-4 rounded-[var(--radius-l)] bg-surface-accent-alt-subtle px-10 py-8 max-md:px-0">
           <div class="flex flex-col items-center text-center max-md:gap-0">
             <p class="text-h3 text-text-primary max-md:text-m-h3">Подпишитесь на нас в соцсетях</p>
