@@ -96,6 +96,16 @@ function setStep(n, { scroll = true } = {}) {
   }
 }
 
+// Стрелка в модальной шапке ведёт на шаг назад, а не из страницы: ниже `md`
+// каждый шаг — отдельный экран (2029:126838 → 2032:158435 → 2082:145162), и
+// возврат с шага 2 к выбору магазина иначе недоступен вовсе. С нулевого шага
+// уходим со страницы — там назад уже некуда.
+page.querySelector("[data-order-back]")?.addEventListener("click", () => {
+  if (step > 0) setStep(step - 1);
+  else if (history.length > 1) history.back();
+  else window.location.href = "catalog.html";
+});
+
 // шаг 0 → 1: both the summary button and the mobile bar carry the same hook
 page.querySelectorAll("[data-order-submit]").forEach((b) =>
   b.addEventListener("click", () => setStep(1))
@@ -132,7 +142,13 @@ const sheet = initStoreSheet({
   sheet: page.querySelector("[data-store-panel]"),
   track: page.querySelector("[data-map-frame]"),
   grip: page.querySelector("[data-sheet-grip]"),
+  // На шаге выбора магазина крестик над картой появляется вместе с поднятым
+  // листом (2059:169141) и гасит его обратно.
+  raiseClose: true,
 });
+// Лист нужен блоку салонов, чтобы поднимать его под карточку магазина —
+// отдельный шаг визарда (2397:152957).
+map.attachSheet(sheet);
 
 pickDone?.addEventListener("click", () => picked && setStep(2));
 page.querySelector("[data-change-store]")?.addEventListener("click", () => setStep(1));

@@ -145,7 +145,7 @@
       <section data-step-section="1" hidden>
         <div class="page-x max-md:hidden">
           <!-- alert 1604:72204 — 40px band, `surface-accent-subtle`, radius n -->
-          <div class="flex h-10 items-center gap-4 rounded-n bg-surface-accent-subtle px-4" data-alert>
+          <div class="flex h-10 items-center gap-2 rounded-n bg-surface-accent-subtle px-4" data-alert>
             <img src="../../assets/order/icon-info-dark.svg" alt="" class="size-4 shrink-0" />
             <p class="flex-1 text-body-n text-text-primary">
               Обращаем внимание покупателей, что 22.07.2026 мы работаем по сокращенному графику!
@@ -173,8 +173,11 @@
            different copy, plus an "Изменить выбор" link back to шаг 1. -->
       <section data-step-section="2" hidden>
         <div class="page-x max-md:hidden">
-          <div class="flex h-10 items-center gap-4 rounded-n bg-surface-accent-subtle px-4">
-            <img src="../../assets/order/icon-info-dark.svg" alt="" class="size-4 shrink-0" />
+          <!-- Значок этой плашки — `check`, а не `info`: инстанс 953:121000
+               переопределяет его (у шага 0 и у «сокращённого графика» остаётся
+               info). Зазор до текста 8. -->
+          <div class="flex h-10 items-center gap-2 rounded-n bg-surface-accent-subtle px-4">
+            <img src="../../assets/header/icon-check.svg" alt="" class="size-4 shrink-0" />
             <p class="flex-1 text-body-n text-text-primary">
               Вы выбрали <span data-picked-store></span>
             </p>
@@ -184,25 +187,31 @@
           </div>
         </div>
 
-        <div class="page-x pt-16 max-md:hidden">
-          <h2 class="text-h2 text-text-primary">Шаг 2 из 2. Контактные данные.</h2>
-          <div class="h-2"></div>
-          <p class="text-body-n-accent text-text-primary">Пожалуйста, укажите контактные данные для связи!</p>
+        <!-- Подзаголовок есть и на 360 (additional-text 2082:145505, 20/24) —
+             там он первая строка формы, поэтому от `max-md:hidden` свободен, в
+             отличие от H2. Слово «ваши» — из мобильного фрейма; на 1440
+             дизайнер его не пишет, расхождение записано в BACKLOG.md. -->
+        <div class="page-x pt-16 max-md:pt-10">
+          <h2 class="text-h2 text-text-primary max-md:hidden">Шаг 2 из 2. Контактные данные.</h2>
+          <div class="h-2 max-md:hidden"></div>
+          <p class="text-body-l text-text-primary max-md:leading-6">
+            Пожалуйста, укажите ваши контактные данные для связи!
+          </p>
         </div>
 
-        <div class="page-x pt-6 max-md:pt-4">
+        <div class="page-x pt-6">
           <!-- 1360×520 card: form on the left, photo bleeding to the right edge
                (953:59157). Below `md` the photo is gone and the form is the
                whole panel (2082:145239). -->
           <div class="flex h-[520px] overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-md:h-auto max-md:border-0">
             <form id="order-form" class="flex w-[535px] shrink-0 flex-col gap-4 px-10 py-8 max-md:w-full max-md:px-0 max-md:py-0" data-order-form>
-              <div class="flex flex-col gap-6 max-md:gap-4">
+              <div class="flex flex-col gap-6">
                 <label class="flex flex-col gap-1">
-                  <span class="text-body-s text-text-primary max-md:text-m-body-s">Ваше имя*</span>
+                  <span class="text-body-s text-text-primary">Ваше имя*</span>
                   <input type="text" name="name" required placeholder="Введите ваше имя" class="order-input" />
                 </label>
                 <label class="flex flex-col gap-1">
-                  <span class="text-body-s text-text-primary max-md:text-m-body-s">Телефон*</span>
+                  <span class="text-body-s text-text-primary">Телефон*</span>
                   <input type="tel" name="phone" required placeholder="+7" class="order-input" />
                   <span class="text-body-s text-text-secondary max-md:text-m-body-s">
                     На этот номер вам позвонит менеджер дилера для консультации подтверждения заказа,
@@ -210,7 +219,7 @@
                   </span>
                 </label>
                 <label class="flex flex-col gap-1">
-                  <span class="text-body-s text-text-primary max-md:text-m-body-s">Email*</span>
+                  <span class="text-body-s text-text-primary">Email*</span>
                   <input type="email" name="email" required placeholder="Введите e-mail" class="order-input" />
                   <span class="text-body-s text-text-secondary max-md:text-m-body-s">
                     На этот адрес вам будет выслан pdf документ заказа
@@ -227,7 +236,9 @@
 
               <button type="submit" class="btn btn-l btn-accent self-start max-md:hidden">
                 <span>Оформить заказ</span>
-                <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+                <!-- стрелка на коралловой кнопке белая: `arrow-right, color=light`
+                     (585:22188 в 1534:65690) -->
+                <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-6" />
               </button>
             </form>
 

@@ -69,11 +69,15 @@
           <button
             type="button"
             class="hidden size-10 shrink-0 items-center justify-center self-start"
-            data-city-back
+            data-panel-back
             aria-label="Назад к списку салонов"
           >
             <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
           </button>
+          <!-- Имя магазина в шапке — состояние «карточка магазина» на шаге
+               выбора дилера (2397:152957): слева стрелка назад, рядом имя, а
+               город и тумблер на это время уходят. -->
+          <span class="hidden h-8 items-center text-h3 text-text-primary max-md:text-m-h3" data-panel-title></span>
           <button type="button" class="flex h-8 items-center gap-1" data-city-toggle>
             <span
               class="text-h3 text-text-primary underline decoration-dotted decoration-1 underline-offset-4"
@@ -184,7 +188,7 @@
           <div class="flex flex-col gap-2 max-md:gap-1">
             <p class="text-h5 text-text-primary max-md:text-m-h4" data-detail-hours-title></p>
             <div class="flex gap-2">
-              <div class="flex w-[52px] flex-col gap-2 max-md:w-40 max-md:gap-1" data-detail-hours-labels></div>
+              <div class="flex w-[52px] flex-col gap-2 empty:hidden max-md:w-40 max-md:gap-1" data-detail-hours-labels></div>
               <div class="flex flex-col gap-2 max-md:w-40 max-md:gap-1" data-detail-hours-values></div>
             </div>
           </div>

@@ -218,8 +218,12 @@ function fillDetail(anchor, d) {
   // Розница», и у второго адреса метро может быть, когда у первого его нет.
   q("[data-detail-metro]")?.classList.toggle("hidden", !d.metro);
   text("[data-detail-route-label]", d.routeLabel);
-  text("[data-detail-dept-title]", d.dept.title);
-  text("[data-detail-hours-title]", d.hours.title);
+  // Карточку заполняют два разных источника: у Контактов это подробная запись
+  // склада, у шага «Выбор магазина» — обычный салон из data/stores.js, где
+  // ни двух колонок часов, ни почт нет. Поэтому всё необязательное — через
+  // `?.`, а пустые блоки просто не заполняются (см. BACKLOG.md).
+  text("[data-detail-dept-title]", d.dept?.title || "");
+  text("[data-detail-hours-title]", d.hours?.title || "");
 
   const rows = q("[data-detail-dept-rows]");
   if (rows) {
@@ -228,16 +232,18 @@ function fillDetail(anchor, d) {
       el.className = cls;
       return el;
     };
-    const nodes = d.dept.phones.map((p) => {
+    const nodes = (d.dept?.phones || []).map((p) => {
       const a = line("text-body-s text-text-primary", "a");
       a.href = `tel:${p.replace(/[^\d+]/g, "")}`;
       a.textContent = p;
       return a;
     });
-    const mail = line("text-body-n text-text-primary underline", "a");
-    mail.href = `mailto:${d.dept.email}`;
-    mail.textContent = d.dept.email;
-    nodes.push(mail);
+    if (d.dept?.email) {
+      const mail = line("text-body-n text-text-primary underline", "a");
+      mail.href = `mailto:${d.dept.email}`;
+      mail.textContent = d.dept.email;
+      nodes.push(mail);
+    }
     rows.replaceChildren(...nodes);
   }
 
@@ -251,10 +257,10 @@ function fillDetail(anchor, d) {
       return el;
     };
     labels.replaceChildren(
-      ...d.hours.rows.map(([l]) => span("text-body-s text-text-secondary", l))
+      ...(d.hours?.rows || []).map(([l]) => span("text-body-s text-text-secondary", l))
     );
     values.replaceChildren(
-      ...d.hours.rows.map(([, v]) => span("text-body-s text-text-primary", v))
+      ...(d.hours?.rows || []).map(([, v]) => span("text-body-s text-text-primary", v))
     );
   }
 }
@@ -287,59 +293,102 @@ export function renderStoresMap(anchor, opts) {
   // Читающие страницы: коралловая «Где купить» посреди карты раскрывает её на
   // весь экран с листом, крестик сворачивает обратно. Выбирающий режим этого не
   // получает — он и так раскрыт, а на Контактах кнопки нет.
-  if (!selectable && !contactPage) {
-    // «Москва» в шапке панели на читающих страницах — тот же селектор, что в
-    // шапке сайта. Атрибут вешаем отсюда, а не в партиале: на Контактах у этой
-    // же кнопки свой селектор (город опта / город области), и два обработчика
-    // на одном элементе конфликтовали бы.
+  // ---- селектор города в шапке панели ---------------------------------------
+  // Один и тот же список городов и на читающих страницах, и на шаге выбора
+  // магазина: ниже `md` он подменяет тело панели (Figma `type=city`
+  // 1859:335134), в шапке появляется стрелка назад. Раньше это работало только
+  // в читающем режиме, и «Москва» на шаге заказа не нажималась.
+  function wireCitySelector() {
     const cityBtn = anchor.querySelector("[data-city-toggle]");
-    if (cityBtn) {
-      cityBtn.querySelector("[data-panel-city]")?.setAttribute("data-city-label", "");
-      // Выше `md` город выбирают выпадашкой — её открывает общий компонент по
-      // этому атрибуту. Ниже `md` выпадашки нет: список ПОДМЕНЯЕТ тело панели,
-      // как нарисовано в `type=city` 1859:335134, а в шапке появляется стрелка
-      // назад. Поэтому атрибут вешаем только для десктопа, а мобильный путь
-      // ведём здесь.
-      const cityPanel = anchor.querySelector("[data-city-panel]");
-      const backBtn = anchor.querySelector("[data-city-back]");
-      const head = anchor.querySelector("[data-panel-head]");
-      const search = anchor.querySelector("[data-sheet-search]");
-      const hideForCity = [
-        anchor.querySelector("[data-store-list]"),
-        anchor.querySelector("[data-brand-only]")?.closest("div.flex.items-center"),
-      ];
+    if (!cityBtn) return null;
+    cityBtn.querySelector("[data-panel-city]")?.setAttribute("data-city-label", "");
 
-      const showCities = (on) => {
-        fillCityRows(cityPanel, document);
-        cityPanel?.classList.toggle("hidden", !on);
-        cityPanel?.classList.toggle("flex", on);
-        backBtn?.classList.toggle("hidden", !on);
-        backBtn?.classList.toggle("flex", on);
-        hideForCity.forEach((el) => el?.classList.toggle("hidden", on));
-        // Поле поиска показано вариантом `max-md:flex` — снять с него `hidden`
-        // мало, утилита с вариантом всё равно победит; гасим сам вариант.
-        search?.classList.toggle("max-md:flex", !on);
-        // Шапка в этом состоянии — одна строка, и стрелка с городом РАЗНЕСЕНЫ
-        // по краям: во фрейме `text-action` стоит на x=233 из 360, у правого
-        // края контента, а `icon-container` 40 — у левого (1859:335134).
-        head?.classList.toggle("max-md:flex-row", on);
-        head?.classList.toggle("max-md:items-center", on);
-        head?.classList.toggle("max-md:justify-between", on);
-        // И под шапкой возвращается линия: полноэкранный режим её снимает
-        // (`max-md:border-0`), а в состоянии города она есть — 1px #e7e7e7.
-        head?.classList.toggle("max-md:border-0", !on);
-      };
+    const cityPanel = anchor.querySelector("[data-city-panel]");
+    const backBtn = anchor.querySelector("[data-panel-back]");
+    const head = anchor.querySelector("[data-panel-head]");
+    const search = anchor.querySelector("[data-sheet-search]");
+    const hideForCity = [
+      anchor.querySelector("[data-store-list]"),
+      anchor.querySelector("[data-brand-only]")?.closest("div.flex.items-center"),
+    ];
 
-      cityBtn.setAttribute("data-city-open", "");
-      cityBtn.addEventListener("click", () => {
-        if (isMobileCity()) showCities(true);
-      });
-      backBtn?.addEventListener("click", () => showCities(false));
-      // Город выбран — список городов свою работу сделал.
-      document.addEventListener("city:change", () => showCities(false));
+    const showCities = (on) => {
+      fillCityRows(cityPanel, document);
+      cityPanel?.classList.toggle("hidden", !on);
+      cityPanel?.classList.toggle("flex", on);
+      backBtn?.classList.toggle("hidden", !on);
+      backBtn?.classList.toggle("flex", on);
+      hideForCity.forEach((el) => el?.classList.toggle("hidden", on));
+      search?.classList.toggle("max-md:flex", !on);
+      head?.classList.toggle("max-md:flex-row", on);
+      head?.classList.toggle("max-md:items-center", on);
+      head?.classList.toggle("max-md:justify-between", on);
+      head?.classList.toggle("max-md:border-0", !on);
+    };
 
-    }
+    cityBtn.setAttribute("data-city-open", "");
+    cityBtn.addEventListener("click", () => {
+      if (isMobileCity()) showCities(true);
+    });
+    backBtn?.addEventListener("click", () => showCities(false));
+    document.addEventListener("city:change", () => showCities(false));
+    return showCities;
+  }
 
+  const showCities = wireCitySelector();
+
+  // ---- шаг «карточка магазина» на выборе дилера ------------------------------
+  // В макете это отдельный экран визарда (2397:152957): тап по строке магазина
+  // подменяет тело листа его карточкой, в шапке появляется стрелка назад, а сам
+  // лист поднимается выше обеих обычных точек — полоса карты остаётся 50.
+  let detailOpen = false;
+
+  function wireStoreDetail(sheetApi) {
+    const backBtn = anchor.querySelector("[data-panel-back]");
+    const detail = anchor.querySelector("[data-store-detail]");
+    const list = anchor.querySelector("[data-store-list]");
+    const head = anchor.querySelector("[data-panel-head]");
+    const search = anchor.querySelector("[data-sheet-search]");
+
+    const cityBtn = anchor.querySelector("[data-city-toggle]");
+    const title = anchor.querySelector("[data-panel-title]");
+    const brandRow = anchor.querySelector("[data-brand-only]")?.closest("div.flex.items-center");
+
+    const show = (on, store, { snap = true } = {}) => {
+      detail?.classList.toggle("hidden", !on);
+      detail?.classList.toggle("flex", on);
+      list?.classList.toggle("hidden", on);
+      search?.classList.toggle("max-md:flex", !on);
+      backBtn?.classList.toggle("hidden", !on);
+      backBtn?.classList.toggle("flex", on);
+      // Город и тумблер на этом шаге уходят, вместо города — имя магазина.
+      cityBtn?.classList.toggle("hidden", on);
+      brandRow?.classList.toggle("hidden", on);
+      if (title) {
+        title.classList.toggle("hidden", !on);
+        title.classList.toggle("flex", on);
+        if (on && store) title.textContent = store.name;
+      }
+      head?.classList.toggle("max-md:flex-row", on);
+      head?.classList.toggle("max-md:items-center", on);
+      head?.classList.toggle("max-md:gap-1", on);
+      detailOpen = on;
+      if (!snap) return;
+      if (on) sheetApi?.peak?.(0.058);
+      else sheetApi?.expand?.();
+    };
+
+    backBtn?.addEventListener("click", () => show(false));
+    // Крестик над картой сворачивает лист целиком — и карточку магазина вместе
+    // с ним, иначе она осталась бы «открытой» под свёрнутой панелью.
+    sheetApi?.closeBtn?.addEventListener("click", () => {
+      if (detailOpen) show(false, null, { snap: false });
+      sheetApi.collapse?.();
+    });
+    return show;
+  }
+
+  if (!selectable && !contactPage) {
     let sheet = null;
     const closeBtn = anchor.querySelector("[data-map-close]");
     const open = (on) => {
@@ -418,7 +467,13 @@ export function renderStoresMap(anchor, opts) {
       // The sheet's card is the radio-and-ring variant; the desktop step-1 list
       // reuses the plain reading card, so both only differ below `md`.
       node.querySelector("[data-store-radio]")?.classList.add("max-md:flex");
-      node.querySelector("[data-chevron]")?.classList.add("max-md:hidden");
+      // Ниже `md` шеврон не прячется, а поворачивается вправо и становится
+      // входом в карточку магазина — отдельный шаг визарда (2397:152957).
+      const chev = node.querySelector("[data-chevron]");
+      if (chev) {
+        chev.classList.add("max-xl:hidden", "max-md:block", "max-md:-rotate-90");
+        chev.dataset.storeOpen = "";
+      }
     }
     const metroWrap = node.querySelector("[data-store-metro]");
     (s.metro || []).forEach((name) => {
@@ -631,6 +686,37 @@ export function renderStoresMap(anchor, opts) {
       renderList();
       buildMarkers();
       if (c) map?.setCenter(c, z ?? currentZoom, { duration: 450 });
+    },
+    // Лист создаёт страница (у него своя дорожка и свои точки прилипания),
+    // поэтому она же его сюда и отдаёт: без листа шеврону некуда поднимать
+    // карточку магазина.
+    attachSheet(sheetApi) {
+      if (!selectable) return;
+      const showDetailStep = wireStoreDetail(sheetApi);
+      listEl?.addEventListener(
+        "click",
+        (e) => {
+          const chev = e.target.closest("[data-store-open]");
+          if (!chev) return;
+          e.preventDefault();
+          e.stopPropagation();
+          const card = chev.closest("[data-store]");
+          const item = items.find((x) => x.id === card?.dataset.store) || items[0];
+          fillDetail(anchor, {
+            // имя печатается в шапке листа, в теле его гасим пустой строкой
+            name: "",
+            address: item.address,
+            metro: (item.metro || []).join(", "),
+            routeLabel: "Проложить маршрут",
+            // У салона из фикстуры есть одна строка часов и один телефон —
+            // двух колонок «Консультация / Самовывоз» и почт там нет.
+            dept: { title: "Телефон", phones: item.phone ? [item.phone] : [] },
+            hours: { title: "Часы работы", rows: item.hours ? [["", item.hours]] : [] },
+          });
+          showDetailStep(true, item);
+        },
+        true
+      );
     },
     // Панель показывает либо одну карточку адреса (опт), либо список магазинов
     // (розница) — это те же два тела, что у режимов `contact page` и обычного.

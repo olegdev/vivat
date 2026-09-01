@@ -18,7 +18,7 @@
 // набор. Поэтому набор передаётся, а не зашит.
 const SNAPS_ORDER = [0.557, 0.223];
 
-export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER }) {
+export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER, raiseClose = false }) {
   const SNAPS = snaps;
   if (!sheet || !track) return null;
 
@@ -31,11 +31,24 @@ export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER
   const trackH = () => track.getBoundingClientRect().height;
   const heightFor = (i) => Math.round(trackH() * (1 - SNAPS[i]));
 
+  // Крестик над картой рисуется только у поднятого листа: во фрейме свёрнутого
+  // шага (2032:158435) его нет, у поднятого (2059:169141) есть. Кнопка та же
+  // самая `close-panel`, что гасит раскрытую карту на читающих страницах, —
+  // отсюда флаг: там она видна всё время, пока карта раскрыта, и трогать её
+  // нельзя. Класс, а не правило в CSS: `hidden` — утилита, и правило из
+  // `@layer components` ей бы проиграло (SOLUTIONS.md › «Слои»).
+  const closeBand = raiseClose ? track.querySelector("[data-map-close]") : null;
+  const setBand = (on) => {
+    closeBand?.classList.toggle("hidden", !on);
+    closeBand?.classList.toggle("max-md:flex", on);
+  };
+
   function apply(i, { animate = true } = {}) {
     index = Math.min(SNAPS.length - 1, Math.max(0, i));
     sheet.style.transition = animate ? "height 220ms cubic-bezier(0.22, 0.61, 0.36, 1)" : "";
     sheet.style.height = `${heightFor(index)}px`;
     sheet.dataset.snap = index === 0 ? "collapsed" : "expanded";
+    setBand(index > 0);
     onSnap?.(sheet.dataset.snap);
   }
 
@@ -89,5 +102,15 @@ export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER
   // `sync` is public because the order page lays this out while шаг 1 is still
   // hidden — the track measures 0 then, and the sheet must be re-measured when
   // the step opens (same reason the map needs `refresh`).
-  return { sync, expand: () => apply(1), collapse: () => apply(0) };
+  // Карточка магазина поднимает лист выше обеих точек прилипания: во фрейме
+  // 2397:154868 полоса карты остаётся 50 из 722, то есть верх листа на 0.058.
+  // Перетаскивание при этом по-прежнему ходит между двумя обычными точками.
+  function peak(fraction) {
+    sheet.style.transition = "height 220ms cubic-bezier(0.22, 0.61, 0.36, 1)";
+    sheet.style.height = `${Math.round(trackH() * (1 - fraction))}px`;
+    sheet.dataset.snap = "expanded";
+    setBand(true);
+  }
+
+  return { sync, expand: () => apply(1), collapse: () => apply(0), peak, closeBtn: closeBand };
 }

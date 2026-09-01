@@ -155,6 +155,18 @@ Two things about it are worth not rediscovering:
   a full-screen map with a drag-snapped bottom sheet (`components/store-sheet.js`)
   where the reading pages show a 320px map. See SOLUTIONS.md › "A shared partial
   gains a mode from JS".
+- **Below `md` шаг 1 has three states of its own**, not one: the sheet collapsed
+  (2032:158435), raised over the list (2059:169141) and raised further under a
+  store's card (2397:152957). The card is the sheet's own head re-dressed — the
+  city and the «только фирменные» toggle go, the store's name takes their place
+  beside a back chevron — and it lifts the sheet above both snap points, to
+  0.058 of the track. While the sheet is raised the map strip carries the round
+  × of `close-panel`; it is the **same button** the reading pages use to close
+  the full-screen map, so `initStoreSheet` only touches it when the caller says
+  `raiseClose` — there it must stay lit the whole time the map is open.
+- **The modal header's chevron is a step back, not a way off the page.** Each
+  step below `md` is a whole screen, so шаг 2 → шаг 1 → шаг 0 → history; the ×
+  beside it leaves for the home page.
 
 Its own parts are the cart line (`partials/cart-card.html`, which also owns the
 quantity stepper — it exists nowhere else) and the summary
