@@ -1,13 +1,7 @@
 import "../../styles/app.css";
 import { mountCarousel } from "../../components/carousel.js";
 import { renderReviews } from "../../components/review-card.js";
-import {
-  initSummary,
-  initSpecTabs,
-  initSectionNav,
-  initStickyPrice,
-  initPhotoRail,
-} from "../../components/pdp.js";
+import { initSummary, initSpecTabs, initSectionNav, initStickyPrice, initPhotoRail, initPdpOrder } from "../../components/pdp.js";
 import { enableDragScroll } from "../../components/carousel.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
@@ -92,6 +86,13 @@ mountCarousel(
     id: "modules",
     title: "Модули",
     action: "Все модули Фьюжн",
+    // Каталог с фильтром «только модули» — тем же, что несёт переключателем
+    // дилерский каталог (docs/LINK-MAP.md §4.16).
+    href: "catalog.html?modules=1",
+    // Страница модуля одна на весь сайт и лежит у покупателя: дилерского
+    // фрейма у неё нет вовсе (CLAUDE.md). Поэтому карточки этого рельса —
+    // единственные, чей адрес приходится задавать явно.
+    cardHref: "../customer/pdp-module.html",
     variant: "modul",
     arrowTop: 97, // centred on the card's 242px image box
   },
@@ -105,6 +106,7 @@ mountCarousel(
     tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
     variant: "other-s",
     desktopAction: false,
+    href: "catalog.html",
     arrowTop: 97,
     endpoint: "/product/fusion-05/addons", // tab seam target
   },
@@ -128,7 +130,7 @@ mountCarousel(
 
 mountCarousel(
   document.querySelector('[data-section="collection"]'),
-  { title: "Вся коллекция Фьюжн", action: "В раздел" },
+  { title: "Вся коллекция Фьюжн", action: "В раздел", href: "catalog.html?collection=Фьюжн" },
   collection
 );
 
@@ -166,3 +168,6 @@ document.querySelector("[data-seo-title]").textContent =
 
 initModals();
 initCitySelect();
+
+// «Сформировать заказ»: в корзину и на оформление (LINK-MAP §4.1).
+initPdpOrder(product);

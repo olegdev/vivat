@@ -21,7 +21,12 @@ export function initModuleSummary(product) {
   root.querySelector("[data-module-packaging-label]").textContent = product.packagingLabel;
   root.querySelector("[data-module-size]").textContent = product.size;
   root.querySelector("[data-module-order]").textContent = product.cta;
-  root.querySelector("[data-module-notice]").textContent = product.notice;
+  // «Получить оптовую цену» — не страница, а заявка: открывает готовую модалку
+  // «Стать дилером». Прототипа на ссылке в макете нет, решение записано в
+  // docs/LINK-MAP.md §4.17.
+  const notice = root.querySelector("[data-module-notice]");
+  notice.textContent = product.notice;
+  notice.dataset.modalOpen = "dealer-request";
   // Цена — добавка клиента поверх макета; поля необязательные, поэтому пустые
   // значения просто не печатаются (у `empty:hidden` в разметке).
   root.querySelector("[data-module-price]").textContent = product.price || "";

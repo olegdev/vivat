@@ -131,7 +131,7 @@
         <a class="text-body-s-accent text-text-link-highlighted" href="#" data-modal-open="dealer-request"
           >Стать дилером</a
         >
-        <a class="text-body-s-accent text-text-primary" href="#">Для бизнеса</a>
+        <a class="text-body-s-accent text-text-primary" href="../dealer/howto.html">Для бизнеса</a>
         <a class="flex items-center gap-1 text-body-s-accent text-text-primary" href="#" data-modal-open="dealer-login"
           >Войти в режим дилера
           <img src="../../assets/header/icon-arrow-right.svg" alt="" class="size-4" />
@@ -208,7 +208,7 @@
         <!-- На планшете полоса уже (501 против 1013), и три хвостовые ссылки в
              неё не входят: во фрейме `dealer-menu2` 2490:151061 остаются только
              тумблер и выбор прайс-листа, а `for-business` схлопнут в 1px. -->
-        <a class="shrink-0 text-body-s-accent text-text-link-highlighted max-xl:hidden" href="#">Для бизнеса</a>
+        <a class="shrink-0 text-body-s-accent text-text-link-highlighted max-xl:hidden" href="../dealer/howto.html">Для бизнеса</a>
         <a class="shrink-0 text-body-s-accent text-text-inverse-primary max-xl:hidden" href="#">Мой кабинет</a>
 
         <a class="shrink-0 text-body-s-accent text-text-inverse-primary max-xl:hidden" href="#">Выход</a>
@@ -291,9 +291,9 @@
                  (Конструктор / Контакты). «Весь каталог» общий. -->
             <a href="catalog.html" class="btn btn-m btn-ghost group-data-[user=dealer]:hidden">Кухни</a>
             <a href="action.html" class="btn btn-m btn-ghost group-data-[user=dealer]:hidden">Акции</a>
-            <a href="#" class="btn btn-m btn-ghost group-data-[user=dealer]:hidden">Где купить</a>
+            <a href="main.html#where" class="btn btn-m btn-ghost group-data-[user=dealer]:hidden">Где купить</a>
             <a href="#" class="btn btn-m btn-ghost hidden group-data-[user=dealer]:flex">Конструктор</a>
-            <a href="#" class="btn btn-m btn-ghost hidden group-data-[user=dealer]:flex">Контакты</a>
+            <a href="../dealer/contacts.html" class="btn btn-m btn-ghost hidden group-data-[user=dealer]:flex">Контакты</a>
           </nav>
         </div>
         <!-- search — a real GET form; `name="q"` is the query contract the Blade
@@ -323,12 +323,12 @@
            an in-flow sibling and the control grows to 52 when it shows; the
            variant here is `design=dark`. See SOLUTIONS.md › "Badges are layout,
            not overlay". -->
-      <button class="flex h-11 shrink-0 items-center" data-cart aria-label="Корзина">
+      <a href="order.html" class="flex h-11 shrink-0 items-center" data-cart aria-label="Корзина">
         <span class="icon-btn">
           <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" />
         </span>
         <span data-cart-count class="badge-number badge-number--dark -ml-3 hidden self-start">0</span>
-      </button>
+      </a>
     </div>
   </div>
 </header>

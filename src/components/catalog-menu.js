@@ -8,6 +8,7 @@
 // their designs land — the render/interaction layer already handles them.
 
 import { categories } from "../data/catalog-menu.js";
+import { catalogHref } from "./links.js";
 export { categories };
 
 let ICON = "../../assets/header";
@@ -21,9 +22,13 @@ export function setCatalogIconBase(base) {
 // clones and fills them (the future @foreach body).
 const clone = (sel) => document.querySelector(sel).content.firstElementChild.cloneNode(true);
 
-function buildItem(label, { active = false } = {}) {
+// Каждая строка меню — запрос к каталогу: рубрика, коллекция или фильтр.
+// В прототипе фильтровать нечем, но параметр пишется настоящий — это тот же
+// шов, что у фильтров каталога и у вкладок рельсов (docs/LINK-MAP.md §4.7).
+function buildItem(label, { active = false, param = "category" } = {}) {
   const el = clone("[data-menu-item]");
   el.querySelector("[data-label]").textContent = label;
+  el.href = catalogHref(param, label);
   if (active) el.setAttribute("aria-current", "true");
   return el;
 }
@@ -31,6 +36,7 @@ function buildItem(label, { active = false } = {}) {
 function buildChip(label) {
   const el = clone("[data-menu-chip]");
   el.textContent = label;
+  el.href = catalogHref("filter", label);
   return el;
 }
 
@@ -65,7 +71,9 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
     const cat = categories[index];
 
     // column 2 — sub-tabs + chips
-    col2Sub.replaceChildren(...(cat.sub || []).map((s) => buildItem(s.label, { active: s.active })));
+    col2Sub.replaceChildren(
+      ...(cat.sub || []).map((s) => buildItem(s.label, { active: s.active, param: "view" }))
+    );
     col2Chips.replaceChildren(...(cat.chips || []).map(buildChip));
     const hasCol2 = !!(cat.sub?.length || cat.chips?.length);
     col2.classList.toggle("hidden", !hasCol2);
@@ -73,7 +81,9 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
 
     // column 3 — collections
     const hasCol3 = !!cat.collections?.length;
-    col3.replaceChildren(...(cat.collections || []).map((c) => buildItem(c)));
+    col3.replaceChildren(
+      ...(cat.collections || []).map((c) => buildItem(c, { param: "collection" }))
+    );
     col3.classList.toggle("hidden", !hasCol3);
     col3.classList.toggle("flex", hasCol3);
   }

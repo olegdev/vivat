@@ -104,10 +104,27 @@
         <span>Ваш регион:</span>
         <!-- `text-action size=s` (1209:95266): «Desktop/Button S», 14/18, and
              NOT underlined — the master's text style carries no decoration -->
-        <a href="#" class="inline-flex items-center gap-1 text-button-s text-text-primary">
-          <span>Москва</span>
-          <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-4" />
-        </a>
+        <!-- Это не ссылка на страницу, а тот же выбор города, что в шапке:
+             один список на весь сайт, и подпись правится сразу везде
+             (components/city-select.js). Выпадашка лежит здесь, а не в
+             партиале выбора города, потому что позиционируется от триггера, —
+             тем же приёмом, что «Москва» в служебной строке шапки. Ниже md
+             оба триггера открывают общий лист снизу. -->
+        <span class="relative inline-flex">
+          <button
+            type="button"
+            class="inline-flex items-center gap-1 text-button-s text-text-primary"
+            data-city-open
+            aria-expanded="false"
+          >
+            <span data-city-label>Москва</span>
+            <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-4" />
+          </button>
+          <span
+            class="absolute left-0 top-7 z-50 hidden max-h-80 w-[280px] overflow-y-auto rounded-[var(--radius-l)] bg-surface-inverted py-2 shadow-dropdown"
+            data-city-menu
+          ></span>
+        </span>
       </p>
       <p class="pt-4 text-body-n text-text-primary max-md:text-m-body-n">
         Самовывоз осуществляется с центрального склада — 16-й км МКАД, 50 метров от внешней

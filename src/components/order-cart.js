@@ -71,7 +71,11 @@ export function initOrderCart(root, { lines } = {}) {
     const img = node.querySelector("[data-line-image]");
     img.src = line.image;
     img.alt = line.title;
-    node.querySelector("[data-line-title]").textContent = line.title;
+    // В макете это обычный текст; ссылкой на товар сделано по решению клиента
+    // (docs/LINK-MAP.md §4.18).
+    const title = node.querySelector("[data-line-title]");
+    title.textContent = line.title;
+    title.href = line.href || "pdp.html";
     node.querySelector("[data-line-specs]").textContent = line.specs;
     node.querySelector("[data-line-color]").textContent = line.color;
     node.querySelector("[data-line-select]").checked = line.selected;

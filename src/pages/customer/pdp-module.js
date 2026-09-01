@@ -1,6 +1,6 @@
 import "../../styles/app.css";
 import { mountCarousel, enableDragScroll } from "../../components/carousel.js";
-import { initSpecTabs, initSectionNav, initStickyPrice } from "../../components/pdp.js";
+import { initSpecTabs, initSectionNav, initStickyPrice, initPdpOrder } from "../../components/pdp.js";
 import { renderReviews } from "../../components/review-card.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initModuleSummary } from "../../components/pdp-module.js";
@@ -45,7 +45,9 @@ mountCarousel(
     // «Все модули Фьюжн» (2488:127168). Я её ошибочно снял, прочитав пустой
     // `buttons` у кухонной PDP.
     action: railAction,
-    href: "catalog.html",
+    // Каталог с фильтром «только модули», как у рельса «Модули» на кухонной
+    // PDP (docs/LINK-MAP.md §4.16).
+    href: "catalog.html?modules=1",
     // `cards-modul` — отдельный компонент, а не размер общей карточки,
     // поэтому это `variant`, как и в кухонной PDP.
     variant: "modul",
@@ -94,3 +96,6 @@ initStickyPrice(product);
 
 initModals();
 initCitySelect();
+
+// «Сформировать заказ»: в корзину и на оформление (LINK-MAP §4.1).
+initPdpOrder(product);

@@ -89,6 +89,9 @@ export function initCatalogListing({ products, rub }) {
     // Same gallery as every other card on the site (photos + hover zones + dots),
     // filled by the shared component; only the unit around it is this page's own.
     fillGallery(node, p, { smallDots: true });
+    // Снимок и заголовок — ссылки на товар, как и в общей карточке. Адрес
+    // относительный, поэтому в дилерском каталоге он ведёт на дилерскую PDP.
+    node.querySelectorAll("[data-card-link]").forEach((a) => (a.href = p.href || "pdp.html"));
     const priceEl = node.querySelector("[data-card-price]");
     priceEl.textContent = rub(p.price);
     // База для дилерского пересчёта: applyPriceMode() умножает её на наценку.

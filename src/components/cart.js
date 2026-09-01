@@ -55,7 +55,9 @@ export function paintCartState(root = document) {
 }
 
 // THE SEAM. `id` / `qty` are the payload the server will receive.
-function addToCart(id, qty = 1) {
+// Exported because the PDP's "Сформировать заказ" is the one add that is not a
+// card button: it adds and then leaves for the order page (LINK-MAP §4.1).
+export function addToCart(id, qty = 1) {
   localStorage.setItem(KEY, String(getCount() + qty));
   if (id != null && id !== "") {
     const items = getItems();

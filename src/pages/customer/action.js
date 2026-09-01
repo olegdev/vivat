@@ -42,6 +42,7 @@ mountCarousel(
     desc: "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.",
     tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
     desktopAction: false, // the Figma title-block's `buttons` frame is empty
+    href: "catalog.html",
     mobileCard: "l",
     endpoint: "/action/popular", // tab seam target (see carousel.js initTabs)
   },

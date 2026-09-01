@@ -33,13 +33,13 @@ export const heroSlides = [
     sound: true,
     title: "Кухня Фьюжн<br>от 43 335₽",
     subtitle: "Самый темный графит",
-    cta: { label: "Смотреть коллекцию", href: "#" },
+    cta: { label: "Смотреть коллекцию", href: "catalog.html" },
   },
   {
     image: `${HOME}/hero-placeholder.svg`,
     title: "Кухня Мальмо<br>от 58 900₽",
     subtitle: "Скандинавский дуб",
-    cta: { label: "Смотреть коллекцию", href: "#" },
+    cta: { label: "Смотреть коллекцию", href: "catalog.html" },
   },
   {
     video: `${HOME}/hero-fusion.mp4`,
@@ -48,7 +48,7 @@ export const heroSlides = [
     sound: true,
     title: "Кухня Ривьера<br>от 71 200₽",
     subtitle: "Матовый терракот",
-    cta: { label: "Смотреть коллекцию", href: "#" },
+    cta: { label: "Смотреть коллекцию", href: "catalog.html" },
   },
 ];
 

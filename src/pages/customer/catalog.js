@@ -43,6 +43,7 @@ mountCarousel(
     // rows 360 + scroll 32 + button-container 52 с кнопкой «В раздел».
     desktopAction: false,
     action: "В раздел",
+    href: "catalog.html",
     // На 360 карточки идут одним рядом по 320 (cards-other 1968:237927), а не
     // двумя рядами по 152, как в рельсах главной.
     mobileCard: "l",

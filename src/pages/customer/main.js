@@ -37,7 +37,11 @@ initCart();
 
 const sections = {
   modular: {
-    cfg: { title: "Модульные кухни. Хиты продаж", desc: "Покупая модульную кухню, вы получаете самые выгодные цены!" },
+    cfg: {
+      title: "Модульные кухни. Хиты продаж",
+      desc: "Покупая модульную кухню, вы получаете самые выгодные цены!",
+      href: "catalog.html",
+    },
     items: modularItems,
   },
   popular: {
@@ -46,6 +50,7 @@ const sections = {
       desc: "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.",
       tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
       endpoint: "/catalog/popular", // tab seam target (see carousel.js initTabs)
+      href: "catalog.html",
     },
     items: popularItems,
   },
@@ -56,6 +61,7 @@ const sections = {
       action: "В каталог",
       // на 360 у этой кнопки своя копия (buttons 1968:150249)
       actionMobile: "В раздел",
+      href: "action.html",
     },
     items: akciiItems,
   },

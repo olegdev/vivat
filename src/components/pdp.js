@@ -6,6 +6,9 @@
 //   initSpecTabs()   the Характеристики panels (Описание/Модули/Состав/Документы)
 //   initSectionNav() the anchor bar over the photos, active state from scroll
 //   initStickyPrice()the bottom bar, shown once the order button is off-screen
+//   initPdpOrder()   «Сформировать заказ»: в корзину и на оформление
+
+import { addToCart } from "./cart.js";
 
 const clone = (sel) => document.querySelector(sel).content.firstElementChild.cloneNode(true);
 
@@ -239,4 +242,20 @@ export function initStickyPrice(product) {
     { threshold: 0 }
   );
   io.observe(anchor);
+}
+
+// ---- «Сформировать заказ» ---------------------------------------------------
+// Единственное добавление в корзину, которое ещё и уводит со страницы: кнопка
+// кладёт товар и открывает оформление (docs/LINK-MAP.md §4.1). Прототипа на ней
+// в макете нет — это решение клиента.
+//
+// Кнопок три и они одинаковые — в сводке и в обоих нижних барах, — поэтому
+// слушаем делегированно, тем же приёмом, что и сама корзина: бары появляются и
+// прячутся, а обработчик один и это переживает.
+export function initPdpOrder(product) {
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("[data-pdp-order]")) return;
+    addToCart(product.id ?? null, 1);
+    window.location.href = "order.html";
+  });
 }

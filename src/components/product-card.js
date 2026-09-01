@@ -7,6 +7,7 @@
 // hooks. This file only fills and wires — it never emits structure.
 
 import { demoGallery } from "../data/product-photos.js";
+import { catalogHref } from "./links.js";
 
 const BADGE_TONE = { new: "badge-new", hit: "badge-hit", discount: "badge-discount" };
 
@@ -30,6 +31,19 @@ const TEMPLATE = {
   "other-s": "[data-pcard-other-s]",
   search: "[data-pcard-search]",
 };
+
+// ---- адреса -----------------------------------------------------------------
+// В карточке две ссылки на товар — снимок и заголовок, оба `[data-card-link]`, —
+// и одна на рубрику. Адрес приходит с товаром (`p.href`), как и будет в Blade
+// (`$product->url`); в прототипе товар один на весь сайт, поэтому запасное
+// значение — страница этого вида карточки. `cards-modul` — единственный
+// вариант, который ведёт не на кухонную PDP, а на страницу модуля.
+//
+// Ссылки относительные, поэтому у дилера те же `pdp.html` / `catalog.html`
+// сами разрешаются в дилерские (см. docs/LINK-MAP.md › «Правило адресации»).
+// Исключение — страница модуля: она одна на весь сайт и лежит у покупателя,
+// поэтому дилерские рельсы передают её адрес через `href` в опциях.
+const DEFAULT_HREF = { modul: "pdp-module.html" };
 
 // Fills a card's gallery: one image, one hover zone and one dot per photo, from
 // the templates in partials/product-card.html. Exported because the catalog grid
@@ -71,7 +85,7 @@ export function fillGallery(node, p, { smallDots = false } = {}) {
   });
 }
 
-function buildCard(p, { mobile = "s", variant } = {}) {
+function buildCard(p, { mobile = "s", variant, href } = {}) {
   const compact = !!p.category;
   const large = compact && mobile === "l";
   const smallTile = !variant && compact && !large; // the 152px mobile tile
@@ -81,6 +95,9 @@ function buildCard(p, { mobile = "s", variant } = {}) {
   );
 
   fillGallery(node, p, { smallDots: smallTile });
+
+  const cardHref = p.href || href || DEFAULT_HREF[variant] || "pdp.html";
+  node.querySelectorAll("[data-card-link]").forEach((a) => (a.href = cardHref));
 
   const badgesWrap = node.querySelector("[data-card-badges]");
   (p.badges || []).forEach((b) => {
@@ -105,7 +122,10 @@ function buildCard(p, { mobile = "s", variant } = {}) {
 
   // Each optional block is filled only if the chosen template carries its hook.
   const cat = node.querySelector("[data-card-category]");
-  if (cat && p.category) cat.textContent = `${p.category.label} ${p.category.count}`;
+  if (cat && p.category) {
+    cat.textContent = `${p.category.label} ${p.category.count}`;
+    cat.href = p.category.href || catalogHref("category", p.category.label);
+  }
 
   // cards-modul prints the size as a muted label over its value.
   const specLabel = node.querySelector("[data-card-speclabel]");
@@ -229,6 +249,14 @@ export function initProductCards(root) {
     // zone the pointer was released over.
     let startX = null;
     let handedOff = false;
+    // Снимок теперь ссылка, а палец по нему и листает, и «кликает»: без этого
+    // любой свайп по галерее уводил бы со страницы. Порог здесь маленький (8px,
+    // а не 60, которыми меряется листание) — это ответ на вопрос «жест или
+    // тап», а не «хватило ли жеста на кадр».
+    let dragged = false;
+    gallery.addEventListener("click", (e) => {
+      if (dragged) e.preventDefault();
+    });
     // Pointer capture throws if the pointer is already gone (a cancel racing a
     // release, synthetic events), which would abort the handler mid-drag.
     const capture = (fn, id) => {
@@ -244,12 +272,14 @@ export function initProductCards(root) {
       preload();
       startX = e.clientX;
       handedOff = false;
+      dragged = false;
       capture(gallery.setPointerCapture, e.pointerId);
     });
     gallery.addEventListener("pointermove", (e) => {
-      if (startX === null || handedOff) return;
+      if (startX === null) return;
       const dx = e.clientX - startX;
-      if (Math.abs(dx) < 60) return;
+      if (Math.abs(dx) >= 8) dragged = true;
+      if (handedOff || Math.abs(dx) < 60) return;
       const dir = dx < 0 ? 1 : -1;
       const next = index + dir;
       handedOff = true; // one element per gesture, whichever slider takes it

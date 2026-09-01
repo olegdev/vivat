@@ -19,6 +19,13 @@
      The gallery track and dots are filled per image, badges/swatches per datum;
      everything else is static markup.
 
+     ССЫЛКИ. На товар их две — снимок и заголовок, обе `[data-card-link]`, обе
+     настоящие <a> (в Blade это @foreach с `$product->url`). Точки галереи и
+     кнопка корзины лежат СНАРУЖИ обеих, поэтому вложенных интерактивных
+     элементов не возникает: точки — сосед галереи внутри коробки снимка,
+     кнопка — сосед заголовка в текстовом блоке. Свайп по снимку гасит переход
+     (components/product-card.js), иначе жест на мобиле уводил бы со страницы.
+
      Подложка #f8f8f8 стоит и на обёртке, и на самой дорожке. Дорожка едет
      трансформацией, а значит создаёт свой контекст наложения: `mix-blend-multiply`
      у снимка смешивается с тем, что нарисовано **внутри** этого контекста, и
@@ -28,10 +35,10 @@
 <template data-pcard>
   <article class="flex w-[438px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-xl:h-[242px] max-md:h-[238px]" data-card-gallery>
+      <a href="#" class="block relative h-[327px] w-full touch-pan-y overflow-hidden max-xl:h-[242px] max-md:h-[238px]" data-card-gallery data-card-link draggable="false">
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
-      </div>
+      </a>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto" data-card-dots></div>
     </div>
@@ -43,7 +50,7 @@
             <span class="text-h3 font-medium text-text-primary max-md:text-[18px] max-md:leading-[26px]" data-card-price></span>
             <span class="text-body-n text-text-muted line-through empty:hidden" data-card-oldprice></span>
           </div>
-          <p class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-n" data-card-title></p>
+          <a href="#" class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-n" data-card-title data-card-link></a>
         </div>
         <button type="button" data-add-to-cart class="icon-btn">
           <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" data-idle-only />
@@ -73,10 +80,10 @@
 <template data-pcard-compact>
   <article class="flex w-[438px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[152px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-xl:h-[242px] max-md:h-[111px]" data-card-gallery>
+      <a href="#" class="block relative h-[327px] w-full touch-pan-y overflow-hidden max-xl:h-[242px] max-md:h-[111px]" data-card-gallery data-card-link draggable="false">
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
-      </div>
+      </a>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto max-md:gap-1" data-card-dots></div>
     </div>
@@ -88,7 +95,7 @@
             <span class="text-h3 font-medium text-text-primary max-md:text-m-body-n-accent" data-card-price></span>
             <span class="text-body-n text-text-muted line-through max-md:text-m-body-s-crossed max-md:text-text-secondary empty:hidden" data-card-oldprice></span>
           </div>
-          <p class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-compact" data-card-title></p>
+          <a href="#" class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-compact" data-card-title data-card-link></a>
         </div>
         <button type="button" data-add-to-cart class="icon-btn max-md:hidden">
           <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" data-idle-only />
@@ -117,10 +124,10 @@
 <template data-pcard-compact-l>
   <article class="flex w-[438px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[327px] w-full touch-pan-y overflow-hidden max-xl:h-[242px] max-md:h-[238px]" data-card-gallery>
+      <a href="#" class="block relative h-[327px] w-full touch-pan-y overflow-hidden max-xl:h-[242px] max-md:h-[238px]" data-card-gallery data-card-link draggable="false">
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
-      </div>
+      </a>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto" data-card-dots></div>
     </div>
@@ -132,7 +139,7 @@
             <span class="text-h3 font-medium text-text-primary max-md:text-[18px] max-md:leading-[26px]" data-card-price></span>
             <span class="text-body-n text-text-muted line-through max-md:text-m-body-s-crossed max-md:text-text-secondary empty:hidden" data-card-oldprice></span>
           </div>
-          <p class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-n" data-card-title></p>
+          <a href="#" class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-n" data-card-title data-card-link></a>
         </div>
         <button type="button" data-add-to-cart class="icon-btn">
           <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" data-idle-only />
@@ -160,10 +167,10 @@
        весь ряд 273 высотой. -->
   <article class="flex w-[322px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[160px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[110px]" data-card-gallery>
+      <a href="#" class="block relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[110px]" data-card-gallery data-card-link draggable="false">
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
-      </div>
+      </a>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto" data-card-dots></div>
     </div>
@@ -174,7 +181,7 @@
             <span class="text-h3 font-medium text-text-primary max-md:text-[18px] max-md:leading-[26px]" data-card-price></span>
             <span class="text-body-n text-text-muted line-through empty:hidden max-md:text-m-body-s-crossed" data-card-oldprice></span>
           </div>
-          <p class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-n" data-card-title></p>
+          <a href="#" class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-n" data-card-title data-card-link></a>
           <div class="flex flex-col pt-1 max-md:pt-0.5">
             <span class="text-body-n text-text-secondary max-md:text-m-body-n" data-card-speclabel></span>
             <span class="text-body-n text-text-primary max-md:text-m-body-n" data-card-specvalue></span>
@@ -209,10 +216,10 @@
 <template data-pcard-other-s>
   <article class="flex w-[322px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
+      <a href="#" class="block relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery data-card-link draggable="false">
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
-      </div>
+      </a>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto" data-card-dots></div>
     </div>
@@ -223,7 +230,7 @@
             <span class="text-h3 font-medium text-text-primary max-md:text-[18px] max-md:leading-[26px]" data-card-price></span>
             <span class="text-body-n text-text-muted line-through empty:hidden max-md:text-m-body-s-crossed max-md:text-text-secondary" data-card-oldprice></span>
           </div>
-          <p class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-n" data-card-title></p>
+          <a href="#" class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-n" data-card-title data-card-link></a>
         </div>
         <button type="button" data-add-to-cart class="icon-btn">
           <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" data-idle-only />
@@ -255,10 +262,10 @@
 <template data-pcard-search>
   <article class="flex w-[322px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[152px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:aspect-[152/111] max-md:h-auto" data-card-gallery>
+      <a href="#" class="block relative h-[242px] w-full touch-pan-y overflow-hidden max-md:aspect-[152/111] max-md:h-auto" data-card-gallery data-card-link draggable="false">
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
-      </div>
+      </a>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto max-md:gap-1" data-card-dots></div>
     </div>
@@ -269,7 +276,7 @@
             <span class="text-h3 font-medium text-text-primary max-md:text-m-body-n-accent" data-card-price></span>
             <span class="text-body-n text-text-muted line-through max-md:text-m-body-s-crossed max-md:text-text-secondary empty:hidden" data-card-oldprice></span>
           </div>
-          <p class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-compact" data-card-title></p>
+          <a href="#" class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-compact" data-card-title data-card-link></a>
         </div>
         <button type="button" data-add-to-cart class="icon-btn max-md:hidden">
           <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" data-idle-only />

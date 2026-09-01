@@ -1,13 +1,7 @@
 import "../../styles/app.css";
 import { mountCarousel } from "../../components/carousel.js";
 import { renderReviews } from "../../components/review-card.js";
-import {
-  initSummary,
-  initSpecTabs,
-  initSectionNav,
-  initStickyPrice,
-  initPhotoRail,
-} from "../../components/pdp.js";
+import { initSummary, initSpecTabs, initSectionNav, initStickyPrice, initPhotoRail, initPdpOrder } from "../../components/pdp.js";
 import { enableDragScroll } from "../../components/carousel.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
@@ -87,6 +81,10 @@ mountCarousel(
     id: "modules",
     title: "Модули",
     action: "Все модули Фьюжн",
+    // Отдельной выдачи модулей в макете нет — это каталог с фильтром «только
+    // модули», тем же, что переключателем несёт дилерский каталог
+    // (docs/LINK-MAP.md §4.16).
+    href: "catalog.html?modules=1",
     variant: "modul",
     arrowTop: 97, // centred on the card's 242px image box
   },
@@ -103,6 +101,7 @@ mountCarousel(
     // `other-row` (1997:315101) does carry the full-width "В раздел" action —
     // the two breakpoints genuinely differ here.
     desktopAction: false,
+    href: "catalog.html",
     arrowTop: 97,
     endpoint: "/product/fusion-05/addons", // tab seam target
   },
@@ -129,7 +128,7 @@ mountCarousel(
 
 mountCarousel(
   document.querySelector('[data-section="collection"]'),
-  { title: "Вся коллекция Фьюжн", action: "В раздел" },
+  { title: "Вся коллекция Фьюжн", action: "В раздел", href: "catalog.html?collection=Фьюжн" },
   collection
 );
 
@@ -160,3 +159,6 @@ document.querySelector("[data-seo-title]").textContent =
 
 initModals();
 initCitySelect();
+
+// «Сформировать заказ»: в корзину и на оформление (LINK-MAP §4.1).
+initPdpOrder(product);

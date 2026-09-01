@@ -298,7 +298,9 @@ export function mountCarousel(anchor, cfg, items) {
   if (!anchor) return;
   anchor.replaceChildren(buildCarouselSection(cfg));
   const track = anchor.querySelector("[data-track]");
-  const cardOpts = { mobile: cfg.mobileCard, variant: cfg.variant };
+  // `href` у секции — адрес кнопки «В раздел», `cardHref` — адрес карточки.
+  // Разные вещи, поэтому в опции карточки первый не попадает.
+  const cardOpts = { mobile: cfg.mobileCard, variant: cfg.variant, href: cfg.cardHref };
   const render = cfg.render || renderCarousel;
   render(track, items, cardOpts);
   const carousel = initCarousel(anchor);

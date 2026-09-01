@@ -14,28 +14,33 @@
 // top one. State is expressed through ARIA / hidden, not class juggling.
 
 import { categories } from "./catalog-menu.js";
+import { catalogHref } from "./links.js";
 
 // ---- data -------------------------------------------------------------------
 // Root level of the burger menu (Figma 1997:255059 "menu-main-block"). The
 // dealer site passes its own set — same rows, dealer links at the bottom; see
 // src/data/dealer-home.js.
+// «Компания» и «Полезная информация» — заголовки веток подвала, а не страницы;
+// куда они должны вести из меню, не решено (BACKLOG), поэтому у них "#".
 const defaultRootSections = [
   { label: "Каталог", view: "catalog" },
-  { label: "Где купить", href: "#" },
+  { label: "Где купить", href: "main.html#where" },
   { label: "Компания", href: "#" },
   { label: "Полезная информация", href: "#" },
-  { label: "Для бизнеса", href: "#" },
-  { label: "Стать дилером", href: "#" },
+  { label: "Для бизнеса", href: "../dealer/howto.html" },
+  { label: "Стать дилером", href: "#", modal: "dealer-request" },
 ];
 
 // A category becomes drillable only when the shared catalog tree actually has
 // something below it — "Все кухни" plus the "По коллекциям" caption and list.
 function categoryChildren(cat) {
   const items = [];
-  if (cat.sub?.[0]) items.push({ label: cat.sub[0].label, href: "#" });
+  if (cat.sub?.[0]) items.push({ label: cat.sub[0].label, href: catalogHref("category", cat.name) });
   if (cat.collections?.length) {
     items.push({ label: "По коллекциям", caption: true });
-    items.push(...cat.collections.map((name) => ({ label: name, href: "#" })));
+    items.push(
+      ...cat.collections.map((name) => ({ label: name, href: catalogHref("collection", name) }))
+    );
   }
   return items;
 }
@@ -44,7 +49,7 @@ const catalogItems = categories.map((cat) => {
   const children = categoryChildren(cat);
   return children.length
     ? { label: cat.name, title: cat.name, items: children }
-    : { label: cat.name, href: "#" };
+    : { label: cat.name, href: catalogHref("category", cat.name) };
 });
 
 // ---- template helpers -------------------------------------------------------
@@ -63,6 +68,9 @@ function buildRow(item, index) {
   el.querySelector("[data-label]").textContent = item.label;
   el.dataset.menuIndex = String(index);
   if (!drill) el.href = item.href || "#";
+  // «Стать дилером» — не страница, а готовая модалка; обработчик делегирован
+  // на document в components/modals.js, поэтому хватает атрибута.
+  if (item.modal) el.dataset.modalOpen = item.modal;
   return el;
 }
 

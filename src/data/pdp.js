@@ -21,6 +21,10 @@ import { HOME, PDP } from "./asset-base.js";
 // The shape a Blade controller would hand the view. Four colours, the second
 // one chosen — that is the swatch the mock draws with a ring.
 export const product = {
+  // Идентификатор для корзины: «Сформировать заказ» кладёт товар тем же швом,
+  // что и карточки (components/cart.js). Тот же ключ уже стоит в endpoint
+  // рельса «Добавьте в корзину».
+  id: "fusion-05",
   title: "Кухня Фьюжн-05",
   size: "В*Ш*Г 2000 х 2170 х 600 мм, Материал МДФ",
   price: "43 335₽",

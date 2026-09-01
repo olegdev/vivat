@@ -81,8 +81,12 @@ for (const mount of tabMounts) mount.replaceChildren(...buildTabs());
 // ---- список новостей --------------------------------------------------------
 const tpl = document.querySelector("[data-news-item]");
 document.querySelector("[data-news]").replaceChildren(
-  ...NEWS.map((n) => {
+  ...NEWS.map((n, i) => {
     const node = tpl.content.cloneNode(true).firstElementChild;
+    // Якорь на отдельную новость: страницы одной новости в макете нет, и
+    // ссылаются на неё именно так — оповещение на дилерской главной ведёт на
+    // `news.html#news-1`. В Blade сюда встанет идентификатор записи.
+    node.id = n.id || `news-${i + 1}`;
     node.querySelector("[data-news-title]").textContent = n.title;
     node.querySelector("[data-news-date]").textContent = n.date;
     const body = node.querySelector("[data-news-body]");
@@ -107,6 +111,8 @@ document.querySelector("[data-news]").replaceChildren(
       phones.remove();
     }
 
+    // Ссылка осталась только у новостей со скачиванием: «Подробнее» вела в
+    // никуда и снята (BACKLOG). Адресов самих файлов макет не даёт.
     const action = node.querySelector("[data-news-action]");
     if (n.action) action.querySelector("span").textContent = n.action;
     else action.remove();

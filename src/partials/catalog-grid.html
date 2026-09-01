@@ -5,7 +5,10 @@
 
      Одна чистая карточка живёт в <template> ниже (это и есть будущее тело
      Blade @foreach); components/catalog-listing.js клонирует её на товар и
-     ничего не строит из строк. -->
+     ничего не строит из строк.
+
+     Ссылок на товар две — снимок и заголовок, обе `[data-card-link]`, как и в
+     общей карточке (partials/product-card.html). -->
 <template data-card-tpl>
   <article class="flex flex-col" data-card>
     <div class="relative overflow-hidden rounded-n bg-bg-subtle">
@@ -13,10 +16,10 @@
            тянется (322 → 404 на 1785), и 322/242 = 404/303.63 = 224/168.24 —
            одно и то же отношение на всех ширинах (2338:259415, 2500:178269,
            2483:232001). -->
-      <div class="relative aspect-[322/242] w-full touch-pan-y overflow-hidden max-md:aspect-[168/125]" data-card-gallery>
+      <a href="#" class="block relative aspect-[322/242] w-full touch-pan-y overflow-hidden max-md:aspect-[168/125]" data-card-gallery data-card-link draggable="false">
         <div class="flex h-full w-full transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
-      </div>
+      </a>
       <div data-card-badges class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1"></div>
       <!-- Filled per photo by fillGallery(); the dots the design draws here
            are the gallery's, not decoration. -->
@@ -35,7 +38,7 @@
                (2483:237851) строка цены 22 высотой при кегле 16 и «от» 14,
                описание 40 — две строки по 20. Десктопные 24 в 224-й карточке
                просто не помещаются и ломают цену на две строки. -->
-          <p data-card-title class="line-clamp-2 h-12 text-body-n text-text-primary max-xl:h-10 max-xl:text-m-body-compact"></p>
+          <a href="#" data-card-title data-card-link class="line-clamp-2 h-12 text-body-n text-text-primary max-xl:h-10 max-xl:text-m-body-compact"></a>
         </div>
         <button type="button" data-add-to-cart class="icon-btn max-md:hidden" aria-label="В корзину">
           <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" data-idle-only />
