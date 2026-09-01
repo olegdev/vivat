@@ -916,9 +916,13 @@
   }
 
   /* ---- Alert (`alert` size=l accent=yes, 922:126604; mobile 1997:313656) --- */
+  /* `alert` size=l accent=yes (922:126604): иконка 16, зазор до текста 8
+     (`text+icon` 1604:71920 — текст начинается на 24 при иконке 16). Крестика
+     в инстансах нет: `close-container` живёт в мастере, но ни 953:121000, ни
+     953:120987 его не показывают. */
   .pdp-alert {
-    @apply flex h-10 items-center gap-4 rounded-n bg-surface-accent-subtle px-4;
-    @apply max-md:h-[34px] max-md:gap-2;
+    @apply flex h-10 items-center gap-2 rounded-n bg-surface-accent-subtle px-4;
+    @apply max-md:h-[34px];
   }
 
   /* ---- Sticky price bar (`sticky-price` 1884:366292) -----------------------

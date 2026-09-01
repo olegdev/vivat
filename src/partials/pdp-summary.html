@@ -35,7 +35,15 @@
        the panel and their `order-*` applies against the price block too. Their
        own padding moves onto each block, since this wrapper has no box then. -->
   <div class="flex flex-col gap-4 p-6 max-xl:contents">
-    <h1 class="text-h3 text-text-primary max-xl:order-1 max-xl:px-6 max-xl:pb-2 max-md:px-4" data-pdp-title>Кухня Фьюжн-05</h1>
+    <!-- Заголовок и кнопка «поделиться» — одна строка (title 922:92247,
+         иконка 24 справа). Раньше слот иконки был белым по белому и мы его не
+         рисовали; в текущей версии макета (2238:153498) она тёмная и видна. -->
+    <div class="flex items-start gap-3 max-xl:order-1 max-xl:px-6 max-xl:pb-2 max-md:px-4">
+      <h1 class="min-w-0 flex-1 text-h3 text-text-primary" data-pdp-title>Кухня Фьюжн-05</h1>
+      <button type="button" class="flex size-6 shrink-0 items-center justify-center" aria-label="Поделиться">
+        <img src="../../assets/pdp/icon-share.svg" alt="" class="size-6" />
+      </button>
+    </div>
 
     <!-- colour swatches + the selected colour's name -->
     <div class="flex flex-col gap-2.5 max-xl:order-4 max-xl:px-6 max-xl:pb-4 max-md:px-4">
@@ -61,7 +69,11 @@
   <!-- Price block. Desktop: a divider inside the white card. Mobile: a
        `bg-subtle` card inset by 16px, and NO order button — the mobile CTA
        lives in the bottom bar (partials/sticky-price.html). -->
-  <div class="flex flex-col gap-3 border-t border-divider-light px-6 py-6 max-xl:order-5 max-xl:mx-6 max-xl:gap-3 max-xl:rounded-n max-xl:border-0 max-xl:bg-bg-subtle max-xl:p-6 max-md:mx-4 max-md:p-4">
+  <!-- Разделитель над ценой не доходит до краёв панели: в макете это верхняя
+       граница ВНУТРЕННЕГО контейнера 364 (922:92211, 1px #e7e7e7), то есть он
+       вставлен на те же 24, что и остальное содержимое. -->
+  <div class="flex flex-col px-6 max-xl:order-5 max-xl:mx-6 max-xl:rounded-n max-xl:bg-bg-subtle max-xl:px-0 max-md:mx-4">
+    <div class="flex flex-col gap-3 border-t border-divider-light py-6 max-xl:gap-3 max-xl:border-0 max-xl:p-6 max-md:p-4">
     <div class="flex items-center gap-4 max-md:gap-2">
       <div class="flex items-baseline gap-2">
         <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-md:text-m-body-n-accent">от</span>
@@ -80,6 +92,7 @@
       <img src="../../assets/pdp/icon-warning.svg" alt="" class="mt-0.5 size-4 shrink-0" />
       <span>Дилерская наценка может отличаться в зависимости от региона!</span>
     </p>
+    </div>
   </div>
 </aside>
 

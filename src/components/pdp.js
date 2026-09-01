@@ -127,10 +127,7 @@ export function initSpecTabs(data) {
     })
   );
 
-  // The alert is dismissible (the component carries a close ×).
-  section.querySelectorAll("[data-alert-close]").forEach((btn) =>
-    btn.addEventListener("click", () => btn.closest("[data-alert]").remove())
-  );
+
 }
 
 function specRow(row) {

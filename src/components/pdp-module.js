@@ -22,6 +22,11 @@ export function initModuleSummary(product) {
   root.querySelector("[data-module-size]").textContent = product.size;
   root.querySelector("[data-module-order]").textContent = product.cta;
   root.querySelector("[data-module-notice]").textContent = product.notice;
+  // Цена — добавка клиента поверх макета; поля необязательные, поэтому пустые
+  // значения просто не печатаются (у `empty:hidden` в разметке).
+  root.querySelector("[data-module-price]").textContent = product.price || "";
+  root.querySelector("[data-module-oldprice]").textContent = product.oldPrice || "";
+  root.querySelector("[data-module-discount]").textContent = product.discount || "";
 
   // ---- комплектация ---------------------------------------------------------
   const segWrap = root.querySelector("[data-module-packaging]");

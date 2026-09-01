@@ -30,7 +30,7 @@
 
          Общее с кухонной PDP — шапка, крошки, якорный бар, блок
          характеристик, зелёная полоса и подвал. -->
-    <div class="w-full max-xl:pb-[72px]">
+    <div class="w-full max-xl:pb-[136px] max-md:pb-[132px]">
       <!-- ==================== SITE HEADER ============================== -->
       <!--#include partials/header.html -->
 
@@ -45,6 +45,7 @@
 
       <!-- <template>s cloned by the sections below (inert markup) -->
       <!--#include partials/product-card.html -->
+      <!--#include partials/review-card.html -->
       <!--#include partials/carousel-section.html -->
 
       <!-- ==================== BREADCRUMBS ============================== -->
@@ -83,13 +84,26 @@
            всю ширину. -->
       <section class="page-x flex gap-12 max-xl:flex-col max-xl:gap-0 max-xl:px-0" id="photos">
         <div class="min-w-0 flex-1 max-xl:w-full max-xl:flex-none max-xl:px-6 max-md:px-2">
-          <div class="aspect-[900/671] overflow-hidden rounded-n bg-bg-subtle">
+          <!-- Плита #f8f8f8 под снимком — image-container 2488:127152; снимок
+               ложится на неё `multiply`, как карточки товара, иначе его белый
+               фон встаёт прямоугольником поверх плиты. -->
+          <div class="relative aspect-[900/671] overflow-hidden rounded-n bg-bg-subtle">
             <img
-              src="../../assets/pdp/module-base-2door-src.png"
+              src="../../assets/pdp/module-flat-2door-src.png"
               alt="Шкаф нижний с 2-мя дверцами Флэт"
-              class="size-full object-cover"
+              class="size-full object-cover mix-blend-multiply"
               data-module-photo
             />
+            <!-- Ниже `xl` сводка уходит под фото, и «поделиться» переезжает на
+                 сам снимок — так он нарисован в мобильном фрейме
+                 (2488:128732, 24px в правом нижнем углу кадра). -->
+            <button
+              type="button"
+              class="absolute bottom-2 right-2 hidden size-6 items-center justify-center max-xl:flex"
+              aria-label="Поделиться"
+            >
+              <img src="../../assets/pdp/icon-share.svg" alt="" class="size-6" />
+            </button>
           </div>
         </div>
 
@@ -105,6 +119,17 @@
       <!-- ==================== РЕЛЬС: Модули композиции ================= -->
       <div data-section="modules" id="modules"></div>
 
+      <!-- ==================== ОТЗЫВЫ И ГДЕ КУПИТЬ =====================
+           В макете этот блок есть, но скрыт (2488:127174 ⃠hidden-in-master),
+           при этом якорный бар несёт «Отзывы» и «Где купить». Оставлять две
+           ссылки в никуда клиент не захотел — блоки взяты с кухонной PDP,
+           решение записано в BACKLOG.md. -->
+      <div data-section="reviews"></div>
+
+      <div class="h-20 max-md:h-10"></div>
+
+      <div data-section="salony"><!--#include partials/stores.html --></div>
+
       <!-- 80px отбивка перед зелёной полосой (spacing 2488:132755) -->
       <div class="h-20"></div>
 
@@ -117,6 +142,11 @@
       <!-- ==================== FOOTER ================================== -->
       <!--#include partials/footer.html -->
     </div>
+
+    <!-- ==================== БАР С ЦЕНОЙ =============================
+         Ни в одном фрейме модуля его нет — добавлен по решению клиента, теми
+         же двумя барами, что у кухонной PDP. -->
+    <!--#include partials/sticky-price.html -->
 
     <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
     <!--#include partials/modals.html -->

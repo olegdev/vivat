@@ -1,6 +1,8 @@
 import "../../styles/app.css";
 import { mountCarousel, enableDragScroll } from "../../components/carousel.js";
-import { initSpecTabs, initSectionNav } from "../../components/pdp.js";
+import { initSpecTabs, initSectionNav, initStickyPrice } from "../../components/pdp.js";
+import { renderReviews } from "../../components/review-card.js";
+import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initModuleSummary } from "../../components/pdp-module.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
 import { initMobileMenu } from "../../components/mobile-menu.js";
@@ -8,7 +10,9 @@ import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initModals } from "../../components/modals.js";
 import { initCitySelect } from "../../components/city-select.js";
-import { ICON } from "../../data/asset-base.js";
+import { ICON, HOME } from "../../data/asset-base.js";
+import { stores } from "../../data/stores.js";
+import { reviews } from "../../data/pdp.js";
 import { product, specs, modules, railTitle, railAction } from "../../data/pdp-module.js";
 
 // ---- общий chrome, та же обвязка, что у остальных страниц -------------------
@@ -31,13 +35,15 @@ initModuleSummary(product);
 // «Где купить», — поэтому снимать здесь больше нечего.
 initSpecTabs({ specs, package: [] });
 enableDragScroll(document.querySelector("[data-spec-tabs]"));
-initSectionNav();
 
 // ---- рельс «Модули композиции …» ---------------------------------------------
 mountCarousel(
   document.querySelector('[data-section="modules"]'),
   {
     title: railTitle,
+    // Кнопка справа от заголовка в макете ЕСТЬ: `button-container` 216x44 с
+    // «Все модули Фьюжн» (2488:127168). Я её ошибочно снял, прочитав пустой
+    // `buttons` у кухонной PDP.
     action: railAction,
     href: "catalog.html",
     // `cards-modul` — отдельный компонент, а не размер общей карточки,
@@ -48,6 +54,43 @@ mountCarousel(
   },
   modules
 );
+
+// ---- Отзывы и «Где купить» ---------------------------------------------------
+// В макете модуля этот блок скрыт, но якорный бар на него ссылается — блоки
+// взяты с кухонной PDP по решению клиента (BACKLOG.md).
+mountCarousel(
+  document.querySelector('[data-section="reviews"]'),
+  {
+    id: "reviews",
+    title: "Отзывы",
+    count: reviews.length,
+    render: renderReviews,
+    desktopAction: false,
+    mobileAction: false,
+    mobileProgress: false,
+    arrowTop: 124,
+  },
+  reviews
+);
+
+const storesAnchor = document.querySelector('[data-section="salony"]');
+if (storesAnchor) {
+  setStoresMapBases({ home: HOME });
+  renderStoresMap(storesAnchor, {
+    stores,
+    title: "Где купить",
+    description:
+      "Купить этот модуль вы можете в наших фирменных магазинах и в дилерских центрах",
+    apiKey: import.meta.env?.VITE_YANDEX_MAPS_KEY || "73abf802-7fa6-4da1-bc36-7dd3457e4673",
+  });
+}
+
+// Якорный бар разрешает цели по id, а два из них рождаются рельсами выше,
+// поэтому он подключается последним.
+initSectionNav();
+
+// Бар с ценой — тоже добавка клиента; ведёт себя как у кухонной PDP.
+initStickyPrice(product);
 
 initModals();
 initCitySelect();

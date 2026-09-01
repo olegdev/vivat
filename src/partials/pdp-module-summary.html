@@ -29,7 +29,9 @@
   <div class="flex flex-col gap-4 p-6 max-xl:px-6 max-xl:py-4 max-md:px-4">
     <div class="flex items-start gap-3">
       <h1 class="min-w-0 flex-1 text-h3 text-text-primary" data-module-title></h1>
-      <button type="button" class="flex size-6 shrink-0 items-center justify-center" aria-label="Поделиться">
+      <!-- На 1440 «поделиться» стоит в сводке (2488:130062), ниже `xl` — на
+           самом снимке, как в мобильном фрейме. -->
+      <button type="button" class="flex size-6 shrink-0 items-center justify-center max-xl:hidden" aria-label="Поделиться">
         <img src="../../assets/pdp/icon-share.svg" alt="" class="size-6" />
       </button>
     </div>
@@ -43,7 +45,7 @@
     <!-- по одной группе на «Каркас» и «Фасад» -->
     <div class="flex flex-col gap-4" data-module-colors></div>
 
-    <div class="flex flex-col">
+    <div class="flex flex-col border-t border-divider-light pt-4">
       <p class="text-body-n text-text-primary" data-module-size></p>
       <a
         href="#specs"
@@ -55,12 +57,27 @@
 
   <!-- Низ: разделитель, кнопка во всю ширину и ссылка под ней
        (bottom 2488:130076 — padH 24, отбивка 24). -->
-  <div class="flex flex-col gap-3 border-t border-divider-light px-6 py-6 max-xl:py-4 max-md:px-4">
-    <button type="button" class="btn btn-m btn-primary w-full" data-module-order></button>
-    <p class="flex items-center justify-center gap-2 text-body-s text-text-secondary">
-      <img src="../../assets/pdp/icon-warning.svg" alt="" class="size-4 shrink-0" />
-      <a href="#" class="link-dotted" data-module-notice></a>
-    </p>
+  <!-- Разделитель — верхняя граница ВНУТРЕННЕГО контейнера (2488:130077,
+       1px #e7e7e7): он вставлен на те же 24, что и содержимое, а не идёт от
+       края до края панели. -->
+  <div class="flex flex-col px-6 max-md:px-4">
+    <div class="flex flex-col gap-3 border-t border-divider-light py-6 max-xl:py-4">
+      <!-- Цены в макете модуля нет — блок добавлен по решению клиента и
+           повторяет ценовой ряд кухонной сводки. -->
+      <div class="flex items-center gap-4">
+        <div class="flex items-baseline gap-2">
+          <span class="text-body-n-accent text-text-primary">от</span>
+          <span class="text-h3 text-text-primary" data-module-price></span>
+          <span class="text-body-n text-text-secondary line-through empty:hidden" data-module-oldprice></span>
+        </div>
+        <span class="badge badge-s badge-discount empty:hidden" data-module-discount></span>
+      </div>
+      <button type="button" class="btn btn-m btn-primary w-full" data-pdp-order data-module-order></button>
+      <p class="flex items-center justify-center gap-2 text-body-s text-text-primary">
+        <img src="../../assets/pdp/icon-warning.svg" alt="" class="size-4 shrink-0" />
+        <a href="#" class="link-dotted" data-module-notice></a>
+      </p>
+    </div>
   </div>
 </aside>
 

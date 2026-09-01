@@ -155,9 +155,12 @@
      image box as the other mobile cards. Sizes come from the Figma frames, not
      from scaling the 438px card. -->
 <template data-pcard-modul>
-  <article class="flex w-[322px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[320px] max-md:snap-start" data-card>
+  <!-- На мобиле это `cards-modul device=mobile size=m` — 160 шириной, а не
+       320: в рельсе «Модули» на 360 (1997:315097) их видно два с половиной, и
+       весь ряд 273 высотой. -->
+  <article class="flex w-[322px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[160px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[238px]" data-card-gallery>
+      <div class="relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[110px]" data-card-gallery>
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </div>

@@ -136,9 +136,6 @@ const sheet = initStoreSheet({
 
 pickDone?.addEventListener("click", () => picked && setStep(2));
 page.querySelector("[data-change-store]")?.addEventListener("click", () => setStep(1));
-page.querySelector("[data-alert-close]")?.addEventListener("click", (e) =>
-  e.target.closest("[data-alert]").remove()
-);
 
 // ---- шаг 2 → «Ваш заказ отправлен» ------------------------------------------
 // THE SEAM: submitOrder() is the one place the server call lands. Today it just

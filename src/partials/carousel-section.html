@@ -35,13 +35,17 @@
            (spacing 2477:151418), 40 на мобиле. -->
       <div class="h-20 max-xl:h-16 max-md:h-10"></div>
       <div class="flex items-start justify-between">
-        <div class="flex w-[783px] flex-col max-xl:w-auto max-xl:min-w-0 max-xl:flex-1 max-md:w-full">
+        <!-- Колонка заголовка тянется, а не держит 783: у длинных заголовков
+             («Модули композиции …», 1131 в 2488:127168) текст обязан лечь в
+             одну строку рядом с кнопкой. Описание при этом остаётся в 783 —
+             в макете оно живёт внутри `text-container`. -->
+        <div class="flex min-w-0 flex-1 flex-col max-md:w-full">
           <div class="flex min-h-11 items-center gap-3 max-md:min-h-6 max-md:gap-2">
             <h2 data-cs-title class="text-h2 text-text-primary max-md:text-m-h2"></h2>
             <span data-cs-count class="text-h2 text-text-muted max-md:text-m-h2"></span>
           </div>
           <div data-cs-desc-gap class="h-2 max-md:h-1"></div>
-          <p data-cs-desc class="text-body-n-accent text-text-primary max-md:text-m-body-n"></p>
+          <p data-cs-desc class="max-w-[783px] text-body-n-accent text-text-primary max-md:text-m-body-n"></p>
         </div>
         <div data-cs-desktop-action class="flex h-11 items-start px-2 max-md:hidden">
           <a data-cs-action href="#" class="btn btn-m btn-secondary">
