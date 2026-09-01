@@ -321,6 +321,15 @@ and **`B2b additional` is now built out**: the four modals plus Доставка
 3D-моделей. What is left is what the design does not draw — «Методические
 пособия» and four other menu entries have no frames. See `BACKLOG.md`.
 
+`src/pages/dealer/learning.html` — «Обучающие материалы», двенадцатая страница
+секции. Построена сразу в трёх ширинах: Figma `Learning` 2507:138626 (1440),
+2507:179457 (768) и 2507:178465 (360). Оболочка та же, что у соседей; своего у
+неё два блока — зелёная плашка подписки на вебинары (2507:178442, `#a4cebf`,
+кнопка открывает общее окно подписки) и сетка из восьми видеокарточек. Сетка
+меняет число колонок, а не ширину карточки: 4×197 на 1440, 3×223 на 768,
+2×156 на 360. Превью выгружены из макета; порядок выгрузки не совпал с
+порядком карточек, пары восстановлены по надписям на самих превью.
+
 Three of those pages share **`partials/doc-tree.html`** — a recursive tree of
 document groups (four levels deep on Схемы сборки). Two more share the
 catalog-shaped grid. Their fixtures are not typed by hand: `scripts/

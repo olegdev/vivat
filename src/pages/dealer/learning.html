@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Обучающие материалы (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@100;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./learning.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary" data-user="dealer">
+    <!-- «Обучающие материалы» — контентная страница дилерского раздела, сразу в
+         трёх ширинах: Figma `Learning` 2507:138626 (1440), 2507:179457 (768) и
+         2507:178465 (360).
+
+         Оболочка общая для всей секции `B2b additional`: заголовок «Для
+         бизнеса», general-container из меню и колонки, отбивка, подвал. Ниже
+         `xl` колонка меню уступает место листу — тому же, что у соседних
+         страниц.
+
+         Своего у страницы два блока: зелёная плашка подписки на вебинары
+         (section 2507:178442, #a4cebf) и сетка видеокарточек. Сетка меняет
+         число колонок по фреймам: 4 по 197 на 1440, 3 по 223 на 768, 2 по 156
+         на 360 — то есть карточка не тянется бесконечно, а колонок становится
+         меньше. -->
+    <div class="w-full max-xl:pb-[72px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/product-card.html -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- ==================== ЗАГОЛОВОК РАЗДЕЛА ======================== -->
+      <div class="page-x py-6 max-md:hidden">
+        <div class="flex h-11 items-center">
+          <h1 class="text-h1 text-text-primary">Для бизнеса</h1>
+        </div>
+      </div>
+
+      <!-- ==================== ШАПКА РАЗДЕЛА НИЖЕ `xl` =================== -->
+      <!--#include partials/for-business-header.html -->
+
+      <!-- ==================== МЕНЮ + КОЛОНКА =========================== -->
+      <div class="page-x flex gap-10 max-xl:flex-col max-xl:gap-0 max-xl:px-0">
+        <!--#include partials/menu-b2b.html -->
+
+        <div class="min-w-0 flex-1 px-20 max-xl:w-full max-xl:flex-none max-xl:px-6 max-md:px-4" data-content-column>
+          <h2 class="text-h2 text-text-primary max-md:hidden">Обучающие материалы</h2>
+
+          <!-- Плашка подписки — section 2507:178442: 124 высотой, заливка
+               #a4cebf, поля 40/32, заголовок и подзаголовок слева, тёмная
+               кнопка справа. Кнопка открывает то же окно подписки, что и
+               остальные точки входа на сайте. -->
+          <div
+            class="mt-4 flex items-center justify-between gap-4 rounded-n bg-accent-green-200 px-10 py-8 max-md:mt-3 max-md:flex-col max-md:items-start max-md:gap-3 max-md:px-4 max-md:py-5"
+          >
+            <div class="flex flex-col">
+              <p class="text-h4 text-text-primary max-md:text-m-h3">Подпишитесь на вебинары</p>
+              <p class="text-body-l text-text-primary max-md:text-m-body-l">чтобы не отставать!</p>
+            </div>
+            <button
+              type="button"
+              class="btn btn-m btn-primary shrink-0 max-md:w-full"
+              data-modal-open="subscribe"
+            >
+              Подписаться
+            </button>
+          </div>
+
+          <!-- Сетка видеокарточек (documents-content 2507:138635) -->
+          <div
+            class="mt-8 grid grid-cols-4 gap-6 max-xl:grid-cols-3 max-md:grid-cols-2 max-md:gap-4"
+            data-learning-grid
+          ></div>
+        </div>
+      </div>
+
+      <div class="h-24 max-md:h-20"></div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- одна видеокарточка (future @foreach($videos as $video)) -->
+    <template data-learning-card>
+      <a href="#" class="flex flex-col">
+        <div class="overflow-hidden rounded-n bg-bg-subtle">
+          <img alt="" class="aspect-[197/111] w-full object-cover" data-card-img />
+        </div>
+        <p class="px-1 py-3 text-body-n text-text-primary max-md:text-m-body-n" data-card-title></p>
+      </a>
+    </template>
+
+    <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
+    <!--#include partials/modals.html -->
+  </body>
+</html>
