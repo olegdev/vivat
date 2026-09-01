@@ -27,7 +27,7 @@
          is replaced by a modal-style bar (`header` 1859:338425 — back, title,
          close) whose title changes per step, and the red CTA moves into a bar
          above the bottom nav. -->
-    <div class="mx-auto w-full max-md:pb-[132px] md:w-[1440px]" data-order data-step="0">
+    <div class="w-full max-xl:pb-[132px]" data-order data-step="0">
       <!-- ==================== SITE HEADER (desktop only) =============== -->
       <div class="max-md:hidden">
         <!--#include partials/header.html -->
@@ -78,7 +78,7 @@
            overridden to "Мой заказ" and an empty `buttons` frame, i.e. no
            controls next to the heading. The mobile frames carry no H1 at all;
            the modal header above is their title. -->
-      <div class="px-10 pt-6 max-md:hidden">
+      <div class="page-x pt-6 max-md:hidden">
         <h1 class="text-h1 text-text-primary">Мой заказ</h1>
       </div>
       <div class="h-6 max-md:hidden"></div>
@@ -87,7 +87,7 @@
            Figma row 943:34149: the 990 cart panel and the 322 summary with a
            47px gutter inside the page's 40px margins. Below `md` the two stack
            and the panel goes full-bleed (2029:129023). -->
-      <section class="flex gap-[47px] px-10 max-md:flex-col max-md:gap-0 max-md:px-0" data-step-section="0">
+      <section class="page-x flex gap-[47px] max-xl:flex-col max-xl:gap-0 max-xl:px-0" data-step-section="0">
         <div class="min-w-0 flex-1">
           <div class="overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-md:rounded-none max-md:border-x-0 max-md:border-t-0">
             <!-- panel header 953:151121 — select-all + delete, print + share.
@@ -130,7 +130,7 @@
         <!-- Итоговая панель плавает вдоль списка позиций: выше `md` она
              `sticky` в 24px от верха и останавливается у нижнего края
              карточки корзины — решение клиента, в макете этого нет. -->
-        <aside class="w-[322px] shrink-0 self-start md:sticky md:top-6 max-md:w-full max-md:px-4 max-md:pt-4">
+        <aside class="w-[322px] shrink-0 self-start xl:sticky xl:top-6 max-xl:w-full max-xl:px-6 max-xl:pt-4 max-md:px-4">
           <!--#include partials/order-summary.html -->
         </aside>
       </section>
@@ -143,7 +143,7 @@
            partials/stores.html); the only thing this page adds above it is the
            alert band, which the mobile frames don't carry. -->
       <section data-step-section="1" hidden>
-        <div class="px-10 max-md:hidden">
+        <div class="page-x max-md:hidden">
           <!-- alert 1604:72204 — 40px band, `surface-accent-subtle`, radius n -->
           <div class="flex h-10 items-center gap-4 rounded-n bg-surface-accent-subtle px-4" data-alert>
             <img src="../../assets/order/icon-info-dark.svg" alt="" class="size-4 shrink-0" />
@@ -175,7 +175,7 @@
            band here confirms the pick instead of warning — same component,
            different copy, plus an "Изменить выбор" link back to шаг 1. -->
       <section data-step-section="2" hidden>
-        <div class="px-10 max-md:hidden">
+        <div class="page-x max-md:hidden">
           <div class="flex h-10 items-center gap-4 rounded-n bg-surface-accent-subtle px-4">
             <img src="../../assets/order/icon-info-dark.svg" alt="" class="size-4 shrink-0" />
             <p class="flex-1 text-body-n text-text-primary">
@@ -187,13 +187,13 @@
           </div>
         </div>
 
-        <div class="px-10 pt-16 max-md:hidden">
+        <div class="page-x pt-16 max-md:hidden">
           <h2 class="text-h2 text-text-primary">Шаг 2 из 2. Контактные данные.</h2>
           <div class="h-2"></div>
           <p class="text-body-n-accent text-text-primary">Пожалуйста, укажите контактные данные для связи!</p>
         </div>
 
-        <div class="px-10 pt-6 max-md:px-4 max-md:pt-4">
+        <div class="page-x pt-6 max-md:pt-4">
           <!-- 1360×520 card: form on the left, photo bleeding to the right edge
                (953:59157). Below `md` the photo is gone and the form is the
                whole panel (2082:145239). -->

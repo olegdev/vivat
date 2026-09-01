@@ -16,13 +16,13 @@
      `md`, so the fields flow ФИО → E-mail → ИНН → Телефон exactly as the 360
      frame draws them — no `order-*`, the same move the dealer catalog's
      settings bar makes. -->
-<form id="dealer-order-form" class="flex flex-col gap-4 px-10 max-md:gap-3 max-md:px-4" data-order-form>
+<form id="dealer-order-form" class="page-x flex flex-col gap-4 max-md:gap-3" data-order-form>
   <!-- ---- Контактные данные (1209:95241) -------------------------------- -->
-  <section class="w-[990px] rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-md:w-full max-md:px-4 max-md:py-5">
+  <section class="w-[990px] max-xl:w-full rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-xl:px-6 max-xl:py-6 max-md:px-4 max-md:py-5">
     <h3 class="text-h4 text-text-primary max-md:text-m-h3">Контактные данные</h3>
 
     <div class="flex gap-10 pt-6 max-md:contents">
-      <div class="flex w-[435px] flex-col gap-6 max-md:contents">
+      <div class="flex w-[435px] flex-col gap-6 max-xl:min-w-0 max-xl:flex-1 max-md:contents">
         <label class="flex flex-col gap-1 max-md:pt-4">
           <span class="text-body-s text-text-primary max-md:text-m-body-s">ФИО*</span>
           <input type="text" name="fio" required placeholder="Фамилия, имя, отчество" class="order-input" />
@@ -32,7 +32,7 @@
           <input type="email" name="email" required placeholder="example@example.com" class="order-input" />
         </label>
       </div>
-      <div class="flex w-[435px] flex-col gap-6 max-md:contents">
+      <div class="flex w-[435px] flex-col gap-6 max-xl:min-w-0 max-xl:flex-1 max-md:contents">
         <label class="flex flex-col gap-1 max-md:pt-4">
           <span class="text-body-s text-text-primary max-md:text-m-body-s">ИНН*</span>
           <input
@@ -56,10 +56,10 @@
        draws an open list and there is no mobile sheet for it — so the control
        ships with its placeholder only and the list is a question in BACKLOG.
        In Blade the options are an @foreach inside this <select>. -->
-  <section class="w-[990px] rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-md:w-full max-md:px-4 max-md:py-5">
+  <section class="w-[990px] max-xl:w-full rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-xl:px-6 max-xl:py-6 max-md:px-4 max-md:py-5">
     <h3 class="text-h4 text-text-primary max-md:text-m-h3">Оплата</h3>
 
-    <div class="relative w-[435px] pt-6 max-md:w-full max-md:pt-4">
+    <div class="relative w-[435px] pt-6 max-xl:w-full max-md:pt-4">
       <select name="payment" class="order-select" data-order-payment>
         <option value="">Не выбрано</option>
       </select>
@@ -73,7 +73,7 @@
 
   <!-- ---- Доставка (1209:95257 / 1415:67647) ----------------------------- -->
   <section
-    class="group/delivery w-[990px] rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-md:w-full max-md:px-4 max-md:py-5"
+    class="group/delivery w-[990px] max-xl:w-full rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-xl:px-6 max-xl:py-6 max-md:px-4 max-md:py-5"
     data-delivery="pickup"
   >
     <h3 class="text-h4 text-text-primary max-md:text-m-h3">Доставка</h3>
@@ -120,17 +120,17 @@
       class="hidden flex-col gap-6 pt-8 max-md:gap-4 max-md:pt-4 group-data-[delivery=delivery]/delivery:flex"
       data-delivery-form
     >
-      <label class="flex w-[435px] flex-col gap-1 max-md:w-full">
+      <label class="flex w-[435px] flex-col gap-1 max-xl:min-w-0 max-xl:flex-1 max-md:w-full">
         <span class="text-body-s text-text-primary max-md:text-m-body-s">Ф.И.О. получателя*</span>
         <input type="text" name="recipient" placeholder="Фамилия, имя, отчество" class="order-input" />
       </label>
 
       <div class="flex gap-10 max-md:contents">
-        <label class="flex w-[435px] flex-col gap-1 max-md:w-full">
+        <label class="flex w-[435px] flex-col gap-1 max-xl:min-w-0 max-xl:flex-1 max-md:w-full">
           <span class="text-body-s text-text-primary max-md:text-m-body-s">Телефон получателя*</span>
           <input type="tel" name="recipient_phone" value="+7 (999) 999-99-99" class="order-input" />
         </label>
-        <label class="flex w-[435px] flex-col gap-1 max-md:w-full">
+        <label class="flex w-[435px] flex-col gap-1 max-xl:min-w-0 max-xl:flex-1 max-md:w-full">
           <span class="text-body-s text-text-primary max-md:text-m-body-s">Адрес доставки*</span>
           <input type="text" name="address" placeholder="Введите адрес" class="order-input" />
         </label>
@@ -164,7 +164,7 @@
   </section>
 
   <!-- ---- Комментарий к заказу (1209:95268) ------------------------------ -->
-  <section class="w-[990px] rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-md:w-full max-md:px-4 max-md:py-5">
+  <section class="w-[990px] max-xl:w-full rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-xl:px-6 max-xl:py-6 max-md:px-4 max-md:py-5">
     <h3 class="text-h4 text-text-primary max-md:text-m-h3">Комментарий к заказу</h3>
 
     <textarea

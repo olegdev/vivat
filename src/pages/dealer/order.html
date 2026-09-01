@@ -26,7 +26,7 @@
          дилерская обвязка, корзина с модулями, сводка со «Способом оплаты» и
          «Доставкой» вместо «Итого», и форма на четыре карточки вместо шага 1
          (выбор магазина) и шага 2 (контакты). -->
-    <div class="mx-auto w-full max-md:pb-[132px] md:w-[1440px]" data-order>
+    <div class="w-full max-xl:pb-[132px]" data-order>
       <!-- ==================== SITE HEADER (desktop only) =============== -->
       <div class="max-md:hidden">
         <!--#include partials/header.html -->
@@ -72,7 +72,7 @@
       <!-- ==================== TITLE (desktop only) =====================
            title-block 1209:95221 — «Мой заказ», empty `buttons` frame. The 360
            frame carries no H1; the modal bar above is its title. -->
-      <div class="px-10 pt-6 max-md:hidden">
+      <div class="page-x pt-6 max-md:hidden">
         <h1 class="text-h1 text-text-primary">Мой заказ</h1>
       </div>
       <div class="h-6 max-md:hidden"></div>
@@ -81,7 +81,7 @@
            top 1209:95222: the 990 cart panel and the 322 summary with a 47px
            gutter inside the page's 40px margins. Below `md` the two stack and
            the panel goes full-bleed (2225:167285). -->
-      <section class="flex gap-[47px] px-10 max-md:flex-col max-md:gap-0 max-md:px-0">
+      <section class="page-x flex gap-[47px] max-xl:flex-col max-xl:gap-0 max-xl:px-0">
         <div class="min-w-0 flex-1">
           <div class="overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-md:rounded-none max-md:border-x-0 max-md:border-t-0">
             <!-- panel header 1209:95224 — select-all + delete, print + share.
@@ -126,7 +126,7 @@
         <!-- Итоговая панель плавает вдоль списка позиций: выше `md` она
              `sticky` в 24px от верха и останавливается у нижнего края
              карточки корзины — решение клиента, в макете этого нет. -->
-        <aside class="w-[322px] shrink-0 self-start md:sticky md:top-6 max-md:w-full max-md:px-4 max-md:pt-4">
+        <aside class="w-[322px] shrink-0 self-start xl:sticky xl:top-6 max-xl:w-full max-xl:px-6 max-xl:pt-4 max-md:px-4">
           <!--#include partials/order-summary.html -->
         </aside>
       </section>
@@ -135,7 +135,7 @@
 
       <!-- ==================== ВНЕСИТЕ ВАШИ ДАННЫЕ ======================
            Steps-order 1209:95232 / 2238:157273 — the form's title block. -->
-      <div class="px-10 pb-6 max-md:px-4 max-md:pb-4">
+      <div class="page-x pb-6 max-md:pb-4">
         <h2 class="text-h2 text-text-primary max-md:text-m-h2">Внесите ваши данные</h2>
         <div class="h-2"></div>
         <p class="text-body-n text-text-primary max-md:text-m-body-n">

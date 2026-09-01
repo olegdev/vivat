@@ -139,9 +139,11 @@
       </div>
 
       <!-- Dealer strip — `header-dealer` 586:57343 variant2, instanced at
-           877:93261: fixed 1013x44, flush to the canvas edge. -->
+           877:93261: fixed 1013x44, flush to the canvas edge. На планшете
+           полоса уже — 501 (2477:181001) — и так же прижата к правому краю,
+           радиус слева тот же 32. -->
       <div
-        class="-mr-10 hidden h-11 w-[1013px] shrink-0 max-xl:-mr-6 items-center gap-6 rounded-l-[32px] bg-components-strong px-6 group-data-[user=dealer]:flex"
+        class="-mr-10 hidden h-11 w-[1013px] shrink-0 items-center gap-6 rounded-l-[32px] bg-components-strong px-6 group-data-[user=dealer]:flex max-xl:-mr-6 max-xl:w-[501px] max-xl:gap-6 max-xl:px-6"
       >
         <button
           type="button"
@@ -203,10 +205,13 @@
 
         <span class="flex-1"></span>
 
-        <a class="shrink-0 text-body-s-accent text-text-link-highlighted" href="#">Для бизнеса</a>
-        <a class="shrink-0 text-body-s-accent text-text-inverse-primary" href="#">Мой кабинет</a>
+        <!-- На планшете полоса уже (501 против 1013), и три хвостовые ссылки в
+             неё не входят: во фрейме `dealer-menu2` 2490:151061 остаются только
+             тумблер и выбор прайс-листа, а `for-business` схлопнут в 1px. -->
+        <a class="shrink-0 text-body-s-accent text-text-link-highlighted max-xl:hidden" href="#">Для бизнеса</a>
+        <a class="shrink-0 text-body-s-accent text-text-inverse-primary max-xl:hidden" href="#">Мой кабинет</a>
 
-        <a class="shrink-0 text-body-s-accent text-text-inverse-primary" href="#">Выход</a>
+        <a class="shrink-0 text-body-s-accent text-text-inverse-primary max-xl:hidden" href="#">Выход</a>
       </div>
       </div>
     </div>
