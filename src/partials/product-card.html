@@ -26,6 +26,10 @@
      кнопка — сосед заголовка в текстовом блоке. Свайп по снимку гасит переход
      (components/product-card.js), иначе жест на мобиле уводил бы со страницы.
 
+     Третья ссылка — счётчик отзывов внизу карточки (`[data-card-reviews-link]`):
+     тот же товар, но с якорем `#reviews`, то есть сразу к отзывам. Оформления
+     у неё нет — макет не рисует ей ни ховера, ни подчёркивания.
+
      Подложка #f8f8f8 стоит и на обёртке, и на самой дорожке. Дорожка едет
      трансформацией, а значит создаёт свой контекст наложения: `mix-blend-multiply`
      у снимка смешивается с тем, что нарисовано **внутри** этого контекста, и
@@ -62,10 +66,10 @@
           <div class="flex items-center gap-2" data-card-swatches></div>
           <span class="text-body-s text-text-secondary empty:hidden" data-card-more></span>
         </div>
-        <div class="flex items-center gap-1">
+        <a href="#reviews" class="flex items-center gap-1" data-card-reviews-link aria-label="Отзывы">
           <span class="text-body-s text-text-secondary" data-card-comments></span>
           <img src="../../assets/header/icon-comment.svg" alt="" class="size-4" />
-        </div>
+        </a>
       </div>
     </div>
   </article>
@@ -197,10 +201,10 @@
           <div class="flex items-center gap-2" data-card-swatches></div>
           <span class="text-body-s text-text-secondary empty:hidden max-md:text-m-body-xs" data-card-more></span>
         </div>
-        <div class="flex items-center gap-1">
+        <a href="#reviews" class="flex items-center gap-1" data-card-reviews-link aria-label="Отзывы">
           <span class="text-body-s text-text-secondary max-md:text-m-body-xs" data-card-comments></span>
           <img src="../../assets/header/icon-comment.svg" alt="" class="size-4" />
-        </div>
+        </a>
       </div>
     </div>
   </article>
@@ -288,10 +292,10 @@
           <div class="flex items-center gap-2" data-card-swatches></div>
           <span class="text-body-s text-text-secondary empty:hidden max-md:text-m-body-xs" data-card-more></span>
         </div>
-        <div class="flex items-center gap-1">
+        <a href="#reviews" class="flex items-center gap-1" data-card-reviews-link aria-label="Отзывы">
           <span class="text-body-s text-text-secondary max-md:text-m-body-xs" data-card-comments></span>
           <img src="../../assets/header/icon-comment.svg" alt="" class="size-4" />
-        </div>
+        </a>
       </div>
       <div class="flex items-center gap-4 py-1 max-md:gap-0.5 has-[:empty]:hidden">
         <a href="#" class="text-body-s text-text-secondary underline decoration-from-font underline-offset-2 max-md:truncate max-md:text-m-body-xs" data-card-category></a>

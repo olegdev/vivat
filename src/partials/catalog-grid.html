@@ -7,8 +7,9 @@
      Blade @foreach); components/catalog-listing.js клонирует её на товар и
      ничего не строит из строк.
 
-     Ссылок на товар две — снимок и заголовок, обе `[data-card-link]`, как и в
-     общей карточке (partials/product-card.html). -->
+     Ссылок на товар три — снимок, заголовок (обе `[data-card-link]`) и счётчик
+     отзывов с якорем `#reviews`, как и в общей карточке
+     (partials/product-card.html). -->
 <template data-card-tpl>
   <article class="flex flex-col" data-card>
     <div class="relative overflow-hidden rounded-n bg-bg-subtle">
@@ -50,10 +51,10 @@
           <div data-card-swatches class="flex items-center gap-2 max-md:gap-1"></div>
           <span data-card-more class="text-body-s text-text-secondary empty:hidden max-xl:text-m-body-xs"></span>
         </div>
-        <div class="flex items-center gap-1">
+        <a href="#reviews" class="flex items-center gap-1" data-card-reviews-link aria-label="Отзывы">
           <span data-card-comments class="text-body-s text-text-secondary max-xl:text-m-body-xs"></span>
           <img src="../../assets/header/icon-comment.svg" alt="" class="size-4" />
-        </div>
+        </a>
       </div>
       <!-- full-width "в корзину" pill — mobile only (Figma малая плитка) -->
       <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-1.5 max-md:flex">

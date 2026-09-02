@@ -91,7 +91,11 @@ export function initCatalogListing({ products, rub }) {
     fillGallery(node, p, { smallDots: true });
     // Снимок и заголовок — ссылки на товар, как и в общей карточке. Адрес
     // относительный, поэтому в дилерском каталоге он ведёт на дилерскую PDP.
-    node.querySelectorAll("[data-card-link]").forEach((a) => (a.href = p.href || "pdp.html"));
+    const cardHref = p.href || "pdp.html";
+    node.querySelectorAll("[data-card-link]").forEach((a) => (a.href = cardHref));
+    // Счётчик отзывов — тот же товар, сразу к секции отзывов.
+    const reviews = node.querySelector("[data-card-reviews-link]");
+    if (reviews) reviews.href = `${cardHref.split("#")[0]}#reviews`;
     const priceEl = node.querySelector("[data-card-price]");
     priceEl.textContent = rub(p.price);
     // База для дилерского пересчёта: applyPriceMode() умножает её на наценку.

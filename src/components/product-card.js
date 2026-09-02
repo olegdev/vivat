@@ -45,6 +45,10 @@ const TEMPLATE = {
 // поэтому дилерские рельсы передают её адрес через `href` в опциях.
 const DEFAULT_HREF = { modul: "pdp-module.html" };
 
+// Адрес товара с якорем на отзывы. Собственный хвост адреса, если он вдруг
+// пришёл с фикстурой, заменяется — двух якорей в ссылке не бывает.
+const reviewsHref = (href) => `${href.split("#")[0]}#reviews`;
+
 // Fills a card's gallery: one image, one hover zone and one dot per photo, from
 // the templates in partials/product-card.html. Exported because the catalog grid
 // keeps its own card unit (the filter attributes ride on it) but the same
@@ -98,6 +102,11 @@ function buildCard(p, { mobile = "s", variant, href } = {}) {
 
   const cardHref = p.href || href || DEFAULT_HREF[variant] || "pdp.html";
   node.querySelectorAll("[data-card-link]").forEach((a) => (a.href = cardHref));
+  // Счётчик отзывов ведёт на тот же товар, но сразу к отзывам: у обеих PDP и у
+  // страницы модуля секция несёт id="reviews" (её выдаёт рельс отзывов).
+  node
+    .querySelectorAll("[data-card-reviews-link]")
+    .forEach((a) => (a.href = reviewsHref(cardHref)));
 
   const badgesWrap = node.querySelector("[data-card-badges]");
   (p.badges || []).forEach((b) => {

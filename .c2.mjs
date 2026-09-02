@@ -1,0 +1,21 @@
+import { chromium } from 'playwright';
+const dir='/tmp/claude-1000/-srv-vivat-dev/f00e3f24-dd90-440c-ae70-5698b9d6202a/scratchpad';
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 390, height: 844 } });
+const errs=[]; p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('http://localhost:4173/pages/customer/order.html');
+await p.waitForTimeout(1000);
+await p.evaluate(() => document.querySelector('[data-order-bar] [data-order-submit]').click());
+await p.waitForTimeout(900);
+await p.screenshot({ path: dir+'/c2-collapsed.png' });
+const r = await p.evaluate(() => {
+  const c = document.querySelector('[data-city-toggle]');
+  const rect = c.getBoundingClientRect();
+  return { top: Math.round(rect.top), visible: rect.top < innerHeight };
+});
+console.log('city trigger', JSON.stringify(r));
+await p.evaluate(() => document.querySelector('[data-city-toggle]').click());
+await p.waitForTimeout(600);
+await p.screenshot({ path: dir+'/c2-city-from-collapsed.png' });
+console.log('errs',errs);
+await b.close();

@@ -1,0 +1,20 @@
+import { chromium } from 'playwright';
+const dir='/tmp/claude-1000/-srv-vivat-dev/f00e3f24-dd90-440c-ae70-5698b9d6202a/scratchpad';
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 390, height: 844 } });
+const errs=[]; p.on('pageerror',e=>errs.push(String(e)));
+await p.goto('http://localhost:4173/pages/customer/order.html');
+await p.waitForTimeout(1000);
+await p.evaluate(() => document.querySelector('[data-order-bar] [data-order-submit]').click());
+await p.waitForTimeout(900);
+// поднять лист
+await p.evaluate(() => { const s=document.querySelector('[data-sheet-grip]'); s.dispatchEvent(new PointerEvent('pointerdown',{clientY:400,bubbles:true})); });
+await p.waitForTimeout(50);
+await p.evaluate(() => { const s=document.querySelector('[data-sheet-grip]'); s.dispatchEvent(new PointerEvent('pointerup',{clientY:400,bubbles:true})); });
+await p.waitForTimeout(600);
+await p.screenshot({ path: dir+'/c1-raised.png' });
+await p.evaluate(() => document.querySelector('[data-city-toggle]').click());
+await p.waitForTimeout(600);
+await p.screenshot({ path: dir+'/c1-city.png' });
+console.log('errs',errs);
+await b.close();
