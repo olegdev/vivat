@@ -23,7 +23,7 @@
       <video class="cat-media" style="--b:668px;--l:-34.78px;--t:-107px;--w:1102px;--h:620px;--ml:-147.2px;--mt:-21.94px;--mw:613.5px;--mh:345.16px;--tl:-178.58px;--tt:-29.5px;--tw:826.5px;--th:465px" src="../../assets/home/cat-kitchen.mp4" poster="../../assets/home/cat-kitchen-poster.jpg" autoplay muted loop playsinline></video>
       <div class="relative flex h-full flex-col justify-between px-6 py-4 max-md:px-4 max-md:py-3">
         <div class="flex flex-col">
-          <h2 class="text-[56px] font-semibold leading-none text-text-primary max-xl:text-h3 max-xl:leading-7 max-md:text-[16px] max-md:leading-[21px]">Кухни</h2>
+          <h2 class="text-[56px] font-semibold leading-[1.275] text-text-primary max-xl:text-h3 max-xl:leading-7 max-md:text-[16px] max-md:leading-[21px]">Кухни</h2>
           <div class="flex items-center gap-[7px]">
             <span class="text-body-l text-text-primary max-xl:text-body-n-accent max-md:text-m-body-n-accent">Скидки</span>
             <span class="badge badge-l badge-discount max-xl:h-6 max-xl:py-0 max-xl:pb-px max-xl:text-body-s-accent">- 15%</span>
@@ -124,11 +124,16 @@
     </article>
 
     <!-- all catalog (desktop only — absent from the 360px frame) -->
-    <article class="flex h-full min-w-0 flex-1 items-center justify-center overflow-hidden rounded-n border border-border-light bg-surface-inverted px-6 py-4 max-xl:hidden">
-      <a href="catalog.html" class="btn btn-m btn-white gap-1">
-        <span class="text-button-m text-text-primary">56 моделей</span>
-        <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-5" />
-      </a>
+    <!-- border+padding live on the inner div, not this flex-1 article: a
+         border-box flex item can't shrink below its own border+padding, so
+         keeping them here made this tile 50px wider than its three siblings. -->
+    <article class="relative h-full min-w-0 flex-1 max-xl:hidden">
+      <div class="flex h-full items-center justify-center overflow-hidden rounded-n border border-border-light bg-surface-inverted px-6 py-4">
+        <a href="catalog.html" class="btn btn-m btn-white gap-1">
+          <span class="text-button-m text-text-primary">56 моделей</span>
+          <img src="../../assets/header/arrow-right-20.svg" alt="" class="size-5" />
+        </a>
+      </div>
     </article>
   </div>
 </section>
