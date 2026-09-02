@@ -555,18 +555,18 @@
      Tailwind variants: the arbitrary `aria-[expanded=true]:` form is not
      emitted by the v4 scanner from these template literals. */
   .store-card {
-    @apply flex w-full flex-col border-b border-divider-light px-6 pb-3 pt-4;
+    @apply flex w-full flex-col border-b border-divider-light px-6 pb-3 pt-4 max-md:px-4;
     @apply text-left transition-colors hover:bg-bg-subtle;
   }
   .store-card[aria-current="true"] { @apply bg-bg-subtle; }
 
-  /* Picking a dealer for an order (order page, шаг 1): the design gives the
-     mobile `dealer-card/order` variant a focus ring and no separate "Выбрать"
-     button, and there is no desktop order variant at all — so the whole card is
-     the control at both widths and the ring is the only added affordance.
-     Nested under the modifier so the reading pages keep the plain highlight. */
+  /* Выбранный дилер на шаге 1 заказа — рамка, а не подсветка: 1px #414141 и
+     радиус 4, одинаково на обеих ширинах (`type=order, condition=selected`
+     946:122008 на 1440 и 1859:333418 на 360). Было кольцо в 2px.
+     Вложено в модификатор, чтобы читающие страницы сохранили обычную
+     подсветку. */
   .stores-select .store-card[aria-current="true"] {
-    @apply bg-surface-inverted ring-2 ring-inset ring-border-ring;
+    @apply rounded-n border border-border-active bg-surface-inverted;
   }
   .store-card [data-chevron] { @apply transition-transform; }
   .store-card[aria-expanded="true"] [data-chevron] { rotate: 180deg; }

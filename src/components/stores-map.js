@@ -125,6 +125,8 @@ function enterSelectMode(anchor) {
 
   // the step's own heading sits above the block on mobile, in the modal header
   q("[data-stores-head]")?.classList.add("max-md:hidden");
+  // Подзаголовок шага — 20/32 (953:120993), а не 16/22 читающих страниц.
+  swap(q("[data-stores-desc]"), ["text-body-n-accent"], ["text-body-l"]);
 
   // full-bleed, full-height map area below `md`
   swap(q("[data-map-wrap]"), ["max-md:px-4"], ["max-md:h-full", "max-md:px-0"]);
@@ -313,6 +315,7 @@ export function renderStoresMap(anchor, opts) {
     ];
 
     const showCities = (on) => {
+      cityOpen = on;
       fillCityRows(cityPanel, document);
       cityPanel?.classList.toggle("hidden", !on);
       cityPanel?.classList.toggle("flex", on);
@@ -335,6 +338,8 @@ export function renderStoresMap(anchor, opts) {
     return showCities;
   }
 
+  let cityOpen = false;
+  let showDetailStep = null;
   const showCities = wireCitySelector();
 
   // ---- шаг «карточка магазина» на выборе дилера ------------------------------
@@ -474,6 +479,10 @@ export function renderStoresMap(anchor, opts) {
         chev.classList.add("max-xl:hidden", "max-md:block", "max-md:-rotate-90");
         chev.dataset.storeOpen = "";
       }
+      // «Выбрать магазин» — только на 1440: в мобильной карточке её нет.
+      const pick = node.querySelector("[data-store-pick]");
+      pick?.classList.remove("hidden");
+      pick?.classList.add("md:inline-flex");
     }
     const metroWrap = node.querySelector("[data-store-metro]");
     (s.metro || []).forEach((name) => {
@@ -503,7 +512,9 @@ export function renderStoresMap(anchor, opts) {
     for (const card of listEl.querySelectorAll("[data-store]")) {
       const on = card.dataset.store === selectedId;
       card.setAttribute("aria-current", String(on));
-      card.setAttribute("aria-expanded", String(on));
+      // Выбор дилера карточку не разворачивает — в макете шеврон у выбранной
+      // смотрит вниз, как у всех (946:122008).
+      card.setAttribute("aria-expanded", String(on && !selectable));
       // Picking a dealer doesn't unfold hours/phone — the sheet's card has no
       // detail row and no chevron; reading the list still expands.
       card.querySelector("[data-details]").hidden = selectable || !on;
@@ -511,6 +522,18 @@ export function renderStoresMap(anchor, opts) {
       if (dot) {
         dot.classList.toggle("border-components-strong", on);
         dot.classList.toggle("border-8", on);
+      }
+      // Кнопка карточки меняет и подпись, и цвет (946:134818 → 953:55451).
+      const pick = card.querySelector("[data-store-pick]");
+      if (pick) {
+        pick.classList.toggle("bg-components-subtle", !on);
+        pick.classList.toggle("text-text-primary", !on);
+        pick.classList.toggle("bg-components-active-muted", on);
+        pick.classList.toggle("text-text-inverse-primary", on);
+        pick.querySelector("[data-store-pick-label]").textContent = on
+          ? "Магазин выбран"
+          : "Выбрать магазин";
+        pick.querySelector("[data-store-pick-icon]").classList.toggle("hidden", !on);
       }
       if (on && scroll) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
     }
@@ -672,6 +695,20 @@ export function renderStoresMap(anchor, opts) {
 
   return {
     select,
+    // Стрелка в модальной шапке заказа сначала закрывает подэкран листа —
+    // список городов или карточку магазина — и только потом уходит на
+    // предыдущий шаг. Возвращает true, если было что закрыть.
+    closeSubPanel() {
+      if (detailOpen) {
+        showDetailStep?.(false);
+        return true;
+      }
+      if (cityOpen) {
+        showCities?.(false);
+        return true;
+      }
+      return false;
+    },
     // The order page lays this block out while its step is still hidden, so
     // ymaps measures a zero-height container. Call this when the step opens.
     refresh() {
@@ -692,7 +729,7 @@ export function renderStoresMap(anchor, opts) {
     // карточку магазина.
     attachSheet(sheetApi) {
       if (!selectable) return;
-      const showDetailStep = wireStoreDetail(sheetApi);
+      showDetailStep = wireStoreDetail(sheetApi);
       listEl?.addEventListener(
         "click",
         (e) => {

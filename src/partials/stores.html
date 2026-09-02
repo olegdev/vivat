@@ -40,9 +40,12 @@
        `Frame 2087325510` 328x320 @16), поэтому вариант ограничен диапазоном
        планшета — `max-xl:` один покрывал бы и мобилу. -->
   <div class="page-x md:max-xl:px-0" data-map-wrap>
-    <!-- Рамка карты — 1px #cbcbcb и радиус 4 (map 2395:105929 у покупателя и
-         953:120995 у дилера, у обоих одинаково). Была тень и радиус 8. -->
-    <div class="relative flex overflow-hidden rounded-n border border-border-default max-md:rounded-none max-md:border-0" data-map-frame>
+    <!-- Рамки у карты нет: у инстанса `map` (2395:105929, 953:120995,
+         планшетный 2477:114285) обводка нарисована, но `strokeWeight: 0` —
+         видно только радиус 8 и тень внутреннего контейнера 946:117282
+         (DROP_SHADOW 0 4 17.6 rgba(0,0,0,.14) — это и есть `shadow-dropdown`).
+         Один раз уже было прочитано наоборот, по `strokePaints` без веса. -->
+    <div class="relative flex overflow-hidden rounded-[var(--radius-l)] shadow-dropdown max-md:shadow-none" data-map-frame>
       <!-- left panel -->
       <aside class="flex h-[680px] w-[440px] shrink-0 flex-col bg-surface-inverted max-md:hidden" data-store-panel>
         <!-- Sheet-only chrome (Figma 1821:331970 / 2059:169141): a drag handle
@@ -237,6 +240,19 @@
           <div data-store-metro class="flex flex-wrap gap-2 empty:hidden"></div>
         </div>
       </div>
+      <!-- Кнопка карточки на шаге выбора дилера: «Выбрать магазин» (серая,
+           946:134818) и «Магазин выбран» с белой стрелкой на #414141
+           (953:55451) у выбранной. Ниже `md` её нет — там карточку выбирает
+           радиокнопка. Это `span`, а не кнопка: карточка сама и есть кнопка,
+           вложить в неё вторую нельзя. -->
+      <span
+        data-store-pick
+        class="mt-1.5 hidden h-8 items-center gap-1.5 self-end rounded-pill bg-components-subtle px-3 text-body-s text-text-primary"
+      >
+        <span data-store-pick-label>Выбрать магазин</span>
+        <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="hidden size-4" data-store-pick-icon />
+      </span>
+
       <div data-details hidden class="flex flex-col gap-1 pt-3">
         <span data-store-hours class="text-body-s text-text-secondary"></span>
         <span data-store-phone class="text-body-s text-text-primary"></span>

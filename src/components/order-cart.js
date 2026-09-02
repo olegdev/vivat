@@ -30,8 +30,6 @@ function plural(n, one, few, many) {
   return `${n} ${many}`;
 }
 
-const isMobile = () => window.matchMedia("(max-width: 47.99rem)").matches;
-
 export function initOrderCart(root, { lines } = {}) {
   if (!root) return null;
 
@@ -99,7 +97,7 @@ export function initOrderCart(root, { lines } = {}) {
     node.querySelector("[data-stepper]").dataset.count = isLast ? "one" : "many";
     node
       .querySelector("[data-step-down]")
-      .setAttribute("aria-label", isLast && !isMobile() ? "Удалить из заказа" : "Уменьшить количество");
+      .setAttribute("aria-label", isLast ? "Удалить из заказа" : "Уменьшить количество");
   }
 
   function render() {
@@ -137,8 +135,9 @@ export function initOrderCart(root, { lines } = {}) {
 
     if (btn.hasAttribute("data-step-up")) line.qty += 1;
     else if (line.qty > 1) line.qty -= 1;
-    else if (!isMobile()) return drop(line.id); // the trash state removes the line
-    else return; // 360 shows a minus at 1 and the design gives it nothing to do
+    // Мусорка снимает строку — теперь на обеих ширинах: у маленького степпера
+    // появился вариант `size=s, count=1` (2029:129546).
+    else return drop(line.id);
 
     paintLine(node, line);
     commit();

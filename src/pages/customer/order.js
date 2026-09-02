@@ -101,6 +101,9 @@ function setStep(n, { scroll = true } = {}) {
 // возврат с шага 2 к выбору магазина иначе недоступен вовсе. С нулевого шага
 // уходим со страницы — там назад уже некуда.
 page.querySelector("[data-order-back]")?.addEventListener("click", () => {
+  // Внутри шага 1 у листа есть свои подэкраны — список городов и карточка
+  // магазина; стрелка сначала закрывает их.
+  if (step === 1 && map?.closeSubPanel?.()) return;
   if (step > 0) setStep(step - 1);
   else if (history.length > 1) history.back();
   else window.location.href = "catalog.html";
@@ -128,8 +131,10 @@ const map = renderStoresMap(page.querySelector("[data-step-section='1']"), {
   onSelect(store) {
     picked = store;
     if (pickDone) {
+      // Подпись не меняется: и у пустого выбора (2059:169141), и у выбранного
+      // магазина (2397:152957) кнопка читается «Выберите дилера» — меняется
+      // только её состояние.
       pickDone.disabled = !store;
-      pickDone.textContent = store ? "Далее" : "Выберите дилера";
     }
     if (pickedLabel && store) pickedLabel.textContent = `${store.name} ${store.address}`;
     // Desktop has no "далее" control — the pick itself opens шаг 2, which is

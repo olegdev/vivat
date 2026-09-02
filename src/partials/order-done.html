@@ -11,23 +11,34 @@
      overlay reserves its 72px rather than covering the whole viewport -->
 <div class="modal-scrim z-[60] max-md:items-center max-md:bg-transparent max-md:pb-[72px]" data-order-done>
   <div class="modal-panel relative h-[725px] overflow-hidden max-md:h-full max-md:max-h-none max-md:rounded-none">
-    <img src="../../assets/order/thanks-src.png" alt="" class="absolute inset-0 size-full object-cover" />
+    <!-- Снимок обрезан по макету, и на 1440 и на 360 это РАЗНЫЕ куски одного
+         кадра: fill-transform у 2241:161138 берёт 0.312–0.818 по ширине, у
+         2241:158299 — 0.383–0.747, и высоты тоже не совпадают. Поэтому два
+         файла, а не один `object-cover`: он бы центрировал кадр и увёл чайник
+         за нижний край. -->
+    <img src="../../assets/order/thanks-src.jpg" alt="" class="absolute inset-0 size-full object-cover max-md:hidden" />
+    <img src="../../assets/order/thanks-mobile-src.jpg" alt="" class="absolute inset-0 hidden size-full object-cover max-md:block" />
 
+    <!-- Закрыть: на 1440 это простой тёмный глиф 24 у правого края шапки
+         (modal-header 2241:158413), на 360 — круглая кнопка `close-panel`
+         2241:158304, та же, что накрывает карту. -->
     <a
       href="main.html"
-      class="absolute right-2 top-2 z-10 flex size-8 items-center justify-center rounded-full bg-overlay-strong"
+      class="absolute right-4 top-[18px] z-10 flex size-6 items-center justify-center max-md:right-2 max-md:top-1.5 max-md:size-7 max-md:rounded-full max-md:bg-overlay-strong"
       aria-label="Закрыть"
     >
-      <img src="../../assets/header/icon-close.svg" alt="" class="size-5" />
+      <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6 max-md:hidden" />
+      <img src="../../assets/header/icon-close.svg" alt="" class="hidden size-4 max-md:block" />
     </a>
 
-    <!-- centred block in the upper third (thank you frame 2241:161140: 112px
-         of top padding inside a 666 frame), over the quiet part of the photo —
-         the kettle sits below it. -->
-    <div class="relative flex flex-col items-center gap-6 px-16 pt-28 text-center max-md:gap-5 max-md:px-10 max-md:pt-40">
+    <!-- Блок текста стоит над спокойной частью снимка — чайник ниже. На 1440
+         это 59 шапки + 112 отбивки (thank you frame 2241:161140), на 360 —
+         186 от верха (Thank you container 2241:158300). Заголовок 22/26 на
+         обеих ширинах, поэтому один токен. -->
+    <div class="relative flex flex-col items-center gap-6 px-16 pt-[171px] text-center max-md:px-10 max-md:pt-[186px]">
       <div class="flex flex-col gap-4 max-md:gap-3">
-        <p class="text-h3 text-text-primary max-md:text-m-h3">Ваш заказ отправлен!</p>
-        <p class="text-body-n text-text-primary max-md:text-m-body-n">
+        <p class="text-m-h2 text-text-primary">Ваш заказ отправлен!</p>
+        <p class="text-body-n text-text-primary">
           С вами свяжется представитель дилера для подтверждения заказа
         </p>
       </div>

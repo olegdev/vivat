@@ -300,13 +300,13 @@ page's parts under dealer branches:
 **Two things about the shared cart card are easy to get backwards**, and both
 were shipped wrong once:
 
-- **The stepper's trash is a `size=l` state, not a `count=1` state.** The
-  component set has no `size=s, count=1` variant, and 360 cards take the small
-  stepper — so every 360 order card draws the minus beside a 1. Both glyphs
-  live in the template and `data-count` + a `md:` variant choose; never a `src`
-  swap from JS, which cannot follow a resize. The 360 minus at 1 therefore does
-  nothing; that the design offers no way to drop a line from a phone is in
-  `BACKLOG.md`.
+- **The stepper's trash is a `count=1` state at both sizes.** It used to be a
+  `size=l` state only — the set had no `size=s, count=1` variant — and that is
+  what the older comments and the backlog said. The designer filled the cell in
+  (2029:129546, drawn in the mobile order card 2084:145513), so 360 cards draw
+  the trash beside a 1 too and it removes the line. Both glyphs live in the
+  template and `data-count` chooses; never a `src` swap from JS, which cannot
+  follow a resize.
 - **The dealer's expanded card is a column, not a row with an appendix.** In
   Figma the module list is a sibling of the [text][stepper] row *inside* the
   740 column, so it starts where the text ends (88) while the 110px photo runs
