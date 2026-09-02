@@ -575,10 +575,12 @@
      Figma draws a bespoke 24px scroll column (641:18974): a 2px light track
      inset by 8px, with a dark rounded thumb. Reproduced on the native
      scrollbar so the list keeps real scrolling semantics. */
-  .stores-scroll {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-text-secondary) var(--color-divider-light);
-  }
+  /* No scrollbar-width/scrollbar-color here on purpose: current Chrome
+     supports those natively and, when both are set, renders ITS OWN native
+     "thin" scrollbar (solid, with arrow buttons, ~10px) instead of the
+     ::-webkit-scrollbar-* below — silently discarding the 2px design.
+     Webkit-only means Chromium/Safari get the exact design; Firefox falls
+     back to its own unstyled scrollbar. */
   .stores-scroll::-webkit-scrollbar { width: 24px; }
   .stores-scroll::-webkit-scrollbar-track,
   .stores-scroll::-webkit-scrollbar-thumb {
