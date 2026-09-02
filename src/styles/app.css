@@ -577,7 +577,7 @@
      scrollbar so the list keeps real scrolling semantics. */
   .stores-scroll {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-text-primary) var(--color-divider-light);
+    scrollbar-color: var(--color-text-secondary) var(--color-divider-light);
   }
   .stores-scroll::-webkit-scrollbar { width: 24px; }
   .stores-scroll::-webkit-scrollbar-track,
@@ -587,7 +587,7 @@
     border-radius: var(--radius-s);
   }
   .stores-scroll::-webkit-scrollbar-track { background-color: var(--color-divider-light); }
-  .stores-scroll::-webkit-scrollbar-thumb { background-color: var(--color-text-primary); }
+  .stores-scroll::-webkit-scrollbar-thumb { background-color: var(--color-text-secondary); }
 
   /* ---- Stores map: marker ------------------------------------------------
      Blue Yandex-style "9" pin traced from the Figma mock (pin-store.svg): thin
