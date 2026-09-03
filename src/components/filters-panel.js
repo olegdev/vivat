@@ -143,12 +143,22 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   // ---- шторка ----------------------------------------------------------------
   // Пилюля несёт группу, которую открывает (data-filter-open="color"); воронка
   // открывает без группы и просто прокручивает форму наверх.
+  //
+  // Два разных состояния в макете (913:86593 vs 759:69866): пилюля с именем
+  // группы разворачивает ТОЛЬКО её, остальные схлопнуты; воронка/«Больше» —
+  // без группы — разворачивает всё сразу. Не «всегда всё открыто».
+  const allSections = () => form.querySelectorAll("[data-filter-section]");
   function openDrawer(section) {
     drawer.classList.add("is-open");
     document.body.classList.add("overflow-hidden");
     const target = section && form.querySelector(`[data-filter-section="${section}"]`);
-    if (target) requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
-    else form.scrollTop = 0;
+    if (target) {
+      for (const s of allSections()) s.open = s === target;
+      requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
+    } else {
+      for (const s of allSections()) s.open = true;
+      form.scrollTop = 0;
+    }
   }
   function closeDrawer() {
     drawer.classList.remove("is-open");

@@ -254,15 +254,24 @@ export function initCatalogListing({ products, rub }) {
   // ===========================================================================
   // A filter pill carries the section it opens (data-filter-open="price"); the
   // funnel button and "Больше" chip open with no section (scroll to top).
+  //
+  // Two different reference states (913:86593 vs 759:69866): a named pill
+  // opens the drawer with ONLY that group expanded and every other one
+  // collapsed (single-filter entry); the funnel/"Больше" — no section — opens
+  // with every group expanded (browse-everything entry). Neither is "all open
+  // always", which is what a hardcoded `open` on every <details> gave us.
+  const allSections = () => form.querySelectorAll("[data-filter-section]");
   function openDrawer(section) {
     drawer.classList.add("is-open");
     document.body.classList.add("overflow-hidden");
     const target = section && form.querySelector(`[data-filter-section="${section}"]`);
     if (target) {
+      for (const s of allSections()) s.open = s === target;
       // panel is visible immediately (visibility, not display) — jump the form to
       // the requested group rather than always landing at the top.
       requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
     } else {
+      for (const s of allSections()) s.open = true;
       form.scrollTop = 0;
     }
   }

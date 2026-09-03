@@ -21,8 +21,8 @@
     class="filter-drawer__panel absolute left-0 top-0 flex h-full w-[478px] max-w-full flex-col bg-surface-inverted shadow-dropdown"
   >
     <!-- header -->
-    <div class="flex h-16 shrink-0 items-center justify-between px-10 max-md:px-4">
-      <h2 class="text-h4 text-text-primary">Фильтры</h2>
+    <div class="flex h-16 shrink-0 items-center justify-between py-2 pl-10 pr-6 max-md:px-4">
+      <h2 class="text-h3 text-text-primary">Фильтры</h2>
       <button
         type="button"
         data-filter-close
@@ -38,16 +38,16 @@
       <!-- ---- Структура ----
            Значений макет не называет: в кадре выбранных параметров у этой
            пилюли нет ни счётчика, ни чипса. Список пуст намеренно. -->
-      <details data-filter-section="structure" open class="group border-t border-divider-soft">
+      <details data-filter-section="structure" class="group">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-body-n-accent text-text-primary">Структура</span>
+          <span class="text-h5 text-text-primary">Структура</span>
           <span class="flex items-center gap-3">
             <button
               type="button"
               data-filter-clear-group="structure"
-              class="text-body-xs uppercase text-text-secondary transition-colors hover:text-text-primary"
+              class="text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
             >
               очистить
             </button>
@@ -62,16 +62,16 @@
       </details>
 
       <!-- ---- Материал ---- -->
-      <details data-filter-section="material" open class="group border-t border-divider-soft">
+      <details data-filter-section="material" class="group">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-body-n-accent text-text-primary">Материал</span>
+          <span class="text-h5 text-text-primary">Материал</span>
           <span class="flex items-center gap-3">
             <button
               type="button"
               data-filter-clear-group="material"
-              class="text-body-xs uppercase text-text-secondary transition-colors hover:text-text-primary"
+              class="text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
             >
               очистить
             </button>
@@ -88,16 +88,16 @@
       </details>
 
       <!-- ---- Цвет ---- -->
-      <details data-filter-section="color" open class="group border-t border-divider-soft">
+      <details data-filter-section="color" class="group">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-body-n-accent text-text-primary">Цвет</span>
+          <span class="text-h5 text-text-primary">Цвет</span>
           <span class="flex items-center gap-3">
             <button
               type="button"
               data-filter-clear-group="color"
-              class="text-body-xs uppercase text-text-secondary transition-colors hover:text-text-primary"
+              class="text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
             >
               очистить
             </button>
@@ -114,17 +114,18 @@
       </details>
     </form>
 
-    <!-- footer: reset + apply. «Показать N» держит applyDecorFilters(). -->
-    <div class="flex h-16 shrink-0 items-center justify-between gap-6 bg-surface-default px-10 max-md:px-4">
+    <!-- footer: reset + apply. «Показать N» держит applyDecorFilters(). Та же
+         панель, что в каталоге (1859:341783) — два РАВНЫХ pill-кнопки. -->
+    <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:px-4">
       <button
         type="button"
         data-filter-clear
-        class="flex items-center gap-2 text-body-n text-text-primary transition-colors hover:text-text-hover"
+        class="btn btn-m flex-1 bg-components-subtle text-text-primary hover:bg-components-subtle-hover"
       >
         Очистить
         <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />
       </button>
-      <button type="button" data-filter-apply class="btn btn-m btn-primary min-w-[188px]">
+      <button type="button" data-filter-apply class="btn btn-m btn-primary flex-1">
         Показать <span data-filter-count>0</span>
       </button>
     </div>
