@@ -43,6 +43,7 @@ mountCarousel(
     tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
     desktopAction: false, // the Figma title-block's `buttons` frame is empty
     href: "catalog.html",
+    actionMobile: "Все акции", // mobile-only button (1968:220489) — own copy, not "В раздел"
     mobileCard: "l",
     endpoint: "/action/popular", // tab seam target (see carousel.js initTabs)
   },

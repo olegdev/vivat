@@ -103,7 +103,7 @@
             </div>
             <span class="text-body-n text-text-muted line-through max-md:text-m-body-s-crossed max-md:text-text-secondary empty:hidden" data-card-oldprice></span>
           </div>
-          <a href="#" class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-compact" data-card-title data-card-link></a>
+          <a href="#" class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-compact" data-card-title data-card-link></a>
         </div>
         <button type="button" data-add-to-cart class="icon-btn max-md:hidden">
           <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" data-idle-only />
@@ -113,13 +113,15 @@
       <div class="flex items-center gap-4 py-1 max-md:gap-0.5">
         <a href="#" class="text-[12px] leading-[18px] text-text-secondary underline decoration-from-font underline-offset-2 max-md:truncate max-md:text-m-body-xs" data-card-category></a>
       </div>
-      <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-1.5 max-md:flex">
-        <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" data-idle-only />
-        <img src="../../assets/header/icon-order-ok-light.svg" alt="" class="size-4" data-in-cart-only />
-        <span class="text-m-button-s text-text-primary" data-idle-only>в корзину</span>
-        <span class="text-m-button-s" data-in-cart-only>в корзине</span>
-      </button>
     </div>
+    <!-- «buttons» (1884:363392) сидит СНАРУЖИ паддинга «container» (px-1
+         выше), а не внутри — во всю ширину карточки, а не 152−8. -->
+    <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-1.5 max-md:flex">
+      <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" data-idle-only />
+      <img src="../../assets/header/icon-order-ok-light.svg" alt="" class="size-4" data-in-cart-only />
+      <span class="text-m-button-s text-text-primary" data-idle-only>в корзину</span>
+      <span class="text-m-button-s" data-in-cart-only>в корзине</span>
+    </button>
   </article>
 </template>
 
@@ -286,7 +288,7 @@
             <span class="text-h3 font-medium text-text-primary max-md:text-m-body-n-accent" data-card-price></span>
             <span class="text-body-n text-text-muted line-through max-md:text-m-body-s-crossed max-md:text-text-secondary empty:hidden" data-card-oldprice></span>
           </div>
-          <a href="#" class="line-clamp-2 text-body-n text-text-primary max-md:text-m-body-compact" data-card-title data-card-link></a>
+          <a href="#" class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-compact" data-card-title data-card-link></a>
         </div>
         <button type="button" data-add-to-cart class="icon-btn max-md:hidden">
           <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" data-idle-only />
@@ -306,13 +308,15 @@
       <div class="flex items-center gap-4 py-1 max-md:gap-0.5 has-[:empty]:hidden">
         <a href="#" class="text-[12px] leading-[18px] text-text-secondary underline decoration-from-font underline-offset-2 max-md:truncate max-md:text-m-body-xs" data-card-category></a>
       </div>
-      <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-1.5 max-md:flex">
-        <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" data-idle-only />
-        <img src="../../assets/header/icon-order-ok-light.svg" alt="" class="size-4" data-in-cart-only />
-        <span class="text-m-button-s text-text-primary" data-idle-only>в корзину</span>
-        <span class="text-m-button-s" data-in-cart-only>в корзине</span>
-      </button>
     </div>
+    <!-- «buttons» (1884:363392) сидит СНАРУЖИ паддинга «container» выше —
+         во всю ширину карточки, а не 152−8. -->
+    <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-1.5 max-md:flex">
+      <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" data-idle-only />
+      <img src="../../assets/header/icon-order-ok-light.svg" alt="" class="size-4" data-in-cart-only />
+      <span class="text-m-button-s text-text-primary" data-idle-only>в корзину</span>
+      <span class="text-m-button-s" data-in-cart-only>в корзине</span>
+    </button>
   </article>
 </template>
 
