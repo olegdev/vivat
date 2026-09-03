@@ -313,8 +313,12 @@ export function renderCarousel(el, items, opts = {}) {
   // Compact cards ride two rows deep on mobile — `.rail-2row` lays them out
   // row-major, which needs the column count up front. The 320px ("l") tile is
   // a single-row rail instead, so it keeps the plain flex track; so does any
-  // `variant`, whose mobile shape is its own template's business.
-  if (items.length && opts.mobile !== "l" && !opts.variant && items.every((p) => p.category)) {
+  // `variant`, whose mobile shape is its own template's business. A tab
+  // filter can trim this down to 1-2 cards — Math.ceil(2/2) gives --cols:1,
+  // which is a single-COLUMN grid (cards stacked vertically), not a row. Two
+  // or fewer cards already fit one screen width without scrolling, so they
+  // stay on the plain flex track instead of asking for a 2-row grid at all.
+  if (items.length > 2 && opts.mobile !== "l" && !opts.variant && items.every((p) => p.category)) {
     el.classList.add("rail-2row");
     el.style.setProperty("--cols", String(Math.ceil(items.length / 2)));
   }
