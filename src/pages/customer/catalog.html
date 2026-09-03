@@ -48,11 +48,17 @@
       <!--#include partials/carousel-section.html -->
 
       <!-- ==================== BREADCRUMBS ============================== -->
+      <!-- «•» рендерится браузером на 1px выше x-height букв на 16px тексте
+           (десктоп); на 12px мобильном тексте разница уже суб-пиксельная,
+           поэтому там сдвиг не нужен. Значение не подобрано на глаз — снято
+           попиксельно: canvas.getImageData по скриншоту инстанса 759:60097
+           (десктоп) и 1997:267658 (мобиль) против нашего рендера, сравнивал
+           вертикальный центр закрашенных пикселей точки и буквы «а». -->
       <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent leading-6 text-text-secondary max-md:py-2 max-md:text-m-body-s">
         <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
-        <span aria-hidden="true" class="relative top-[3px] max-md:top-[2px]">•</span>
+        <span aria-hidden="true" class="relative top-px max-md:top-0">•</span>
         <a href="#" class="transition-colors hover:text-text-primary">Каталог</a>
-        <span aria-hidden="true" class="relative top-[3px] max-md:top-[2px]">•</span>
+        <span aria-hidden="true" class="relative top-px max-md:top-0">•</span>
         <span class="text-text-primary">Кухни VIVAT</span>
       </nav>
 
