@@ -96,9 +96,9 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
       activate(i);
     });
   });
-  if (defaultIndex >= 0) activate(defaultIndex);
-
   // open / close --------------------------------------------------------------
+  // col2/col3 start hidden (912:80439's collapsed frame draws only column 1)
+  // and expand on the first real hover/click, not on open itself.
   function setOpen(open) {
     overlay.classList.toggle("hidden", !open);
     toggle?.setAttribute("aria-expanded", String(open));
@@ -106,7 +106,6 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
     if (toggleIcon) {
       toggleIcon.src = `${ICON}/${open ? "icon-close" : "icon-burger"}.svg`;
     }
-    if (open && defaultIndex >= 0) activate(defaultIndex);
   }
   const isOpen = () => !overlay.classList.contains("hidden");
 
