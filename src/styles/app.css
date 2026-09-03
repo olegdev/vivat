@@ -554,17 +554,19 @@
      State lives in real CSS (like .carousel-dot above) rather than aria-*
      Tailwind variants: the arbitrary `aria-[expanded=true]:` form is not
      emitted by the v4 scanner from these template literals. */
+  /* Все три состояния ordinary-карточки (default/hover/pressed 641:19003,
+     641:19005, 641:35996) залиты одинаковым #ffffff — подсветки фоном нет
+     ни на ховере, ни на раскрытой. */
   .store-card {
     @apply flex w-full flex-col border-b border-divider-light px-6 pb-3 pt-4 max-md:px-4;
-    @apply text-left transition-colors hover:bg-bg-subtle;
+    @apply text-left transition-colors;
   }
-  .store-card[aria-current="true"] { @apply bg-bg-subtle; }
 
   /* Выбранный дилер на шаге 1 заказа — рамка, а не подсветка: 1px #414141 и
      радиус 4, одинаково на обеих ширинах (`type=order, condition=selected`
      946:122008 на 1440 и 1859:333418 на 360). Было кольцо в 2px.
-     Вложено в модификатор, чтобы читающие страницы сохранили обычную
-     подсветку. */
+     Вложено в модификатор — на читающих страницах у aria-current нет
+     собственного стиля вовсе (карточка всегда белая). */
   .stores-select .store-card[aria-current="true"] {
     @apply rounded-n border border-border-active bg-surface-inverted;
   }
@@ -882,13 +884,15 @@
   }
 
   /* ---- Colour swatch (`color-swatch` 629:26578) ---------------------------
-     28px circle; the chosen one gains the same offset ring the filter drawer's
-     swatches use, so the two controls read as one component. */
+     28px circle. The selected state is the design's own `focus-ring`
+     (629:26643, the same component `.order-input` uses for keyboard focus):
+     1px, 3px offset, `border-ring` (#141414) — not the 2px `components-strong`
+     ring this used to borrow from the filter drawer's swatch. */
   .pdp-swatch {
     @apply size-7 shrink-0 overflow-hidden rounded-full border border-border-alpha-default transition-shadow;
   }
   .pdp-swatch[aria-checked="true"] {
-    @apply ring-2 ring-components-strong ring-offset-2;
+    @apply ring-1 ring-border-ring ring-offset-[3px];
   }
 
   /* ---- Spec table leader (`line-dotted` 766:14631) ------------------------
