@@ -17,7 +17,8 @@
      render). The band's green is deliberately darker than the home page's
      accent-green-200. -->
 <!-- Полоса во всю ширину окна, содержимое — в `page-x`; на планшете поля 40,
-     а не 24 (Frame 2087325443 2483:202379, padH 40). -->
+     а не 24 (Frame 2087325443 2483:202379, padH 40), на мобиле 16 (page-x,
+     см. SOLUTIONS.md про max-xl/max-md). -->
 <!-- Вертикальный ритм — НЕ единый gap: у каждого перехода свой Spacing
      (759:60484 desktop, 1806:234779 mobile) — 16/32/12/12/12/16 на десктопе,
      16/24/12/12/12/12 на мобиле (последний, перед итоговым абзацем, короче
@@ -25,7 +26,7 @@
      мобиле (уже была верна). «У мебели…» — это H3 (24/28 SemiBold), не
      полужирный BodyL-semibold (20/Medium) — жирность и кегль оба были не те. -->
 <section class="flex w-full justify-center bg-surface-accent-alt py-20 max-md:py-10">
-  <div class="page-x max-xl:px-10 flex justify-center">
+  <div class="page-x max-xl:px-10 max-md:px-4 flex justify-center">
   <div class="flex w-[896px] max-w-full flex-col text-text-inverse-primary">
     <h2 class="text-h2 max-md:text-m-h2" data-seo-title>Кухни VIVAT — сочетание стиля и функциональности</h2>
     <p class="mt-4 text-body-l max-md:text-m-body-l">

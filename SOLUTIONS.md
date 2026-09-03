@@ -1159,3 +1159,54 @@ plus the row's existing `items-center` reproduces it exactly — a reminder
 that a small `padV` number next to a much larger declared box size means
 "fixed height, centered content," not "this padding is wrong until it makes
 the numbers add up."
+
+## Checking a spacing value against a class name is not checking it — checked `getComputedStyle` catches what reading the source can't
+
+Caught myself doing this twice in the same session, on the same class of
+bug, minutes apart. Both times the check was: read the Figma number, read
+the Tailwind class name on the element, see they match, call it correct.
+Both times the actual rendered page did not match, because a **second**
+utility on the same element — or the same property set at a different
+breakpoint — won the cascade. Comparing labels instead of measuring the
+live page is the root cause common to:
+
+- the breadcrumb's `leading-6` silently beating `max-md:text-m-body-s`'s own
+  line-height at every width (documented above);
+- `seo-kitchens.html`'s outer wrapper carrying both `page-x` (which bakes in
+  `max-md:px-4`) *and* an ad-hoc `max-xl:px-10` added for the tablet case —
+  the real inset was 40px on mobile, not the 16px `page-x` alone would give,
+  because `max-xl:` is not "1280 down to 768," it is "1280 and everything
+  narrower," so it's still active at 390px too, and it happened to compile
+  after `page-x`'s own rule.
+
+**The general trap: every `max-<bp>:` Tailwind variant means "at this
+width *and every width below it*," not "in this range."** Two `max-*:`
+utilities that touch the same CSS property on the same element are not
+"the narrower one wins" — whichever rule is *later in the compiled
+stylesheet* wins, at any width where both conditions hold, and Tailwind's
+own emission order is not something to eyeball from the class list in the
+markup. Anywhere a page adds a second breakpoint override on top of a
+shared utility class (`page-x`, `link-dotted`, any bundled `text-*`
+token), assume the two can collide below the narrower one's threshold
+until proven otherwise.
+
+**Two fixes, pick by intent:**
+- Want the override to apply *only* in one range (e.g. tablet, not mobile)?
+  Use a **compound variant** — `md:max-xl:px-0`, not `max-xl:px-0` — so the
+  rule's own selector excludes the narrower width instead of relying on
+  emission order. `stores.html`'s map wrapper already does this correctly
+  (`page-x md:max-xl:px-0`); `seo-kitchens.html` didn't, and that was the bug.
+- Want the shared utility's own narrower value back? **Re-assert it
+  explicitly**, after the override, in the same class list —
+  `max-xl:px-10 max-md:px-4` — the same pattern already used correctly in
+  `dealer/delivery.html` and its siblings (`max-xl:px-6 max-md:px-4` on
+  `[data-content-column]`).
+
+**The actual process fix, not just the CSS one: a spacing/typography check
+is not done until `getComputedStyle` at the target viewport says the
+number, in a real headless browser** — not until the Tailwind class name
+next to the Figma number *looks* like it should produce that number. Read
+the class, form a hypothesis, then run exactly the Playwright snippet used
+everywhere else in this file to confirm it, every time, even when the
+class name looks obviously right — *especially* then, since that's
+precisely when the check gets skipped.
