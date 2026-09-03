@@ -101,14 +101,23 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   }
 
   // Пилюли: у группы с выбором тёмная рамка и счётчик (752:63467).
+  function groupCount(state, group) {
+    return group === "price" ? Number(priceOn(state)) : state[group].length;
+  }
+
   function syncPills(state) {
     for (const pill of document.querySelectorAll("[data-filter-pill]")) {
-      const group = pill.dataset.filterPill;
-      const n = group === "price" ? Number(priceOn(state)) : state[group].length;
+      const n = groupCount(state, pill.dataset.filterPill);
       const el = pill.querySelector("[data-pill-count]");
       pill.classList.toggle("is-active", n > 0);
       el.textContent = n > 0 ? String(n) : "";
       el.classList.toggle("hidden", n === 0);
+    }
+    // Кнопка «очистить» в <summary> показывается только у группы со
+    // значением, а не постоянно/никогда.
+    for (const btn of document.querySelectorAll("[data-filter-clear-group]")) {
+      const n = groupCount(state, btn.dataset.filterClearGroup);
+      btn.classList.toggle("hidden", n === 0);
     }
   }
 

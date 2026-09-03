@@ -46,15 +46,13 @@
           class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
           <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Коллекция</span>
-          <span class="flex items-center gap-3">
-            <button
-              type="button"
-              data-filter-clear-group="collection"
-              class="text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
-            >
-              очистить
-            </button>
-          </span>
+          <button
+            type="button"
+            data-filter-clear-group="collection"
+            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+          >
+            очистить
+          </button>
         </summary>
         <div class="grid grid-cols-2 gap-x-6 pb-4">
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="fusion" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Фьюжн</span></label>
@@ -83,6 +81,13 @@
           class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
           <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Фасад</span>
+          <button
+            type="button"
+            data-filter-clear-group="facade"
+            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+          >
+            очистить
+          </button>
         </summary>
         <div class="pb-4">
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="facade[]" value="ldsp" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">ЛДСП</span></label>
@@ -97,6 +102,13 @@
           class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
           <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Форма</span>
+          <button
+            type="button"
+            data-filter-clear-group="form"
+            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+          >
+            очистить
+          </button>
         </summary>
         <div class="pb-4">
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="form[]" value="pryamaya" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Прямая</span></label>
@@ -110,15 +122,13 @@
           class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
           <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Цвет</span>
-          <span class="flex items-center gap-3">
-            <button
-              type="button"
-              data-filter-clear-group="color"
-              class="text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
-            >
-              очистить
-            </button>
-          </span>
+          <button
+            type="button"
+            data-filter-clear-group="color"
+            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+          >
+            очистить
+          </button>
         </summary>
         <div class="grid grid-cols-2 gap-x-6 pb-4">
           <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="bezhevyy" class="peer sr-only" /><span class="filter-swatch" style="background:#e4dac4"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Бежевый</span></label>
@@ -139,6 +149,13 @@
           class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
           <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Стиль</span>
+          <button
+            type="button"
+            data-filter-clear-group="style"
+            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+          >
+            очистить
+          </button>
         </summary>
         <div class="pb-4">
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="style[]" value="klassika" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Классика</span></label>
@@ -152,6 +169,13 @@
           class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
           <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Цена</span>
+          <button
+            type="button"
+            data-filter-clear-group="price"
+            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+          >
+            очистить
+          </button>
         </summary>
         <div class="pb-6">
           <div class="flex items-end gap-4 pb-4">

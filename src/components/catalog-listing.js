@@ -389,17 +389,26 @@ export function initCatalogListing({ products, rub }) {
 
   // Pills + funnel: a group with a selection gets the dark-bordered pill and a
   // muted count; the funnel goes dark with a white badge (Figma 882:88362).
+  function groupCount(state, group) {
+    return group === "price"
+      ? Number(state.price !== "any" || !!state.price_min || !!state.price_max)
+      : (state[group] || []).length;
+  }
+
   function syncPills(state) {
     document.querySelectorAll("[data-filter-pill]").forEach((pill) => {
       const group = pill.dataset.filterPill;
-      const n =
-        group === "price"
-          ? Number(state.price !== "any" || !!state.price_min || !!state.price_max)
-          : (state[group] || []).length;
+      const n = groupCount(state, group);
       const countEl = pill.querySelector("[data-pill-count]");
       pill.classList.toggle("is-active", n > 0);
       countEl.textContent = n > 0 ? String(n) : "";
       countEl.classList.toggle("hidden", n === 0);
+    });
+    // Per-group "Очистить" inside the drawer's <summary> — shown only when
+    // that group itself has a selection, not whenever the drawer is open.
+    document.querySelectorAll("[data-filter-clear-group]").forEach((btn) => {
+      const n = groupCount(state, btn.dataset.filterClearGroup);
+      btn.classList.toggle("hidden", n === 0);
     });
   }
 
