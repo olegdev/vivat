@@ -1172,23 +1172,14 @@
   }
 }
 
-/* Trailing scroll space for single-row mobile rails (cards-kitchen: one
-   almost-full-width card per view, e.g. "Модульные кухни"). `padding-right`
-   on a flex scroll container is unreliable for this — Chromium doesn't
-   consistently fold it into `scrollWidth`, so the last card ends up flush
-   against the screen edge with no way to scroll the gap into view. A real
-   flex child (the `::after`) always counts. `:not(.rail-2row)` excludes the
-   2-row grid rails (Популярные/Акции) — grid already includes its own
-   trailing padding correctly, confirmed by measurement, so doubling this up
-   there would just add a phantom cell.
-
-   The `::after` is itself a flex child, so the track's own `gap` lands
-   *before* it too — the trailing space is `gap + width`, not `width` alone.
-   Both widths below are sized so that sum lands on the same 16px the left
-   edge gets from `scroll-padding-left`: carousel-section's track gap is 8px
-   (gap-2) → 8px spacer; promo-row's is 12px (gap-3) → 4px spacer. A flat 1rem
-   here first made the right edge visibly wider than the left. */
+/* Trailing scroll space on mobile rails — see SOLUTIONS.md for why padding
+   doesn't work here and the gap-before-::after math. */
 @media (width < 48rem) {
+  .rail-2row-spacer {
+    grid-column: calc(var(--cols) + 1);
+    grid-row: 1 / span 2;
+    width: 0.5rem;
+  }
   [data-track]:not(.rail-2row)::after {
     content: "";
     flex: none;
@@ -1211,6 +1202,7 @@
       display: grid;
       grid-auto-flow: row;
       grid-template-columns: repeat(var(--cols), 152px);
+      grid-auto-columns: 0.5rem;
       column-gap: 8px;
       row-gap: 24px;
     }

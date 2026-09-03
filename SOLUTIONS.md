@@ -1076,3 +1076,48 @@ Blade-тривиальность, но вместе с этим — поведе
 стоит задавать при любом другом семантическом теге с собственным
 поведением — `<dialog>`, `<input type="checkbox">` вне формы,
 `<a>` без реальной навигации.
+
+## Trailing scroll space on mobile rails: `padding-right` is not trustworthy
+
+Every mobile carousel (`overflow-x-auto`, snap) needs the same last-card
+inset the first card gets from `scroll-padding-left` — swipe to the end,
+the last item should sit off the screen edge by the same logical gap, not
+touch it. The obvious `padding-right` on the scrolling element does not
+reliably become part of `scrollWidth` in Chromium for a flex or grid
+child — measured directly: expected `scrollWidth` including the padding,
+got exactly `scrollWidth − padding`, confirmed by scrolling to
+`scrollLeft = scrollWidth` and finding the last card flush against the
+edge. This is a real, long-standing Chromium quirk, not a mistake in the
+padding value.
+
+**Fix: a genuine trailing element always counts, because it's real
+content, not padding.** Two shapes, because flex and grid need different
+handling:
+
+- **Flex track** (one big card per view, e.g. "Модульные кухни"): a
+  `[data-track]::after { content: ""; flex: none; width: … }` pseudo-element
+  is a real flex child and always gets included in `scrollWidth`.
+- **CSS Grid track** (`.rail-2row`, two rows of small cards): a pseudo-element
+  here would auto-place as a real grid cell and silently eat a card slot.
+  Give it an actual DOM node instead (appended once after the cards, in the
+  same JS that sets `--cols`), placed in its own explicit trailing column —
+  `grid-column: calc(var(--cols) + 1); grid-row: 1 / span 2;` — with
+  `grid-auto-columns` on the container sizing that implicit column. CSS Grid
+  places explicitly-positioned items *before* auto-placed ones regardless of
+  DOM order (spec, "Placing Grid Items"), so the real cards correctly flow
+  around the reserved column even though the spacer is last in the DOM.
+
+**Both are flex/grid children, so the track's own `gap` lands before them
+too** — the real trailing space is `gap + spacer width`, not the spacer
+width alone. Size the spacer as `(desired inset) − (track's own mobile
+gap)`, not the desired inset itself, or the right edge ends up visibly
+wider than the left. Different tracks with different `gap` values need
+different spacer widths even for the same target inset.
+
+**Snap type matters too.** `scroll-snap-type: … proximity` does not pull
+the scroll position back to the last real snap point if a fast swipe
+carries past it into the new trailing space — proximity only snaps when
+the scroll already stops near a snap point, and empty trailing space has
+none. `mandatory` always resolves to a valid snap point after the
+gesture ends, which is what makes the trailing space actually reachable
+by touch and not just by script.

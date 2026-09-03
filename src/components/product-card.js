@@ -321,6 +321,14 @@ export function renderCarousel(el, items, opts = {}) {
   if (items.length > 2 && opts.mobile !== "l" && !opts.variant && items.every((p) => p.category)) {
     el.classList.add("rail-2row");
     el.style.setProperty("--cols", String(Math.ceil(items.length / 2)));
+    // Trailing scroll space, grid version — see SOLUTIONS.md › "Trailing
+    // scroll space on mobile rails". A real element in its own explicit
+    // trailing column, not a padding, and not the flex fix's `::after`
+    // (that would auto-place as a real grid cell here and eat a card slot).
+    const spacer = document.createElement("div");
+    spacer.className = "rail-2row-spacer";
+    spacer.setAttribute("aria-hidden", "true");
+    el.appendChild(spacer);
   }
   initProductCards(el);
   // Карточки появляются и после загрузки страницы — вкладки «Популярных» их
