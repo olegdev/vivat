@@ -180,11 +180,15 @@ export function enableDragScroll(el, { ignore } = {}) {
 // scroll position.
 export function initScrollProgress(sectionEl) {
   const viewport = sectionEl.querySelector("[data-viewport]");
-  const bar = sectionEl.querySelector("[data-progress] i");
-  if (!viewport || !bar) return;
+  const progress = sectionEl.querySelector("[data-progress]");
+  const bar = progress?.querySelector("i");
+  if (!viewport || !bar) return { update() {} };
 
   const update = () => {
     const max = viewport.scrollWidth - viewport.clientWidth;
+    // Same threshold as the desktop arrows below — nothing to scroll, hide
+    // the affordance instead of showing a dead/full-width bar.
+    progress.classList.toggle("hidden", max <= SCROLL_EPSILON);
     const frac = max > 0 ? viewport.clientWidth / viewport.scrollWidth : 1;
     const pos = max > 0 ? viewport.scrollLeft / max : 0;
     // `translate` composes ahead of `scale`, so the offset is in the track's own
@@ -196,6 +200,7 @@ export function initScrollProgress(sectionEl) {
   viewport.addEventListener("scroll", update, { passive: true });
   window.addEventListener("resize", update);
   update();
+  return { update };
 }
 
 // Wires prev/next arrows to slide the track. Works on any section built by
@@ -211,7 +216,7 @@ export function initCarousel(sectionEl) {
   const next = sectionEl.querySelector("[data-next]");
   if (!viewport || !track || !prev || !next) return { reset() {} };
 
-  initScrollProgress(sectionEl);
+  const progress = initScrollProgress(sectionEl);
   // The gallery inside a card runs its own gesture, so drags starting there are
   // left alone; everywhere else on the card (price, title, footer) pulls the rail.
   enableDragScroll(viewport, { ignore: "[data-card-gallery]" });
@@ -280,6 +285,10 @@ export function initCarousel(sectionEl) {
     reset() {
       index = 0;
       apply();
+      // A tab filter changes item count, which can flip whether the rail
+      // even scrolls — re-run the mobile progress bar's own visibility
+      // check too, not just the desktop arrows' apply().
+      progress.update();
     },
   };
 }
