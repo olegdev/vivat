@@ -24,7 +24,7 @@ import { catalogHref } from "./links.js";
 // куда они должны вести из меню, не решено (BACKLOG), поэтому у них "#".
 const defaultRootSections = [
   { label: "Каталог", view: "catalog" },
-  { label: "Где купить", href: "main.html#where" },
+  { label: "Где купить", href: "../customer/main.html#where" },
   { label: "Компания", href: "#" },
   { label: "Полезная информация", href: "#" },
   { label: "Для бизнеса", href: "../dealer/howto.html" },
@@ -71,6 +71,8 @@ function buildRow(item, index) {
   // «Стать дилером» — не страница, а готовая модалка; обработчик делегирован
   // на document в components/modals.js, поэтому хватает атрибута.
   if (item.modal) el.dataset.modalOpen = item.modal;
+  // «Выход» — тоже делегированный обработчик, в components/session.js.
+  if (item.logout) el.dataset.logout = "";
   return el;
 }
 

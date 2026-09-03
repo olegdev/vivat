@@ -16,11 +16,15 @@
 //
 // Экрана «отправлено» в макете нет ни у одного из четырёх окон, поэтому все
 // они после отправки просто закрываются — см. BACKLOG. Вход дополнительно
-// уводит на дилерскую главную: это наше решение, а не макет.
+// открывает дилерский сеанс и уводит на дилерскую главную: это наше решение,
+// а не макет.
+import { signIn } from "./session.js";
+
 const SEAMS = {
   "dealer-request": (values) => void values,
   "dealer-login": (values) => {
     void values;
+    signIn();
     window.location.href = "../dealer/main.html";
   },
   subscribe: (values) => void values,

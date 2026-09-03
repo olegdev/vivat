@@ -8,6 +8,7 @@ import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-me
 import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
+import { initSession } from "../../components/session.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
@@ -33,6 +34,7 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
 });
 initSearch();
 initCart();
+initSession();
 
 initSummary(product);
 initStickyPrice(product);
@@ -90,9 +92,8 @@ mountCarousel(
     // дилерский каталог (docs/LINK-MAP.md §4.16).
     href: "catalog.html?modules=1",
     // Страница модуля одна на весь сайт и лежит у покупателя: дилерского
-    // фрейма у неё нет вовсе (CLAUDE.md). Поэтому карточки этого рельса —
-    // единственные, чей адрес приходится задавать явно.
-    cardHref: "../customer/pdp-module.html",
+    // фрейма у неё нет вовсе (CLAUDE.md). Адрес карточек даёт сам вариант —
+    // см. DEFAULT_HREF в components/product-card.js.
     variant: "modul",
     arrowTop: 53, // 914:103437 carousel-controls y=53 — NOT centred on the 242px image
   },

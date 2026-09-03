@@ -9,6 +9,7 @@
 // прайс-листа на сервере; пока пересчёт идёт на клиенте от базовой цены,
 // которую кладёт в карточку components/product-card.js.
 import { priceModes, RRP_FACTOR } from "../data/dealer-home.js";
+import { isDealer } from "./session.js";
 
 const STORE_KEY = "vivat:price-mode";
 
@@ -256,6 +257,9 @@ function initPriceToggle(root) {
 }
 
 export function initDealerPriceControls(root = document) {
+  // Общие страницы раздела «Для бизнеса» зовут это безусловно, но покупателю
+  // дилерская полоска не показана — и цены ему пересчитывать нечем и незачем.
+  if (!isDealer()) return;
   initPriceMode(root);
   initPriceToggle(root);
 }

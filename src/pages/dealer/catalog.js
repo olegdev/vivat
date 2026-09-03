@@ -4,6 +4,7 @@ import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-me
 import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
+import { initSession } from "../../components/session.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initCatalogListing } from "../../components/catalog-listing.js";
 import { ICON } from "../../data/asset-base.js";
@@ -31,6 +32,7 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
 });
 initSearch();
 initCart();
+initSession();
 
 // ---- сетка + фильтры + сортировка + чипсы + «Только модули» + URL ------------
 initCatalogListing({ products: PRODUCTS, rub });

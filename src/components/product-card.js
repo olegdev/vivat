@@ -7,7 +7,7 @@
 // hooks. This file only fills and wires — it never emits structure.
 
 import { demoGallery } from "../data/product-photos.js";
-import { catalogHref } from "./links.js";
+import { catalogHref, pageHref } from "./links.js";
 
 const BADGE_TONE = { new: "badge-new", hit: "badge-hit", discount: "badge-discount" };
 
@@ -39,11 +39,11 @@ const TEMPLATE = {
 // значение — страница этого вида карточки. `cards-modul` — единственный
 // вариант, который ведёт не на кухонную PDP, а на страницу модуля.
 //
-// Ссылки относительные, поэтому у дилера те же `pdp.html` / `catalog.html`
-// сами разрешаются в дилерские (см. docs/LINK-MAP.md › «Правило адресации»).
-// Исключение — страница модуля: она одна на весь сайт и лежит у покупателя,
-// поэтому дилерские рельсы передают её адрес через `href` в опциях.
-const DEFAULT_HREF = { modul: "pdp-module.html" };
+// Половина пишется в адрес явно: карточки рисует и оверлей поиска, а он есть на
+// общих страницах раздела «Для бизнеса», где голое `pdp.html` разрешилось бы в
+// дилерскую PDP кому угодно (docs/LINK-MAP.md › «Правило адресации»).
+// Исключение — страница модуля: она одна на весь сайт и лежит у покупателя.
+const DEFAULT_HREF = { modul: "../customer/pdp-module.html" };
 
 // Адрес товара с якорем на отзывы. Собственный хвост адреса, если он вдруг
 // пришёл с фикстурой, заменяется — двух якорей в ссылке не бывает.
@@ -100,7 +100,7 @@ function buildCard(p, { mobile = "s", variant, href } = {}) {
 
   fillGallery(node, p, { smallDots: smallTile });
 
-  const cardHref = p.href || href || DEFAULT_HREF[variant] || "pdp.html";
+  const cardHref = p.href || href || DEFAULT_HREF[variant] || pageHref("pdp.html");
   node.querySelectorAll("[data-card-link]").forEach((a) => (a.href = cardHref));
   // Счётчик отзывов ведёт на тот же товар, но сразу к отзывам: у обеих PDP и у
   // страницы модуля секция несёт id="reviews" (её выдаёт рельс отзывов).

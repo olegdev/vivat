@@ -4,6 +4,7 @@ import { renderPromoTiles } from "../../components/promo-card.js";
 import { renderNewsCards } from "../../components/news-card.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
+import { initSession } from "../../components/session.js";
 import { initAlert } from "../../components/alert.js";
 import { initHeroSlider } from "../../components/hero-slider.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
@@ -51,6 +52,7 @@ initSearch();
 
 // ---- add to cart (badge + POST /cart seam) ----------------------------------
 initCart();
+initSession();
 initModals();
 initCitySelect();
 

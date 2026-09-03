@@ -3,6 +3,7 @@ import { mountCarousel, enableDragScroll, initScrollProgress } from "../../compo
 import { renderPromoTiles } from "../../components/promo-card.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
+import { initSession } from "../../components/session.js";
 import { initHeroSlider } from "../../components/hero-slider.js";
 import { renderStoresMap, setBases as setStoresMapBases } from "../../components/stores-map.js";
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
@@ -34,6 +35,7 @@ initSearch();
 
 // ---- add to cart (badge + POST /cart seam) ----------------------------------
 initCart();
+initSession();
 
 const sections = {
   modular: {

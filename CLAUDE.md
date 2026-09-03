@@ -326,6 +326,26 @@ and only on order screens — customer and dealer alike; the catalog, PDP, home
 and search frames carry no active item. Pages set `aria-current="page"`;
 `.nav-item[aria-current]` in `app.css` does the rest.
 
+**Who is reading a page is a session, not markup.** The eleven content pages
+of `B2b additional` are shared: the client's own words are «страницы шарятся —
+плашка меняется в зависимости от логина дилера». So only the dealer's own
+screens — main, catalog, PDP, order, constructor — hardcode
+`data-user="dealer"`; the eleven read it from `localStorage` via
+`partials/session.html`, an inline synchronous script right after `<body>` (a
+deferred module would let the customer's header paint first and flash).
+`components/session.js` owns the flag: the `dealer-login` modal opens it,
+«Выход» in the dealer strip and in the burger closes it.
+
+The half also decides the *address*. Shared chrome carries relative links, and
+a bare `main.html` on a content page resolves into the dealer half for
+everyone — so those links are written out to the customer half and marked
+`data-half`, and `initSession()` swaps the segment for a dealer.
+`../customer/…` and `../dealer/…` resolve identically from both folders. Links
+built from data go through `pageHref()` in `components/links.js`. Every page
+script calls `initSession()` beside `initCart()`. All of it disappears in the
+Blade port — the server renders `data-user` into `<body>` and `route()` builds
+the addresses. See `docs/LINK-MAP.md` § 0 and § 6.
+
 There are no stubs left in `src/pages/` — every file there is a finished page,
 and **`B2b additional` is now built out**: the four modals plus Доставка,
 Контакты, Для интернет-магазинов, Как с нами работать, Сертификаты, Схемы
@@ -556,7 +576,7 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `modal-dealer-request`, `modal-dealer-login`, `modal-subscribe`,
 `modal-director`, `modal-about`, `modal-bug-report`, and the content-page trio `menu-b2b`, `for-business-header`
 (which also carries the section-menu sheet) and `accordion`, plus
-`benefit-tile`.
+`benefit-tile` and `session`.
 Several carry both a static shell and the `<template>` unit(s) their component
 clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`,
 `search-overlay`, `price-mode`, `order-modules`);

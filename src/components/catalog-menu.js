@@ -8,7 +8,7 @@
 // their designs land — the render/interaction layer already handles them.
 
 import { categories } from "../data/catalog-menu.js";
-import { catalogHref } from "./links.js";
+import { catalogHref, pageHref } from "./links.js";
 export { categories };
 
 let ICON = "../../assets/header";
@@ -36,7 +36,8 @@ function buildItem(label, { active = false, param = "category" } = {}) {
 function buildChip({ label, filter }) {
   const el = clone("[data-menu-chip]");
   el.textContent = label;
-  el.href = filter ? `catalog.html?${filter}` : "catalog.html";
+  const catalog = pageHref("catalog.html");
+  el.href = filter ? `${catalog}?${filter}` : catalog;
   return el;
 }
 

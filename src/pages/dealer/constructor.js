@@ -3,6 +3,7 @@ import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-me
 import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
+import { initSession } from "../../components/session.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
 import { initCitySelect } from "../../components/city-select.js";
@@ -26,6 +27,7 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
 });
 initSearch();
 initCart();
+initSession();
 
 // ---- встроенное приложение --------------------------------------------------
 // `src` ставится из JS, а не в разметке: в Blade это собранный на сервере

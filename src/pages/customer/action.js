@@ -5,6 +5,7 @@ import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-me
 import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
+import { initSession } from "../../components/session.js";
 import { ICON } from "../../data/asset-base.js";
 import { promos, actionItems } from "../../data/action.js";
 import { initModals } from "../../components/modals.js";
@@ -21,6 +22,7 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
 });
 initSearch();
 initCart();
+initSession();
 
 renderPromoTiles(document.querySelector("[data-promo-grid]"), promos);
 

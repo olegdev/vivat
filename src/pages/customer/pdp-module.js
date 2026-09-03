@@ -8,6 +8,7 @@ import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-me
 import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
+import { initSession } from "../../components/session.js";
 import { initModals } from "../../components/modals.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { ICON, HOME } from "../../data/asset-base.js";
@@ -26,6 +27,7 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
 });
 initSearch();
 initCart();
+initSession();
 
 initModuleSummary(product);
 

@@ -11,6 +11,7 @@
 // `catalog-grid` (<template> карточки + сетка + пустое состояние) и
 // `catalog-filters` (ящик фильтров). Компонент клонирует <template> и запрашивает
 // узлы по data-атрибутам — разметку строками он не собирает.
+import { pageHref } from "./links.js";
 import { fillGallery, initProductCards } from "./product-card.js";
 
 const MULTI = ["collection", "facade", "form", "color", "style"];
@@ -91,7 +92,7 @@ export function initCatalogListing({ products, rub }) {
     fillGallery(node, p, { smallDots: true });
     // Снимок и заголовок — ссылки на товар, как и в общей карточке. Адрес
     // относительный, поэтому в дилерском каталоге он ведёт на дилерскую PDP.
-    const cardHref = p.href || "pdp.html";
+    const cardHref = p.href || pageHref("pdp.html");
     node.querySelectorAll("[data-card-link]").forEach((a) => (a.href = cardHref));
     // Счётчик отзывов — тот же товар, сразу к секции отзывов.
     const reviews = node.querySelector("[data-card-reviews-link]");

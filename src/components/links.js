@@ -8,8 +8,14 @@
 // не даёт, а выдумывать его нельзя (CLAUDE.md › «NEVER invent»): в Blade это
 // станет `route('catalog', ['category' => $category->slug])`, и подпись
 // заменится на то, чем рубрика зовётся на бэке. Меняется одна эта функция.
+
+import { isDealer } from "./session.js";
 //
-// Адреса относительные — у дилера те же `catalog.html` / `pdp.html` сами
-// разрешаются в дилерские. См. docs/LINK-MAP.md › «Правило адресации».
+// Половина адресуется явно. Раздел «Для бизнеса» общий, и на его страницах
+// голое `catalog.html` разрешилось бы в дилерский каталог кому угодно —
+// поэтому папка пишется полностью. `../customer/…` и `../dealer/…` одинаково
+// разрешаются из обеих половин; см. docs/LINK-MAP.md › «Правило адресации».
+export const pageHref = (page) => `../${isDealer() ? "dealer" : "customer"}/${page}`;
+
 export const catalogHref = (param, value) =>
-  `catalog.html?${param}=${encodeURIComponent(value)}`;
+  `${pageHref("catalog.html")}?${param}=${encodeURIComponent(value)}`;
