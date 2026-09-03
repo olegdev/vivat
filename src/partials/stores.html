@@ -61,7 +61,11 @@
           <span class="h-1 w-8 rounded-full bg-surface-raised"></span>
         </div>
 
-        <div class="relative flex flex-col gap-2 border-b border-divider-light pb-4 pl-10 pr-6 pt-6" data-panel-head>
+        <!-- Планшетная шапка панели (2477:168702) — свои паддинги, не
+             десктопные уменьшенные: left 24 (не 40), top 24, right 24,
+             bottom 16 — те же top/right/bottom, что уже на десктопе, только
+             left меняется. -->
+        <div class="relative flex flex-col gap-2 border-b border-divider-light pb-4 pl-10 pr-6 pt-6 max-xl:pl-6" data-panel-head>
           <!-- Город в шапке панели — он же селектор: на Контактах по нему
                выбирают город (в опте) или город области (в рознице). На
                остальных страницах это просто подпись, меню там никто не
