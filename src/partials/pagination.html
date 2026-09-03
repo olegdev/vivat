@@ -11,32 +11,37 @@
      инстанс оставляет три. Число объявляет страница — `data-pages="3"` на
      секции, — а разметка гасит лишние кнопки вариантом при нём. -->
 <section
-  class="page-x group/pag flex flex-col items-center gap-10 py-16 max-xl:py-10 max-md:gap-8"
+  class="page-x group/pag flex flex-col items-center gap-10 pt-16 pb-10 max-xl:pt-10 max-xl:pb-10 max-md:gap-8"
   data-pagination
 >
   <button type="button" class="btn btn-m btn-primary max-md:w-full max-md:text-m-button-m">
     Показать еще 40 <span data-grid-noun>товаров</span> из <span data-grid-total>123</span>
   </button>
-  <nav class="flex items-center gap-6 text-body-n">
-    <a href="#" class="flex items-center gap-2 text-text-secondary transition-colors hover:text-text-primary max-md:hidden">
-      <img src="../../assets/header/chevron-left.svg" alt="" class="size-5 opacity-60" />
+  <!-- 758:57039: gap между «В начало»/цифрами/«В конец» — 32px (gap-8), не
+       24; между цифрами — 8px (gap-2), не 4; текст всего блока Medium 500,
+       не Regular. «В начало» на первой странице показан выключенным
+       (text-disabled/иконка text-muted) — в макете нет состояния «доступно
+       назад», это статичная страница 1 везде. -->
+  <nav class="flex items-center gap-8 text-body-n font-medium">
+    <a href="#" class="flex items-center gap-2 text-text-disabled max-md:hidden">
+      <img src="../../assets/header/icon-pagination-left.svg" alt="" class="size-6" />
       В начало
     </a>
     <!-- On mobile the middle pages collapse to an ellipsis (Figma pagination
          1806:236599): 1 2 3 4 … 7. -->
-    <div class="flex items-center gap-1">
-      <button type="button" class="flex size-9 items-center justify-center rounded-full bg-components-subtle text-text-primary" aria-current="page">1</button>
-      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">2</button>
-      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">3</button>
-      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden">4</button>
-      <span class="hidden size-9 items-center justify-center text-text-secondary max-md:flex group-data-[pages=3]/pag:max-md:hidden">…</span>
-      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden max-md:hidden">5</button>
-      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden max-md:hidden">6</button>
-      <button type="button" class="flex size-9 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden">7</button>
+    <div class="flex items-center gap-2">
+      <button type="button" class="flex size-11 items-center justify-center rounded-full bg-components-light-hover text-text-primary" aria-current="page">1</button>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">2</button>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle">3</button>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden">4</button>
+      <span class="hidden size-11 items-center justify-center text-text-secondary max-md:flex group-data-[pages=3]/pag:max-md:hidden">…</span>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden max-md:hidden">5</button>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden max-md:hidden">6</button>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden">7</button>
     </div>
-    <a href="#" class="flex items-center gap-2 text-text-primary transition-colors hover:text-text-secondary max-md:hidden">
+    <a href="#" class="flex items-center gap-2 text-text-primary max-md:hidden">
       В конец
-      <img src="../../assets/header/chevron-right.svg" alt="" class="size-5" />
+      <img src="../../assets/header/icon-pagination-right.svg" alt="" class="size-6" />
     </a>
   </nav>
 </section>
