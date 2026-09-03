@@ -1121,3 +1121,41 @@ the scroll already stops near a snap point, and empty trailing space has
 none. `mandatory` always resolves to a valid snap point after the
 gesture ends, which is what makes the trailing space actually reachable
 by touch and not just by script.
+
+## An unconditional `leading-*` silently wins over a media-scoped `text-*` token
+
+The breadcrumb nav across seven pages carried `text-body-n-accent leading-6
+… max-md:text-m-body-s` — a desktop text token, an explicit line-height
+override for it, and a mobile text token meant to replace both at `max-md`.
+Below `md` the font-size switched correctly (12px) but the line-height stayed
+at 24px instead of the mobile token's own 16px, even though the `max-md:`
+rule compiles after the base rule in the stylesheet and both match.
+
+The reason: Tailwind's font-size utilities set `line-height` through a shared
+custom property — `line-height: var(--tw-leading, var(--text-*--line-height))`.
+An explicit `leading-6` sets `--tw-leading` directly, and it does so
+*unconditionally* — no `md:` prefix — so that value wins at every breakpoint
+regardless of which font-size token is active or how the cascade orders the
+two font-size rules. Source order between the two `text-*` rules stopped
+mattering the moment a bare `leading-*` utility entered the mix.
+
+**Fix: gate the override to the breakpoint it's actually for** —
+`leading-6` → `md:leading-6` — rather than trusting that a later
+`max-md:text-*` rule will override it. The general rule: once a `leading-*`
+utility is mixed with a `text-*` token that bundles its own line-height, they
+are no longer independent — the unscoped one has to be scoped too, or it
+overrides the token at every width the token is used, not just the one it
+was written for.
+
+This same nav also carried a second, independent bug worth noting together:
+the real Figma breadcrumb component is a **fixed-height row with centered
+content** below `md` (`stackPrimarySizing: FIXED`, `stackCounterAlignItems:
+CENTER`, resolved via `raw`/`derivedSymbolData` transforms, not `tree`) — its
+declared `padV: 2` is a minimum, not the value that produces the box's real
+40px height. Five real instances agreed on 40px against a content height of
+16px, i.e. ~12px effective margin, nowhere close to what `py-0.5` (the
+literal padV value) would produce. `max-md:h-10` (matching the fixed height)
+plus the row's existing `items-center` reproduces it exactly — a reminder
+that a small `padV` number next to a much larger declared box size means
+"fixed height, centered content," not "this padding is wrong until it makes
+the numbers add up."

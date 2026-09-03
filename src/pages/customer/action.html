@@ -44,17 +44,18 @@
       <!--#include partials/carousel-section.html -->
 
       <!-- ==================== BREADCRUMBS ============================== -->
-      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent leading-6 text-text-secondary max-md:py-0.5 max-md:text-m-body-s">
+      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent md:leading-6 text-text-secondary max-md:h-10 max-md:text-m-body-s">
         <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
         <span aria-hidden="true">•</span>
         <span class="text-text-primary">Акции</span>
       </nav>
 
       <!-- ==================== TITLE BLOCK ==============================
-           Figma title-block 2248:97194 — 24px lead-in, H1, and an empty
-           `buttons` frame: no controls next to the title (see CLAUDE.md ›
-           don't invent elements). -->
-      <div class="page-x pt-6 max-md:pt-3">
+           Figma title-block 2248:97194 — no top lead-in (H1 sits flush under
+           the breadcrumbs' own bottom padding), 24px lead-out before the
+           grid (см. pt-6 там же), and an empty `buttons` frame: no controls
+           next to the title (see CLAUDE.md › don't invent elements). -->
+      <div class="page-x">
         <h1 class="text-h1 text-text-primary max-md:text-m-h1">Акции</h1>
       </div>
 
