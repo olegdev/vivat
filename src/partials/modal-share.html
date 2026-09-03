@@ -1,0 +1,32 @@
+<!-- ==================== ПОДЕЛИТЬСЯ =====================================
+     Figma share desktop (2462:221277) / mobile (2462:221392). Same modal
+     shell as the other four windows, but its own heading size — Desktop/H2
+     (text-h2), not the text-h4 the rest use — and no form: three social
+     links, each opening that network's real share-intent URL for the
+     current page. VK and Telegram's share-intent format is well established;
+     MAX's is not (the client's messenger, too new to have a documented one),
+     so that icon stays a plain trigger with no destination — see BACKLOG. -->
+<div class="modal-scrim" data-modal="share">
+  <div class="modal-panel" data-modal-panel>
+    <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
+      <button type="button" class="flex size-6 items-center justify-center" data-modal-close aria-label="Закрыть">
+        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <div class="flex flex-col items-center gap-4 px-16 pb-16 max-md:px-8 max-md:pb-10">
+      <h2 class="text-h2 text-text-primary max-md:text-m-h2">Поделиться</h2>
+      <div class="flex items-center gap-2">
+        <a href="#" target="_blank" rel="noopener" class="flex size-20 items-center justify-center" data-share-vk aria-label="ВКонтакте">
+          <img src="../../assets/header/icon-social-vk.svg" alt="" class="size-16" />
+        </a>
+        <a href="#" target="_blank" rel="noopener" class="flex size-20 items-center justify-center" data-share-tg aria-label="Telegram">
+          <img src="../../assets/header/icon-social-tg.svg" alt="" class="size-16" />
+        </a>
+        <button type="button" class="flex size-20 items-center justify-center" aria-label="MAX">
+          <img src="../../assets/header/icon-social-max.svg" alt="" class="size-16" />
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

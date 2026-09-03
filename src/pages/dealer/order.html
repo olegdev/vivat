@@ -77,10 +77,16 @@
       </div>
       <div class="h-6 max-md:hidden"></div>
 
-      <!-- ==================== КОРЗИНА + СВОДКА =========================
+      <!-- ==================== КОРЗИНА + ФОРМЫ + СВОДКА ==================
            top 1209:95222: the 990 cart panel and the 322 summary with a 47px
            gutter inside the page's 40px margins. Below `md` the two stack and
-           the panel goes full-bleed (2225:167285). -->
+           the panel goes full-bleed (2225:167285).
+
+           Сводка (`aside`) висит рядом со ВСЕЙ левой колонкой — корзиной и
+           формами вместе, не только корзиной, — поэтому `sticky` держит её
+           в кадре до самого низа форм, а не отпускает раньше. Это решение
+           клиента (не из макета), которое заменило собой более раннее «до
+           низа карточки корзины». -->
       <section class="page-x flex gap-[47px] max-xl:flex-col max-xl:gap-0 max-xl:px-0">
         <div class="min-w-0 flex-1">
           <div class="overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-md:rounded-none max-md:border-x-0 max-md:border-t-0">
@@ -108,7 +114,7 @@
                 <button type="button" class="flex size-6 items-center justify-center" aria-label="Распечатать заказ" data-order-print>
                   <img src="../../assets/order/icon-print.svg" alt="" class="size-6" />
                 </button>
-                <button type="button" class="flex size-6 items-center justify-center" aria-label="Поделиться заказом">
+                <button type="button" class="flex size-6 items-center justify-center" data-modal-open="share" aria-label="Поделиться заказом">
                   <img src="../../assets/order/icon-share.svg" alt="" class="size-6" />
                 </button>
               </div>
@@ -121,30 +127,29 @@
               В заказе пока ничего нет.
             </p>
           </div>
+
+          <div class="h-16 max-md:h-6"></div>
+
+          <!-- ==================== ВНЕСИТЕ ВАШИ ДАННЫЕ ==================
+               Steps-order 1209:95232 / 2238:157273 — the form's title block. -->
+          <div class="pb-6 max-xl:px-6 max-md:px-4 max-md:pb-4">
+            <h2 class="text-h2 text-text-primary max-md:text-m-h2">Внесите ваши данные</h2>
+            <div class="h-2"></div>
+            <p class="text-body-n text-text-primary max-md:text-m-body-n">
+              Пожалуйста, заполните поля с необходимой информацией и выберите способ оплаты.
+            </p>
+          </div>
+
+          <!-- ==================== ФОРМА ============================== -->
+          <!--#include partials/order-forms.html -->
         </div>
 
-        <!-- Итоговая панель плавает вдоль списка позиций: выше `md` она
-             `sticky` в 24px от верха и останавливается у нижнего края
-             карточки корзины — решение клиента, в макете этого нет. -->
+        <!-- Итоговая панель плавает вдоль всей левой колонки — выше `md` она
+             `sticky` в 24px от верха. -->
         <aside class="w-[322px] shrink-0 self-start xl:sticky xl:top-6 max-xl:w-full max-xl:px-6 max-xl:pt-4 max-md:px-4">
           <!--#include partials/order-summary.html -->
         </aside>
       </section>
-
-      <div class="h-16 max-md:h-6"></div>
-
-      <!-- ==================== ВНЕСИТЕ ВАШИ ДАННЫЕ ======================
-           Steps-order 1209:95232 / 2238:157273 — the form's title block. -->
-      <div class="page-x pb-6 max-md:pb-4">
-        <h2 class="text-h2 text-text-primary max-md:text-m-h2">Внесите ваши данные</h2>
-        <div class="h-2"></div>
-        <p class="text-body-n text-text-primary max-md:text-m-body-n">
-          Пожалуйста, заполните поля с необходимой информацией и выберите способ оплаты.
-        </p>
-      </div>
-
-      <!-- ==================== ФОРМА ==================================== -->
-      <!--#include partials/order-forms.html -->
 
       <div class="h-16 max-md:h-8"></div>
 

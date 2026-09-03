@@ -16,7 +16,7 @@
      `md`, so the fields flow ФИО → E-mail → ИНН → Телефон exactly as the 360
      frame draws them — no `order-*`, the same move the dealer catalog's
      settings bar makes. -->
-<form id="dealer-order-form" class="page-x flex flex-col gap-4 max-md:gap-3" data-order-form>
+<form id="dealer-order-form" class="flex flex-col gap-4 max-xl:px-6 max-md:gap-3 max-md:px-4" data-order-form>
   <!-- ---- Контактные данные (1209:95241) -------------------------------- -->
   <section class="w-[990px] max-xl:w-full rounded-[var(--radius-l)] border border-border-light bg-surface-inverted px-10 py-8 max-xl:px-6 max-xl:py-6 max-md:px-4 max-md:py-5">
     <h3 class="text-h4 text-text-primary max-md:text-m-h3">Контактные данные</h3>
@@ -173,7 +173,7 @@
       </div>
 
       <!-- alert 1415:67671 — two lines, no close control on this instance -->
-      <div class="flex gap-2 rounded-n bg-surface-accent-subtle px-4 py-3">
+      <div class="flex gap-2 rounded-n bg-surface-accent-subtle px-4 py-2">
         <img src="../../assets/order/icon-info-dark.svg" alt="" class="mt-1 size-6 -m-1 shrink-0" />
         <p class="text-body-n text-text-primary max-md:text-m-body-n" data-delivery-cost></p>
       </div>
@@ -192,7 +192,7 @@
     ></textarea>
 
     <label class="flex items-start gap-3 pt-4">
-      <input type="checkbox" name="consent" required class="filter-check" checked />
+      <input type="checkbox" name="consent" required class="filter-check" />
       <span class="text-body-n text-text-primary max-md:text-m-body-n">
         Я даю согласие на обработку
         <!-- the run 28..50 of 1209:95273 carries «Desktop/Link M dotted» over
