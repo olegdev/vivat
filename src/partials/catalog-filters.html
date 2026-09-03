@@ -197,14 +197,16 @@
       </details>
     </form>
 
-    <!-- footer (filter-footer 1859:341783): two EQUAL-width pill buttons
-         (flex-1 each), not a plain text link + a fixed-width primary button —
-         "Очистить" is a real grey button here, not an inline link. -->
+    <!-- footer (filter-footer 913:89214 condition=default/759:80587
+         condition=selected): "Очистить" exists only once something is
+         selected somewhere in the form — with nothing picked it's just the
+         dark "Показать" button, full width (flex-1, no plain text link). JS
+         toggles `hidden` on the whole-form selection count. -->
     <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:px-4">
       <button
         type="button"
         data-filter-clear
-        class="btn btn-m flex-1 bg-components-subtle text-text-primary max-md:text-m-button-m hover:bg-components-subtle-hover"
+        class="hidden btn btn-m flex-1 bg-components-subtle text-text-primary max-md:text-m-button-m hover:bg-components-subtle-hover"
       >
         Очистить
         <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />

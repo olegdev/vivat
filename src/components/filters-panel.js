@@ -34,6 +34,7 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   const chipRow = document.querySelector("[data-filter-chips]");
   const chipTpl = document.querySelector("[data-decor-chip]");
   const colorOnly = document.querySelector("[data-decor-color-only]");
+  const footerClear = drawer.querySelector("[data-filter-clear]");
 
   // Состояние — ровно то, что в форме: { structure: [], material: [], color: [] }
   // плюс тумблер «Товары в этом цвете», у которого своего поля в форме нет.
@@ -138,6 +139,10 @@ export function initFiltersPanel({ groups, price = false } = {}) {
     badge.textContent = String(activeGroups);
     badge.classList.toggle("hidden", activeGroups === 0);
     funnel.classList.toggle("is-active", activeGroups > 0);
+    // filter-footer (759:80587 vs 913:89214): «Очистить» exists only once
+    // something is selected somewhere in the form — otherwise it's just the
+    // dark «Показать» button, full width.
+    footerClear.classList.toggle("hidden", activeGroups === 0);
 
     syncChips(state);
     syncPills(state);

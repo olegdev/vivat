@@ -149,6 +149,7 @@ export function initCatalogListing({ products, rub }) {
   const totalEl = document.querySelector("[data-grid-total]");
   const emptyEl = document.querySelector("[data-grid-empty]");
   const funnel = document.querySelector(".filter-funnel");
+  const footerClear = drawer.querySelector("[data-filter-clear]");
 
   // «Только модули» — дилерская добавка панели настроек. Поля формы у неё нет:
   // это кнопка-переключатель в самой панели, поэтому состояние держим здесь и
@@ -237,6 +238,10 @@ export function initCatalogListing({ products, rub }) {
     badge.textContent = String(activeGroups);
     badge.classList.toggle("hidden", activeGroups === 0);
     funnel.classList.toggle("is-active", activeGroups > 0);
+    // filter-footer (759:80587 vs 913:89214): the grey «Очистить» exists only
+    // in the condition=selected variant — with nothing picked anywhere in the
+    // form, the footer is just the dark «Показать» button, full width.
+    footerClear.classList.toggle("hidden", activeGroups === 0);
 
     syncChips(state, activeGroups > 0);
     syncPills(state);
