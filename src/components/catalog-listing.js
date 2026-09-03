@@ -362,6 +362,15 @@ export function initCatalogListing({ products, rub }) {
   const chipRow = document.querySelector("[data-chips]");
   const chipMore = document.querySelector("[data-chip-more]");
   const chipClear = document.querySelector("[data-chip-clear]");
+  // "Больше" expands the row in place — three more quickfilter chips
+  // (data-chip-extra), same kind as the rest of the row, not a drawer
+  // section — it never opens the sidebar.
+  let chipsExpanded = false;
+  chipMore.addEventListener("click", () => {
+    chipsExpanded = true;
+    document.querySelectorAll("[data-chip-extra]").forEach((c) => c.classList.remove("hidden"));
+    chipMore.classList.add("hidden");
+  });
 
   function inputFor(param, value) {
     return form.querySelector(`input[name="${param}[]"][value="${value}"]`);
@@ -383,10 +392,11 @@ export function initCatalogListing({ products, rub }) {
     document.querySelectorAll("[data-quickfilter]").forEach((chip) => {
       const [param, value] = chip.dataset.quickfilter.split("=");
       const on = (state[param] || []).includes(value);
+      const extra = "chipExtra" in chip.dataset;
       chip.classList.toggle("catalog-chip--active", on);
-      chip.classList.toggle("hidden", anyFilter && !on);
+      chip.classList.toggle("hidden", anyFilter ? !on : extra && !chipsExpanded);
     });
-    chipMore.classList.toggle("hidden", anyFilter);
+    chipMore.classList.toggle("hidden", anyFilter || chipsExpanded);
     chipClear.classList.toggle("hidden", !anyFilter);
     // the selected row wraps on mobile; the shortcut list stays a scroll rail
     chipRow.toggleAttribute("data-selected", anyFilter);

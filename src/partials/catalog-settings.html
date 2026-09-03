@@ -133,11 +133,17 @@
     <button type="button" class="catalog-chip" data-quickfilter="facade=mdf">МДФ<!--#include partials/chip-close.html --></button>
     <button type="button" class="catalog-chip" data-quickfilter="facade=mdf-steklo">Стекло<!--#include partials/chip-close.html --></button>
     <button type="button" class="catalog-chip" data-quickfilter="style=klassika">Классика<!--#include partials/chip-close.html --></button>
+    <!-- shown only after "Больше" — same quickfilter chips as the rest of
+         the row, just off-screen until expanded, not a drawer section. -->
+    <button type="button" class="catalog-chip hidden" data-chip-extra data-quickfilter="style=sovremennyy">Современный<!--#include partials/chip-close.html --></button>
+    <button type="button" class="catalog-chip hidden" data-chip-extra data-quickfilter="facade=ldsp">ЛДСП<!--#include partials/chip-close.html --></button>
+    <button type="button" class="catalog-chip hidden" data-chip-extra data-quickfilter="color=chernyy">Черный<!--#include partials/chip-close.html --></button>
     <!-- «···» — реальная иконка (882:89759, size=16, снята через MCP), не
          текстовые точки с tracking. Файл нарисован на холсте 24×24 и в
          макете обрезается, а не масштабируется под 16px слот — тот же
-         приём, что у иконки отзывов (size-6 -m-1). -->
-    <button type="button" data-filter-open data-chip-more class="catalog-chip">Больше <img src="../../assets/header/icon-dots.svg" alt="" class="size-6 -m-1" /></button>
+         приём, что у иконки отзывов (size-6 -m-1). Клик разворачивает ряд
+         (data-chip-extra) на месте, а не открывает ящик фильтров. -->
+    <button type="button" data-chip-more class="catalog-chip">Больше <img src="../../assets/header/icon-dots.svg" alt="" class="size-6 -m-1" /></button>
     <!-- shown only while something is selected -->
     <button type="button" data-filter-clear data-chip-clear class="catalog-chip catalog-chip--dismiss hidden">Очистить все<!--#include partials/chip-close.html --></button>
   </div>
