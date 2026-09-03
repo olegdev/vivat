@@ -1167,6 +1167,23 @@
   }
 }
 
+/* Trailing scroll space for single-row mobile rails (cards-kitchen: one
+   almost-full-width card per view, e.g. "Модульные кухни"). `padding-right`
+   on a flex scroll container is unreliable for this — Chromium doesn't
+   consistently fold it into `scrollWidth`, so the last card ends up flush
+   against the screen edge with no way to scroll the gap into view. A real
+   flex child (the `::after`) always counts. `:not(.rail-2row)` excludes the
+   2-row grid rails (Популярные/Акции) — grid already includes its own
+   trailing padding correctly, confirmed by measurement, so doubling this up
+   there would just add a phantom cell. */
+@media (width < 48rem) {
+  [data-track]:not(.rail-2row)::after {
+    content: "";
+    flex: none;
+    width: 1rem;
+  }
+}
+
 /* The 152px "other" cards ride two rows deep on mobile (Figma `rows`
    1968:150236), filled row-major, so the column count is handed in as --cols by
    whoever renders the track. This lives in `utilities`, not `components`,
