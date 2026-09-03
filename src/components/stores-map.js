@@ -498,9 +498,9 @@ export function renderStoresMap(anchor, opts) {
         chev.dataset.storeOpen = "";
       }
       // «Выбрать магазин» — только на 1440: в мобильной карточке её нет.
-      const pick = node.querySelector("[data-store-pick]");
-      pick?.classList.remove("hidden");
-      pick?.classList.add("md:inline-flex");
+      // `hidden` остаётся в базовом классе — снимать его нельзя, иначе кнопка
+      // видна на всех ширинах ещё до срабатывания md:inline-flex.
+      node.querySelector("[data-store-pick]")?.classList.add("md:inline-flex");
     }
     const metroWrap = node.querySelector("[data-store-metro]");
     (s.metro || []).forEach((name) => {
