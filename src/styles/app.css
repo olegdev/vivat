@@ -642,11 +642,11 @@
   /* ---- Tab chip (Популярные товары) ------------------------------------- */
   /* `segments` 632:31697 — 44, а не 40, и на 1440, и на 360. */
   .chip {
-    @apply flex h-11 shrink-0 items-center rounded-pill px-4 text-button-m transition-colors max-md:text-m-button-m;
+    @apply flex h-11 shrink-0 items-center rounded-pill px-4 text-button-m transition-colors max-md:h-8 max-md:text-m-button-m;
     @apply bg-components-subtle text-text-primary hover:bg-components-subtle-hover;
   }
   .chip[aria-selected="true"] {
-    @apply bg-surface-strong text-text-inverse-primary hover:bg-components-strong-hover;
+    @apply bg-components-active-muted text-text-inverse-primary hover:bg-components-active-default;
   }
 
   /* ---- Catalog filters: checkbox / radio / swatch -----------------------
