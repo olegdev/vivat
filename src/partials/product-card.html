@@ -179,37 +179,37 @@
        весь ряд 273 высотой. -->
   <article class="flex w-[322px] shrink-0 flex-col max-xl:w-[322px] max-md:w-[160px] max-md:snap-start" data-card>
     <div class="relative w-full overflow-hidden rounded-n bg-bg-subtle">
-      <a href="#" class="block relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[110px]" data-card-gallery data-card-link draggable="false">
+      <a href="#" class="block relative h-[242px] w-full touch-pan-y overflow-hidden max-md:h-[119px]" data-card-gallery data-card-link draggable="false">
         <div class="flex h-full w-full bg-bg-subtle transition-transform duration-300 ease-out will-change-transform" data-card-track></div>
         <div class="card-zones" data-card-zones></div>
       </a>
       <div class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1" data-card-badges></div>
       <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 px-2 [&>*]:pointer-events-auto" data-card-dots></div>
     </div>
-    <div class="flex flex-col gap-2 px-1 py-3 max-md:gap-1">
+    <div class="flex flex-col gap-2 px-1 py-3 max-md:gap-1 max-md:px-1 max-md:py-1.5">
       <div class="flex items-start gap-4 max-md:gap-3">
         <div class="flex min-w-0 flex-1 flex-col">
-          <div class="flex h-8 items-baseline gap-2">
-            <span class="text-h3 font-medium text-text-primary max-md:text-[18px] max-md:leading-[26px]" data-card-price></span>
+          <div class="flex h-8 items-baseline gap-2 max-md:h-auto">
+            <span class="text-h3 font-medium text-text-primary max-md:text-m-body-n-accent" data-card-price></span>
             <span class="text-body-n text-text-muted line-through empty:hidden max-md:text-m-body-s-crossed" data-card-oldprice></span>
           </div>
-          <a href="#" class="line-clamp-2 pt-1 text-body-n text-text-primary max-md:pt-0.5 max-md:text-m-body-n" data-card-title data-card-link></a>
-          <div class="flex flex-col gap-0.5 pt-1 max-md:pt-0.5">
-            <span class="text-body-n text-text-secondary max-md:text-m-body-n" data-card-speclabel></span>
-            <span class="text-body-n text-text-primary max-md:text-m-body-n" data-card-specvalue></span>
+          <a href="#" class="line-clamp-2 pt-1 text-body-n text-text-primary max-md:pt-1 max-md:text-m-body-compact" data-card-title data-card-link></a>
+          <div class="flex flex-col gap-0.5 pt-1 max-md:pt-1">
+            <span class="text-body-n text-text-secondary max-md:text-m-body-compact" data-card-speclabel></span>
+            <span class="text-body-n text-text-primary max-md:text-m-body-compact" data-card-specvalue></span>
           </div>
         </div>
-        <button type="button" data-add-to-cart class="icon-btn">
+        <button type="button" data-add-to-cart class="icon-btn max-md:hidden">
           <img src="../../assets/header/icon-order-dark.svg" alt="В корзину" class="size-6" data-idle-only />
           <img src="../../assets/header/icon-order-ok-light.svg" alt="В корзине" class="size-6" data-in-cart-only />
         </button>
       </div>
-      <div class="flex items-center gap-4 py-1">
-        <div class="flex min-w-0 flex-1 items-center gap-2">
-          <div class="flex items-center gap-2" data-card-swatches></div>
+      <div class="flex items-center gap-4 py-1 max-md:gap-4 max-md:py-1">
+        <div class="flex min-w-0 flex-1 items-center gap-2 max-md:gap-1 max-md:[&>[data-card-swatches]>*]:size-[18px]">
+          <div class="flex items-center gap-2 max-md:gap-1" data-card-swatches></div>
           <span class="text-body-s text-text-secondary empty:hidden max-md:text-m-body-xs" data-card-more></span>
         </div>
-        <a href="#reviews" class="flex items-center gap-1" data-card-reviews-link aria-label="Отзывы">
+        <a href="#reviews" class="flex items-center gap-1 max-md:hidden" data-card-reviews-link aria-label="Отзывы">
           <span class="text-body-s text-text-secondary max-md:text-m-body-xs" data-card-comments></span>
           <img src="../../assets/header/icon-comment.svg" alt="" class="size-6 -m-1" />
         </a>

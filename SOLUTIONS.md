@@ -1210,3 +1210,60 @@ the class, form a hypothesis, then run exactly the Playwright snippet used
 everywhere else in this file to confirm it, every time, even when the
 class name looks obviously right — *especially* then, since that's
 precisely when the check gets skipped.
+
+## An icon drawn on a 24×24 canvas that only fills ~16px must be cropped, not scaled
+
+A recurring bug, hit independently on the "···" chip, the review-comment
+icon, the filter chevron and (twice) the PDP/order warning-info glyph:
+sizing an `<img>` to `size-4` (16px) when its source SVG's `viewBox` is
+`0 0 24 24` scales the whole canvas down, including the glyph's own
+padding inside it — the glyph itself shrinks to roughly `16 * (visible/24)`
+px, visibly smaller and thinner than the design.
+
+**Check before sizing any icon**: does the glyph's own path bounding box
+fill the SVG's viewBox, or does it sit centered with margin inside a
+larger canvas? `service-icons` in Figma is built exactly this way —
+`overflow-clip` at the visible size (16px) wrapping a centered `size-24`
+instance via `-translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2`. That is
+a **crop**, not a **scale**.
+
+**Fix**: render the `<img>` at its native canvas size and crop with a
+matching negative margin — `size-6 -m-1` for a 24-canvas icon in a 16px
+slot (crops 4px off every side, 24 − 8 = 16). Never `size-4` on an icon
+whose canvas is 24×24. If the icon sits in a multi-line `items-start` row
+and needs a manual top offset to align with the first line's cap-height,
+get the offset from Figma's own `icon-container` padding (e.g. `py-2px`)
+combined with the crop math, not by eyeballing a screenshot.
+
+## Carousel arrow `top` is never "centered on the card" — read the real y
+
+Every rail's `arrowTop` (`components/carousel.js`, passed per-section from
+the page script) looks like it should be `(cardImageHeight - arrowHeight) /
+2`, and that guess has been wrong on **every** rail checked so far. The
+real Figma `carousel-controls` instance's `y` sits wherever the designer
+put it — sometimes near the top third of the image, sometimes offset from
+the card's geometric center by a consistent but non-obvious amount (e.g.
++12px on the reviews rail). There is no formula; there is only the
+instance's own `y` in `get_metadata`/`get_design_context` on the specific
+`catalog-row`/`other-row`/`kitchen-row`-type container, read directly
+against the sibling that holds the cards (both share one coordinate
+origin, so the arrow's raw `y` **is** its `arrowTop`). Recheck per rail,
+every time — don't reuse one rail's derived value for another's "similar"
+card without checking its own instance.
+
+## A tab-row's own top spacing depends on whether its title has a `desc`
+
+`carousel-section.html`'s chip/tab row (`data-carousel-chips`, built by
+`buildChips()` in `carousel.js`) sits after a `[data-cs-chips-slot]` that
+*always* reserves 24px (`empty:h-6`) regardless of whether tabs exist —
+that 24px is `title-block`'s own built-in trailer, present with or
+without a chips row. On top of that, the chips row's own `pt-4` (16px) is
+a **second**, separate top-spacer that the Figma component makes
+conditional (`topSpasing` prop) — `true` when the title-block carries a
+`desc` paragraph (e.g. "Популярные товары для кухни"), `false` when it's
+title-only (e.g. PDP's "Добавьте в корзину"). Getting this backwards
+double-counts the 24px slot on title-only sections (40px gap instead of
+24). The rule going forward: **a `tabs`-configured section without a
+`desc` needs its chips row's `pt-4` dropped to `pt-0`** — already wired in
+`buildCarouselSection()` as `if (!desc) chips.classList.replace("pt-4",
+"pt-0")`; don't special-case a page's title-only tab section by hand.

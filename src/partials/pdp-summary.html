@@ -23,10 +23,8 @@
      нет вовсе, CTA живёт в нижней панели.
 
      Structure only; pdp.js fills the swatches from data and drives the two
-     controls. The `service-icons` slot next to the desktop title is
-     white-on-white in the design — an invisible element, so it is not rendered
-     (CLAUDE.md › don't invent elements); mobile's share action lives on the
-     photo instead (partials/pdp-photo-overlay.html). -->
+     controls. The desktop title's share icon hides below `md` — mobile's own
+     share action lives on the photo instead (partials/pdp-photo-overlay.html). -->
 <aside
   class="flex w-[412px] shrink-0 flex-col self-start rounded-n border border-border-light bg-surface-inverted xl:sticky xl:top-6 max-xl:w-full max-xl:rounded-none max-xl:border-0 max-xl:pt-2"
   data-pdp-summary
@@ -35,34 +33,32 @@
        the panel and their `order-*` applies against the price block too. Their
        own padding moves onto each block, since this wrapper has no box then. -->
   <div class="flex flex-col gap-4 p-6 max-xl:contents">
-    <!-- Заголовок и кнопка «поделиться» — одна строка (title 922:92247,
-         иконка 24 справа). Раньше слот иконки был белым по белому и мы его не
-         рисовали; в текущей версии макета (2238:153498) она тёмная и видна. -->
-    <div class="flex items-start gap-3 max-xl:order-1 max-xl:px-6 max-xl:pb-2 max-md:px-4">
+    <!-- title 922:92247, share icon 24 to its right -->
+    <div class="flex items-center gap-3 max-xl:order-1 max-xl:px-6 max-xl:pb-2 max-md:px-4">
       <h1 class="min-w-0 flex-1 text-h3 text-text-primary" data-pdp-title>Кухня Фьюжн-05</h1>
-      <button type="button" class="flex size-6 shrink-0 items-center justify-center" aria-label="Поделиться">
+      <button type="button" class="flex size-6 shrink-0 items-center justify-center max-md:hidden" aria-label="Поделиться">
         <img src="../../assets/pdp/icon-share.svg" alt="" class="size-6" />
       </button>
     </div>
 
     <!-- colour swatches + the selected colour's name -->
-    <div class="flex flex-col gap-2.5 max-xl:order-4 max-xl:px-6 max-xl:pb-4 max-md:px-4">
+    <div class="flex flex-col gap-2.5 max-xl:order-4 max-xl:px-6 max-xl:pb-2 max-md:px-4">
       <div class="flex items-center gap-3 max-md:gap-4" data-pdp-colors></div>
       <p class="text-body-s text-text-secondary" data-pdp-color-name></p>
     </div>
 
     <!-- size / material, with the link into the Характеристики block -->
     <div class="flex flex-col max-xl:order-2 max-xl:px-6 max-xl:pb-2 max-md:px-4">
-      <p class="text-body-n text-text-primary" data-pdp-size></p>
-      <a href="#specs" class="w-fit text-body-n text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary" data-pdp-more>Подробнее</a>
+      <p class="text-body-n text-text-primary max-md:text-m-body-n" data-pdp-size></p>
+      <a href="#specs" class="link-dotted w-fit text-body-n text-text-secondary transition-colors hover:text-text-primary max-md:text-m-body-n" data-pdp-more>Подробнее</a>
     </div>
 
     <!-- geometry (Прямая / Угловая) — `segments` size=l outline=on, 32px pills.
          Only two fit the 160px desktop frame; below `md` the pair fills the row
          (1997:313165), so the segments grow instead of hugging their labels. -->
-    <div class="flex items-center gap-1 max-xl:order-3 max-xl:gap-2 max-xl:px-6 max-xl:pb-2 max-md:px-4" role="radiogroup" aria-label="Геометрия" data-pdp-geometry>
-      <button type="button" class="pdp-segment max-xl:h-10 max-xl:flex-1" aria-checked="true" role="radio" value="pryamaya">Прямая</button>
-      <button type="button" class="pdp-segment max-md:h-10 max-md:flex-1" aria-checked="false" role="radio" value="uglovaya">Угловая</button>
+    <div class="flex items-center gap-1 py-1 max-xl:order-3 max-xl:gap-2 max-xl:px-6 max-xl:pb-2 max-md:px-4" role="radiogroup" aria-label="Геометрия" data-pdp-geometry>
+      <button type="button" class="pdp-segment max-xl:flex-1" aria-checked="true" role="radio" value="pryamaya">Прямая</button>
+      <button type="button" class="pdp-segment max-xl:flex-1" aria-checked="false" role="radio" value="uglovaya">Угловая</button>
     </div>
   </div>
 

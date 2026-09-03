@@ -146,6 +146,7 @@ if (storesAnchor) {
   renderStoresMap(storesAnchor, {
     stores,
     title: "Где купить",
+    titleMobile: "Наши салоны",
     description:
       "Купить Кухня Фьюжн-05 вы можете в наших фирменных магазинах и в дилерских центрах",
     apiKey: import.meta.env?.VITE_YANDEX_MAPS_KEY || "73abf802-7fa6-4da1-bc36-7dd3457e4673",

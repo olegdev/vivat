@@ -869,20 +869,20 @@
      PDP (product page, Figma 914:101099)
      ========================================================================== */
 
-  /* ---- Section / panel tab (`tab` 759:86853, mobile 1806:236476) -----------
-     16px SemiBold both widths (Desktop/H5 24-line, Mobile/H4 22-line — NOT
-     text-h3, that reads 24px on this component). The bar over the photos and
-     the Характеристики bar are the same component; the current one goes dark
-     with a 2px bottom border in border-alpha-pressed — a real border, not a
-     text-underline (confirmed via get_design_context, not eyeballed). Both
-     faces are driven off `aria-selected`, which the anchor bar derives from
-     the scroll position and the panel bar sets on click. */
+  /* ---- Section / panel tab — two real sizes despite sharing one master
+     (759:86803): the anchor bar over the photos (914:103288) is 16px
+     both widths; the Характеристики panel bar (2567:158702, `.pdp-tab-lg`)
+     is 24px desktop / 16px mobile. Active = 2px bottom border in
+     border-alpha-pressed, driven off `aria-selected`. */
   .pdp-tab {
-    @apply shrink-0 border-b-2 border-transparent pt-1 text-h5 text-text-secondary transition-colors hover:text-text-primary;
+    @apply shrink-0 pt-1 text-h5 text-text-secondary transition-colors hover:text-text-primary;
     @apply max-md:text-m-h4;
   }
+  .pdp-tab-lg {
+    @apply text-h3 max-md:text-h5;
+  }
   .pdp-tab[aria-selected="true"] {
-    @apply border-border-alpha-pressed text-text-primary;
+    @apply text-text-primary shadow-[inset_0_-2px_0_var(--color-border-alpha-pressed)];
   }
 
   /* The mobile tab row is 636px of labels in a 360px frame, so it scrolls; the
@@ -899,14 +899,10 @@
     );
   }
 
-  /* ---- Geometry control (real instance 1209:88253, not the generic
-     `size=l` master 922:91710 whose placeholder "Текст" is 16px/44 tall —
-     `inst` on the actual pill shows 32px tall, 12/16 Medium text
-     (Mobile/BodyS-accent, `text-m-body-s-accent`), not text-body-s-accent's
-     14px). The chosen one takes the `border-active` outline and dark text;
-     the rest stay on `border-default` with muted text. */
+  /* ---- Geometry control (instance 1209:88253) — 32px pill, 12/16 Medium
+     (text-m-body-s-accent), border-active outline when checked. */
   .pdp-segment {
-    @apply flex h-8 items-center rounded-pill border px-4 text-m-body-s-accent transition-colors;
+    @apply flex h-8 items-center justify-center rounded-pill border px-4 text-m-body-s-accent transition-colors;
     @apply border-border-default text-text-secondary hover:border-border-default-hover;
   }
   .pdp-segment[aria-checked="true"] {
@@ -914,15 +910,14 @@
   }
 
   /* ---- Colour swatch (`color-swatch` 629:26578) ---------------------------
-     28px circle. The selected state is the design's own `focus-ring`
-     (629:26643, the same component `.order-input` uses for keyboard focus):
-     1px, 3px offset, `border-ring` (#141414) — not the 2px `components-strong`
-     ring this used to borrow from the filter drawer's swatch. */
+     28px circle. Selected state read off the real swatch instance
+     (2238:153498, not the generic 629:26601 "focus" master): 2px ring,
+     4px offset, border-alpha-pressed. */
   .pdp-swatch {
     @apply size-7 shrink-0 overflow-hidden rounded-full border border-border-alpha-default transition-shadow;
   }
   .pdp-swatch[aria-checked="true"] {
-    @apply ring-1 ring-border-ring ring-offset-[3px];
+    @apply ring-2 ring-border-alpha-pressed ring-offset-4;
   }
 
   /* ---- Spec table leader (`line-dotted` 766:14631) ------------------------

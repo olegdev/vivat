@@ -82,11 +82,8 @@ export function buildCarouselSection({
   // секции без чипсов теряли эти 24: «Модульные кухни» рисовались 599 вместо
   // 628. Пустым он и должен оставаться — высоту ему даёт `empty:h-6`.
   const chipsSlot = section.querySelector("[data-cs-chips-slot]");
-  // Сам ряд чипсов несёт СВОЙ верхний отступ (`topSpasing`, 1686:68153 vs
-  // 644:44577) поверх слотовых 24 — но только когда у секции есть desc: у
-  // «Популярные товары» (с описанием) это ещё +16, у PDP-шного «Добавьте в
-  // корзину» (без описания, topSpasing=false) слотовых 24 уже достаточно —
-  // pt-4 поверх них удваивал отступ.
+  // topSpasing (см. SOLUTIONS.md «A tab-row's own top spacing…»): pt-4 только
+  // когда у секции есть desc, иначе слотовых 24 уже достаточно.
   if (tabs?.length) {
     const chips = buildChips(tabs);
     if (!desc) chips.classList.replace("pt-4", "pt-0");

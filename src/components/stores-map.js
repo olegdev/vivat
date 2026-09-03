@@ -278,6 +278,7 @@ export function renderStoresMap(anchor, opts) {
     stores,
     apiKey,
     title,
+    titleMobile,
     description,
     selectable = false,
     onSelect,
@@ -287,7 +288,11 @@ export function renderStoresMap(anchor, opts) {
     zoom = 9,
   } = opts;
 
-  if (title) anchor.querySelector("[data-stores-title]").textContent = title;
+  if (title) {
+    anchor.querySelector("[data-stores-title]").textContent = title;
+    const mobileTitleEl = anchor.querySelector("[data-stores-title-mobile]");
+    if (mobileTitleEl) mobileTitleEl.textContent = titleMobile || title;
+  }
   if (description) anchor.querySelector("[data-stores-desc]").textContent = description;
   if (selectable) enterSelectMode(anchor);
   if (contactPage) enterContactPageMode(anchor, detail);
