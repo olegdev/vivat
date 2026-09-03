@@ -719,8 +719,8 @@
   }
   .modal-scrim.is-open { @apply flex; }
   .modal-panel {
-    @apply w-[485px] bg-surface-inverted;
-    @apply max-md:max-h-[95vh] max-md:w-full max-md:overflow-y-auto max-md:rounded-t-[var(--radius-l)];
+    @apply w-[485px] rounded-[var(--radius-l)] bg-surface-inverted;
+    @apply max-md:max-h-[95vh] max-md:w-full max-md:overflow-y-auto max-md:rounded-b-none;
   }
 
   /* ---- Catalog filter drawer: slide-in ----------------------------------
