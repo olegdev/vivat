@@ -1,0 +1,27 @@
+<!-- ==================== О НАС (ролик) =================================
+     Нет фрейма в макете — «О компании»/«О нас» намеренно вели в никуда
+     (BACKLOG), ролик появился на живом сайте клиента (mebel.com/contacts),
+     RuTube, не YouTube. Общий modal-shell, без формы — крестик и iframe. -->
+<div class="modal-scrim" data-modal="about">
+  <div class="modal-panel" data-modal-panel>
+    <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
+      <button type="button" class="flex size-6 items-center justify-center" data-modal-close aria-label="Закрыть">
+        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <div class="px-6 pb-6">
+      <h2 class="pb-4 text-center text-h4 text-text-primary max-md:text-m-h3">О нас</h2>
+      <div class="aspect-video overflow-hidden rounded-n bg-bg-subtle">
+        <iframe
+          src="https://rutube.ru/play/embed/93180d3b20eea5d8acae014710573086/"
+          class="size-full"
+          frameborder="0"
+          allow="clipboard-write; autoplay"
+          allowfullscreen
+          loading="lazy"
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</div>
