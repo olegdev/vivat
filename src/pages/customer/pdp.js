@@ -128,7 +128,7 @@ mountCarousel(
 
 mountCarousel(
   document.querySelector('[data-section="collection"]'),
-  { title: "Вся коллекция Фьюжн", action: "В раздел", href: "catalog.html?collection=Фьюжн" },
+  { title: "Вся коллекция Фьюжн", action: "В раздел", href: "catalog.html?collection=Фьюжн", mobileAction: false },
   collection
 );
 

@@ -162,15 +162,25 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   // группы разворачивает ТОЛЬКО её, остальные схлопнуты; воронка/«Больше» —
   // без группы — разворачивает всё сразу. Не «всегда всё открыто».
   const allSections = () => form.querySelectorAll("[data-filter-section]");
-  function openDrawer(section) {
+  const filterTitle = drawer.querySelector("[data-filter-title]");
+  const DEFAULT_TITLE = filterTitle?.textContent;
+  function openDrawer(section, label) {
     drawer.classList.add("is-open");
     document.body.classList.add("overflow-hidden");
     const target = section && form.querySelector(`[data-filter-section="${section}"]`);
     if (target) {
-      for (const s of allSections()) s.open = s === target;
-      requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
+      for (const s of allSections()) {
+        s.open = s === target;
+        s.classList.toggle("hidden", s !== target);
+      }
+      if (filterTitle) filterTitle.textContent = label || DEFAULT_TITLE;
+      form.scrollTop = 0;
     } else {
-      for (const s of allSections()) s.open = true;
+      for (const s of allSections()) {
+        s.open = true;
+        s.classList.remove("hidden");
+      }
+      if (filterTitle) filterTitle.textContent = DEFAULT_TITLE;
       form.scrollTop = 0;
     }
   }
@@ -180,7 +190,9 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   }
 
   for (const b of document.querySelectorAll("[data-filter-open]")) {
-    b.addEventListener("click", () => openDrawer(b.dataset.filterOpen || null));
+    b.addEventListener("click", () =>
+      openDrawer(b.dataset.filterOpen || null, b.firstChild?.textContent?.trim())
+    );
   }
   // <details> is free semantics + Blade-trivial markup, not a manual
   // collapse/expand the design doesn't have — block the native summary

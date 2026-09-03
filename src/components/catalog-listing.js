@@ -266,17 +266,27 @@ export function initCatalogListing({ products, rub }) {
   // with every group expanded (browse-everything entry). Neither is "all open
   // always", which is what a hardcoded `open` on every <details> gave us.
   const allSections = () => form.querySelectorAll("[data-filter-section]");
-  function openDrawer(section) {
+  const filterTitle = drawer.querySelector("[data-filter-title]");
+  const DEFAULT_TITLE = filterTitle.textContent;
+  // Single-pill entry (913:86593) hides every OTHER group outright — not just
+  // collapses it — and the drawer's own title becomes that pill's label.
+  function openDrawer(section, label) {
     drawer.classList.add("is-open");
     document.body.classList.add("overflow-hidden");
     const target = section && form.querySelector(`[data-filter-section="${section}"]`);
     if (target) {
-      for (const s of allSections()) s.open = s === target;
-      // panel is visible immediately (visibility, not display) — jump the form to
-      // the requested group rather than always landing at the top.
-      requestAnimationFrame(() => target.scrollIntoView({ block: "start" }));
+      for (const s of allSections()) {
+        s.open = s === target;
+        s.classList.toggle("hidden", s !== target);
+      }
+      filterTitle.textContent = label || DEFAULT_TITLE;
+      form.scrollTop = 0;
     } else {
-      for (const s of allSections()) s.open = true;
+      for (const s of allSections()) {
+        s.open = true;
+        s.classList.remove("hidden");
+      }
+      filterTitle.textContent = DEFAULT_TITLE;
       form.scrollTop = 0;
     }
   }
@@ -285,7 +295,9 @@ export function initCatalogListing({ products, rub }) {
     document.body.classList.remove("overflow-hidden");
   }
   document.querySelectorAll("[data-filter-open]").forEach((b) =>
-    b.addEventListener("click", () => openDrawer(b.dataset.filterOpen || null))
+    b.addEventListener("click", () =>
+      openDrawer(b.dataset.filterOpen || null, b.firstChild?.textContent?.trim())
+    )
   );
 
   // `<details>` was picked for free semantics + a Blade-trivial markup, not
