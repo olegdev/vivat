@@ -50,14 +50,18 @@
       <!-- ==================== BREADCRUMBS ============================== -->
       <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent leading-6 text-text-secondary max-md:py-2 max-md:text-m-body-s">
         <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
-        <span aria-hidden="true">•</span>
+        <span aria-hidden="true" class="relative top-[3px] max-md:top-[2px]">•</span>
         <a href="#" class="transition-colors hover:text-text-primary">Каталог</a>
-        <span aria-hidden="true">•</span>
+        <span aria-hidden="true" class="relative top-[3px] max-md:top-[2px]">•</span>
         <span class="text-text-primary">Кухни VIVAT</span>
       </nav>
 
       <!-- ==================== TITLE BLOCK ============================== -->
-      <div class="page-x pt-2 max-md:pt-1">
+      <!-- 16px от текста крошек до H1 (752:64208, title-block верстается
+           flush к верху 44-строки, а не по центру) плюс 4px остаточного
+           паддинга той же строки перед панелью настроек — итого низ H1
+           отстоит от funnel-ряда на 28px, а не 24. -->
+      <div class="page-x pt-4 pb-1 max-md:pt-1 max-md:pb-0">
         <h1 class="text-h1 text-text-primary max-md:text-m-h1">Кухни VIVAT</h1>
       </div>
 

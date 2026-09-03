@@ -29,10 +29,14 @@
     <div class="flex flex-col gap-1 px-1 py-3 max-md:gap-0 max-md:pb-0 max-md:pt-1.5">
       <div class="flex items-start gap-4 max-md:gap-0">
         <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
+          <!-- price-container 632:25141: «от»↔цена — 4px, цена↔старая — 8px,
+               два разных зазора, не один общий. -->
           <div class="flex items-baseline gap-2 max-md:gap-1">
-            <!-- у дилера цена идёт без «от» (Figma dealer/Catalog 953:121911) -->
-            <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-xl:text-m-body-n-accent">от</span>
-            <span data-card-price class="text-h3 font-medium text-text-primary max-xl:text-m-body-n-accent"></span>
+            <div class="flex items-baseline gap-1">
+              <!-- у дилера цена идёт без «от» (Figma dealer/Catalog 953:121911) -->
+              <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-xl:text-m-body-n-accent">от</span>
+              <span data-card-price class="text-h3 font-medium text-text-primary max-xl:text-m-body-n-accent"></span>
+            </div>
             <span data-card-oldprice class="text-body-n text-text-muted line-through max-xl:text-m-body-s-crossed max-xl:text-text-secondary empty:hidden"></span>
           </div>
           <!-- На планшете карточка берёт мобильную типографику: во фрейме
