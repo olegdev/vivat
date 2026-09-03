@@ -795,7 +795,12 @@
      (752:63467): the same white pill with a #414141 border. The funnel takes
      the dark `icon-button` (881:51240) and its badge inverts to white-on-dark.
      Both are class-driven so the JS only toggles `is-active`. */
-  .filter-pill.is-active { @apply border-border-active; }
+  /* `border-border-default` on the pill is a utilities-layer class written
+     right on the element; a components-layer rule never outranks it no
+     matter how specific the selector looks, so this needs `!important` to
+     actually win (confirmed empirically — without it the class lands but
+     the border stays default-grey). */
+  .filter-pill.is-active { @apply border-border-active!; }
 
   /* `icon-button` 881:51240 is a horizontal auto-layout row [circle 44][badge
      20] at gap -12 — the badge is a SIBLING that occupies width, not an overlay
@@ -1175,13 +1180,24 @@
    flex child (the `::after`) always counts. `:not(.rail-2row)` excludes the
    2-row grid rails (Популярные/Акции) — grid already includes its own
    trailing padding correctly, confirmed by measurement, so doubling this up
-   there would just add a phantom cell. */
+   there would just add a phantom cell.
+
+   The `::after` is itself a flex child, so the track's own `gap` lands
+   *before* it too — the trailing space is `gap + width`, not `width` alone.
+   Both widths below are sized so that sum lands on the same 16px the left
+   edge gets from `scroll-padding-left`: carousel-section's track gap is 8px
+   (gap-2) → 8px spacer; promo-row's is 12px (gap-3) → 4px spacer. A flat 1rem
+   here first made the right edge visibly wider than the left. */
 @media (width < 48rem) {
-  [data-track]:not(.rail-2row)::after,
+  [data-track]:not(.rail-2row)::after {
+    content: "";
+    flex: none;
+    width: 0.5rem;
+  }
   [data-promo-track]::after {
     content: "";
     flex: none;
-    width: 1rem;
+    width: 0.25rem;
   }
 }
 
