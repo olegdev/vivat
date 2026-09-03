@@ -466,8 +466,21 @@ export function renderStoresMap(anchor, opts) {
     node.dataset.store = s.id;
     node.querySelector("[data-store-name]").textContent = s.name;
     node.querySelector("[data-store-address]").textContent = s.address;
-    node.querySelector("[data-store-hours]").textContent = s.hours;
-    node.querySelector("[data-store-phone]").textContent = s.phone;
+    const fillSchedule = (el, schedule) => {
+      if (!el || !schedule) return;
+      el.replaceChildren(
+        ...Object.values(schedule).map((v) => {
+          const span = document.createElement("span");
+          span.textContent = v;
+          return span;
+        })
+      );
+    };
+    fillSchedule(node.querySelector("[data-store-consult]"), s.consultation);
+    fillSchedule(node.querySelector("[data-store-pickup]"), s.pickup);
+    node.querySelector("[data-store-detail-phone]").textContent = s.phone;
+    node.querySelector("[data-store-email]").textContent = s.email;
+    node.querySelector("[data-store-website]").textContent = s.website;
     if (selectable) {
       // The sheet's card is the radio-and-ring variant; the desktop step-1 list
       // reuses the plain reading card, so both only differ below `md`.

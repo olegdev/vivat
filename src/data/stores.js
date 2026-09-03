@@ -6,6 +6,19 @@
 //
 // In the Blade build this is a query, not a file — it lives here so the two
 // pages read the same fixture instead of keeping two copies of it.
+//
+// `consultation`/`pickup`/`email`/`website` back the card's expanded state
+// (`condition=pressed` 953:55651) — same fields for every store because the
+// only real content anywhere in the file is that one master's placeholder
+// (mebel@dveribravo.ru is a stand-in dealer, not one of ours); see
+// BACKLOG.md for the open question to the client about real per-store values.
+const PLACEHOLDER_CARD_DETAILS = {
+  consultation: { будни: "8:00 – 20:00", "сб.": "9:00 – 18:00", "вс.": "10:00 – 18:00" },
+  pickup: { будни: "9:00 – 17:00", "сб.": "10:00 – 15:00", "вс.": "выходной" },
+  email: "mebel@dveribravo.ru",
+  website: "mebelbravo.ru",
+};
+
 export const stores = [
   {
     name: "Фирменный магазин VIVAT",
@@ -15,6 +28,7 @@ export const stores = [
     coords: [37.8567, 55.6588],
     hours: "Ежедневно, 10:00 — 21:00",
     phone: "+7 (495) 120-45-01",
+    ...PLACEHOLDER_CARD_DETAILS,
   },
   {
     name: "Фирменный магазин VIVAT",
@@ -24,6 +38,7 @@ export const stores = [
     coords: [37.4102, 55.8792],
     hours: "Ежедневно, 10:00 — 22:00",
     phone: "+7 (495) 120-45-02",
+    ...PLACEHOLDER_CARD_DETAILS,
   },
   {
     name: "Фирменный магазин VIVAT",
@@ -33,6 +48,7 @@ export const stores = [
     coords: [37.6510, 55.6432],
     hours: "Ежедневно, 10:00 — 21:00",
     phone: "+7 (495) 120-45-03",
+    ...PLACEHOLDER_CARD_DETAILS,
   },
   {
     name: "Дилерский центр «Мебель-Град»",
@@ -42,6 +58,7 @@ export const stores = [
     coords: [37.5661, 55.8891],
     hours: "Пн — Вс, 10:00 — 22:00",
     phone: "+7 (495) 771-16-40",
+    ...PLACEHOLDER_CARD_DETAILS,
   },
   {
     name: "Фирменный магазин VIVAT",
@@ -51,6 +68,7 @@ export const stores = [
     coords: [37.4991, 55.8199],
     hours: "Ежедневно, 10:00 — 21:00",
     phone: "+7 (495) 120-45-05",
+    ...PLACEHOLDER_CARD_DETAILS,
   },
   {
     name: "Дилерский центр «Кухни Плюс»",
@@ -60,6 +78,7 @@ export const stores = [
     coords: [37.5405, 55.6708],
     hours: "Пн — Сб, 10:00 — 21:00 · Вс, 11:00 — 20:00",
     phone: "+7 (495) 334-72-18",
+    ...PLACEHOLDER_CARD_DETAILS,
   },
   {
     name: "Фирменный магазин VIVAT",
@@ -69,6 +88,7 @@ export const stores = [
     coords: [37.6180, 55.6620],
     hours: "Ежедневно, 10:00 — 21:00",
     phone: "+7 (495) 120-45-07",
+    ...PLACEHOLDER_CARD_DETAILS,
   },
   {
     name: "Дилерский центр «ДомМебель»",
@@ -78,6 +98,7 @@ export const stores = [
     coords: [37.7350, 55.7280],
     hours: "Пн — Вс, 10:00 — 22:00",
     phone: "+7 (495) 660-09-33",
+    ...PLACEHOLDER_CARD_DETAILS,
   },
   {
     name: "Фирменный магазин VIVAT",
@@ -87,6 +108,7 @@ export const stores = [
     coords: [37.3893, 55.8258],
     hours: "Ежедневно, 10:00 — 21:00",
     phone: "+7 (495) 120-45-09",
+    ...PLACEHOLDER_CARD_DETAILS,
   },
   {
     name: "Дилерский центр «Интерьер-Холл»",
@@ -96,5 +118,6 @@ export const stores = [
     coords: [37.7370, 55.9040],
     hours: "Пн — Вс, 10:00 — 21:00",
     phone: "+7 (495) 419-55-06",
+    ...PLACEHOLDER_CARD_DETAILS,
   },
 ];
