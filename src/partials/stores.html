@@ -253,35 +253,38 @@
         <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="hidden size-4" data-store-pick-icon />
       </span>
 
-      <!-- Раскрытая карточка (`condition=pressed` 953:55651): расписание в две
-           колонки, телефон + соцсети, почта/сайт, «Проложить маршрут». Общий
-           для всех точек контент (кроме телефона) — единственный реальный
-           источник в файле — плейсхолдер мастера; см. BACKLOG.md. Ссылки —
-           `span`, не `a`: карточка сама кнопка, вложенный `a` в ней невалиден,
-           как и со `data-store-pick` выше. -->
-      <div data-details hidden class="flex flex-col gap-4 pt-3">
-        <div class="flex items-start justify-between gap-3">
-          <div class="flex flex-col gap-2">
-            <span class="text-body-s-accent text-text-primary">Консультация:</span>
+      <!-- Раскрытая карточка (`condition=pressed`): десктоп 953:55651, планшет
+           2477:169300, мобила 1859:333430. Планшет держит десктопные
+           текстовые стили один в один — меняется только раскладка (обе пары
+           строк складываются в столбик, а не в ряд); у мобилы свои, более
+           мелкие «Mobile/…» стили. Общий для всех точек контент (кроме
+           телефона) — единственный реальный источник в файле — плейсхолдер
+           мастера; см. BACKLOG.md. Ссылки — `span`, не `a`: карточка сама
+           кнопка, вложенный `a` в ней невалиден, как и со `data-store-pick`
+           выше. -->
+      <div data-details hidden class="flex flex-col gap-4 pt-3 max-md:gap-3">
+        <div class="flex items-start justify-between gap-3 max-xl:flex-col max-xl:gap-3 max-md:flex-row">
+          <div class="flex flex-col gap-2 max-md:gap-1">
+            <span class="text-body-s-accent text-text-primary max-md:text-m-body-s-accent">Консультация:</span>
             <div class="flex gap-2">
-              <div class="flex flex-col gap-1 text-body-s text-text-secondary">
+              <div class="flex flex-col gap-1 text-body-s text-text-secondary max-md:text-m-body-s">
                 <span>будни:</span><span>сб.:</span><span>вс.:</span>
               </div>
-              <div data-store-consult class="flex flex-col gap-1 text-body-s text-text-primary"></div>
+              <div data-store-consult class="flex flex-col gap-1 text-body-s text-text-primary max-md:text-m-body-s"></div>
             </div>
           </div>
-          <div class="flex flex-col gap-2">
-            <span class="text-body-s-accent text-text-primary">Самовывоз:</span>
+          <div class="flex flex-col gap-2 max-md:gap-1">
+            <span class="text-body-s-accent text-text-primary max-md:text-m-body-s-accent">Самовывоз:</span>
             <div class="flex gap-2">
-              <div class="flex flex-col gap-1 text-body-s text-text-secondary">
+              <div class="flex flex-col gap-1 text-body-s text-text-secondary max-md:text-m-body-s">
                 <span>будни:</span><span>сб.:</span><span>вс.:</span>
               </div>
-              <div data-store-pickup class="flex flex-col gap-1 text-body-s text-text-primary"></div>
+              <div data-store-pickup class="flex flex-col gap-1 text-body-s text-text-primary max-md:text-m-body-s"></div>
             </div>
           </div>
         </div>
-        <div class="flex items-center justify-between gap-3">
-          <span data-store-detail-phone class="text-body-l-semibold text-text-primary"></span>
+        <div class="flex items-center justify-between gap-3 max-xl:flex-col max-xl:gap-4 max-md:flex-row">
+          <span data-store-detail-phone class="text-body-l-semibold text-text-primary max-md:text-m-body-l-semibold"></span>
           <span class="flex items-center gap-0.5">
             <span aria-label="ВКонтакте" class="social-icon size-10"><span class="size-8 social-vk"></span></span>
             <span aria-label="Telegram" class="social-icon size-10"><span class="size-8 social-tg"></span></span>
@@ -289,10 +292,10 @@
           </span>
         </div>
         <div class="flex flex-col">
-          <span data-store-email class="w-fit text-body-n text-text-primary underline"></span>
-          <span data-store-website class="w-fit text-body-n text-text-primary underline"></span>
+          <span data-store-email class="w-fit text-body-n text-text-primary underline max-md:text-m-body-n"></span>
+          <span data-store-website class="w-fit text-body-n text-text-primary underline max-md:text-m-body-n"></span>
         </div>
-        <span class="flex items-center gap-1 self-end text-body-s text-text-primary">
+        <span class="flex items-center gap-1 self-end text-body-s text-text-primary max-md:text-m-body-s">
           <span class="link-dotted">Проложить маршрут</span>
           <img src="../../assets/header/icon-pin.svg" alt="" class="size-6 -m-1" />
         </span>

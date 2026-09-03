@@ -129,6 +129,9 @@
   --text-m-body-l: 1rem;                 /* 16/24 */
   --text-m-body-l--line-height: 1.5rem;
   --text-m-body-l--font-weight: 400;
+  --text-m-body-l-semibold: 1rem;        /* 16/24 Medium — Mobile/BodyL-semibild */
+  --text-m-body-l-semibold--line-height: 1.5rem;
+  --text-m-body-l-semibold--font-weight: 500;
   --text-m-body-n: 0.875rem;             /* 14/20 */
   --text-m-body-n--line-height: 1.25rem;
   --text-m-body-n--font-weight: 400;
@@ -144,6 +147,9 @@
   --text-m-body-s: 0.75rem;              /* 12/16 */
   --text-m-body-s--line-height: 1rem;
   --text-m-body-s--font-weight: 400;
+  --text-m-body-s-accent: 0.75rem;       /* 12/16 Medium — Mobile/BodyS-accent */
+  --text-m-body-s-accent--line-height: 1rem;
+  --text-m-body-s-accent--font-weight: 500;
   --text-m-body-xs: 0.6875rem;           /* 11/14 */
   --text-m-body-xs--line-height: 0.875rem;
   --text-m-body-xs--font-weight: 400;
