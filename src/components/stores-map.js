@@ -795,7 +795,7 @@ export function renderStoresMap(anchor, opts) {
         "click",
         (e) => {
           const chev = e.target.closest("[data-store-open]");
-          if (!chev) return;
+          if (!chev || !isMobileCity()) return;
           e.preventDefault();
           e.stopPropagation();
           const card = chev.closest("[data-store]");
