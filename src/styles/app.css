@@ -661,7 +661,7 @@
   .filter-radio {
     @apply size-6 shrink-0 appearance-none border border-border-light bg-surface-inverted transition-colors;
     @apply bg-center bg-no-repeat;
-    @apply checked:border-components-strong;
+    @apply checked:border-border-light-hover;
   }
   .filter-check { @apply rounded-n; }
   .filter-radio { @apply rounded-full; }

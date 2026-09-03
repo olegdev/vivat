@@ -21,8 +21,8 @@
     class="filter-drawer__panel absolute left-0 top-0 flex h-full w-[478px] max-w-full flex-col bg-surface-inverted shadow-dropdown"
   >
     <!-- header -->
-    <div class="flex h-16 shrink-0 items-center justify-between py-2 pl-10 pr-6 max-md:px-4">
-      <h2 class="text-h3 text-text-primary">Фильтры</h2>
+    <div class="flex h-16 shrink-0 items-center justify-between py-2 pl-10 pr-6 max-md:h-12 max-md:border-b max-md:border-divider-light max-md:px-4 max-md:py-0">
+      <h2 class="text-h3 text-text-primary max-md:text-m-h3">Фильтры</h2>
       <button
         type="button"
         data-filter-close
@@ -42,7 +42,7 @@
         <summary
           class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary">Структура</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Структура</span>
           <span class="flex items-center gap-3">
             <button
               type="button"
@@ -66,7 +66,7 @@
         <summary
           class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary">Материал</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Материал</span>
           <span class="flex items-center gap-3">
             <button
               type="button"
@@ -83,7 +83,7 @@
           </span>
         </summary>
         <div class="pb-4" data-filter-options="material">
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="material[]" value="dsp" class="filter-check" /><span class="text-body-n text-text-primary">ДСП</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="material[]" value="dsp" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">ДСП</span></label>
         </div>
       </details>
 
@@ -92,7 +92,7 @@
         <summary
           class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary">Цвет</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Цвет</span>
           <span class="flex items-center gap-3">
             <button
               type="button"
@@ -109,7 +109,7 @@
           </span>
         </summary>
         <div class="pb-4" data-filter-options="color">
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="color[]" value="svetlye" class="filter-check" /><span class="text-body-n text-text-primary">Светлые</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="color[]" value="svetlye" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Светлые</span></label>
         </div>
       </details>
     </form>
@@ -120,12 +120,12 @@
       <button
         type="button"
         data-filter-clear
-        class="btn btn-m flex-1 bg-components-subtle text-text-primary hover:bg-components-subtle-hover"
+        class="btn btn-m flex-1 bg-components-subtle text-text-primary max-md:text-m-button-m hover:bg-components-subtle-hover"
       >
         Очистить
         <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />
       </button>
-      <button type="button" data-filter-apply class="btn btn-m btn-primary flex-1">
+      <button type="button" data-filter-apply class="btn btn-m btn-primary flex-1 max-md:text-m-button-m">
         Показать <span data-filter-count>0</span>
       </button>
     </div>

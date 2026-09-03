@@ -23,10 +23,11 @@
   <aside
     class="filter-drawer__panel absolute left-0 top-0 flex h-full w-[478px] max-w-full flex-col bg-surface-inverted shadow-dropdown"
   >
-    <!-- header (Modal-header 1859:339041): pl-40/pr-24, not px-10 uniform;
-         title is H3 (24/28), not H4 (20/24). -->
-    <div class="flex h-16 shrink-0 items-center justify-between py-2 pl-10 pr-6 max-md:px-4">
-      <h2 class="text-h3 text-text-primary">Фильтры</h2>
+    <!-- header: desktop (Modal-header 1859:339041) pl-40/pr-24, H3 (24/28),
+         no border; mobile (1997:296995) is a DIFFERENT header — h-48 (not 64),
+         border-b/divider-light, H3 shrinks to Mobile/H3 (18/24). -->
+    <div class="flex h-16 shrink-0 items-center justify-between py-2 pl-10 pr-6 max-md:h-12 max-md:border-b max-md:border-divider-light max-md:px-4 max-md:py-0">
+      <h2 class="text-h3 text-text-primary max-md:text-m-h3">Фильтры</h2>
       <button
         type="button"
         data-filter-close
@@ -44,7 +45,7 @@
         <summary
           class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary">Коллекция</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Коллекция</span>
           <span class="flex items-center gap-3">
             <button
               type="button"
@@ -61,23 +62,23 @@
           </span>
         </summary>
         <div class="grid grid-cols-2 gap-x-6 pb-4">
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="fusion" class="filter-check" /><span class="text-body-n text-text-primary">Фьюжн</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="freym" class="filter-check" /><span class="text-body-n text-text-primary">Фрейм</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="neo" class="filter-check" /><span class="text-body-n text-text-primary">Нео</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="flet" class="filter-check" /><span class="text-body-n text-text-primary">Флэт</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="skandi" class="filter-check" /><span class="text-body-n text-text-primary">Сканди</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="loft" class="filter-check" /><span class="text-body-n text-text-primary">Лофт</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="shale" class="filter-check" /><span class="text-body-n text-text-primary">Шале</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="barcelona" class="filter-check" /><span class="text-body-n text-text-primary">Барселона</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="kvadro" class="filter-check" /><span class="text-body-n text-text-primary">Квадро</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="dublin" class="filter-check" /><span class="text-body-n text-text-primary">Дублин</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="evro" class="filter-check" /><span class="text-body-n text-text-primary">Евро</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="nicca" class="filter-check" /><span class="text-body-n text-text-primary">Ницца</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="gletcher" class="filter-check" /><span class="text-body-n text-text-primary">Глетчер</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="praga" class="filter-check" /><span class="text-body-n text-text-primary">Прага</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="valeria" class="filter-check" /><span class="text-body-n text-text-primary">Валерия-М</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="terra" class="filter-check" /><span class="text-body-n text-text-primary">Терра</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="provans" class="filter-check" /><span class="text-body-n text-text-primary">Прованс</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="fusion" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Фьюжн</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="freym" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Фрейм</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="neo" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Нео</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="flet" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Флэт</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="skandi" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Сканди</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="loft" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Лофт</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="shale" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Шале</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="barcelona" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Барселона</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="kvadro" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Квадро</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="dublin" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Дублин</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="evro" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Евро</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="nicca" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Ницца</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="gletcher" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Глетчер</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="praga" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Прага</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="valeria" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Валерия-М</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="terra" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Терра</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="provans" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Прованс</span></label>
         </div>
       </details>
 
@@ -86,13 +87,13 @@
         <summary
           class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary">Фасад</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Фасад</span>
           <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform group-open:rotate-180" />
         </summary>
         <div class="pb-4">
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="facade[]" value="ldsp" class="filter-check" /><span class="text-body-n text-text-primary">ЛДСП</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="facade[]" value="mdf" class="filter-check" /><span class="text-body-n text-text-primary">МДФ</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="facade[]" value="mdf-steklo" class="filter-check" /><span class="text-body-n text-text-primary">МДФ / Стекло</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="facade[]" value="ldsp" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">ЛДСП</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="facade[]" value="mdf" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">МДФ</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="facade[]" value="mdf-steklo" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">МДФ / Стекло</span></label>
         </div>
       </details>
 
@@ -101,12 +102,12 @@
         <summary
           class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary">Форма</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Форма</span>
           <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform group-open:rotate-180" />
         </summary>
         <div class="pb-4">
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="form[]" value="pryamaya" class="filter-check" /><span class="text-body-n text-text-primary">Прямая</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="form[]" value="uglovaya" class="filter-check" /><span class="text-body-n text-text-primary">Угловая</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="form[]" value="pryamaya" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Прямая</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="form[]" value="uglovaya" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Угловая</span></label>
         </div>
       </details>
 
@@ -115,7 +116,7 @@
         <summary
           class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary">Цвет</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Цвет</span>
           <span class="flex items-center gap-3">
             <button
               type="button"
@@ -128,15 +129,15 @@
           </span>
         </summary>
         <div class="grid grid-cols-2 gap-x-6 pb-4">
-          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="bezhevyy" class="peer sr-only" /><span class="filter-swatch" style="background:#e4dac4"></span><span class="text-body-n text-text-primary">Бежевый</span></label>
-          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="svetlo-seryy" class="peer sr-only" /><span class="filter-swatch" style="background:#d9d9d9"></span><span class="text-body-n text-text-primary">Светло-серый</span></label>
-          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="belyy" class="peer sr-only" /><span class="filter-swatch" style="background:#ffffff"></span><span class="text-body-n text-text-primary">Белый</span></label>
-          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="oreh" class="peer sr-only" /><span class="filter-swatch" style="background:#b08d57"></span><span class="text-body-n text-text-primary">Орех</span></label>
-          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="goluboy" class="peer sr-only" /><span class="filter-swatch" style="background:#cfe0ea"></span><span class="text-body-n text-text-primary">Голубой</span></label>
-          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="chernyy" class="peer sr-only" /><span class="filter-swatch" style="background:#141414"></span><span class="text-body-n text-text-primary">Черный</span></label>
-          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="zelenyy" class="peer sr-only" /><span class="filter-swatch" style="background:#4a9b7d"></span><span class="text-body-n text-text-primary">Зеленый</span></label>
-          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="korichnevyy" class="peer sr-only" /><span class="filter-swatch" style="background:#6e4b3a"></span><span class="text-body-n text-text-primary">Коричневый</span></label>
-          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="multicvet" class="peer sr-only" /><span class="filter-swatch" style="background:conic-gradient(#ff5546,#f8bb92,#4a9b7d,#cfe0ea,#6e4b3a,#ff5546)"></span><span class="text-body-n text-text-primary">Мультицвет</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="bezhevyy" class="peer sr-only" /><span class="filter-swatch" style="background:#e4dac4"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Бежевый</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="svetlo-seryy" class="peer sr-only" /><span class="filter-swatch" style="background:#d9d9d9"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Светло-серый</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="belyy" class="peer sr-only" /><span class="filter-swatch" style="background:#ffffff"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Белый</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="oreh" class="peer sr-only" /><span class="filter-swatch" style="background:#b08d57"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Орех</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="goluboy" class="peer sr-only" /><span class="filter-swatch" style="background:#cfe0ea"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Голубой</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="chernyy" class="peer sr-only" /><span class="filter-swatch" style="background:#141414"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Черный</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="zelenyy" class="peer sr-only" /><span class="filter-swatch" style="background:#4a9b7d"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Зеленый</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="korichnevyy" class="peer sr-only" /><span class="filter-swatch" style="background:#6e4b3a"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Коричневый</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="multicvet" class="peer sr-only" /><span class="filter-swatch" style="background:conic-gradient(#ff5546,#f8bb92,#4a9b7d,#cfe0ea,#6e4b3a,#ff5546)"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Мультицвет</span></label>
         </div>
       </details>
 
@@ -145,12 +146,12 @@
         <summary
           class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary">Стиль</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Стиль</span>
           <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform group-open:rotate-180" />
         </summary>
         <div class="pb-4">
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="style[]" value="klassika" class="filter-check" /><span class="text-body-n text-text-primary">Классика</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="style[]" value="sovremennyy" class="filter-check" /><span class="text-body-n text-text-primary">Современный</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="style[]" value="klassika" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Классика</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="style[]" value="sovremennyy" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Современный</span></label>
         </div>
       </details>
 
@@ -159,7 +160,7 @@
         <summary
           class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary">Цена</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Цена</span>
           <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform group-open:rotate-180" />
         </summary>
         <div class="pb-6">
@@ -174,10 +175,10 @@
               <input type="text" inputmode="numeric" name="price_max" placeholder="560 200" class="order-input" />
             </label>
           </div>
-          <label class="flex items-center gap-3 py-2.5"><input type="radio" name="price" value="any" class="filter-radio" checked /><span class="text-body-n text-text-primary">Любая цена</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="radio" name="price" value="0-100000" class="filter-radio" /><span class="text-body-n text-text-primary">До 100 000 ₽</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="radio" name="price" value="100000-300000" class="filter-radio" /><span class="text-body-n text-text-primary">100 000 – 300 000 ₽</span></label>
-          <label class="flex items-center gap-3 py-2.5"><input type="radio" name="price" value="300000-519567" class="filter-radio" /><span class="text-body-n text-text-primary">300 000 – 519 567 ₽</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="radio" name="price" value="any" class="filter-radio" checked /><span class="text-body-n text-text-primary max-md:text-m-body-n">Любая цена</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="radio" name="price" value="0-100000" class="filter-radio" /><span class="text-body-n text-text-primary max-md:text-m-body-n">До 100 000 ₽</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="radio" name="price" value="100000-300000" class="filter-radio" /><span class="text-body-n text-text-primary max-md:text-m-body-n">100 000 – 300 000 ₽</span></label>
+          <label class="flex items-center gap-3 py-2.5"><input type="radio" name="price" value="300000-519567" class="filter-radio" /><span class="text-body-n text-text-primary max-md:text-m-body-n">300 000 – 519 567 ₽</span></label>
         </div>
       </details>
     </form>
@@ -189,12 +190,12 @@
       <button
         type="button"
         data-filter-clear
-        class="btn btn-m flex-1 bg-components-subtle text-text-primary hover:bg-components-subtle-hover"
+        class="btn btn-m flex-1 bg-components-subtle text-text-primary max-md:text-m-button-m hover:bg-components-subtle-hover"
       >
         Очистить
         <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />
       </button>
-      <button type="button" data-filter-apply class="btn btn-m btn-primary flex-1">
+      <button type="button" data-filter-apply class="btn btn-m btn-primary flex-1 max-md:text-m-button-m">
         Показать <span data-filter-count>0</span>
       </button>
     </div>
