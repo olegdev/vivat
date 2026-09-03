@@ -23,9 +23,10 @@
   <aside
     class="filter-drawer__panel absolute left-0 top-0 flex h-full w-[478px] max-w-full flex-col bg-surface-inverted shadow-dropdown"
   >
-    <!-- header -->
-    <div class="flex h-16 shrink-0 items-center justify-between px-10 max-md:px-4">
-      <h2 class="text-h4 text-text-primary">Фильтры</h2>
+    <!-- header (Modal-header 1859:339041): pl-40/pr-24, not px-10 uniform;
+         title is H3 (24/28), not H4 (20/24). -->
+    <div class="flex h-16 shrink-0 items-center justify-between py-2 pl-10 pr-6 max-md:px-4">
+      <h2 class="text-h3 text-text-primary">Фильтры</h2>
       <button
         type="button"
         data-filter-close
@@ -39,16 +40,16 @@
     <!-- form: the request payload. `name`s are the query contract. -->
     <form data-filter-form class="flex-1 overflow-y-auto px-10 max-md:px-4">
       <!-- ---- Коллекция ---- -->
-      <details data-filter-section="collection" open class="group border-t border-divider-soft">
+      <details data-filter-section="collection" open class="group">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-body-n-accent text-text-primary">Коллекция</span>
+          <span class="text-h5 text-text-primary">Коллекция</span>
           <span class="flex items-center gap-3">
             <button
               type="button"
               data-filter-clear-group="collection"
-              class="text-body-xs uppercase text-text-secondary transition-colors hover:text-text-primary"
+              class="text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
             >
               очистить
             </button>
@@ -81,11 +82,11 @@
       </details>
 
       <!-- ---- Фасад ---- -->
-      <details data-filter-section="facade" open class="group border-t border-divider-soft">
+      <details data-filter-section="facade" open class="group">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-body-n-accent text-text-primary">Фасад</span>
+          <span class="text-h5 text-text-primary">Фасад</span>
           <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform group-open:rotate-180" />
         </summary>
         <div class="pb-4">
@@ -96,11 +97,11 @@
       </details>
 
       <!-- ---- Форма ---- -->
-      <details data-filter-section="form" open class="group border-t border-divider-soft">
+      <details data-filter-section="form" open class="group">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-body-n-accent text-text-primary">Форма</span>
+          <span class="text-h5 text-text-primary">Форма</span>
           <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform group-open:rotate-180" />
         </summary>
         <div class="pb-4">
@@ -110,16 +111,16 @@
       </details>
 
       <!-- ---- Цвет ---- -->
-      <details data-filter-section="color" open class="group border-t border-divider-soft">
+      <details data-filter-section="color" open class="group">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-body-n-accent text-text-primary">Цвет</span>
+          <span class="text-h5 text-text-primary">Цвет</span>
           <span class="flex items-center gap-3">
             <button
               type="button"
               data-filter-clear-group="color"
-              class="text-body-xs uppercase text-text-secondary transition-colors hover:text-text-primary"
+              class="text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
             >
               очистить
             </button>
@@ -127,24 +128,24 @@
           </span>
         </summary>
         <div class="grid grid-cols-2 gap-x-6 pb-4">
-          <label class="flex items-center gap-2 py-2"><input type="checkbox" name="color[]" value="bezhevyy" class="peer sr-only" /><span class="filter-swatch" style="background:#e4dac4"></span><span class="text-body-n text-text-primary">Бежевый</span></label>
-          <label class="flex items-center gap-2 py-2"><input type="checkbox" name="color[]" value="svetlo-seryy" class="peer sr-only" /><span class="filter-swatch" style="background:#d9d9d9"></span><span class="text-body-n text-text-primary">Светло-серый</span></label>
-          <label class="flex items-center gap-2 py-2"><input type="checkbox" name="color[]" value="belyy" class="peer sr-only" /><span class="filter-swatch" style="background:#ffffff"></span><span class="text-body-n text-text-primary">Белый</span></label>
-          <label class="flex items-center gap-2 py-2"><input type="checkbox" name="color[]" value="oreh" class="peer sr-only" /><span class="filter-swatch" style="background:#b08d57"></span><span class="text-body-n text-text-primary">Орех</span></label>
-          <label class="flex items-center gap-2 py-2"><input type="checkbox" name="color[]" value="goluboy" class="peer sr-only" /><span class="filter-swatch" style="background:#cfe0ea"></span><span class="text-body-n text-text-primary">Голубой</span></label>
-          <label class="flex items-center gap-2 py-2"><input type="checkbox" name="color[]" value="chernyy" class="peer sr-only" /><span class="filter-swatch" style="background:#141414"></span><span class="text-body-n text-text-primary">Черный</span></label>
-          <label class="flex items-center gap-2 py-2"><input type="checkbox" name="color[]" value="zelenyy" class="peer sr-only" /><span class="filter-swatch" style="background:#4a9b7d"></span><span class="text-body-n text-text-primary">Зеленый</span></label>
-          <label class="flex items-center gap-2 py-2"><input type="checkbox" name="color[]" value="korichnevyy" class="peer sr-only" /><span class="filter-swatch" style="background:#6e4b3a"></span><span class="text-body-n text-text-primary">Коричневый</span></label>
-          <label class="flex items-center gap-2 py-2"><input type="checkbox" name="color[]" value="multicvet" class="peer sr-only" /><span class="filter-swatch" style="background:conic-gradient(#ff5546,#f8bb92,#4a9b7d,#cfe0ea,#6e4b3a,#ff5546)"></span><span class="text-body-n text-text-primary">Мультицвет</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="bezhevyy" class="peer sr-only" /><span class="filter-swatch" style="background:#e4dac4"></span><span class="text-body-n text-text-primary">Бежевый</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="svetlo-seryy" class="peer sr-only" /><span class="filter-swatch" style="background:#d9d9d9"></span><span class="text-body-n text-text-primary">Светло-серый</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="belyy" class="peer sr-only" /><span class="filter-swatch" style="background:#ffffff"></span><span class="text-body-n text-text-primary">Белый</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="oreh" class="peer sr-only" /><span class="filter-swatch" style="background:#b08d57"></span><span class="text-body-n text-text-primary">Орех</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="goluboy" class="peer sr-only" /><span class="filter-swatch" style="background:#cfe0ea"></span><span class="text-body-n text-text-primary">Голубой</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="chernyy" class="peer sr-only" /><span class="filter-swatch" style="background:#141414"></span><span class="text-body-n text-text-primary">Черный</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="zelenyy" class="peer sr-only" /><span class="filter-swatch" style="background:#4a9b7d"></span><span class="text-body-n text-text-primary">Зеленый</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="korichnevyy" class="peer sr-only" /><span class="filter-swatch" style="background:#6e4b3a"></span><span class="text-body-n text-text-primary">Коричневый</span></label>
+          <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="multicvet" class="peer sr-only" /><span class="filter-swatch" style="background:conic-gradient(#ff5546,#f8bb92,#4a9b7d,#cfe0ea,#6e4b3a,#ff5546)"></span><span class="text-body-n text-text-primary">Мультицвет</span></label>
         </div>
       </details>
 
       <!-- ---- Стиль ---- -->
-      <details data-filter-section="style" open class="group border-t border-divider-soft">
+      <details data-filter-section="style" open class="group">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-body-n-accent text-text-primary">Стиль</span>
+          <span class="text-h5 text-text-primary">Стиль</span>
           <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform group-open:rotate-180" />
         </summary>
         <div class="pb-4">
@@ -154,11 +155,11 @@
       </details>
 
       <!-- ---- Цена ---- -->
-      <details data-filter-section="price" open class="group border-y border-divider-soft">
+      <details data-filter-section="price" open class="group">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between py-4 [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-body-n-accent text-text-primary">Цена</span>
+          <span class="text-h5 text-text-primary">Цена</span>
           <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform group-open:rotate-180" />
         </summary>
         <div class="pb-6">
@@ -181,17 +182,19 @@
       </details>
     </form>
 
-    <!-- footer: reset + apply. "Показать N" count is kept live by applyFilters(). -->
-    <div class="flex h-16 shrink-0 items-center justify-between gap-6 bg-surface-default px-10 max-md:px-4">
+    <!-- footer (filter-footer 1859:341783): two EQUAL-width pill buttons
+         (flex-1 each), not a plain text link + a fixed-width primary button —
+         "Очистить" is a real grey button here, not an inline link. -->
+    <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:px-4">
       <button
         type="button"
         data-filter-clear
-        class="flex items-center gap-2 text-body-n text-text-primary transition-colors hover:text-text-hover"
+        class="btn btn-m flex-1 bg-components-subtle text-text-primary hover:bg-components-subtle-hover"
       >
         Очистить
         <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />
       </button>
-      <button type="button" data-filter-apply class="btn btn-m btn-primary min-w-[188px]">
+      <button type="button" data-filter-apply class="btn btn-m btn-primary flex-1">
         Показать <span data-filter-count>0</span>
       </button>
     </div>

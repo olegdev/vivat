@@ -659,7 +659,7 @@
      border — it does NOT fill dark. */
   .filter-check,
   .filter-radio {
-    @apply size-6 shrink-0 appearance-none border border-border-default bg-surface-inverted transition-colors;
+    @apply size-6 shrink-0 appearance-none border border-border-light bg-surface-inverted transition-colors;
     @apply bg-center bg-no-repeat;
     @apply checked:border-components-strong;
   }
@@ -746,11 +746,15 @@
     transform: translateX(0);
   }
 
-  /* Colour swatch (Цвет block): the label wraps a visually-hidden checkbox
-     (`.peer`) and this circle; the selected ring is driven off `peer-checked`. */
+  /* Colour swatch (Цвет block, color-swatch 759:78657 in the real filter-drawer
+     instance 1859:351329 — 32px, not the 28px card swatch). The label wraps a
+     visually-hidden checkbox (`.peer`) and this circle; the selected ring is
+     driven off `peer-checked` — border-alpha-pressed (rgba(20,20,20,.6)), a
+     2px ring 4px off the swatch, not the dark solid ring the card/PDP
+     selectors use. */
   .filter-swatch {
-    @apply size-7 shrink-0 rounded-full border border-border-alpha-default transition-shadow;
-    @apply peer-checked:ring-2 peer-checked:ring-components-strong peer-checked:ring-offset-2;
+    @apply size-8 shrink-0 rounded-full border border-border-alpha-default transition-shadow;
+    @apply peer-checked:ring-2 peer-checked:ring-border-alpha-pressed peer-checked:ring-offset-4;
   }
 
   /* ---- Catalog mega-menu (from `menu` frames 882:119365 / 912:85445) -----
