@@ -123,7 +123,7 @@ setStoresBases({ home: HOME });
 const map = renderStoresMap(page.querySelector("[data-step-section='1']"), {
   stores,
   apiKey: import.meta.env?.VITE_YANDEX_MAPS_KEY || "73abf802-7fa6-4da1-bc36-7dd3457e4673",
-  title: "Шаг 1 из 2. Выбрать ближайший магазин.",
+  title: "Шаг 2 из 3. Выбрать ближайший магазин.",
   description:
     "Пожалуйста, выберите магазин нашего партнера, в который вам удобнее сделать заказ. " +
     "Менеджер партнера свяжется с вами для подтверждения заказа, консультации или корректировки.",
