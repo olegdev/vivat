@@ -14,9 +14,13 @@
 <template data-promo-card>
   <div class="group flex flex-col gap-4 max-md:gap-3">
     <div data-promo-media class="relative aspect-square w-full overflow-hidden rounded-n bg-bg-subtle"></div>
+    <!-- Подпись стоит в рамке 64 (stackPrimarySizing FIXED у 637:18206) — это
+         резерв под две строки text-body-xl, а не высота по контенту: короткие
+         подписи не должны сжимать плитку в ряду с длинными. min-h держит его
+         и для однострочных заголовков. -->
     <p
       data-promo-caption
-      class="text-center text-body-xl text-text-primary transition-colors group-hover:text-text-secondary max-md:text-m-body-xl"
+      class="min-h-16 text-center text-body-xl text-text-primary transition-colors group-hover:text-text-secondary max-md:min-h-0 max-md:text-m-body-xl"
     ></p>
   </div>
 </template>
