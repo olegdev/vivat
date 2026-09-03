@@ -16,19 +16,23 @@ export const categories = [
   {
     name: "Кухни",
     // second-column sub-tabs; the active one drives the collections column
-    sub: [{ label: "Все кухни" }, { label: "Коллекции", active: true }],
+    sub: [{ label: "Все кухни" }, { label: "Коллекции", showsCollections: true }],
+    // `filter` is the exact `param=value` catalog-filters.html already uses
+    // for the same option elsewhere (catalog-settings.html's quickfilter
+    // row) — reused here, not invented. Chips with no matching filter value
+    // in the catalog's own option lists carry none and just open the category.
     chips: [
-      "Прямые кухни",
-      "Угловые кухни",
-      "Фрезированые фасады",
-      "Плоские фасады",
-      "Стекло",
-      "Мультицвет",
-      "Белые",
-      "Недорогие",
-      "Популярные",
-      "Для встраивоемой техники",
-      "Под дерево",
+      { label: "Прямые кухни", filter: "form=pryamaya" },
+      { label: "Угловые кухни", filter: "form=uglovaya" },
+      { label: "Фрезированые фасады", filter: "facade=mdf" },
+      { label: "Плоские фасады" },
+      { label: "Стекло", filter: "facade=mdf-steklo" },
+      { label: "Мультицвет", filter: "color=multicvet" },
+      { label: "Белые", filter: "color=belyy" },
+      { label: "Недорогие" },
+      { label: "Популярные" },
+      { label: "Для встраивоемой техники" },
+      { label: "Под дерево" },
     ],
     collections: [
       "Фьюжн",

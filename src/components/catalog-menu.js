@@ -33,10 +33,10 @@ function buildItem(label, { active = false, param = "category" } = {}) {
   return el;
 }
 
-function buildChip(label) {
+function buildChip({ label, filter }) {
   const el = clone("[data-menu-chip]");
   el.textContent = label;
-  el.href = catalogHref("filter", label);
+  el.href = filter ? `catalog.html?${filter}` : "catalog.html";
   return el;
 }
 
@@ -63,6 +63,14 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
   );
   const col1Items = [...col1.children];
 
+  function hideCol3() {
+    col3.classList.add("hidden");
+    col3.classList.remove("flex");
+    col3.replaceChildren();
+  }
+
+  // col1 → col2 only. col3 (collections) opens one level further, from a col2
+  // sub-item (`showsCollections`), not alongside col2 — one column at a time.
   function activate(index) {
     col1Items.forEach((el, i) => {
       if (i === index) el.setAttribute("aria-current", "true");
@@ -70,22 +78,33 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
     });
     const cat = categories[index];
 
-    // column 2 — sub-tabs + chips
-    col2Sub.replaceChildren(
-      ...(cat.sub || []).map((s) => buildItem(s.label, { active: s.active, param: "view" }))
-    );
+    // column 2 — sub-tabs + chips, nothing pre-selected
+    const subItems = (cat.sub || []).map((s) => buildItem(s.label, { param: "view" }));
+    col2Sub.replaceChildren(...subItems);
     col2Chips.replaceChildren(...(cat.chips || []).map(buildChip));
     const hasCol2 = !!(cat.sub?.length || cat.chips?.length);
     col2.classList.toggle("hidden", !hasCol2);
     col2.classList.toggle("flex", hasCol2);
+    hideCol3();
 
-    // column 3 — collections
-    const hasCol3 = !!cat.collections?.length;
-    col3.replaceChildren(
-      ...(cat.collections || []).map((c) => buildItem(c, { param: "collection" }))
-    );
-    col3.classList.toggle("hidden", !hasCol3);
-    col3.classList.toggle("flex", hasCol3);
+    (cat.sub || []).forEach((s, i) => {
+      const el = subItems[i];
+      const showSub = () => {
+        subItems.forEach((x, j) => x.toggleAttribute("aria-current", j === i));
+        if (s.showsCollections && cat.collections?.length) {
+          col3.replaceChildren(...cat.collections.map((c) => buildItem(c, { param: "collection" })));
+          col3.classList.remove("hidden");
+          col3.classList.add("flex");
+        } else {
+          hideCol3();
+        }
+      };
+      el.addEventListener("mouseenter", showSub);
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        showSub();
+      });
+    });
   }
 
   // hover or click a category to expand it
@@ -98,13 +117,19 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
   });
   // open / close --------------------------------------------------------------
   // col2/col3 start hidden (912:80439's collapsed frame draws only column 1)
-  // and expand on the first real hover/click, not on open itself.
+  // and expand on the first real hover/click, not on open itself — and every
+  // close resets back to that same collapsed state for the next open.
   function setOpen(open) {
     overlay.classList.toggle("hidden", !open);
     toggle?.setAttribute("aria-expanded", String(open));
     document.documentElement.classList.toggle("overflow-hidden", open);
     if (toggleIcon) {
       toggleIcon.src = `${ICON}/${open ? "icon-close" : "icon-burger"}.svg`;
+    }
+    if (!open) {
+      col2.classList.add("hidden");
+      col2.classList.remove("flex");
+      hideCol3();
     }
   }
   const isOpen = () => !overlay.classList.contains("hidden");
