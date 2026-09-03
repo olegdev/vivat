@@ -72,9 +72,13 @@
            там, где должен заглядывать сосед: у почти полноширинной карточки
            (320 из 328 доступных) для этого просто не было места — обрезка
            стояла впритык. Гасим паддинг обёртки (-mx-4) и возвращаем его
-           только слева (pl-4), чтобы вьюпорт дотягивался до края экрана. -->
+           заново на самом вьюпорте (px-4) — слева тот же инсет для первой
+           карточки, справа — логичный отступ, когда докрутили до последней,
+           а не голый край экрана. Пиковый сосед это не портит: скролл в
+           начале не завязан на правый паддинг, он просто добавляет запас в
+           конце scrollWidth. -->
       <div
-        class="overflow-hidden max-xl:scroll-rail max-xl:snap-x max-xl:snap-proximity max-xl:scroll-pl-6 max-xl:overflow-x-auto max-md:-mx-4 max-md:scroll-pl-4 max-md:pl-4"
+        class="overflow-hidden max-xl:scroll-rail max-xl:snap-x max-xl:snap-proximity max-xl:scroll-pl-6 max-xl:overflow-x-auto max-md:-mx-4 max-md:scroll-px-4 max-md:px-4"
         data-viewport
       >
         <div class="flex gap-6 transition-transform duration-500 ease-out will-change-transform max-md:gap-2" data-track></div>
