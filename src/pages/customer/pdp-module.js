@@ -51,7 +51,7 @@ mountCarousel(
     // `cards-modul` — отдельный компонент, а не размер общей карточки,
     // поэтому это `variant`, как и в кухонной PDP.
     variant: "modul",
-    arrowTop: 97, // по центру 242-й коробки снимка
+    arrowTop: 53, // тот же рельс, что и на кухонной PDP (914:103437 y=53, не центр 242-й коробки)
     id: "modules",
   },
   modules
@@ -70,7 +70,7 @@ mountCarousel(
     desktopAction: false,
     mobileAction: false,
     mobileProgress: false,
-    arrowTop: 124,
+    arrowTop: 136, // тот же рельс, что и на кухонной PDP (1686:58686 y=136)
   },
   reviews
 );

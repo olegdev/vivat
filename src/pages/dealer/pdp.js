@@ -94,7 +94,7 @@ mountCarousel(
     // единственные, чей адрес приходится задавать явно.
     cardHref: "../customer/pdp-module.html",
     variant: "modul",
-    arrowTop: 97, // centred on the card's 242px image box
+    arrowTop: 53, // 914:103437 carousel-controls y=53 — NOT centred on the 242px image
   },
   modules
 );
@@ -123,7 +123,7 @@ mountCarousel(
     desktopAction: false,
     mobileAction: false,
     mobileProgress: false,
-    arrowTop: 124, // centred on the 296px card
+    arrowTop: 136, // 1686:58686 carousel-controls y=136 — not the card's own centre (148)
   },
   reviews
 );

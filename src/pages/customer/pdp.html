@@ -54,10 +54,16 @@
       <!--#include partials/carousel-section.html -->
 
       <!-- ==================== BREADCRUMBS ============================== -->
-      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent leading-6 text-text-secondary max-md:py-2 max-md:text-m-body-s">
+      <!-- Figma breadcrumbs 1058:176780: FOUR steps — Главная / Каталог / Кухни /
+           the product — not three; the old "Кухни VIVAT" merged two steps into
+           one. "Каталог" has no page of its own — points at catalog.html, same
+           as pdp-module.html's own breadcrumbs do for this step. -->
+      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent md:leading-6 text-text-secondary max-md:h-10 max-md:text-m-body-s">
         <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
         <span aria-hidden="true">•</span>
-        <a href="catalog.html" class="transition-colors hover:text-text-primary">Кухни VIVAT</a>
+        <a href="catalog.html" class="transition-colors hover:text-text-primary">Каталог</a>
+        <span aria-hidden="true">•</span>
+        <a href="catalog.html" class="transition-colors hover:text-text-primary">Кухни</a>
         <span aria-hidden="true">•</span>
         <span class="text-text-primary">Кухня Фьюжн-05</span>
       </nav>

@@ -870,16 +870,19 @@
      ========================================================================== */
 
   /* ---- Section / panel tab (`tab` 759:86853, mobile 1806:236476) -----------
-     24px SemiBold, 16/24 below `md`. The bar over the photos and the
-     Характеристики bar are the same component; the current one goes dark and
-     underlined. Both faces are driven off `aria-selected`, which the anchor bar
-     derives from the scroll position and the panel bar sets on click. */
+     16px SemiBold both widths (Desktop/H5 24-line, Mobile/H4 22-line — NOT
+     text-h3, that reads 24px on this component). The bar over the photos and
+     the Характеристики bar are the same component; the current one goes dark
+     with a 2px bottom border in border-alpha-pressed — a real border, not a
+     text-underline (confirmed via get_design_context, not eyeballed). Both
+     faces are driven off `aria-selected`, which the anchor bar derives from
+     the scroll position and the panel bar sets on click. */
   .pdp-tab {
-    @apply shrink-0 text-h3 text-text-secondary transition-colors hover:text-text-primary;
-    @apply max-md:text-h5;
+    @apply shrink-0 border-b-2 border-transparent pt-1 text-h5 text-text-secondary transition-colors hover:text-text-primary;
+    @apply max-md:text-m-h4;
   }
   .pdp-tab[aria-selected="true"] {
-    @apply text-text-primary underline decoration-from-font underline-offset-4;
+    @apply border-border-alpha-pressed text-text-primary;
   }
 
   /* The mobile tab row is 636px of labels in a 360px frame, so it scrolls; the
@@ -896,11 +899,14 @@
     );
   }
 
-  /* ---- Geometry control (`segments` size=l outline=on, 922:91710) ---------
-     32px outlined pill. The chosen one takes the `border-active` outline and
-     dark text; the rest stay on `border-default` with muted text. */
+  /* ---- Geometry control (real instance 1209:88253, not the generic
+     `size=l` master 922:91710 whose placeholder "Текст" is 16px/44 tall —
+     `inst` on the actual pill shows 32px tall, 12/16 Medium text
+     (Mobile/BodyS-accent, `text-m-body-s-accent`), not text-body-s-accent's
+     14px). The chosen one takes the `border-active` outline and dark text;
+     the rest stay on `border-default` with muted text. */
   .pdp-segment {
-    @apply flex h-8 items-center rounded-pill border px-4 text-body-s-accent transition-colors;
+    @apply flex h-8 items-center rounded-pill border px-4 text-m-body-s-accent transition-colors;
     @apply border-border-default text-text-secondary hover:border-border-default-hover;
   }
   .pdp-segment[aria-checked="true"] {
