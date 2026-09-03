@@ -116,11 +116,14 @@
        as soon as a shortcut is on, the row becomes the *selected
        parameters* — only the active chips (grey fill + ×, click to
        release) followed by an "Очистить все" chip. catalog-listing.js ›
-       syncChips() swaps between the two. On mobile the shortcut list is a
-       scroll rail; the selected row wraps (the mock shows two rows). -->
+       syncChips() swaps between the two. Both rows are one line at every
+       width — the selected row's frame (1806:237540) clips past its edge
+       rather than wrapping (a dashed overflow marker, not a second row); the
+       earlier "wraps on mobile" reading was off a screenshot, not the node
+       itself. On mobile the shortcut list scrolls the same as desktop. -->
   <div
     data-chips
-    class="flex flex-wrap items-center gap-2 max-md:gap-1 max-xl:flex-nowrap max-xl:overflow-x-auto max-xl:scroll-rail max-xl:[&>button]:shrink-0 max-md:data-selected:flex-wrap max-md:data-selected:overflow-visible"
+    class="flex flex-nowrap items-center gap-2 overflow-x-auto scroll-rail max-md:gap-1 [&>button]:shrink-0"
   >
     <button type="button" class="catalog-chip" data-quickfilter="form=pryamaya">Прямые кухни<!--#include partials/chip-close.html --></button>
     <button type="button" class="catalog-chip" data-quickfilter="form=uglovaya">Угловые кухни<!--#include partials/chip-close.html --></button>
