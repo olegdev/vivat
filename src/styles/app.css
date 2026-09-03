@@ -477,9 +477,11 @@
   .promo-zoom video {
     @apply transition-transform duration-500 ease-out;
   }
-  .promo-zoom:hover img,
-  .promo-zoom:hover video {
-    scale: 1.05;
+  @media (hover: hover) {
+    .promo-zoom:hover img,
+    .promo-zoom:hover video {
+      scale: 1.05;
+    }
   }
 
   /* Coral tile ("type=animation", 637:18202 → hover 637:18208): the backdrop
@@ -489,17 +491,18 @@
      SVG's own 437-unit space — hence `transform-box: view-box`. */
   .promo-coral__svg { @apply size-full; }
   .promo-coral__bg { fill: #fe7a6d; transition: fill 0.5s ease-out; }
-  .promo-coral:hover .promo-coral__bg { fill: #ff5546; }
-
   .promo-coral__g {
     fill: #f8bb92;
     transform-box: view-box;
     transform-origin: 0 0;
     transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
-  .promo-coral:hover [data-g="03"] { transform: matrix(0.7479, 0, 0, 0.8533, 31.67, 21.75); }
-  .promo-coral:hover [data-g="02"] { transform: matrix(0.7479, 0, 0, 0.8533, 79.06, 33.93); }
-  .promo-coral:hover [data-g="01"] { transform: matrix(0.9488, 0.0271, 0.0271, 0.9801, 6.03, -2.15); }
+  @media (hover: hover) {
+    .promo-coral:hover .promo-coral__bg { fill: #ff5546; }
+    .promo-coral:hover [data-g="03"] { transform: matrix(0.7479, 0, 0, 0.8533, 31.67, 21.75); }
+    .promo-coral:hover [data-g="02"] { transform: matrix(0.7479, 0, 0, 0.8533, 79.06, 33.93); }
+    .promo-coral:hover [data-g="01"] { transform: matrix(0.9488, 0.0271, 0.0271, 0.9801, 6.03, -2.15); }
+  }
 
   /* ---- Carousel dot ----------------------------------------------------- */
   .carousel-dot { @apply flex h-4 w-8 flex-col justify-center; }
@@ -532,7 +535,9 @@
     mask: var(--icon) no-repeat center / contain;
     -webkit-mask: var(--icon) no-repeat center / contain;
   }
-  .social-icon:hover > span { @apply bg-icon-hover; }
+  @media (hover: hover) {
+    .social-icon:hover > span { @apply bg-icon-hover; }
+  }
 
   /* The six glyphs live next to this file rather than in `public/`, so Vite
      resolves and inlines them; a `url()` pointing into `public/` can only be
