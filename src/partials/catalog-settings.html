@@ -21,29 +21,26 @@
            overlay; see SOLUTIONS.md › "Badges are layout, not overlay".
            With filters applied the circle flips to the dark variant. -->
       <button type="button" data-filter-open class="filter-funnel flex h-11 shrink-0 items-center" aria-label="Открыть фильтры">
-        <!-- service-icons `filter, 24 THIN` (2214:190873) — именно тонкий:
-             во фрейме воронки стоит он, а не жирный. Inline + currentColor,
-             чтобы глиф инвертировался вместе с кружком. -->
+        <!-- service-icons `filter, 24 Bold` (963:37179) — реальный override
+             инстанса кнопки (768:28902), а не «воронка» на глаз: две гори-
+             зонтальные шкалы с ползунками. Снят как файл через Figma MCP
+             (fig.mjs геометрию вектора не декодирует), не перерисован от
+             руки. Активное состояние инвертирует тем же приёмом, что
+             bottom-nav — `brightness(0) invert(1)`, а не currentColor:
+             <img>-загруженный SVG не наследует цвет текста. -->
         <span class="filter-funnel__circle">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M8.84961 5.55017C9.26382 5.55017 9.59961 5.88596 9.59961 6.30017C9.59961 6.71438 9.26382 7.05017 8.84961 7.05017H2.75C2.33579 7.05017 2 6.71438 2 6.30017C2 5.88596 2.33579 5.55017 2.75 5.55017H8.84961Z" />
-            <path d="M13.1992 6.29999C13.1991 5.30597 12.3935 4.50018 11.3994 4.50018C10.4055 4.50029 9.59972 5.30621 9.59961 6.30017C9.59961 7.29422 10.4054 8.09969 11.3994 8.09979C12.3935 8.09979 13.1992 7.2941 13.1992 6.29999ZM14.6992 6.29999C14.6992 8.12253 13.222 9.59979 11.3994 9.59979C9.57696 9.59969 8.09961 8.12246 8.09961 6.29999C8.09972 4.4776 9.57703 3.00029 11.3994 3.00018C13.2219 3.00018 14.6991 4.47754 14.6992 6.29999Z" />
-            <path d="M21.25 5.55017C21.6642 5.55017 22 5.88596 22 6.30017C22 6.71438 21.6642 7.05017 21.25 7.05017H15.4004C14.9862 7.05017 14.6504 6.71438 14.6504 6.30017C14.6504 5.88596 14.9862 5.55017 15.4004 5.55017H21.25Z" />
-            <path d="M10.75 16.9502C11.1642 16.9502 11.5 17.286 11.5 17.7002C11.5 18.1144 11.1642 18.4502 10.75 18.4502H2.75C2.33579 18.4502 2 18.1144 2 17.7002C2 17.286 2.33579 16.9502 2.75 16.9502H10.75Z" />
-            <path d="M15.0996 17.7C15.0995 16.706 14.2939 15.9002 13.2998 15.9002C12.3058 15.9003 11.5001 16.7062 11.5 17.7002C11.5 18.6942 12.3058 19.4997 13.2998 19.4998C14.2939 19.4998 15.0996 18.6941 15.0996 17.7ZM16.5996 17.7C16.5996 19.5226 15.1223 20.9998 13.2998 20.9998C11.4774 20.9997 10 19.5225 10 17.7C10.0001 15.8776 11.4774 14.4003 13.2998 14.4002C15.1223 14.4002 16.5995 15.8776 16.5996 17.7Z" />
-            <path d="M21.25 16.9502C21.6642 16.9502 22 17.286 22 17.7002C22 18.1144 21.6642 18.4502 21.25 18.4502H18.4004C17.9862 18.4502 17.6504 18.1144 17.6504 17.7002C17.6504 17.286 17.9862 16.9502 18.4004 16.9502H21.25Z" />
-          </svg>
+          <img src="../../assets/header/icon-filter.svg" alt="" class="size-6" />
         </span>
         <span data-filter-badge class="badge-number badge-number--outline -ml-3 hidden self-start">0</span>
       </button>
       <!-- named pills. A group with a selection takes the `condition=active`
            pill (Figma 752:63467): #414141 border + a muted count. -->
-      <button type="button" data-filter-open="collection" data-filter-pill="collection" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Коллекция<span data-pill-count class="hidden text-text-muted"></span></button>
-      <button type="button" data-filter-open="form" data-filter-pill="form" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Форма кухни<span data-pill-count class="hidden text-text-muted"></span></button>
-      <button type="button" data-filter-open="facade" data-filter-pill="facade" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Фасады<span data-pill-count class="hidden text-text-muted"></span></button>
-      <button type="button" data-filter-open="color" data-filter-pill="color" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Цвет<span data-pill-count class="hidden text-text-muted"></span></button>
-      <button type="button" data-filter-open="style" data-filter-pill="style" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Стиль<span data-pill-count class="hidden text-text-muted"></span></button>
-      <button type="button" data-filter-open="price" data-filter-pill="price" class="filter-pill btn btn-m border border-border-light bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Цена<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="collection" data-filter-pill="collection" class="filter-pill btn btn-m border border-border-default bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Коллекция<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="form" data-filter-pill="form" class="filter-pill btn btn-m border border-border-default bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Форма кухни<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="facade" data-filter-pill="facade" class="filter-pill btn btn-m border border-border-default bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Фасады<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="color" data-filter-pill="color" class="filter-pill btn btn-m border border-border-default bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Цвет<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="style" data-filter-pill="style" class="filter-pill btn btn-m border border-border-default bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Стиль<span data-pill-count class="hidden text-text-muted"></span></button>
+      <button type="button" data-filter-open="price" data-filter-pill="price" class="filter-pill btn btn-m border border-border-default bg-surface-inverted text-text-primary hover:bg-components-subtle-hover max-xl:hidden">Цена<span data-pill-count class="hidden text-text-muted"></span></button>
     </div>
 
     <!-- правая группа. На 1440 это фрейм `popular` 480 = текст+тумблер 168,

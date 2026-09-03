@@ -807,6 +807,10 @@
     @apply bg-components-active-muted text-icon-inverse-primary;
   }
   .filter-funnel.is-active:hover .filter-funnel__circle { @apply bg-components-active-default; }
+  /* The glyph is a single-colour #292929 file loaded as <img> (like the
+     bottom-nav's active icon), not inline + currentColor, so it can't
+     inherit text-icon-inverse-primary above — invert it the same way. */
+  .filter-funnel.is-active .filter-funnel__circle img { filter: brightness(0) invert(1); }
 
   /* ---- Count badge (`badge-number` set 758:59031) -------------------------
      One 20px pill, four `design` variants. Shape only — *placement is the call
