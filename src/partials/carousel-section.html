@@ -68,8 +68,13 @@
          нативным скроллом с индикатором — так он нарисован и на планшете
          (rows 2477:146694 + scroll 720x32), и на мобиле. -->
     <div class="page-x relative">
+      <!-- На мобиле паддинг обёртки (page-x) закрывал carousel-viewport ровно
+           там, где должен заглядывать сосед: у почти полноширинной карточки
+           (320 из 328 доступных) для этого просто не было места — обрезка
+           стояла впритык. Гасим паддинг обёртки (-mx-4) и возвращаем его
+           только слева (pl-4), чтобы вьюпорт дотягивался до края экрана. -->
       <div
-        class="overflow-hidden max-xl:scroll-rail max-xl:snap-x max-xl:snap-proximity max-xl:scroll-pl-6 max-xl:overflow-x-auto max-md:scroll-pl-4"
+        class="overflow-hidden max-xl:scroll-rail max-xl:snap-x max-xl:snap-proximity max-xl:scroll-pl-6 max-xl:overflow-x-auto max-md:-mx-4 max-md:scroll-pl-4 max-md:pl-4"
         data-viewport
       >
         <div class="flex gap-6 transition-transform duration-500 ease-out will-change-transform max-md:gap-2" data-track></div>
@@ -106,8 +111,12 @@
     data-chips
     class="scroll-rail flex items-center gap-2 overflow-x-auto pb-4 pt-4 max-md:-mx-4 max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:px-4 max-md:pb-4 max-md:pt-2 *:max-md:snap-start"
   >
-    <button data-cs-more class="chip gap-1 border border-border-light bg-bg-page text-text-muted">
-      еще <span class="tracking-widest">···</span>
+    <!-- «···» — реальная иконка (three-dot 632:31611, снята через MCP),
+         не текстовые точки с tracking; вес Regular 400, не .chip's
+         дефолтный Medium (font-normal поверх), цвет text-secondary, не
+         text-muted. -->
+    <button data-cs-more class="chip gap-1 border border-border-light bg-bg-page font-normal text-text-secondary">
+      еще <img src="../../assets/header/icon-dots.svg" alt="" class="size-6" />
     </button>
   </div>
 </template>
