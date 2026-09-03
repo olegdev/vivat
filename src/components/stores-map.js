@@ -530,12 +530,13 @@ export function renderStoresMap(anchor, opts) {
     for (const card of listEl.querySelectorAll("[data-store]")) {
       const on = card.dataset.store === selectedId;
       card.setAttribute("aria-current", String(on));
-      // Выбор дилера карточку не разворачивает — в макете шеврон у выбранной
-      // смотрит вниз, как у всех (946:122008).
-      card.setAttribute("aria-expanded", String(on && !selectable));
-      // Picking a dealer doesn't unfold hours/phone — the sheet's card has no
-      // detail row and no chevron; reading the list still expands.
-      card.querySelector("[data-details]").hidden = selectable || !on;
+      // На десктопе выбор дилера разворачивает карточку как на читающих
+      // страницах, только с добавленной кнопкой (946:121438, condition=pressed).
+      // На мобиле у листа своя раскрытая карточка магазина (2397:152957) —
+      // отдельный шаг визарда, не этот блок.
+      const mobileSelect = selectable && isMobileCity();
+      card.setAttribute("aria-expanded", String(on && !mobileSelect));
+      card.querySelector("[data-details]").hidden = mobileSelect || !on;
       const dot = card.querySelector("[data-store-radio] > span");
       if (dot) {
         dot.classList.toggle("border-components-strong", on);
