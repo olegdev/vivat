@@ -282,6 +282,15 @@ export function initCatalogListing({ products, rub }) {
   document.querySelectorAll("[data-filter-open]").forEach((b) =>
     b.addEventListener("click", () => openDrawer(b.dataset.filterOpen || null))
   );
+
+  // `<details>` was picked for free semantics + a Blade-trivial markup, not
+  // for a manual collapse/expand the design doesn't have — the macro has no
+  // click-to-toggle affordance on the chevron, only the two openDrawer()
+  // states above (single group / all groups). Block the native summary
+  // toggle so a click on the row can't fold a group the entry point opened.
+  for (const s of allSections()) {
+    s.querySelector(":scope > summary")?.addEventListener("click", (e) => e.preventDefault());
+  }
   document.querySelector("[data-filter-close]").addEventListener("click", closeDrawer);
   document.querySelector("[data-filter-dismiss]").addEventListener("click", closeDrawer);
   document.addEventListener("keydown", (e) => {

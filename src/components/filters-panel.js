@@ -168,6 +168,12 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   for (const b of document.querySelectorAll("[data-filter-open]")) {
     b.addEventListener("click", () => openDrawer(b.dataset.filterOpen || null));
   }
+  // <details> is free semantics + Blade-trivial markup, not a manual
+  // collapse/expand the design doesn't have — block the native summary
+  // toggle so a click on the row can't fold what openDrawer() opened.
+  for (const s of allSections()) {
+    s.querySelector(":scope > summary")?.addEventListener("click", (e) => e.preventDefault());
+  }
   drawer.querySelector("[data-filter-close]").addEventListener("click", closeDrawer);
   drawer.querySelector("[data-filter-dismiss]").addEventListener("click", closeDrawer);
   drawer.querySelector("[data-filter-apply]").addEventListener("click", closeDrawer);
