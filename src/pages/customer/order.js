@@ -92,7 +92,15 @@ function setStep(n, { scroll = true } = {}) {
   }
 
   if (scroll && n > 0 && !isMobile()) {
-    page.querySelector(`[data-step-section="${n}"]`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Скролл целится в содержимое шага, а не в его секцию целиком — иначе
+    // плашка алерта и отступы над ней (h-20/h-6) остаются первым, что видно,
+    // и до полезного контента приходится домотать вручную. `data-step-anchor`
+    // ставит якорь ниже плашки — она уходит за экран, а не занимает его.
+    const section = page.querySelector(`[data-step-section="${n}"]`);
+    (section?.querySelector("[data-step-anchor]") ?? section)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   }
 }
 

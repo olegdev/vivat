@@ -70,9 +70,15 @@ const forms = initOrderForms(page, {
 
 // The summary's own button sits outside the form (the 322 panel is a sibling
 // of it), so it submits by hand; the mobile bar's button uses `form=`.
-page.querySelector("[data-order-summary] [data-order-submit]")?.addEventListener("click", () =>
-  forms?.form.requestSubmit()
-);
+// Native validation focuses the first invalid field, but doesn't reliably
+// scroll it into view when the button that triggered submit lives outside
+// the form (Safari especially) — so do that ourselves before handing off.
+page.querySelector("[data-order-summary] [data-order-submit]")?.addEventListener("click", () => {
+  if (forms && !forms.form.checkValidity()) {
+    forms.form.querySelector(":invalid")?.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  forms?.form.requestSubmit();
+});
 
 initModals();
 initCitySelect();

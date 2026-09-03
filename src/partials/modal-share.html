@@ -3,9 +3,11 @@
      shell as the other four windows, but its own heading size — Desktop/H2
      (text-h2), not the text-h4 the rest use — and no form: three social
      links, each opening that network's real share-intent URL for the
-     current page. VK and Telegram's share-intent format is well established;
-     MAX's is not (the client's messenger, too new to have a documented one),
-     so that icon stays a plain trigger with no destination — see BACKLOG. -->
+     current page, plus a 485×121 decorative photo strip (`img` 2462:221332)
+     full-bleed under them. VK and Telegram's share-intent format is well
+     established; MAX's is not (the client's messenger, too new to have a
+     documented one), so that icon stays a plain trigger with no
+     destination — see BACKLOG. -->
 <div class="modal-scrim" data-modal="share">
   <div class="modal-panel" data-modal-panel>
     <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
@@ -14,7 +16,7 @@
       </button>
     </div>
 
-    <div class="flex flex-col items-center gap-4 px-16 pb-16 max-md:px-8 max-md:pb-10">
+    <div class="flex flex-col items-center gap-4 px-16 max-md:px-8">
       <h2 class="text-h2 text-text-primary max-md:text-m-h2">Поделиться</h2>
       <div class="flex items-center gap-2">
         <a href="#" target="_blank" rel="noopener" class="flex size-20 items-center justify-center" data-share-vk aria-label="ВКонтакте">
@@ -28,5 +30,7 @@
         </button>
       </div>
     </div>
+    <div class="h-9"></div>
+    <img src="../../assets/header/share-modal-photo.png" alt="" class="h-[121px] w-full object-cover" />
   </div>
 </div>

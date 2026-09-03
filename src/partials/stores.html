@@ -19,10 +19,10 @@
      `renderStoresMap({ selectable: true })` adds `.stores-select`, which also
      turns the block into a full-screen map + bottom sheet below `md`
      (2032:158435 / 2059:169141) — see app.css. -->
-<section id="where" class="flex w-full flex-col bg-surface-accent pb-16 max-xl:pb-0 max-md:bg-bg-page max-md:pb-10" data-stores-section>
+<section class="flex w-full flex-col bg-surface-accent pb-16 max-xl:pb-0 max-md:bg-bg-page max-md:pb-10" data-stores-section>
   <div class="page-x" data-stores-head>
     <div class="h-20 max-xl:h-16 max-md:h-10"></div>
-    <div class="flex w-[783px] flex-col max-xl:w-auto max-xl:min-w-0 max-xl:flex-1 max-md:w-full">
+    <div id="where" data-step-anchor class="flex w-[783px] scroll-mt-6 flex-col max-xl:w-auto max-xl:min-w-0 max-xl:flex-1 max-md:w-full">
       <div class="flex min-h-11 items-center max-md:min-h-6">
         <h2 class="text-h2 text-text-primary max-md:hidden" data-stores-title>Наши салоны</h2>
         <h2 class="hidden text-m-h2 text-text-primary max-md:block" data-stores-title-mobile>Наши салоны</h2>

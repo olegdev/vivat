@@ -122,6 +122,12 @@ export function initModals() {
         if (label) label.textContent = file.files?.[0]?.name || empty;
       });
     }
+
+    // «О нас»: подпись «Загружаем видео…» стоит под iframe, пока ролик не
+    // ответил, и снимается его собственным `load` — как на живом сайте, где
+    // тот же фанбокс держит окно чёрным до первого кадра плеера.
+    const aboutFrame = panel.querySelector("[data-about-frame]");
+    aboutFrame?.addEventListener("load", () => panel.querySelector("[data-about-loading]")?.remove());
   });
 
   return { open, close };

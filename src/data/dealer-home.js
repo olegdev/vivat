@@ -62,7 +62,7 @@ export const RRP_FACTOR = 2;
 // см. BACKLOG.
 export const dealerMenuSections = [
   { label: "Каталог", view: "catalog" },
-  { label: "Конструктор", href: "#" },
+  { label: "Конструктор", href: "../dealer/constructor.html" },
   { label: "Контакты", href: "../dealer/contacts.html" },
   { label: "Для бизнеса", href: "../dealer/howto.html" },
   { label: "Мой кабинет", href: "#" },

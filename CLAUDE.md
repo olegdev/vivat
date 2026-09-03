@@ -342,6 +342,23 @@ and **`B2b additional` is now built out**: the four modals plus Доставка
 2×156 на 360. Превью выгружены из макета; порядок выгрузки не совпал с
 порядком карточек, пары восстановлены по надписям на самих превью.
 
+`src/pages/dealer/constructor.html` — «Конструктор мебели». **Единственная
+страница проекта без единого фрейма**: пункт «Конструктор» дилерская шапка
+(menu-items 607:27488) несла с самого начала и никуда не вела, страницу под
+него заказал клиент. Это не страница секции «Для бизнеса» — `menu-b2b` её не
+знает, а встроенному приложению нужна вся ширина, — поэтому оболочка обычная:
+шапка, заголовок, содержимое во всю колонку, подвал.
+
+Тело — один `iframe` с приложением o3d.ru в рамке карты салонов (радиус 8 и
+`shadow-dropdown`, без обводки) и собственная полоса над ним с двумя
+действиями: «Скачать оффлайн-версию» и «Сообщить об ошибке». Полоса
+принадлежит рамке, а не странице, — иначе две ссылки висят над пустым местом.
+Высота полотна считается от экрана (не меньше 640, не больше 900): у
+приложения своя панель сверху и своя снизу, и на 3D-сцену остаётся заметно
+меньше, чем занимает рамка. Адрес приложения ставится из JS, а не в разметке:
+в Blade его собирает сервер вместе с сеансом. Всё, что здесь придумано, и
+чужой `session=` в фикстуре записаны в `BACKLOG.md`.
+
 Three of those pages share **`partials/doc-tree.html`** — a recursive tree of
 document groups (four levels deep on Схемы сборки). Two more share the
 catalog-shaped grid. Their fixtures are not typed by hand: `scripts/
@@ -390,6 +407,23 @@ shape as the order page's modules sheet. `partials/order-done.html` uses the
 same two classes — it was the fourth copy of that card before they were pulled
 out. Because `hidden` now lives inside `.modal-scrim`, showing an overlay means
 adding `.is-open`, not removing a class.
+
+Two more windows use the same shell and have **no frame at all**: the «О нас»
+video (`modal-about`) and «Сообщить об ошибке» (`modal-bug-report`), the
+constructor page's error report. The second one is the dealer-request form plus
+two controls the design never draws — a multi-line `.order-input` and a file
+picker whose native label the browser neither styles nor translates, so the
+input is hidden and `modals.js` prints the file name beside a `btn-s` button.
+
+`modal-about` is also the one window that ignores `.modal-panel` on purpose —
+by client instruction, copied pixel-for-pixel off the lightbox `mebel.com`
+already uses for the same link: a 44px inset on every side of the *screen*, a
+square 44×44 close button pinned to the screen's own top-right corner rather
+than the card's, and `rgba(30,30,30,.9)` for the scrim (`overlay-strong` is the
+same colour at 20 not 30, close enough that swapping it was not worth a new
+token). The frame is sized by whichever of width/height the 16∶9 box hits
+first, not `aspect-video` inside independent max-w/max-h — those two clamped
+separately can leave the box narrower than the height allows.
 
 Four things about them are easy to get wrong:
 
@@ -520,7 +554,7 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `order-summary`, `order-forms`, `order-modules`, `order-done`,
 `search-overlay`, `price-mode`, `modals` (хаб) and the four it pulls in —
 `modal-dealer-request`, `modal-dealer-login`, `modal-subscribe`,
-`modal-director`, and the content-page trio `menu-b2b`, `for-business-header`
+`modal-director`, `modal-about`, `modal-bug-report`, and the content-page trio `menu-b2b`, `for-business-header`
 (which also carries the section-menu sheet) and `accordion`, plus
 `benefit-tile`.
 Several carry both a static shell and the `<template>` unit(s) their component

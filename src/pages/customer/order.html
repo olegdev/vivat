@@ -147,9 +147,7 @@
           <!-- alert 1604:72204 — 40px band, `surface-accent-subtle`, radius n -->
           <div class="flex h-10 items-center gap-2 rounded-n bg-surface-accent-subtle px-4" data-alert>
             <img src="../../assets/order/icon-info-dark.svg" alt="" class="size-6 -m-1 shrink-0" />
-            <p class="flex-1 text-body-n text-text-primary">
-              Обращаем внимание покупателей, что 22.07.2026 мы работаем по сокращенному графику!
-            </p>
+            <p class="flex-1 text-body-n text-text-primary">Отлично! Ваш заказ сформирован.</p>
           </div>
         </div>
 
@@ -181,9 +179,6 @@
             <p class="flex-1 text-body-n text-text-primary">
               Вы выбрали <span data-picked-store></span>
             </p>
-            <button type="button" class="text-body-n text-text-primary underline underline-offset-4" data-change-store>
-              Изменить выбор
-            </button>
           </div>
         </div>
 
@@ -191,7 +186,7 @@
              там он первая строка формы, поэтому от `max-md:hidden` свободен, в
              отличие от H2. Слово «ваши» — из мобильного фрейма; на 1440
              дизайнер его не пишет, расхождение записано в BACKLOG.md. -->
-        <div class="page-x pt-16 max-md:pt-10">
+        <div class="page-x pt-16 max-md:pt-10" data-step-anchor>
           <h2 class="text-h2 text-text-primary max-md:hidden">Шаг 3 из 3. Контактные данные.</h2>
           <div class="h-2 max-md:hidden"></div>
           <p class="text-body-l text-text-primary max-md:leading-6">

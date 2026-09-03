@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Конструктор мебели (dealer)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Onest:wght@100;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="./constructor.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary" data-user="dealer">
+    <!-- «Конструктор мебели» — встроенное приложение o3d.ru.
+         ФРЕЙМА В МАКЕТЕ НЕТ: страницу заказал клиент под пункт «Конструктор»,
+         который дилерская шапка (menu-items 607:27488) несла с самого начала и
+         который никуда не вёл. Всё здесь собрано из готовых частей проекта, и
+         это записано в BACKLOG.
+
+         Это не контентная страница секции «Для бизнеса»: пункт живёт в шапке
+         рядом с «Каталогом», а не в меню раздела (menu-b2b его не знает), и
+         приложению нужна вся ширина. Поэтому оболочка обычная — шапка,
+         заголовок, содержимое во всю колонку, подвал, — а не трёхколоночная. -->
+    <div class="w-full max-xl:pb-[72px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/product-card.html -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- ==================== ЗАГОЛОВОК ================================
+           Тот же блок, что у остальных дилерских страниц (title-block
+           1167:79694): отбивка 24, строка 44, отбивка 24. -->
+      <div class="page-x py-6 max-md:py-4">
+        <div class="flex min-h-11 items-center max-md:min-h-8">
+          <h1 class="text-h1 text-text-primary max-md:text-m-h1">Конструктор мебели</h1>
+        </div>
+      </div>
+
+      <!-- ==================== ПРИЛОЖЕНИЕ ==============================
+           Рамка приложения повторяет карту салонов: радиус 8 и та же тень
+           (`shadow-dropdown`), без обводки. Сверху её собственная полоса с
+           двумя действиями — так они читаются как принадлежащие конструктору,
+           а не висят отдельными ссылками над страницей. Ниже `md` полоса
+           переносит действия в столбик, иначе они не помещаются в 360.
+
+           Высота считается от экрана: у приложения своя панель сверху и своя
+           снизу, и на 3D-сцену остаётся заметно меньше, чем занимает рамка.
+           Поэтому берём всё, что есть, но не меньше 640 и не больше 900 — выше
+           полотно перестаёт быть полезным раньше, чем кончается экран. -->
+      <div class="page-x pb-16 max-xl:pb-12 max-md:pb-8">
+        <div class="overflow-hidden rounded-[var(--radius-l)] shadow-dropdown max-md:shadow-none max-md:rounded-n">
+          <div
+            class="flex h-14 items-center justify-end gap-6 border-b border-divider-light bg-bg-subtle px-6 max-md:h-auto max-md:flex-col max-md:items-stretch max-md:gap-2 max-md:px-4 max-md:py-3"
+          >
+            <a
+              class="text-body-n text-text-primary underline decoration-from-font underline-offset-4 transition-colors hover:text-text-secondary max-md:text-m-body-n"
+              data-constructor-download
+              >Скачать оффлайн-версию</a
+            >
+            <button
+              type="button"
+              class="text-left text-body-n text-text-primary underline decoration-from-font underline-offset-4 transition-colors hover:text-text-secondary max-md:text-m-body-n"
+              data-modal-open="bug-report"
+            >
+              Сообщить об ошибке
+            </button>
+          </div>
+
+          <!-- Подложка видна, пока приложение грузится: `iframe` до первого
+               кадра прозрачен, и без неё в рамке была бы дыра. -->
+          <div class="relative h-[calc(100dvh-260px)] max-h-[900px] min-h-[640px] bg-bg-subtle max-md:h-[calc(100dvh-240px)] max-md:min-h-[480px]">
+            <p
+              class="absolute inset-0 flex items-center justify-center text-body-n text-text-secondary max-md:text-m-body-n"
+              data-constructor-placeholder
+            >
+              Загружаем конструктор…
+            </p>
+            <iframe
+              title="Конструктор мебели VIVAT"
+              class="relative size-full border-0"
+              allow="fullscreen; xr-spatial-tracking; clipboard-write"
+              allowfullscreen
+              data-constructor-frame
+            ></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
+    <!--#include partials/modals.html -->
+  </body>
+</html>
