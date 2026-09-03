@@ -36,14 +36,14 @@ const SORTERS = {
 function badgeEl(b) {
   const tone = { new: "badge-new", hit: "badge-hit", discount: "badge-discount" }[b.tone] || "badge-new";
   const span = document.createElement("span");
-  span.className = `badge badge-l ${tone}`;
+  span.className = `badge badge-s ${tone}`;
   span.textContent = b.text;
   return span;
 }
 
 function swatchEl(s) {
   const wrap = document.createElement("span");
-  wrap.className = "size-7 overflow-hidden rounded-full border border-alpha-default max-md:size-[18px]";
+  wrap.className = "size-7 overflow-hidden rounded-full border border-border-alpha-default max-md:size-[18px]";
   if (s.img) {
     const img = document.createElement("img");
     img.src = s.img;
