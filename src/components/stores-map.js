@@ -267,6 +267,20 @@ function fillDetail(anchor, d) {
   }
 }
 
+// Консультация/Самовывоз столбцы — общие для карточки в списке
+// (buildStoreCard) и раскрытой карточки шага «Выбор магазина»
+// (wireStoreDetail): один салон из data/stores.js, две одинаковые формы.
+function fillSchedule(el, schedule) {
+  if (!el || !schedule) return;
+  el.replaceChildren(
+    ...Object.values(schedule).map((v) => {
+      const span = document.createElement("span");
+      span.textContent = v;
+      return span;
+    })
+  );
+}
+
 // ---- component --------------------------------------------------------------
 // The section shell + the dealer-card / metro-chip <template>s live in
 // partials/stores.html (spliced into the page); this only queries and fills
@@ -363,6 +377,14 @@ export function renderStoresMap(anchor, opts) {
     const cityBtn = anchor.querySelector("[data-city-toggle]");
     const title = anchor.querySelector("[data-panel-title]");
     const brandRow = anchor.querySelector("[data-brand-only]")?.closest("div.flex.items-center");
+    // Контакты показывают склад (dept/hours общего вида), шаг «Выбор
+    // магазина» — тот же салон, что и в списке (Консультация/Самовывоз,
+    // соцсети, почта): два разных тела в одном слоте, переключаются раз и
+    // навсегда по `selectable`, см. stores.html.
+    anchor.querySelector("[data-store-detail-contact]")?.classList.toggle("hidden", selectable);
+    anchor.querySelector("[data-store-detail-contact]")?.classList.toggle("flex", !selectable);
+    anchor.querySelector("[data-store-detail-order]")?.classList.toggle("hidden", !selectable);
+    anchor.querySelector("[data-store-detail-order]")?.classList.toggle("flex", selectable);
 
     const show = (on, store, { snap = true } = {}) => {
       detail?.classList.toggle("hidden", !on);
@@ -471,16 +493,6 @@ export function renderStoresMap(anchor, opts) {
     node.dataset.store = s.id;
     node.querySelector("[data-store-name]").textContent = s.name;
     node.querySelector("[data-store-address]").textContent = s.address;
-    const fillSchedule = (el, schedule) => {
-      if (!el || !schedule) return;
-      el.replaceChildren(
-        ...Object.values(schedule).map((v) => {
-          const span = document.createElement("span");
-          span.textContent = v;
-          return span;
-        })
-      );
-    };
     fillSchedule(node.querySelector("[data-store-consult]"), s.consultation);
     fillSchedule(node.querySelector("[data-store-pickup]"), s.pickup);
     node.querySelector("[data-store-detail-phone]").textContent = s.phone;
@@ -764,11 +776,16 @@ export function renderStoresMap(anchor, opts) {
             address: item.address,
             metro: (item.metro || []).join(", "),
             routeLabel: "Проложить маршрут",
-            // У салона из фикстуры есть одна строка часов и один телефон —
-            // двух колонок «Консультация / Самовывоз» и почт там нет.
-            dept: { title: "Телефон", phones: item.phone ? [item.phone] : [] },
-            hours: { title: "Часы работы", rows: item.hours ? [["", item.hours]] : [] },
           });
+          fillSchedule(anchor.querySelector("[data-detail-order-consult]"), item.consultation);
+          fillSchedule(anchor.querySelector("[data-detail-order-pickup]"), item.pickup);
+          const orderText = (sel, v) => {
+            const el = anchor.querySelector(sel);
+            if (el) el.textContent = v || "";
+          };
+          orderText("[data-detail-order-phone]", item.phone);
+          orderText("[data-detail-order-email]", item.email);
+          orderText("[data-detail-order-website]", item.website);
           showDetailStep(true, item);
         },
         true

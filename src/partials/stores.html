@@ -172,33 +172,82 @@
             </span>
           </div>
 
-          <!-- Кнопка. На 1440 она идёт сразу за адресом и в 12 под ним (adress
-               392×104 = 48 + 12 + 44), поэтому -mt-3 гасит зазор колонки с 24
-               до 12. На 360 она уходит в самый низ карточки и растягивается на
-               всю ширину (2225:107919, 328×44, содержимое по центру). -->
-          <a
-            href="#"
-            class="-mt-3 inline-flex h-11 w-fit items-center gap-2 rounded-pill bg-components-subtle px-4 text-button-m text-text-primary max-md:order-last max-md:mt-0 max-md:w-full max-md:justify-center max-md:text-m-button-m"
-            data-detail-route
-          >
-            <span data-detail-route-label></span>
-            <img src="../../assets/contacts/icon-route.svg" alt="" class="size-6 shrink-0 max-md:size-5" />
-          </a>
+          <!-- Контакты (type=contact page 1456:56787): кнопка сразу за
+               адресом, один отдел, один график. -->
+          <div class="flex flex-col gap-6 max-md:gap-4" data-store-detail-contact>
+            <!-- Кнопка. На 1440 она идёт сразу за адресом и в 12 под ним
+                 (adress 392×104 = 48 + 12 + 44), поэтому -mt-3 гасит зазор
+                 колонки с 24 до 12. На 360 она уходит в самый низ карточки и
+                 растягивается на всю ширину (2225:107919, 328×44, содержимое
+                 по центру). -->
+            <a
+              href="#"
+              class="-mt-3 inline-flex h-11 w-fit items-center gap-2 rounded-pill bg-components-subtle px-4 text-button-m text-text-primary max-md:order-last max-md:mt-0 max-md:w-full max-md:justify-center max-md:text-m-button-m"
+              data-detail-route
+            >
+              <span data-detail-route-label></span>
+              <img src="../../assets/contacts/icon-route.svg" alt="" class="size-6 shrink-0 max-md:size-5" />
+            </a>
 
-          <!-- consult 392×108: заголовок 24, зазор 8, столбец 76 -->
-          <div class="flex flex-col gap-2 max-md:gap-1">
-            <p class="text-h5 text-text-primary max-md:text-m-h4" data-detail-dept-title></p>
-            <div class="flex flex-col gap-2" data-detail-dept-rows></div>
+            <!-- consult 392×108: заголовок 24, зазор 8, столбец 76 -->
+            <div class="flex flex-col gap-2 max-md:gap-1">
+              <p class="text-h5 text-text-primary max-md:text-m-h4" data-detail-dept-title></p>
+              <div class="flex flex-col gap-2" data-detail-dept-rows></div>
+            </div>
+
+            <!-- wh 392×102: заголовок 24, зазор 8, колонки 52 и 91.
+                 На 360 колонки равные по 160 (row 328 = 160 + 8 + 160). -->
+            <div class="flex flex-col gap-2 max-md:gap-1">
+              <p class="text-h5 text-text-primary max-md:text-m-h4" data-detail-hours-title></p>
+              <div class="flex gap-2">
+                <div class="flex w-[52px] flex-col gap-2 empty:hidden max-md:w-40 max-md:gap-1" data-detail-hours-labels></div>
+                <div class="flex flex-col gap-2 max-md:w-40 max-md:gap-1" data-detail-hours-values></div>
+              </div>
+            </div>
           </div>
 
-          <!-- wh 392×102: заголовок 24, зазор 8, колонки 52 и 91.
-               На 360 колонки равные по 160 (row 328 = 160 + 8 + 160). -->
-          <div class="flex flex-col gap-2 max-md:gap-1">
-            <p class="text-h5 text-text-primary max-md:text-m-h4" data-detail-hours-title></p>
-            <div class="flex gap-2">
-              <div class="flex w-[52px] flex-col gap-2 empty:hidden max-md:w-40 max-md:gap-1" data-detail-hours-labels></div>
-              <div class="flex flex-col gap-2 max-md:w-40 max-md:gap-1" data-detail-hours-values></div>
+          <!-- Раскрытая карточка магазина на шаге выбора дилера
+               (2397:155005, type=shop-step-2): тот же состав, что у
+               data-details карточки в списке (Консультация/Самовывоз,
+               телефон+соцсети, email/сайт, маршрут в самом низу), только имя
+               и адрес уходят в общие data-detail-name/-address выше. -->
+          <div class="hidden flex-col gap-4 max-md:gap-3" data-store-detail-order>
+            <div class="flex items-start justify-between gap-3 max-xl:flex-col max-xl:gap-3 max-md:flex-row">
+              <div class="flex flex-col gap-2 max-md:gap-1">
+                <span class="text-body-s-accent text-text-primary max-md:text-m-body-s-accent">Консультация:</span>
+                <div class="flex gap-2">
+                  <div class="flex flex-col gap-1 text-body-s text-text-secondary max-md:text-m-body-s">
+                    <span>будни:</span><span>сб.:</span><span>вс.:</span>
+                  </div>
+                  <div data-detail-order-consult class="flex flex-col gap-1 text-body-s text-text-primary max-md:text-m-body-s"></div>
+                </div>
+              </div>
+              <div class="flex flex-col gap-2 max-md:gap-1">
+                <span class="text-body-s-accent text-text-primary max-md:text-m-body-s-accent">Самовывоз:</span>
+                <div class="flex gap-2">
+                  <div class="flex flex-col gap-1 text-body-s text-text-secondary max-md:text-m-body-s">
+                    <span>будни:</span><span>сб.:</span><span>вс.:</span>
+                  </div>
+                  <div data-detail-order-pickup class="flex flex-col gap-1 text-body-s text-text-primary max-md:text-m-body-s"></div>
+                </div>
+              </div>
             </div>
+            <div class="flex items-center justify-between gap-3 max-xl:flex-col max-xl:gap-4 max-md:flex-row">
+              <span data-detail-order-phone class="text-body-l-semibold text-text-primary max-md:text-m-body-l-semibold"></span>
+              <span class="flex items-center gap-0.5">
+                <span aria-label="ВКонтакте" class="social-icon size-10"><span class="size-8 social-vk"></span></span>
+                <span aria-label="Telegram" class="social-icon size-10"><span class="size-8 social-tg"></span></span>
+                <span aria-label="MAX" class="social-icon size-10"><span class="size-8 social-max"></span></span>
+              </span>
+            </div>
+            <div class="flex flex-col">
+              <span data-detail-order-email class="w-fit text-body-n text-text-primary underline max-md:text-m-body-n"></span>
+              <span data-detail-order-website class="w-fit text-body-n text-text-primary underline max-md:text-m-body-n"></span>
+            </div>
+            <span class="flex items-center gap-1 self-end text-body-s text-text-primary max-md:text-m-body-s">
+              <span class="link-dotted">Проложить маршрут</span>
+              <img src="../../assets/header/icon-pin.svg" alt="" class="size-6 -m-1" />
+            </span>
           </div>
         </div>
       </aside>
