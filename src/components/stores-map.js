@@ -322,6 +322,11 @@ export function renderStoresMap(anchor, opts) {
   function wireCitySelector() {
     const cityBtn = anchor.querySelector("[data-city-toggle]");
     if (!cityBtn) return null;
+    // Контакты ведут этот триггер сами (свой опт/розница выбор региона и
+    // города в contacts.js, через data-place-menu) — общий city-select.js не
+    // должен вешать на него ещё один обработчик, иначе по клику открываются
+    // оба меню разом, одно поверх другого со смещением.
+    if (contactPage) return null;
     cityBtn.querySelector("[data-panel-city]")?.setAttribute("data-city-label", "");
 
     const cityPanel = anchor.querySelector("[data-city-panel]");
@@ -483,6 +488,12 @@ export function renderStoresMap(anchor, opts) {
 
   let visible = items;
   let selectedId = null;
+  // Раскрытая карточка и выбранный дилер — не одно и то же на десктопе: клик
+  // по «Выбрать магазин» выбирает, клик по остальной части карточки
+  // раскрывает/сворачивает, независимо друг от друга (946:121438/946:122008 —
+  // разные condition). На читающих страницах раскрытия своего понятия выбора
+  // нет вовсе, там это по-прежнему один и тот же клик — см. applySelection.
+  let expandedId = null;
   let map = null;
   let currentZoom = zoom;
   const marks = new Map(); // store id -> { placemark, attached }
@@ -540,33 +551,38 @@ export function renderStoresMap(anchor, opts) {
 
   function applySelection({ scroll = false } = {}) {
     for (const card of listEl.querySelectorAll("[data-store]")) {
-      const on = card.dataset.store === selectedId;
-      card.setAttribute("aria-current", String(on));
-      // На десктопе выбор дилера разворачивает карточку как на читающих
-      // страницах, только с добавленной кнопкой (946:121438, condition=pressed).
-      // На мобиле у листа своя раскрытая карточка магазина (2397:152957) —
-      // отдельный шаг визарда, не этот блок.
+      const picked = card.dataset.store === selectedId;
+      card.setAttribute("aria-current", String(picked));
+      // На десктопе раскрытие карточки (клик по ней самой) независимо от
+      // выбора дилера (клик по «Выбрать магазин») — те же content-раскрытие,
+      // что на читающих страницах, просто с добавленной кнопкой (946:121438
+      // condition=pressed vs 946:122008 condition=selected). На читающих
+      // страницах такого понятия выбора нет вовсе, там раскрытие и есть тот
+      // же клик — expanded совпадает с picked. На мобиле у листа своя
+      // раскрытая карточка магазина (2397:152957), отдельный шаг визарда, не
+      // этот блок.
       const mobileSelect = selectable && isMobileCity();
-      card.setAttribute("aria-expanded", String(on && !mobileSelect));
-      card.querySelector("[data-details]").hidden = mobileSelect || !on;
+      const expanded = selectable ? card.dataset.store === expandedId && !mobileSelect : picked;
+      card.setAttribute("aria-expanded", String(expanded));
+      card.querySelector("[data-details]").hidden = !expanded;
       const dot = card.querySelector("[data-store-radio] > span");
       if (dot) {
-        dot.classList.toggle("border-components-strong", on);
-        dot.classList.toggle("border-8", on);
+        dot.classList.toggle("border-components-strong", picked);
+        dot.classList.toggle("border-8", picked);
       }
       // Кнопка карточки меняет и подпись, и цвет (946:134818 → 953:55451).
       const pick = card.querySelector("[data-store-pick]");
       if (pick) {
-        pick.classList.toggle("bg-components-subtle", !on);
-        pick.classList.toggle("text-text-primary", !on);
-        pick.classList.toggle("bg-components-active-muted", on);
-        pick.classList.toggle("text-text-inverse-primary", on);
-        pick.querySelector("[data-store-pick-label]").textContent = on
+        pick.classList.toggle("bg-components-subtle", !picked);
+        pick.classList.toggle("text-text-primary", !picked);
+        pick.classList.toggle("bg-components-active-muted", picked);
+        pick.classList.toggle("text-text-inverse-primary", picked);
+        pick.querySelector("[data-store-pick-label]").textContent = picked
           ? "Магазин выбран"
           : "Выбрать магазин";
-        pick.querySelector("[data-store-pick-icon]").classList.toggle("hidden", !on);
+        pick.querySelector("[data-store-pick-icon]").classList.toggle("hidden", !picked);
       }
-      if (on && scroll) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      if (picked && scroll) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
     }
     for (const [id, entry] of marks) {
       entry.placemark.properties.set("selected", id === selectedId);
@@ -578,6 +594,7 @@ export function renderStoresMap(anchor, opts) {
     // dealer for an order it must stick — you can change the choice, not unmake
     // it, because the step can't continue without one.
     selectedId = !selectable && selectedId === id ? null : id;
+    if (!selectable) expandedId = selectedId;
     applySelection({ scroll });
     if (selectable) onSelect?.(items.find((s) => s.id === selectedId) || null);
     if (fly && selectedId && map) {
@@ -587,9 +604,22 @@ export function renderStoresMap(anchor, opts) {
     }
   }
 
+  // Десктоп, режим выбора: раскрытие — свой клик, не проходит через select().
+  function toggleExpand(id) {
+    expandedId = expandedId === id ? null : id;
+    applySelection({ scroll: false });
+  }
+
   listEl.addEventListener("click", (e) => {
     const card = e.target.closest("[data-store]");
-    if (card) select(card.dataset.store, { fly: true });
+    if (!card) return;
+    if (selectable && !isMobileCity() && e.target.closest("[data-store-pick]")) {
+      select(card.dataset.store, { fly: true });
+    } else if (selectable && !isMobileCity()) {
+      toggleExpand(card.dataset.store);
+    } else {
+      select(card.dataset.store, { fly: true });
+    }
   });
 
   // -- filter (request seam) -------------------------------------------------
