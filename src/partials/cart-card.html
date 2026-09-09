@@ -101,17 +101,26 @@
     <div
       class="flex min-w-[181px] shrink-0 flex-col gap-3 max-md:w-full max-md:min-w-0 max-md:flex-row max-md:items-center max-md:gap-3 max-md:py-1 md:group-data-[user=dealer]:min-w-[278px] md:group-data-[user=dealer]:flex-row-reverse md:group-data-[user=dealer]:items-center md:group-data-[user=dealer]:gap-6 md:group-data-[user=dealer]:self-start"
     >
-      <!-- below `md` the price is a fixed cell, not a hug: the 360 frames put
-           the stepper at a set x whatever the number reads — 86 on the
-           customer card (2029:157694), 74 on the dealer's, where the row
-           continues into the pencil -->
-      <div class="flex items-baseline gap-2 whitespace-nowrap max-md:min-w-[86px] max-md:gap-1 max-md:group-data-[user=dealer]:min-w-[74px] md:group-data-[user=dealer]:ml-auto">
+      <!-- Цена — клетка постоянной ширины, а не хаг, везде, где степпер стоит
+           с ней в один ряд: 86 на покупательской карточке 360 (2029:157694),
+           74 на дилерской, где ряд продолжается карандашом, и 86 на дилерской
+           1440 (`price` 953:152375, выключка вправо). Иначе «+»/«−» двигают
+           сам степпер: число растёт вместе с количеством, клетка за ним, а
+           степпер стоит по другую сторону от неё. Длинное число выходит за
+           клетку в зазор, но раскладку уже не трогает. На покупательской 1440
+           клетка не нужна — там степпер под ценой и прижат `self-end`. -->
+      <div class="flex items-baseline gap-2 whitespace-nowrap max-md:w-[86px] max-md:shrink-0 max-md:gap-1 max-md:group-data-[user=dealer]:w-[74px] md:group-data-[user=dealer]:ml-auto md:group-data-[user=dealer]:w-[86px] md:group-data-[user=dealer]:shrink-0 md:group-data-[user=dealer]:justify-end">
         <!-- the mobile card drops both the "от" prefix (2029:157695) and the
              struck-through old price beside it (2029:157697 is hidden in the
              master and no 360 instance turns it back on); the dealer drops
              them at both widths, like every other dealer price -->
         <span class="text-body-n text-text-primary max-md:hidden group-data-[user=dealer]:hidden">от</span>
-        <span class="text-h3 leading-6 text-text-primary max-md:text-m-h4" data-line-price></span>
+        <!-- Onest SemiBold 20/24 — это `h4`, а не `h3`: в кадре 943:34268
+             ряд 181 складывается как 18 + 8 + 82 + 8 + 65, и 82 наш шрифт даёт
+             ровно на 20 (на 24 выходит 99). Дилерская клетка 953:152377 несёт
+             20 явно. `fontSize: 24` в снимке покупательского узла ему же и
+             противоречит. -->
+        <span class="text-h4 text-text-primary max-md:text-m-h4" data-line-price></span>
         <span
           class="text-body-n text-text-secondary line-through empty:hidden max-md:hidden group-data-[user=dealer]:hidden"
           data-line-oldprice
