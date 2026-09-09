@@ -65,6 +65,6 @@ export const dealerMenuSections = [
   { label: "Конструктор", href: "../dealer/constructor.html" },
   { label: "Контакты", href: "../dealer/contacts.html" },
   { label: "Для бизнеса", href: "../dealer/howto.html" },
-  { label: "Мой кабинет", href: "#" },
+  { label: "Личный кабинет", href: "#" },
   { label: "Выход", href: "../customer/main.html", logout: true },
 ];
