@@ -22,14 +22,20 @@ import { HOME } from "./asset-base.js";
 // 1440x640 banner, so it is reproduced verbatim rather than object-cover'd.
 // Slides 2-3 are mock collections (only slide 1 exists in Figma).
 const HERO_VIDEO_FRAME = { left: -1, top: -130, width: 1441, height: 811 };
+// Брак самой выгрузки, а не макета: у ролика по правому краю кадра идёт тёмная
+// колонка в 2 пикселя из 1920 (по вертикали 420…1499, во всех кадрах ролика).
+// Кадр баннера подогнан по ширине, поэтому она видна как чёрная полоска у
+// правого края; `trim` срезает её при показе. Переснять ролик — в BACKLOG.
+const HERO_VIDEO_TRIM = { right: 2, of: 1920 };
 
-// One slide: { video|image, poster?, frame?, sound?, title, subtitle?, cta? }.
+// One slide: { video|image, poster?, frame?, trim?, sound?, title, subtitle?, cta? }.
 // `title` is the one field carrying markup — the <br> splits the two hero lines.
 export const heroSlides = [
   {
     video: `${HOME}/hero-fusion.mp4`,
     poster: `${HOME}/hero-fusion-poster.jpg`,
     frame: HERO_VIDEO_FRAME,
+    trim: HERO_VIDEO_TRIM,
     sound: true,
     title: "Кухня Фьюжн<br>от 43 335₽",
     subtitle: "Самый темный графит",
@@ -45,6 +51,7 @@ export const heroSlides = [
     video: `${HOME}/hero-fusion.mp4`,
     poster: `${HOME}/hero-fusion-poster.jpg`,
     frame: HERO_VIDEO_FRAME,
+    trim: HERO_VIDEO_TRIM,
     sound: true,
     title: "Кухня Ривьера<br>от 71 200₽",
     subtitle: "Матовый терракот",
