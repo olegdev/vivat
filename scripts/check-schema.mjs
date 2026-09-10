@@ -19,6 +19,20 @@ const ORG_FIELDS = ["name", "url", "logo", "telephone"];
 // Главная и у покупателя, и у дилера — один адрес, «/»; крошек там нет.
 const NO_CRUMBS = new Set(["customer/main", "dealer/main"]);
 
+// Страницы, где крошки нарисованы в макете и видны на экране. Список нужен,
+// чтобы сверка не отключилась молча: поменяется класс у <nav> — и проверка
+// «JSON повторяет видимое» просто перестанет что-либо проверять, чего по
+// зелёному прогону не увидишь.
+const VISIBLE = new Set([
+  "customer/catalog",
+  "customer/pdp",
+  "customer/pdp-module",
+  "customer/action",
+  "dealer/catalog",
+  "dealer/pdp",
+  "dealer/models",
+]);
+
 if (!existsSync(DIST)) {
   console.error(`${DIST} нет — сначала npm run build`);
   process.exit(2);
@@ -95,7 +109,12 @@ for (const half of readdirSync(DIST)) {
     const lists = parsed.filter((j) => j["@type"] === "BreadcrumbList");
     const want = NO_CRUMBS.has(page) ? 0 : 1;
     if (lists.length !== want) fail(page, `BreadcrumbList: ${lists.length} шт., ожидается ${want}`);
-    else if (want) checkCrumbs(page, lists[0], visibleCrumbs(html));
+    else if (want) {
+      const visible = visibleCrumbs(html);
+      if (VISIBLE.has(page) && !visible) fail(page, "видимые крошки не найдены — сверять не с чем (изменился <nav>?)");
+      if (!VISIBLE.has(page) && visible) fail(page, "на странице появились видимые крошки — внесите её в VISIBLE");
+      checkCrumbs(page, lists[0], visible);
+    }
   }
 }
 
