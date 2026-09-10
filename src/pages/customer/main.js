@@ -51,6 +51,7 @@ const sections = {
       title: "Популярные товары для кухни",
       desc: "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.",
       tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
+      compactChips: true, // segments 60, не 76 — см. carousel.js
       endpoint: "/catalog/popular", // tab seam target (see carousel.js initTabs)
       href: "catalog.html",
     },
@@ -59,7 +60,6 @@ const sections = {
   akcii: {
     cfg: {
       title: "Акции и скидки",
-      desc: "Успейте купить любимые товары по специальной цене.",
       action: "В каталог",
       // на 360 у этой кнопки своя копия (buttons 1968:150249)
       actionMobile: "В раздел",

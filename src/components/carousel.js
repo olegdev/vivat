@@ -41,6 +41,7 @@ export function buildCarouselSection({
   mobileProgress = true,
   actionMobile,
   arrowTop = 139,
+  compactChips = false,
   id,
 }) {
   const frag = clone("[data-carousel-section]");
@@ -87,6 +88,15 @@ export function buildCarouselSection({
   if (tabs?.length) {
     const chips = buildChips(tabs);
     if (!desc) chips.classList.replace("pt-4", "pt-0");
+    // У ряда вкладок в макете ДВЕ высоты, и зависят они от страницы, а не от
+    // наличия описания: 60 на обеих главных и обеих PDP (segments 2395:105897,
+    // 922:103133), 76 на каталоге, «Акциях» и «3D-моделях» (2248:97230,
+    // 2338:254339). Чип 44, padV=0, align=CENTER — значит 8/8 против 16/16.
+    // Ниже md обе семьи уже верны и не трогаются: главная 56, каталог 68.
+    if (compactChips) {
+      chips.classList.replace("pt-4", "pt-2");
+      chips.classList.replace("pb-4", "pb-2");
+    }
     chipsSlot.after(chips);
   }
 
