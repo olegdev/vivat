@@ -87,6 +87,8 @@ for (const e of inst.derivedSymbolData ?? []) derived.set(pathOf(e.guidPath), e)
 const WEIGHT = { Thin: 100, ExtraLight: 200, Light: 300, Regular: 400, Medium: 500,
                  SemiBold: 600, Bold: 700, ExtraBold: 800, Black: 900 };
 
+const hasDerivedText = [...derived.values()].some((e) => e.derivedTextData);
+
 const figText = [];
 (function walk(nodeId, prefix, seen) {
   for (const c of kids.get(nodeId) ?? []) {
@@ -98,6 +100,16 @@ const figText = [];
     // экране он есть. `audit.mjs` может позволить себе строгое правило, потому
     // что сверяет наличие и порядок; здесь сверяются метрики, и потерять
     // строку хуже, чем показать лишнюю.
+    // Узел рендерится, если он не спрятан: отсутствие в `derivedSymbolData`
+    // НЕ значит «не рендерится» — туда попадает лишь то, что отличается от
+    // мастера. У подвала (2395:105938) три текстовых derived-записи на 32
+    // строки, остальное совпадает с мастером.
+    //
+    // Но метрика с мастера — это НЕ доказательство. Мастер держит и свои
+    // дефолтные подписи, и вложенные инстансы, которые их подменяют: якорный
+    // ряд PDP (Tab 914:103288) рисует в мастере «Фото» 24/28, а derived
+    // говорит 16/24 — и на экране 16/24. Поэтому такие строки помечаются «*»
+    // и НЕ считаются дефектом; дефект — только там, где обе стороны твёрдые.
     const shown = derived.has(path) || overrides.has(path) || !c.hidden;
     const t = overrides.get(path) ?? c.text;
     if (t && t.trim() && shown) {
@@ -109,6 +121,8 @@ const figText = [];
         size: dt?.glyphs?.[0]?.fontSize ?? c.font?.size ?? null,
         lh: box != null ? +(box / lines).toFixed(1) : (c.font?.lh ?? null),
         weight: c.font?.style ? (WEIGHT[c.font.style] ?? null) : null,
+        // Метрика насчитана Figma для ЭТОГО экземпляра, а не взята с мастера.
+        firm: !!dt,
         // Начертание берётся из мастера: пер-экземплярного веса Figma в
         // derivedSymbolData не хранит. Помечаем, чтобы не читалось как факт.
         weightFromMaster: true,
@@ -252,7 +266,13 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     const sizeBad = f.size != null && d.size != null && Math.abs(f.size - d.size) > 0.5;
     const wBad = f.weight != null && d.weight != null && f.weight !== d.weight;
     const lhBad = f.lh != null && d.lh != null && Math.abs(f.lh - d.lh) > 1;
-    if (sizeBad || wBad) {
+    if ((sizeBad || wBad) && !f.firm) {
+      // Метрика с мастера — сигнал, а не приговор. Считать её дефектом значит
+      // выдумывать: на якорном ряду PDP так получилось пять расхождений подряд,
+      // которых нет.
+      flag = "* ";
+      soft++;
+    } else if (sizeBad || wBad) {
       flag = how === "порядок" ? "≈✗" : "✗ ";
       bad++;
     } else if (lhBad) {
@@ -275,6 +295,8 @@ console.log(
     ` расхождений кегля/веса ${bad}, интерлиньяжа ${soft};` +
     ` сведено по порядку ${guessed}, без пары ${only}` +
     `\n  «✗» — разошёлся КЕГЛЬ или ВЕС. Это дефект.` +
+    `\n  «*» — метрика макета взята с МАСТЕРА (насчитанной для экземпляра нет).` +
+    `\n        Мастер регулярно опровергается — идти и смотреть \`fig.mjs inst\`.` +
     `\n  «лн» — разошёлся интерлиньяж. Смотреть глазами: он выведен из коробки,` +
     `\n         а коробку в макете случается растянуть руками (см. шапку скрипта).` +
     `\n  «≈» — пара найдена по ПОРЯДКУ, а не по тексту (свои фикстуры). Пара` +
