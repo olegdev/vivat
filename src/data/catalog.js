@@ -46,15 +46,19 @@ export const PRODUCTS = Array.from({ length: 24 }, (_, i) => {
   const style = STYLES[i % STYLES.length];
   const base = 60000 + ((i * 37) % 46) * 10000; // 60 000 … ~510 000
   const discounted = i % 3 === 0;
+  // Процент на плашке и старая цена — одно и то же число: старая цена считается
+  // из процента, иначе сортировка «по размеру скидки» раскладывает карточки не
+  // в том порядке, в каком читаются их плашки.
+  const off = discounted ? 5 + (i % 4) * 5 : 0;
   const badges = [];
   if (i % 5 === 0) badges.push({ text: "new", tone: "new" });
   if (i % 4 === 1) badges.push({ text: "хит", tone: "hit" });
-  if (discounted) badges.push({ text: `- ${5 + (i % 4) * 5}%`, tone: "discount" });
+  if (discounted) badges.push({ text: `- ${off}%`, tone: "discount" });
   return {
     id: `kitchen-${i}`, // cart-seam contract (printed as data-product-id)
     image: KITCHEN_IMAGES[i % KITCHEN_IMAGES.length],
     price: base,
-    oldPrice: discounted ? Math.round(base * 1.18) : null,
+    oldPrice: discounted ? Math.round(base / (1 - off / 100)) : null,
     title: `Кухня ${colLabel}-${i % 9}, ${facade === "ldsp" ? "ЛДСП" : "МДФ"}, 2000 х 2170 х 600 мм`,
     badges,
     swatches: SWATCHES,

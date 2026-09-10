@@ -26,6 +26,17 @@ function buildSlideMedia(s) {
     el.style.objectPosition = s.objectPosition || "center";
   }
 
+  // `trim` срезает бракованный край самой выгрузки: у ролика кухни по правому
+  // краю идёт тёмная колонка в 2 пикселя из 1920. Кадр везде, кроме мобильного,
+  // подогнан по ширине, поэтому колонка попадает в него целиком; растягиваем
+  // медиа от левого края на её толщину, и она уходит за `overflow-hidden`
+  // секции. На мобиле кадр подогнан по высоте — правый край и так обрезан, там
+  // это просто растяжение на 0.1%.
+  if (s.trim) {
+    el.style.transformOrigin = "left center";
+    el.style.transform = `scaleX(${s.trim.of / (s.trim.of - s.trim.right)})`;
+  }
+
   if (s.video) {
     if (s.poster) el.poster = s.poster;
     // Muted is required for autoplay; sound is enabled on first user gesture

@@ -26,12 +26,18 @@ const SORT_LABELS = {
 
 const hasBadge = (c, tone) => (c.p.badges || []).some((x) => x.tone === tone);
 
+// «По размеру скидки» — по тому числу, которое карточка и показывает, то есть по
+// проценту; рубли остаются вторым ключом, чтобы равные проценты шли от большей
+// суммы к меньшей. Товар без старой цены — скидка 0, такие уходят в конец.
+const off = (p) => (p.oldPrice ? Math.round(((p.oldPrice - p.price) / p.oldPrice) * 100) : 0);
+const cut = (p) => (p.oldPrice ? p.oldPrice - p.price : 0);
+
 const SORTERS = {
   popular: null,
   cheap: (a, b) => a.p.price - b.p.price,
   expensive: (a, b) => b.p.price - a.p.price,
   new: (a, b) => Number(hasBadge(b, "new")) - Number(hasBadge(a, "new")),
-  discount: (a, b) => (b.p.oldPrice ? b.p.oldPrice - b.p.price : 0) - (a.p.oldPrice ? a.p.oldPrice - a.p.price : 0),
+  discount: (a, b) => off(b.p) - off(a.p) || cut(b.p) - cut(a.p),
 };
 
 function badgeEl(b) {
