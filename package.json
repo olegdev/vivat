@@ -12,7 +12,8 @@
     "shot": "node scripts/shot.mjs",
     "crop": "node scripts/crop.mjs",
     "audit": "node scripts/audit.mjs",
-    "audit:spacing": "node scripts/audit-spacing.mjs"
+    "audit:spacing": "node scripts/audit-spacing.mjs",
+    "audit:type": "node scripts/audit-type.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.0",

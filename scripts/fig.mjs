@@ -101,6 +101,41 @@ function slim(n) {
     radius: n.cornerRadius ?? null,
     opacity: n.opacity != null && n.opacity !== 1 ? +n.opacity.toFixed(3) : null,
     text: n.textData?.characters ?? null,
+    // Метрика текста. Нужна аудиту кеглей (`scripts/audit-type.mjs`), и держать
+    // её тут дешевле, чем звать `raw` на каждый узел: строк на странице сотни, а
+    // `raw` каждый раз заново распаковывает .fig.
+    //
+    // `lh` приводится к пикселям: Figma хранит либо PIXELS, либо PERCENT от
+    // кегля, а сравнивать надо с `line-height` из браузера.
+    //
+    // Оба «очевидных» поля узла врут, и врут по-разному:
+    //
+    //   • `fontSize` перебивается применённым текстовым стилем. У заголовка
+    //     752:64204 в поле стоит 32, а глифы уложены в 30 — и 30 совпадает и с
+    //     токеном `--text-h2`, и с 57 другими узлами файла, тогда как узлов
+    //     32/36 в файле НОЛЬ.
+    //   • `lineHeight` там же стоит «100%», то есть 32, при насчитанной
+    //     коробке 36.
+    //
+    // Поэтому кегль берётся с уложенных глифов, а интерлиньяж считается как
+    // коробка на число строк. `derivedTextData.baselines[].lineHeight` для
+    // этого не годится — это natural leading шрифта (38.25 там, где стиль
+    // говорит 36).
+    font: n.textData
+      ? (() => {
+          const dt = n.derivedTextData;
+          const lines = dt?.baselines?.length || 0;
+          const box = dt?.layoutSize?.y ?? null;
+          return {
+            size: dt?.glyphs?.[0]?.fontSize ?? n.fontSize ?? null,
+            lh: box != null && lines > 0 ? +(box / lines).toFixed(2) : null,
+            style: n.fontName?.style ?? null,
+            box: box != null ? +box.toFixed(2) : null,
+            lines: lines || null,
+            decoration: n.textDecoration ?? null,
+          };
+        })()
+      : null,
     stack: n.stackMode
       ? {
           mode: n.stackMode,
