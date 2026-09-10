@@ -783,6 +783,7 @@
   .catalog-chip {
     @apply inline-flex h-8 items-center gap-2 rounded-pill border border-border-light px-4 transition-colors;
     @apply text-body-s-accent text-text-secondary hover:border-border-default;
+    @apply max-md:text-m-body-s-accent;
   }
   .catalog-chip--active {
     @apply border-transparent bg-components-subtle-hover;
