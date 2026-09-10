@@ -4,6 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VIVAT — Доставка (dealer)</title>
+    <!--#include partials/schema-org.html -->
+    <!-- Хлебные крошки для поиска (schema.org/BreadcrumbList). Видимых крошек
+         на этой странице нет — макет их не рисует; цепочка построена по имени
+         страницы. См. docs/superpowers/specs/2026-09-10-schema-org-design.md -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://mebel.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Доставка" }
+        ]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link

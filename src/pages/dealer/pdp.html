@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VIVAT — Кухня Фьюжн-05 (dealer)</title>
+    <!--#include partials/schema-org.html -->
+    <!-- Хлебные крошки для поиска (schema.org/BreadcrumbList) — повторяют
+         видимый <nav> ниже слово в слово. Правите текст крошки — правьте и
+         здесь; npm run schema сверяет. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://mebel.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Кухни VIVAT", "item": "https://mebel.com/catalog.html" },
+          { "@type": "ListItem", "position": 3, "name": "Кухня Фьюжн-05" }
+        ]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -58,7 +73,7 @@
       <!--#include partials/carousel-section.html -->
 
       <!-- ==================== BREADCRUMBS ============================== -->
-      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent md:leading-6 text-text-secondary max-md:h-10 max-md:text-m-body-s">
+      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent md:leading-6 text-text-secondary max-md:h-10 max-md:text-m-body-s-accent">
         <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
         <span aria-hidden="true">•</span>
         <a href="catalog.html" class="transition-colors hover:text-text-primary">Кухни VIVAT</a>

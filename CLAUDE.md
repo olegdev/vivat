@@ -10,6 +10,7 @@ npm run build:php # → dist-php/, the folder handed to the PHP developer
 npm run shot      # screenshots of dist/ at 1440 and 390 → .shots/
 npm run crop      # one block of one page, with --click for open states
 npm run audit     # ordered text diff: a Figma instance vs the rendered page
+npm run schema    # микроразметка schema.org в dist/: состав и сверка крошек
 ```
 
 Two builds, two audiences. `dist/` is for **showing the client**: one
@@ -531,6 +532,17 @@ Their own parts are `partials/benefit-tile.html` (the Figma component is called
 `partials/accordion.html` (plus/minus, never a chevron; the expanded question
 greys to `#808080`). Everything else is reuse.
 
+**Микроразметка schema.org — на всех страницах, и её сверяет команда.**
+`partials/schema-org.html` — Organization, один и тот же на всех 22 страницах.
+BreadcrumbList партиалом не выражен намеренно: содержимое у каждой страницы
+своё, поэтому блок JSON-LD написан в `<head>` каждой из 20 страниц (главную не
+считаем — у покупателя и дилера она одна). Там, где крошки видны, разметка
+повторяет `<nav>` слово в слово; `npm run schema` падает, если они разошлись.
+Тексты для страниц без крошек взяты из их `<h1>` (или `<h2>` у страниц раздела
+«Для бизнеса»), домен — `https://mebel.com`. Разбор:
+`docs/superpowers/specs/2026-09-10-schema-org-design.md`, перенос в Blade —
+`docs/PORTING.md` §8а.
+
 ## Where this is heading — PHP Blade
 
 This static build is a **prototype for a PHP Blade theme**: the markup will be
@@ -576,7 +588,7 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `modal-dealer-request`, `modal-dealer-login`, `modal-subscribe`,
 `modal-director`, `modal-about`, `modal-bug-report`, and the content-page trio `menu-b2b`, `for-business-header`
 (which also carries the section-menu sheet) and `accordion`, plus
-`benefit-tile` and `session`.
+`benefit-tile`, `session` and `schema-org`.
 Several carry both a static shell and the `<template>` unit(s) their component
 clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`,
 `search-overlay`, `price-mode`, `order-modules`);

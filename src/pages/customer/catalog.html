@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>VIVAT — Каталог: Кухни</title>
+    <!--#include partials/schema-org.html -->
+    <!-- Хлебные крошки для поиска (schema.org/BreadcrumbList) — повторяют
+         видимый <nav> ниже слово в слово. Правите текст крошки — правьте и
+         здесь; npm run schema сверяет. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://mebel.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Каталог", "item": "https://mebel.com/catalog.html" },
+          { "@type": "ListItem", "position": 3, "name": "Кухни VIVAT" }
+        ]
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -54,7 +69,7 @@
            попиксельно: canvas.getImageData по скриншоту инстанса 759:60097
            (десктоп) и 1997:267658 (мобиль) против нашего рендера, сравнивал
            вертикальный центр закрашенных пикселей точки и буквы «а». -->
-      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent md:leading-6 text-text-secondary max-md:h-10 max-md:text-m-body-s">
+      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent md:leading-6 text-text-secondary max-md:h-10 max-md:text-m-body-s-accent">
         <a href="main.html" class="transition-colors hover:text-text-primary">Главная</a>
         <span aria-hidden="true" class="relative top-px max-md:top-0">•</span>
         <a href="#" class="transition-colors hover:text-text-primary">Каталог</a>

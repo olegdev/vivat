@@ -13,7 +13,8 @@
     "crop": "node scripts/crop.mjs",
     "audit": "node scripts/audit.mjs",
     "audit:spacing": "node scripts/audit-spacing.mjs",
-    "audit:type": "node scripts/audit-type.mjs"
+    "audit:type": "node scripts/audit-type.mjs",
+    "schema": "node scripts/check-schema.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.0",
