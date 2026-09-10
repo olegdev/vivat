@@ -52,11 +52,29 @@ import { chromium } from "playwright";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 
-const [page, desktopId, mobileId] = process.argv.slice(2);
+const argv = process.argv.slice(2);
+const opt = (name) => {
+  const i = argv.indexOf(name);
+  return i === -1 ? null : argv[i + 1];
+};
+const FLATTEN = argv.includes("--flatten") ? Number(opt("--flatten")) || 1 : 0;
+const tabletId = opt("--tablet");
+const positional = argv.filter(
+  (a, i) => !a.startsWith("--") && argv[i - 1] !== "--tablet" && argv[i - 1] !== "--flatten"
+);
+const [page, desktopId, mobileId] = positional;
 if (!page || !desktopId) {
   console.error(
-    "usage: node scripts/audit-spacing.mjs <page> <desktop-id> [mobile-id]\n" +
-      "   e.g. node scripts/audit-spacing.mjs customer/catalog 759:60482 1997:267656"
+    "usage: node scripts/audit-spacing.mjs <page> <desktop-id> [mobile-id] [--tablet <id>] [--flatten]\n" +
+      "   e.g. node scripts/audit-spacing.mjs customer/catalog 759:60482 1997:267656\n" +
+      "\n" +
+      "  --tablet <id>  третья ширина, 768. Планшет нарисован не для всех страниц:\n" +
+      "                 секция `tablet` 2483:247208 держит пять страничных фреймов.\n" +
+      "  --flatten [N]  спуститься на N уровней внутрь фреймов (по умолчанию 1).\n" +
+      "                 Нужно там, где макет прячет пол-страницы в один фрейм, а\n" +
+      "                 разметка держит те же блоки плоским списком — PDP ровно\n" +
+      "                 такая. Отчёт печатает число секций с обеих сторон: если оно\n" +
+      "                 сильно расходится, это и есть повод попробовать флаг."
   );
   process.exit(1);
 }
@@ -107,7 +125,46 @@ function figSections(frameId) {
     flow.push(c);
   }
 
-  return flow.map((c) => {
+  // `--flatten`: развернуть фрейм верхнего уровня в его детей. Группировка —
+  // единственное, чем две стороны законно расходятся, и расходятся они в обе
+  // стороны: каталог на 1440 прячет рельс «Популярные» в один фрейм `H2`, и
+  // там разворачивать нечего (в разметке это тоже один блок), а PDP прячет в
+  // такой же `H2` всю нижнюю половину страницы, где разметка держит шесть
+  // отдельных секций. Автоматически это не решается — развернуть каталог
+  // значило бы сломать то, что уже сходится, — поэтому флаг, а не эвристика.
+  //
+  // Разворачивается ТОЛЬКО вертикальная стопка. У горизонтального фрейма дети
+  // лежат бок о бок, и «зазор» между ними по вертикали не значит ничего: на
+  // PDP `media` — это колонка снимков и сводка рядом, и разворот выдавал -2041.
+  const expand = (list, depth) =>
+    depth === 0
+      ? list
+      : expand(
+          list.flatMap((c) => {
+            if (c.type === "INSTANCE" || c.stack?.mode !== "VERTICAL") return [c];
+            const inner = (kids.get(c.id) ?? [])
+              .filter((k) => !k.hidden && k.h > 0 && !isSpacer(k))
+              .sort((a, b) => a.y - b.y);
+            if (inner.length < 2) return [c];
+            // Дети хранят координаты относительно родителя — поднимаем в
+            // систему фрейма страницы, иначе зазоры считаются между разными
+            // началами.
+            return inner.map((k) => ({ ...k, y: c.y + k.y }));
+          }),
+          depth - 1
+        );
+  const level = expand(flow, FLATTEN);
+
+  // Оверлеи отсекаются заново: разворот мог поднять наверх абсолютно
+  // позиционированного ребёнка, которого фильтр выше не видел.
+  const tiled = [];
+  for (const c of level) {
+    const prev = tiled[tiled.length - 1];
+    if (prev && c.y < prev.y + prev.h - 1) continue;
+    tiled.push(c);
+  }
+
+  return tiled.map((c) => {
     const top = c.y;
     const bottom = c.y + c.h;
     // Trim the section's own leading/trailing `spacing` — that air belongs to
@@ -227,7 +284,7 @@ function align(a, b) {
 const browser = await chromium.launch();
 let mismatched = 0;
 
-for (const [width, figId] of [[1440, desktopId], [390, mobileId]]) {
+for (const [width, figId] of [[1440, desktopId], [768, tabletId], [390, mobileId]]) {
   if (!figId) continue;
   const fig = figGaps(figSections(norm(figId)));
   const dom = await domGaps(browser, width);
