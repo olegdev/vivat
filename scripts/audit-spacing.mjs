@@ -95,7 +95,19 @@ function figSections(frameId) {
     // `H2` frame with the spacer inside, the 360 frame leaves both loose.
     .filter((c) => !isSpacer(c));
 
-  return children.map((c) => {
+  // Drop the overlays. A page frame is a VERTICAL auto-layout with gap=0, so
+  // its flow children tile: each starts where the last one ended. A child that
+  // overlaps the previous one is positioned absolutely over the page — the
+  // mobile frames carry two of those, `button+tab bar` and `nav-bar`, and
+  // counting them as sections produced gaps of -377 and -3689.
+  const flow = [];
+  for (const c of children) {
+    const prev = flow[flow.length - 1];
+    if (prev && c.y < prev.y + prev.h - 1) continue;
+    flow.push(c);
+  }
+
+  return flow.map((c) => {
     const top = c.y;
     const bottom = c.y + c.h;
     // Trim the section's own leading/trailing `spacing` — that air belongs to
@@ -182,6 +194,35 @@ async function domGaps(browser, width) {
   return out;
 }
 
+// ---- alignment ---------------------------------------------------------------
+// Longest common subsequence over the gap VALUES, then a walk back that emits
+// the two lists interleaved. Pairing by rank was the first attempt and it fails
+// exactly where it matters: the PDP frame groups its whole lower half under one
+// `H2` while the page keeps twelve flat sections, so one extra joint on either
+// side re-paired every row below it and reported three defects that were only
+// misalignment. LCS turns that into what it is — a row present on one side and
+// missing on the other.
+function align(a, b) {
+  const n = a.length;
+  const m = b.length;
+  const L = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+  for (let i = n - 1; i >= 0; i--)
+    for (let j = m - 1; j >= 0; j--)
+      L[i][j] = a[i].gap === b[j].gap ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+
+  const out = [];
+  let i = 0;
+  let j = 0;
+  while (i < n && j < m) {
+    if (a[i].gap === b[j].gap) out.push([a[i++], b[j++]]);
+    else if (L[i + 1][j] >= L[i][j + 1]) out.push([a[i++], null]);
+    else out.push([null, b[j++]]);
+  }
+  while (i < n) out.push([a[i++], null]);
+  while (j < m) out.push([null, b[j++]]);
+  return out;
+}
+
 // ---- report ------------------------------------------------------------------
 const browser = await chromium.launch();
 let mismatched = 0;
@@ -208,10 +249,8 @@ for (const [width, figId] of [[1440, desktopId], [390, mobileId]]) {
   console.log(`  ${"МАКЕТ: стык".padEnd(44)} ${"px".padStart(5)}   ${"px".padStart(5)}  СТРАНИЦА: стык`);
   console.log(`  ${"—".repeat(44)} ${"—".repeat(5)}   ${"—".repeat(5)}  ${"—".repeat(44)}`);
 
-  for (let i = 0; i < Math.max(figAir.length, domAir.length); i++) {
-    const f = figAir[i];
-    const d = domAir[i];
-    const ok = f && d && f.gap === d.gap;
+  for (const [f, d] of align(figAir, domAir)) {
+    const ok = f && d;
     if (!ok) mismatched++;
     const fl = f ? `${f.from} → ${f.to}`.slice(0, 43) : "—";
     const dl = d ? `${d.from} → ${d.to}`.slice(0, 43) : "—";
