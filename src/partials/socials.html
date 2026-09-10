@@ -1,9 +1,15 @@
 <!-- ==================== CN: Подпишитесь на нас =================== -->
+<!-- Отбивка блока НЕ симметричная: `CN-container` во всех двенадцати
+     экземплярах — это распорка сверху плюс сам `social`, и снизу ничего.
+     1440 и 1900: 96 + 220 = 316. 768: 64 + 220 = 284. 360: 64 + 168 + 32 = 264
+     (единственная ширина с хвостом). Стояло `items-center`, то есть 48/48 на
+     1440 и 32/32 на 768 — общая высота сходилась, поэтому дефект пережил и
+     сверку копии, и скриншоты; поймал `npm run audit:spacing`. -->
 <section
-  class="page-x flex h-[316px] items-center max-xl:h-[284px] max-md:h-auto max-md:pb-8 max-md:pt-16"
+  class="page-x flex h-[316px] items-start pt-24 max-xl:h-[284px] max-xl:pt-16 max-md:h-auto max-md:pb-8 max-md:pt-16"
 >
   <div
-    class="flex w-full flex-col items-center gap-4 rounded-pill bg-accent-green-200 px-10 py-10 max-xl:rounded-[var(--radius-l)] max-md:px-0 max-md:py-8"
+    class="flex w-full flex-col items-center gap-4 rounded-pill bg-accent-green-200 px-10 py-8 max-xl:rounded-[var(--radius-l)] max-md:px-0"
   >
     <div class="flex flex-col items-center gap-1 text-center max-md:gap-0">
       <p class="text-h4 text-text-primary max-md:text-m-h3">Подпишитесь на нас в соцсетях</p>
