@@ -166,7 +166,11 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   const allSections = () => form.querySelectorAll("[data-filter-section]");
   const filterTitle = drawer.querySelector("[data-filter-title]");
   const DEFAULT_TITLE = filterTitle?.textContent;
+  // Заголовок окна остаётся «Фильтры» и при одиночном фильтре: в мобильном
+  // кадре (1997:285890) в шапке стоит он, а имя группы — подзаголовок внутри.
+  // `label` больше не используется, но приходит от вызовов из панели настроек.
   function openDrawer(section, label) {
+    void label;
     drawer.classList.add("is-open");
     setScrollLock("filters-panel", true);
     const target = section && form.querySelector(`[data-filter-section="${section}"]`);
@@ -175,7 +179,7 @@ export function initFiltersPanel({ groups, price = false } = {}) {
         s.open = s === target;
         s.classList.toggle("hidden", s !== target);
       }
-      if (filterTitle) filterTitle.textContent = label || DEFAULT_TITLE;
+      if (filterTitle) filterTitle.textContent = DEFAULT_TITLE;
       form.scrollTop = 0;
     } else {
       for (const s of allSections()) {
