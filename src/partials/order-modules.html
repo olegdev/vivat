@@ -23,13 +23,22 @@
       data-module-title
     ></p>
 
-    <!-- 278 = 152 + 24 + 102, вровень с правым краем карточки. В макете этот
-         блок другой — 242 = цена 74 + 16 + степпер 152, и цена стоит СЛЕВА от
-         степпера (953:152535), — расхождение записано в BACKLOG. -->
-    <div class="flex items-center gap-6 md:w-[278px] md:shrink-0 max-md:flex-row-reverse max-md:justify-between max-md:gap-3">
+    <!-- Цена СЛЕВА от степпера на обеих ширинах: `counter+price` 242 = 74 + 16
+         + 152 на 1440 (953:152535) и 328 с полями 16 на 360 (2225:202145), и
+         там и там степпер прижат к правому краю. На 1440 это правый край самой
+         карточки, а не её степпера: блок модулей живёт в текстовой колонке 740,
+         поэтому «+» модуля приходится под цену карточки, а не под её «+». -->
+    <div class="flex items-center gap-4 md:w-[242px] md:shrink-0 max-md:justify-between max-md:gap-3">
+      <!-- 74 с выключкой вправо (953:152537); ниже `md` цена хагом слева -->
+      <span
+        class="text-right text-body-n text-text-muted md:w-[74px] md:shrink-0 max-md:text-m-h4 max-md:text-text-primary"
+        data-module-price
+      ></span>
+
       <!-- transparent stepper: no pill on either width here (953:152844 /
-           2225:202146), only the number's box comes back below `md` -->
-      <div class="flex w-[152px] shrink-0 items-center justify-between max-md:w-[152px]">
+           2225:202146), only the number's box comes back below `md`.
+           152 = 4 + 40 + 4 + 56 + 4 + 40 + 4; ниже `md` число 48 (2029:129548) -->
+      <div class="flex w-[152px] shrink-0 items-center justify-between px-1">
         <button
           type="button"
           class="flex size-10 items-center justify-center rounded-full transition-colors hover:bg-components-subtle"
@@ -39,7 +48,7 @@
           <img src="../../assets/order/icon-minus.svg" alt="" class="size-6" />
         </button>
         <span
-          class="flex h-10 w-12 items-center justify-center text-body-n text-text-muted max-md:rounded-n max-md:border max-md:border-border-light max-md:bg-surface-inverted max-md:text-m-body-n max-md:text-text-primary"
+          class="flex h-10 w-12 items-center justify-center text-body-n text-text-muted md:w-14 max-md:rounded-n max-md:border max-md:border-border-light max-md:bg-surface-inverted max-md:text-m-body-n max-md:text-text-primary"
           data-module-qty
         >1</span>
         <button
@@ -51,11 +60,6 @@
           <img src="../../assets/order/icon-plus.svg" alt="" class="size-6" />
         </button>
       </div>
-
-      <span
-        class="text-right text-body-n text-text-muted md:min-w-0 md:flex-1 max-md:w-auto max-md:text-m-h4 max-md:text-text-primary"
-        data-module-price
-      ></span>
     </div>
   </div>
 </template>
