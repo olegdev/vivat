@@ -661,14 +661,16 @@
      for accessibility + free form semantics, restyled to the Figma control:
      a 24px square that fills dark with a white tick when checked. `.filter-check`
      is used plain (no responsive variant), so `@layer components` is correct. */
-  /* Figma checkbox+radio (759:76634): a light rounded square/circle that, when
-     checked, keeps its light fill and gains a DARK tick / centre dot plus a dark
-     border — it does NOT fill dark. */
+  /* Figma checkbox+radio (759:76634): невыбранная клетка ЗАЛИТА #f3f3f3 при
+     обводке #e7e7e7 (вариант `condition=normal`, 759:76630/76632), выбранная —
+     белая при обводке #cbcbcb (`condition=pressed`, 759:76642/76643) с тёмной
+     галкой. Тёмной она не становится ни в одном состоянии. Стояла белая заливка
+     в обоих. */
   .filter-check,
   .filter-radio {
-    @apply size-6 shrink-0 appearance-none border border-border-light bg-surface-inverted transition-colors;
+    @apply size-6 shrink-0 appearance-none border border-border-light bg-components-subtle transition-colors;
     @apply bg-center bg-no-repeat;
-    @apply checked:border-border-light-hover;
+    @apply checked:border-border-light-hover checked:bg-surface-inverted;
   }
   .filter-check { @apply rounded-n; }
   .filter-radio { @apply rounded-full; }

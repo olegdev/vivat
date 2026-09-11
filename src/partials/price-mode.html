@@ -37,11 +37,16 @@
 
 <!-- Шторка выбора прайс-листа на 360 — 2225:163666 / 2225:164865: оверлей
      #141414/0.9, панель 400 снизу, шапка 56 с заголовком и ×, кнопка
-     «Применить» только у «Своей наценки». Выше md не рендерится. -->
-<div data-price-sheet class="fixed inset-0 z-50 hidden md:hidden">
-  <div class="absolute inset-0 bg-overlay-strong" data-price-close></div>
+     «Применить» только у «Своей наценки». Выше md не рендерится.
+
+     Оболочка — общая, `.modal-scrim` + `.modal-panel`: у шторки был свой
+     контейнер без скругления верхних углов, и она единственная на сайте
+     выглядела иначе остальных. Показывается, как все окна, классом
+     `is-open`. -->
+<div data-price-sheet class="modal-scrim md:hidden">
+  <div class="absolute inset-0" data-price-close></div>
   <div
-    class="absolute inset-x-0 bottom-0 flex h-[400px] flex-col bg-bg-page"
+    class="modal-panel relative flex h-[400px] flex-col"
     role="dialog"
     aria-modal="true"
     aria-label="Наценка"

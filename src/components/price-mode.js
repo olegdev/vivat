@@ -10,6 +10,7 @@
 // которую кладёт в карточку components/product-card.js.
 import { priceModes, RRP_FACTOR } from "../data/dealer-home.js";
 import { isDealer } from "./session.js";
+import { setScrollLock } from "./scroll-lock.js";
 
 const STORE_KEY = "vivat:price-mode";
 
@@ -140,15 +141,25 @@ export function initPriceMode(root = document) {
   // и отменит тумблер, нажатый после неё.
   const commit = () => applyPriceMode({ ...state, enabled: (applied ?? state).enabled !== false });
 
+  // Выпадашка на 1440 — свой блок, её видимость это класс `hidden`. Шторка на
+  // 360 живёт на общей оболочке окон, а там показ — это `is-open`.
+  const sheetOpen = () => !!sheet?.classList.contains("is-open");
+
   const close = () => {
     panel?.classList.add("hidden");
-    sheet?.classList.add("hidden");
+    sheet?.classList.remove("is-open");
+    setScrollLock("price-sheet", false);
     triggers.forEach((t) => t.setAttribute("aria-expanded", "false"));
   };
 
   const open = (el, trigger) => {
     if (!el) return;
-    el.classList.remove("hidden");
+    if (el === sheet) {
+      el.classList.add("is-open");
+      setScrollLock("price-sheet", true);
+    } else {
+      el.classList.remove("hidden");
+    }
     trigger.setAttribute("aria-expanded", "true");
   };
 
@@ -203,7 +214,7 @@ export function initPriceMode(root = document) {
 
   root.querySelector("[data-price-sheet-trigger]")?.addEventListener("click", (e) => {
     e.stopPropagation();
-    if (sheet?.classList.contains("hidden")) open(sheet, e.currentTarget);
+    if (!sheetOpen()) open(sheet, e.currentTarget);
     else close();
   });
 
