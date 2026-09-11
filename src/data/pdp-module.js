@@ -76,10 +76,17 @@ export const alert = "Внимание! Ручка в комплект не вх
 
 export const railTitle =
   "Модули композиции «Шкаф нижний с 2-мя дверцами Флэт Cashmere In 2S»";
-export const railAction = "Все модули Фьюжн";
 
 // Карточки рельса — `cards-modul` (1968:189601). Во фрейме их две: каркас с
 // ценой и фасад без неё.
+// Нижний ряд карточки `cards-modul` — образцы цвета с «+5» (1821:285820 в
+// раскладке 1968:189601), а не счётчик отзывов: его в инстансе нет.
+const RAIL_SWATCHES = [
+  { img: `${PDP}/swatch-wood-src.png` },
+  { img: `${PDP}/swatch-grey-src.png` },
+  { img: `${PDP}/swatch-dark-src.png` },
+];
+
 export const modules = [
   {
     id: "mod-frame-600",
@@ -87,6 +94,8 @@ export const modules = [
     title: "Каркас нижнего шкафа Н 600",
     spec: { label: "Размер (В*Ш*Г), мм:", value: "816*500*480" },
     image: `${PDP}/module-base-3drawer-src.png`,
+    swatches: RAIL_SWATCHES,
+    more: "+5",
   },
   {
     id: "mod-fg-70-30",
@@ -94,6 +103,8 @@ export const modules = [
     title: "Фасад нижний с 1-ой дверцей Фьюжн",
     spec: { label: "Размер (В*Ш*Г), мм:", value: "816*500*480" },
     image: `${PDP}/module-wall-1door-src.png`,
+    swatches: RAIL_SWATCHES,
+    more: "+5",
   },
 ];
 

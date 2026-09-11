@@ -25,6 +25,10 @@ import { setScrollLock } from "./scroll-lock.js";
 // куда они должны вести из меню, не решено (BACKLOG), поэтому у них "#".
 const defaultRootSections = [
   { label: "Каталог", view: "catalog" },
+  // «Акции» дизайнер добавил вторым пунктом позже остальных (2462:219822);
+  // страница «Акций» на весь сайт одна, поэтому адрес покупательский и без
+  // `data-half`.
+  { label: "Акции", href: "../customer/action.html" },
   { label: "Где купить", href: "../customer/main.html#where" },
   { label: "Компания", href: "#" },
   { label: "Полезная информация", href: "#" },

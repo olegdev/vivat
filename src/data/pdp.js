@@ -66,7 +66,8 @@ export const modules = withId(
     spec: { label: "Размер (В*Ш*Г), мм:", value: size },
     swatches: SWATCHES,
     more: "+5",
-    comments: 2,
+    // Счётчика отзывов у `cards-modul` нет: в раскладке инстанса (1968:189601)
+    // этот блок не рендерится, нижний ряд карточки — только образцы цвета.
   }))
 );
 

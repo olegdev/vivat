@@ -15,7 +15,7 @@ import { initCitySelect } from "../../components/city-select.js";
 import { ICON, HOME } from "../../data/asset-base.js";
 import { stores } from "../../data/stores.js";
 import { reviews } from "../../data/pdp.js";
-import { product, specs, modules, railTitle, railAction } from "../../data/pdp-module.js";
+import { product, specs, modules, railTitle } from "../../data/pdp-module.js";
 
 // ---- общий chrome, та же обвязка, что у остальных страниц -------------------
 setCatalogIconBase(ICON);
@@ -44,13 +44,10 @@ mountCarousel(
   document.querySelector('[data-section="modules"]'),
   {
     title: railTitle,
-    // Кнопка справа от заголовка в макете ЕСТЬ: `button-container` 216x44 с
-    // «Все модули Фьюжн» (2488:127168). Я её ошибочно снял, прочитав пустой
-    // `buttons` у кухонной PDP.
-    action: railAction,
-    // Каталог с фильтром «только модули», как у рельса «Модули» на кухонной
-    // PDP (docs/LINK-MAP.md §4.16).
-    href: "catalog.html?modules=1",
+    // Кнопка «Все модули Фьюжн» в кадре есть (`button-container` 216x44,
+    // 2488:127168), но снята по решению клиента — см. BACKLOG.
+    desktopAction: false,
+    mobileAction: false,
     // `cards-modul` — отдельный компонент, а не размер общей карточки,
     // поэтому это `variant`, как и в кухонной PDP.
     variant: "modul",

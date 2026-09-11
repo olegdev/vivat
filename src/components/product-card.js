@@ -162,7 +162,12 @@ function buildCard(p, { mobile = "s", variant, href } = {}) {
       sw.append(chip);
     });
     node.querySelector("[data-card-more]").textContent = p.more || "";
-    node.querySelector("[data-card-comments]").textContent = String(p.comments ?? 0);
+    // Счётчик отзывов — не обязательная часть карточки: у `cards-modul`
+    // (1968:189601) в раскладке его нет вовсе, там нижний ряд это только
+    // образцы цвета. Нет числа — нет и ссылки.
+    const reviews = node.querySelector("[data-card-reviews-link]");
+    if (p.comments === undefined) reviews?.remove();
+    else node.querySelector("[data-card-comments]").textContent = String(p.comments);
   }
   return node;
 }
