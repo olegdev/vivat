@@ -98,6 +98,7 @@ mountCarousel(
   {
     title: "Добавьте в корзину",
     tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
+    compactChips: true, // segments size=s ниже md (1997:315100), 60 на 1440 (922:103133)
     variant: "other-s",
     // The desktop title-block's `buttons` frame is empty, but the mobile
     // `other-row` (1997:315101) does carry the full-width "В раздел" action —

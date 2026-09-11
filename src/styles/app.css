@@ -646,9 +646,18 @@
 
   /* ---- Tab chip (Популярные товары) ------------------------------------- */
   /* `segments` 632:31697 — 44, а не 40, и на 1440, и на 360. */
+  /* Чип ряда вкладок. Ниже md у `segments` ДВА варианта, и различаются они
+     страницей, а не шириной: `size=l` 1806:236358 (чип 44, 16/22) стоит на
+     каталоге, «Акциях» и «3D-моделях», `size=s` 1806:236369 (чип 32, 12/16) —
+     на главной. Раньше `.chip` давал 32 всем, и мобильный каталог рисовался
+     56 вместо 68. Размер несёт РЯД (`data-chips-size`, ставит carousel.js),
+     а не чип: так один шаблон обслуживает оба варианта. */
   .chip {
-    @apply flex h-11 shrink-0 items-center rounded-pill px-4 text-button-m transition-colors max-md:h-8 max-md:text-m-button-m;
+    @apply flex h-11 shrink-0 items-center rounded-pill px-4 text-button-m transition-colors;
     @apply bg-components-subtle text-text-primary hover:bg-components-subtle-hover;
+  }
+  [data-chips-size="s"] .chip {
+    @apply max-md:h-8 max-md:text-m-body-s-accent;
   }
   .chip[aria-selected="true"] {
     @apply bg-components-active-muted text-text-inverse-primary hover:bg-components-active-default;

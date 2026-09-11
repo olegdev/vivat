@@ -125,9 +125,9 @@
   </div>
 </template>
 
-<!-- Мобильная строка табов (segments 1806:236371) — 12px Medium, не
-     14px «еще»-размер, который .chip даёт по умолчанию на max-md; «еще»
-     сам держит явный размер и остаётся на общем. -->
+<!-- Размер чипа ниже md (`size=s` 32/12px на главной, `size=l` 44/16px на
+     каталоге, «Акциях» и моделях) задаёт ряд через `data-chips-size`, см.
+     `.chip` в app.css и `compactChips` в carousel.js. -->
 <template data-carousel-chip>
-  <button class="chip max-md:text-m-body-s-accent"></button>
+  <button class="chip"></button>
 </template>

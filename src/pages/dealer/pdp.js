@@ -105,6 +105,7 @@ mountCarousel(
   {
     title: "Добавьте в корзину",
     tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
+    compactChips: true, // segments size=s ниже md (1997:315100), 60 на 1440 (922:103133)
     variant: "other-s",
     desktopAction: false,
     href: "catalog.html",
