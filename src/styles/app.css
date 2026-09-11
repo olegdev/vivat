@@ -279,7 +279,9 @@
 
   /* ---- Shadows (Figma effect styles) ------------------------------------- */
   --shadow-dropdown: 0 4px 17.6px rgba(0, 0, 0, 0.14);
-  --shadow-navbar: 0 -3px 5px rgba(0, 0, 0, 0.2);
+  /* Единственная тень такого рода в макете — у `modal-button-container`
+     2027:89990: 0/−3, размытие 5, чёрный на 0.12. */
+  --shadow-navbar: 0 -3px 5px rgba(0, 0, 0, 0.12);
 
   /* ---- Layout grid (Figma grid styles) — reference values ----------------
      desktop "12": 12 cols · gutter 24 (gap-6) · margin 40 (px-10)

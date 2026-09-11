@@ -51,7 +51,8 @@
      which is why the page reserves 132px at the bottom below `md`). -->
 <!-- На планшете этот же бар 64 высотой с полем 24, и две его части делят
      ширину пополам (text-action 356 + buttons 356 в 2483:246944). -->
-<div class="fixed inset-x-0 bottom-[72px] z-40 flex h-16 items-center justify-center gap-2 bg-surface-inverted px-6 xl:hidden max-md:h-[60px] max-md:px-4">
+<!-- Тень вверх рисует именно этот бар (2027:89990), а не тапбар под ним. -->
+<div class="fixed inset-x-0 bottom-[72px] z-40 flex h-16 items-center justify-center gap-2 bg-surface-inverted px-6 shadow-navbar xl:hidden max-md:h-[60px] max-md:px-4">
   <a
     href="#where"
     class="flex items-center gap-1 px-2 text-m-body-n text-text-secondary max-xl:min-w-0 max-xl:flex-1 max-md:flex-none"
