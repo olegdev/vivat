@@ -172,10 +172,17 @@
         <span class="flex h-11 shrink-0 items-center px-2 text-body-n text-text-primary" data-surcharge-floor></span>
       </div>
 
-      <!-- alert 1415:67671 — two lines, no close control on this instance -->
+      <!-- alert 1415:67671 — две строки, без крестика в этом инстансе.
+           Иконка стоит по центру ПЕРВОЙ строки: в кадре `icon-container`
+           16×48 с padV=4, то есть глиф 16 занимает 4…20 при строке 24 — центры
+           совпадают. `-mx-1` снимает поля коробки 24 вокруг глифа 16 по
+           горизонтали, сверху их быть не должно (было `mt-1`, и иконка съезжала
+           на 4 вниз).
+           Перенос строки — из макета: в инстансе текст 854×48, то есть две
+           строки, хотя в одну он укладывается; ломается он после «рублей.». -->
       <div class="flex gap-2 rounded-n bg-surface-accent-subtle px-4 py-2">
-        <img src="../../assets/order/icon-info-dark.svg" alt="" class="mt-1 size-6 -m-1 shrink-0" />
-        <p class="text-body-n text-text-primary max-md:text-m-body-n" data-delivery-cost></p>
+        <img src="../../assets/order/icon-info-dark.svg" alt="" class="-mx-1 size-6 shrink-0 self-start" />
+        <p class="whitespace-pre-line text-body-n text-text-primary max-md:text-m-body-n" data-delivery-cost></p>
       </div>
     </div>
   </section>

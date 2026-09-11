@@ -19,7 +19,7 @@
     data-module-line
   >
     <p
-      class="min-w-0 flex-1 truncate text-body-n text-text-muted max-md:whitespace-normal max-md:text-m-body-n max-md:text-text-primary"
+      class="min-w-0 flex-1 truncate text-body-n text-text-secondary max-md:whitespace-normal max-md:text-m-body-n max-md:text-text-primary"
       data-module-title
     ></p>
 
@@ -31,12 +31,14 @@
     <div class="flex items-center gap-4 md:w-[242px] md:shrink-0 max-md:justify-between max-md:gap-3">
       <!-- 74 с выключкой вправо (953:152537); ниже `md` цена хагом слева -->
       <span
-        class="text-right text-body-n text-text-muted md:w-[74px] md:shrink-0 max-md:text-m-h4 max-md:text-text-primary"
+        class="text-right text-body-n text-text-secondary md:w-[74px] md:shrink-0 max-md:text-m-h4 max-md:text-text-primary"
         data-module-price
       ></span>
 
       <!-- transparent stepper: no pill on either width here (953:152844 /
            2225:202146), only the number's box comes back below `md`.
+           Цвета: число тёмное (953:152667, #292929), а «−» и «+» серые
+           (2214:13482, #808080) — в карточке заказа было наоборот.
            152 = 4 + 40 + 4 + 56 + 4 + 40 + 4; ниже `md` число 48 (2029:129548) -->
       <div class="flex w-[152px] shrink-0 items-center justify-between px-1">
         <button
@@ -45,10 +47,10 @@
           data-module-down
           aria-label="Уменьшить количество"
         >
-          <img src="../../assets/order/icon-minus.svg" alt="" class="size-6" />
+          <img src="../../assets/order/icon-minus-muted.svg" alt="" class="size-6" />
         </button>
         <span
-          class="flex h-10 w-12 items-center justify-center text-body-n text-text-muted md:w-14 max-md:rounded-n max-md:border max-md:border-border-light max-md:bg-surface-inverted max-md:text-m-body-n max-md:text-text-primary"
+          class="flex h-10 w-12 items-center justify-center text-body-n text-text-primary md:w-14 max-md:rounded-n max-md:border max-md:border-border-light max-md:bg-surface-inverted max-md:text-m-body-n max-md:text-text-primary"
           data-module-qty
         >1</span>
         <button
@@ -57,7 +59,7 @@
           data-module-up
           aria-label="Увеличить количество"
         >
-          <img src="../../assets/order/icon-plus.svg" alt="" class="size-6" />
+          <img src="../../assets/order/icon-plus-muted.svg" alt="" class="size-6" />
         </button>
       </div>
     </div>
