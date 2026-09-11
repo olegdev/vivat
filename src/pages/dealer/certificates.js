@@ -6,6 +6,7 @@ import { initCart } from "../../components/cart.js";
 import { initSession } from "../../components/session.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { renderMenuB2b } from "../../components/menu-b2b.js";
 import { ICON } from "../../data/asset-base.js";
@@ -45,4 +46,5 @@ renderDocTree(tree, CERT_GROUPS);
 initDocSearch(document.querySelector("[data-doc-search]"), tree);
 
 initModals();
+initPhoneMask();
 initCitySelect();

@@ -13,6 +13,7 @@ import { rub } from "../../data/catalog.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { LINES, DELIVERY } from "../../data/dealer-order.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
 
 // Дилерский заказ — та же корзина и та же сводка, что у покупателя, плюс
@@ -83,4 +84,5 @@ page.querySelector("[data-order-summary] [data-order-submit]")?.addEventListener
 });
 
 initModals();
+initPhoneMask();
 initCitySelect();

@@ -9,6 +9,7 @@ import { initCatalogListing } from "../../components/catalog-listing.js";
 import { ICON } from "../../data/asset-base.js";
 import { PRODUCTS, rub, popularItems } from "../../data/catalog.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
 
 // Страница каталога — обвязка. Сетка, фильтры, сортировка, чипсы и шов
@@ -54,4 +55,5 @@ mountCarousel(
 );
 
 initModals();
+initPhoneMask();
 initCitySelect();

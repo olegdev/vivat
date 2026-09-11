@@ -6,6 +6,7 @@ import { initCart } from "../../components/cart.js";
 import { initSession } from "../../components/session.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { renderMenuB2b } from "../../components/menu-b2b.js";
 import { ICON } from "../../data/asset-base.js";
@@ -59,4 +60,5 @@ initFiltersPanel({ groups: ["structure", "material", "color"] });
 document.querySelector("[data-pagination]").dataset.pages = "3";
 
 initModals();
+initPhoneMask();
 initCitySelect();

@@ -15,6 +15,7 @@
 
 import { categories } from "./catalog-menu.js";
 import { catalogHref } from "./links.js";
+import { setScrollLock } from "./scroll-lock.js";
 
 // ---- data -------------------------------------------------------------------
 // Root level of the burger menu (Figma 1997:255059 "menu-main-block"). The
@@ -161,7 +162,7 @@ export function initMobileMenu(anchor, { toggle, catalogToggle, rootSections = d
     overlay.classList.toggle("hidden", !open);
     toggles.forEach((t) => t.setAttribute("aria-expanded", String(open)));
     catalogToggle?.setAttribute("aria-expanded", String(open));
-    document.documentElement.classList.toggle("overflow-hidden", open);
+    setScrollLock("mobile-menu", open);
     if (open) focusables()[0]?.focus();
     else lastFocused?.focus?.();
   }

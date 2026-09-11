@@ -6,6 +6,7 @@ import { initCart } from "../../components/cart.js";
 import { initSession } from "../../components/session.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
@@ -78,4 +79,5 @@ mountCarousel(
 );
 
 initModals();
+initPhoneMask();
 initCitySelect();

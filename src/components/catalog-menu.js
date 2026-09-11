@@ -9,6 +9,8 @@
 
 import { categories } from "../data/catalog-menu.js";
 import { catalogHref, pageHref } from "./links.js";
+import { setScrollLock } from "./scroll-lock.js";
+
 export { categories };
 
 let ICON = "../../assets/header";
@@ -123,7 +125,7 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
   function setOpen(open) {
     overlay.classList.toggle("hidden", !open);
     toggle?.setAttribute("aria-expanded", String(open));
-    document.documentElement.classList.toggle("overflow-hidden", open);
+    setScrollLock("catalog-menu", open);
     if (toggleIcon) {
       toggleIcon.src = `${ICON}/${open ? "icon-close" : "icon-burger"}.svg`;
     }

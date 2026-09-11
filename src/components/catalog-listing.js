@@ -13,6 +13,7 @@
 // узлы по data-атрибутам — разметку строками он не собирает.
 import { pageHref } from "./links.js";
 import { fillGallery, initProductCards } from "./product-card.js";
+import { setScrollLock } from "./scroll-lock.js";
 
 const MULTI = ["collection", "facade", "form", "color", "style"];
 
@@ -279,7 +280,7 @@ export function initCatalogListing({ products, rub }) {
   // collapses it — and the drawer's own title becomes that pill's label.
   function openDrawer(section, label) {
     drawer.classList.add("is-open");
-    document.body.classList.add("overflow-hidden");
+    setScrollLock("filter-drawer", true);
     const target = section && form.querySelector(`[data-filter-section="${section}"]`);
     if (target) {
       for (const s of allSections()) {
@@ -299,7 +300,7 @@ export function initCatalogListing({ products, rub }) {
   }
   function closeDrawer() {
     drawer.classList.remove("is-open");
-    document.body.classList.remove("overflow-hidden");
+    setScrollLock("filter-drawer", false);
   }
   document.querySelectorAll("[data-filter-open]").forEach((b) =>
     b.addEventListener("click", () =>

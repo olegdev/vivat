@@ -20,6 +20,7 @@
 import { renderCarousel } from "./product-card.js";
 import { initCarousel } from "./carousel.js";
 import { SUGGESTIONS, CHIPS, RECOMMENDED, CATALOGUE } from "../data/search.js";
+import { setScrollLock } from "./scroll-lock.js";
 
 const MIN_QUERY = 2;
 const DEBOUNCE = 200;
@@ -97,7 +98,7 @@ export function initSearch(root = document) {
   function setOpen(open) {
     if (open) lastFocused = document.activeElement;
     overlay.classList.toggle("hidden", !open);
-    document.documentElement.classList.toggle("overflow-hidden", open);
+    setScrollLock("search", open);
     if (open) {
       render(input.value);
       input.focus();

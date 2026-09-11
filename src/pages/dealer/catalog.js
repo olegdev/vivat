@@ -11,6 +11,7 @@ import { ICON } from "../../data/asset-base.js";
 import { PRODUCTS, rub, popularItems } from "../../data/catalog.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
 
 // Дилерский каталог — та же проводка, что у покупательского, плюс дилерская
@@ -54,4 +55,5 @@ mountCarousel(
 );
 
 initModals();
+initPhoneMask();
 initCitySelect();

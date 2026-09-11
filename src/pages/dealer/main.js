@@ -12,6 +12,7 @@ import { renderStoresMap, setBases as setStoresMapBases } from "../../components
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
 import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
@@ -54,6 +55,7 @@ initSearch();
 initCart();
 initSession();
 initModals();
+initPhoneMask();
 initCitySelect();
 
 const sections = {

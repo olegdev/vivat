@@ -60,6 +60,7 @@ const swap = (el, off, on) => {
 
 import { initStoreSheet } from "./store-sheet.js";
 import { fillCityRows, isMobileCity } from "./city-select.js";
+import { setScrollLock } from "./scroll-lock.js";
 
 // Полноэкранная карта на мобиле для ЧИТАЮЩИХ страниц (главная, PDP): Figma
 // `state=ordinary-min` 1859:334569 и `-max` 1859:334571. Та же трансформация,
@@ -102,7 +103,7 @@ function setFullMap(anchor, on) {
     el.classList.add(...(on ? add : off));
   }
   // Страница под раскрытой картой скроллиться не должна.
-  document.body.classList.toggle("overflow-hidden", on);
+  setScrollLock("stores-map", on);
 }
 
 function enterSelectMode(anchor) {

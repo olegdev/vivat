@@ -1,0 +1,13 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 390, height: 844 } });
+await p.goto('http://127.0.0.1:8899/pages/customer/main.html');
+await p.waitForTimeout(500);
+await p.click('[data-modal-open="dealer-request"]');
+await p.waitForTimeout(400);
+await p.screenshot({ path: '/tmp/claude-1000/-srv-vivat-dev/ebc3093c-d4ea-4e9a-a22f-73141eaa380d/scratchpad/modal-view.png' });
+console.log('замок:', await p.evaluate(() => document.documentElement.className + ' | body ' + document.body.className));
+await p.click('[data-modal-close]');
+await p.waitForTimeout(300);
+console.log('после закрытия:', await p.evaluate(() => document.documentElement.className + ' | body ' + document.body.className));
+await b.close();

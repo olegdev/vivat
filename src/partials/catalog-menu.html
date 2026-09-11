@@ -4,7 +4,9 @@
      from the shared `categories` tree and swaps col2/col3 on hover/click — the
      future Blade @foreach + the same behaviour script. -->
 <div data-catalog-overlay class="fixed inset-x-0 bottom-0 top-[116px] z-40 hidden">
-  <div data-catalog-scrim class="absolute inset-0 bg-overlay-middle"></div>
+  <!-- 912:80440: затемнение у меню то же, что у всех оверлеев сайта, —
+       #141414/0.9 -->
+  <div data-catalog-scrim class="absolute inset-0 bg-overlay-strong"></div>
   <div class="pointer-events-none absolute inset-0">
     <div class="pointer-events-auto flex h-full w-fit bg-bg-page">
       <nav data-cat-col1 class="w-[300px] shrink-0 overflow-y-auto pb-6 pl-6 pr-3 pt-4"></nav>

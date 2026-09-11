@@ -1,0 +1,42 @@
+<!-- ==================== «ВАША ЗАЯВКА ОТПРАВЛЕНА» ======================
+     Figma `success desktop` 2462:214093 (карточка 485×725, форма 2462:216798)
+     и `success mobile` 2462:213129 (шторка, 2462:213534). Открывается после
+     отправки «Стать дилером» — до этого у окна не было экрана «отправлено».
+
+     Тело: снимок 357×274, заголовок с описанием (зазор 16) и одна кнопка во
+     всю ширину. Поля 64 на 1440 и 32 на 360, зазор между блоками 24.
+
+     Копия взята с МОБИЛЬНОГО кадра: на 1440 дизайнер оставил текст соседнего
+     окна («Ваш заказ отправлен!»), не переписав его под заявку. Подпись кнопки
+     разная и переписана в обоих: «Продолжить покупки» на 1440, «Продолжить» на
+     360. «её» — исправленная опечатка макета (там «ее»), см. BACKLOG. -->
+<div class="modal-scrim" data-modal="dealer-success">
+  <div class="modal-panel" data-modal-panel>
+    <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
+      <button type="button" class="flex size-6 items-center justify-center" data-modal-close aria-label="Закрыть">
+        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6" />
+      </button>
+    </div>
+
+    <div class="flex flex-col gap-6 px-16 pb-16 max-md:px-8 max-md:pb-16">
+      <img
+        src="../../assets/modals/dealer-success-src.png"
+        alt=""
+        class="h-[274px] w-full rounded-n object-cover"
+      />
+
+      <!-- обе строки по центру (textAlignHorizontal=CENTER) -->
+      <div class="flex flex-col gap-4 text-center">
+        <p class="text-h2 text-text-primary max-md:text-m-h2">Ваша заявка отправлена!</p>
+        <p class="text-body-l text-text-primary max-md:text-m-body-l">
+          В ближайшее время мы обработаем её и свяжемся с вами
+        </p>
+      </div>
+
+      <button type="button" class="btn btn-l btn-accent w-full max-md:h-11 max-md:text-m-button-m" data-modal-close>
+        <span class="max-md:hidden">Продолжить покупки</span>
+        <span class="hidden max-md:inline">Продолжить</span>
+      </button>
+    </div>
+  </div>
+</div>

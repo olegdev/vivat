@@ -19,6 +19,8 @@
 // Ряд чипсов и шаблон чипса не обязательны: у декоров они есть (кадр рисует
 // состояние выбранных параметров), у 3D-моделей их нет.
 
+import { setScrollLock } from "./scroll-lock.js";
+
 export function initFiltersPanel({ groups, price = false } = {}) {
   const GROUPS = groups;
   const drawer = document.querySelector("[data-filter-drawer]");
@@ -166,7 +168,7 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   const DEFAULT_TITLE = filterTitle?.textContent;
   function openDrawer(section, label) {
     drawer.classList.add("is-open");
-    document.body.classList.add("overflow-hidden");
+    setScrollLock("filters-panel", true);
     const target = section && form.querySelector(`[data-filter-section="${section}"]`);
     if (target) {
       for (const s of allSections()) {
@@ -186,7 +188,7 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   }
   function closeDrawer() {
     drawer.classList.remove("is-open");
-    document.body.classList.remove("overflow-hidden");
+    setScrollLock("filters-panel", false);
   }
 
   for (const b of document.querySelectorAll("[data-filter-open]")) {

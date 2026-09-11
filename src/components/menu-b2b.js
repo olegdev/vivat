@@ -13,6 +13,8 @@
 // варианта condition=active — дизайнер рисует текущий пункт ховером
 // (912:80243, #eeeeee), поэтому оформление у них общее и живёт в партиале.
 
+import { setScrollLock } from "./scroll-lock.js";
+
 const clone = (sel) => document.querySelector(sel).content.cloneNode(true);
 
 // Один пункт. `item`: { label, href, modal? }
@@ -48,11 +50,15 @@ function initSheet() {
   const sheet = document.querySelector("[data-menu-sheet]");
   if (!sheet) return;
 
-  const close = () => sheet.classList.remove("is-open");
+  const close = () => {
+    sheet.classList.remove("is-open");
+    setScrollLock("menu-b2b", false);
+  };
 
   document.addEventListener("click", (e) => {
     if (e.target.closest("[data-menu-sheet-open]")) {
       sheet.classList.add("is-open");
+      setScrollLock("menu-b2b", true);
       return;
     }
     if (e.target.closest("[data-menu-sheet-close]")) {

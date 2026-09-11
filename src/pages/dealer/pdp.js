@@ -15,6 +15,7 @@ import { HOME, ICON } from "../../data/asset-base.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
 import { product, modules, addToCart, reviews, collection } from "../../data/pdp.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
 
 // Дилерский PDP — та же проводка, что у покупательского (фреймы совпадают нода
@@ -169,6 +170,7 @@ document.querySelector("[data-seo-title]").textContent =
   "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.";
 
 initModals();
+initPhoneMask();
 initCitySelect();
 
 // «Сформировать заказ»: в корзину и на оформление (LINK-MAP §4.1).

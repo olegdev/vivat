@@ -12,6 +12,8 @@
 //
 // One list per line is rendered into the card on 1440; below `md` the same
 // rows are moved into the sheet, because the frames show one list, not two.
+import { setScrollLock } from "./scroll-lock.js";
+
 const isMobile = () => window.matchMedia("(max-width: 47.99rem)").matches;
 
 export function initOrderModules(root, { lines, money, onChange } = {}) {
@@ -62,14 +64,14 @@ export function initOrderModules(root, { lines, money, onChange } = {}) {
     sheetTitle.textContent = line.title;
     sheetList.replaceChildren(...rowsOf(line));
     sheet.classList.remove("hidden");
-    document.body.classList.add("overflow-hidden");
+    setScrollLock("order-modules", true);
   }
 
   function closeSheet() {
     if (!sheet) return;
     openLine = null;
     sheet.classList.add("hidden");
-    document.body.classList.remove("overflow-hidden");
+    setScrollLock("order-modules", false);
   }
 
   // ---- events --------------------------------------------------------------

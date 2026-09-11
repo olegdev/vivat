@@ -12,6 +12,7 @@
 // Сам список салонов здесь не фильтруется: в фикстуре у точек нет города (см.
 // BACKLOG.md).
 import { CITIES, DEFAULT_CITY } from "../data/cities.js";
+import { setScrollLock } from "./scroll-lock.js";
 
 const KEY = "vivat:city";
 
@@ -73,6 +74,7 @@ export function initCitySelect(root = document) {
 
   const closeAll = () => {
     sheet?.classList.remove("is-open");
+    setScrollLock("city-select", false);
     root.querySelectorAll("[data-city-menu]").forEach((m) => m.classList.add("hidden"));
     root
       .querySelectorAll("[data-city-open][aria-expanded='true']")
@@ -132,6 +134,7 @@ export function initCitySelect(root = document) {
       if (!sheet || !sheetList) return;
       fillCityRows(sheetList, root);
       sheet.classList.add("is-open");
+      setScrollLock("city-select", true);
       return;
     }
     const wasOpen = !menu.classList.contains("hidden");
