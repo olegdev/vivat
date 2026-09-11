@@ -69,11 +69,15 @@
           class="whitespace-nowrap text-body-n-accent text-text-primary max-md:text-m-body-n-accent"
           >Только модули</span
         >
+        <!-- Этот тумблер — вариант `design=dark` набора 604:24616 (инстанс
+             882:89381), а не `light`, как в шапке: ручка белая во всех
+             состояниях, меняется только дорожка — #e7e7e7 выключенной,
+             #d9d9d9 под курсором, #292929 включённой. -->
         <span
-          class="flex h-6 w-10 items-center rounded-pill bg-components-light p-0.5 transition-colors group-hover/sw:bg-components-light-hover group-aria-[checked=true]/sw:bg-surface-raised"
+          class="flex h-6 w-10 items-center rounded-pill bg-components-light p-0.5 transition-colors group-hover/sw:bg-components-light-hover group-aria-[checked=true]/sw:bg-components-strong"
         >
           <span
-            class="size-5 translate-x-0 rounded-pill bg-components-disabled-inverted transition-[translate,background-color] group-hover/sw:bg-components-disabled-inverted-hover group-aria-[checked=true]/sw:translate-x-4 group-aria-[checked=true]/sw:bg-components-strong"
+            class="size-5 translate-x-0 rounded-pill bg-surface-inverted transition-[translate] group-aria-[checked=true]/sw:translate-x-4"
           ></span>
         </span>
       </button>
