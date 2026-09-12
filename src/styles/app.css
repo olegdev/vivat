@@ -927,12 +927,14 @@
 
   /* ---- Geometry control (instance 1209:88253) — 32px pill, 12/16 Medium
      (text-m-body-s-accent), border-active outline when checked. */
+  /* Обводка INSIDE (мастер 922:91710): коробку не расширяет, поэтому кольцо, а
+     не `border` — тот добавлял 2 к ширине, 78.4 вместо 77. */
   .pdp-segment {
-    @apply flex h-8 items-center justify-center rounded-pill border px-4 text-m-body-s-accent transition-colors;
-    @apply border-border-default text-text-secondary hover:border-border-default-hover;
+    @apply flex h-8 items-center justify-center rounded-pill px-4 text-m-body-s-accent transition-colors;
+    @apply text-text-secondary ring-1 ring-inset ring-border-default hover:ring-border-default-hover;
   }
   .pdp-segment[aria-checked="true"] {
-    @apply border-border-active text-text-primary;
+    @apply text-text-primary ring-border-active;
   }
 
   /* ---- Colour swatch (`color-swatch` 629:26578) ---------------------------
@@ -952,7 +954,14 @@
      linear gradient so the pitch is exact. (A radial gradient was the first
      try: at a 0.5px dot diameter it antialiases to nothing and the leader
      never appeared.) */
+  /* Линия идёт по БАЗОВОЙ линии текста, а не по центру строки: в макете она на
+     y=28 при строке 44 и тексте 10–34 (table-decor 1686:58549).
+     `align-self: baseline` тут не работает: у пустого блока своей базовой линии
+     нет, и Chrome синтезирует её по ВЕРХНЕМУ краю — линия уезжала на 0.
+     Поэтому смещение задано числом из кадра, от верха строки. */
   .spec-leader {
+    align-self: flex-start;
+    margin-top: 28px;
     height: 1px;
     background-image: linear-gradient(
       to right,
@@ -961,6 +970,10 @@
     );
     background-size: 3.5px 1px;
     background-repeat: repeat-x;
+  }
+  @media (width < 48rem) {
+    /* Строка ниже `md` — 40 при тексте 12/16, значит базовая линия на 24. */
+    .spec-leader { margin-top: 24px; }
   }
 
   /* ---- Строка таблицы комплектации (Figma 2567:158700) --------------------
