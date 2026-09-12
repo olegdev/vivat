@@ -3,7 +3,7 @@
      social row. The drill-down list (data-mm-list) and all stack/focus-trap
      behaviour live in src/components/mobile-menu.js. Below md only. -->
 <div data-mm-overlay class="fixed inset-0 z-50 hidden xl:hidden">
-  <div data-mm-scrim class="absolute inset-0 bg-overlay-middle"></div>
+  <div data-mm-scrim class="absolute inset-0 bg-overlay-strong"></div>
   <div data-mm-panel class="absolute inset-0 flex flex-col bg-bg-page" role="dialog" aria-modal="true" aria-label="Меню">
     <div class="flex h-12 shrink-0 flex-col justify-center border-b border-divider-light bg-surface-inverted px-4 pt-1 md:h-16 md:pt-0">
       <div class="flex h-10 items-center">
@@ -37,12 +37,13 @@
       </div>
       <div class="mt-8 flex flex-1 flex-col justify-between px-4 md:mt-4 md:px-6">
         <nav data-mm-list class="flex flex-col md:gap-2"></nav>
-        <!-- Кнопка над соцсетями есть только в планшетном меню
-             (buttons 2483:194640: 720x44, заливка #292929, стрелка справа);
-             в 360-фрейме её нет, поэтому она `hidden md:flex`. -->
+        <!-- Кнопка над соцсетями: 720x44 в планшетном меню (buttons
+             2483:194640) и 328x44 в мобильном (2483:200905, заливка #292929,
+             стрелка справа). В 360-фрейме её раньше не было — дизайнер
+             добавил её позже, поэтому она больше не `hidden md:flex`. -->
         <a
           href="#"
-          class="btn btn-m btn-primary mt-auto hidden w-full gap-2 md:flex"
+          class="btn btn-m btn-primary mt-auto flex w-full gap-2"
           data-mm-cabinet
         >
           <span>Личный кабинет</span>
@@ -54,6 +55,7 @@
           <a href="#" aria-label="Telegram" class="social-icon size-10"><span class="size-8 social-tg"></span></a>
           <a href="#" aria-label="YouTube" class="social-icon size-10"><span class="size-8 social-yt"></span></a>
           <a href="#" aria-label="Rutube" class="social-icon size-10"><span class="size-8 social-rt"></span></a>
+          <a href="#" aria-label="MAX" class="social-icon size-10"><span class="size-8 social-max"></span></a>
         </div>
       </div>
     </div>

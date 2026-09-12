@@ -8,10 +8,11 @@
 
      Это хаб, а не контейнер: плагин включений рекурсивный
      (`expand` в scripts/vite-plugin-includes.mjs), поэтому страница
-     подключает всё одной строкой, а в dist-php/ остаются семь
+     подключает всё одной строкой, а в dist-php/ остаются восемь
      самостоятельных @include('partials.modal-…') — по одному на будущий
      Blade-партиал. -->
 <!--#include partials/modal-dealer-request.html -->
+<!--#include partials/modal-dealer-success.html -->
 <!--#include partials/modal-dealer-login.html -->
 <!--#include partials/modal-subscribe.html -->
 <!--#include partials/modal-director.html -->

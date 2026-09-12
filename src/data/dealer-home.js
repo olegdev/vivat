@@ -65,6 +65,7 @@ export const dealerMenuSections = [
   { label: "Конструктор", href: "../dealer/constructor.html" },
   { label: "Контакты", href: "../dealer/contacts.html" },
   { label: "Для бизнеса", href: "../dealer/howto.html" },
-  { label: "Личный кабинет", href: "#" },
+  // «Личный кабинет» — не строка списка, а кнопка над соцсетями
+  // (2483:200905); строкой он дублировал бы её.
   { label: "Выход", href: "../customer/main.html", logout: true },
 ];

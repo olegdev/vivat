@@ -31,24 +31,29 @@
     <h2 class="text-h5 text-text-primary max-md:text-m-h4">Ваш заказ</h2>
   </div>
 
-  <!-- table/order-card 946:41419 — 40px rows on desktop, 32px on mobile -->
+  <!-- table/order-card 946:41419 — 40px rows on desktop, 32px on mobile.
+       Это две колонки, а не строка с прижатым к правому краю значением:
+       `left-side` 134 + зазор 16 + `right-side` 124 на 1440 (946:41421/41434) и
+       150 + 16 + 114 на 360 (2029:158364/158373), причём ячейки внутри правой
+       колонки стоят в её начале. Значения выстраиваются по одному x, а не по
+       правому краю панели. -->
   <dl class="px-6">
-    <div class="flex h-10 items-center justify-between gap-4 max-md:h-8">
-      <dt class="text-body-n text-text-secondary max-md:text-m-body-n">В заказе</dt>
+    <div class="flex h-10 items-center gap-4 max-md:h-8">
+      <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n">В заказе</dt>
       <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-count></dd>
     </div>
-    <div class="flex h-10 items-center justify-between gap-4 max-md:h-8">
-      <dt class="text-body-n text-text-secondary max-md:text-m-body-n">Сумма заказа</dt>
+    <div class="flex h-10 items-center gap-4 max-md:h-8">
+      <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n">Сумма заказа</dt>
       <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-subtotal></dd>
     </div>
-    <div class="flex h-10 items-center justify-between gap-4 max-md:h-8">
-      <dt class="text-body-n text-text-secondary max-md:text-m-body-n">Скидка</dt>
+    <div class="flex h-10 items-center gap-4 max-md:h-8">
+      <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n">Скидка</dt>
       <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-discount></dd>
     </div>
     <!-- dealer only (953:149344): the payment method, which for the customer
          is not part of this panel at all -->
-    <div class="hidden h-10 items-center justify-between gap-4 max-md:h-8 group-data-[user=dealer]:flex">
-      <dt class="text-body-n text-text-primary max-md:text-m-body-n">Способ оплаты</dt>
+    <div class="hidden h-10 items-center gap-4 max-md:h-8 group-data-[user=dealer]:flex">
+      <dt class="w-[134px] shrink-0 text-body-n text-text-primary max-md:w-[150px] max-md:text-m-body-n">Способ оплаты</dt>
       <!-- the value is a dotted link at both widths (953:149347 carries the
            «Desktop/Link M dotted» text style; the 360 panel draws the same) -->
       <dd class="link-dotted text-body-n text-text-primary max-md:text-m-body-n" data-summary-payment>
@@ -58,8 +63,8 @@
     <!-- «Итого» is on the customer panel at both widths and on the dealer's
          360 one, but the dealer's 1440 panel (953:149252) simply has no such
          row — that is the frame, not an omission on our side. -->
-    <div class="flex h-10 items-center justify-between gap-4 max-md:h-8 md:group-data-[user=dealer]:hidden">
-      <dt class="text-body-n text-text-primary max-md:text-m-body-n">Итого</dt>
+    <div class="flex h-10 items-center gap-4 max-md:h-8 md:group-data-[user=dealer]:hidden">
+      <dt class="w-[134px] shrink-0 text-body-n text-text-primary max-md:w-[150px] max-md:text-m-body-n">Итого</dt>
       <dd class="flex items-baseline gap-2">
         <span class="text-body-n text-text-primary max-md:text-m-body-n group-data-[user=dealer]:hidden">от</span>
         <span class="text-h3 leading-7 text-text-primary" data-summary-total></span>

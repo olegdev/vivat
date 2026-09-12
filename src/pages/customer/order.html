@@ -108,18 +108,20 @@
                  The live mobile render shows no "Удалить" (the node is in the
                  tree but does not paint), so it is desktop-only here. -->
             <div class="flex items-center justify-between border-b border-divider-light px-6 py-1 max-md:px-4 max-md:py-1.5">
-              <div class="flex items-center gap-6 max-md:gap-4">
+              <!-- «Удалить» есть и на 360: `select-delete` 2029:156845 — флажок 116,
+                   зазор 24 и ссылка 79 -->
+              <div class="flex items-center gap-6">
                 <label class="flex items-center gap-3 py-2.5 max-md:gap-2">
                   <input type="checkbox" class="filter-check" data-select-all checked />
                   <span class="text-body-n text-text-primary max-md:text-m-body-n">Выбрать все</span>
                 </label>
                 <button
                   type="button"
-                  class="flex items-center gap-1 text-body-n text-text-secondary transition-colors hover:text-text-primary max-md:hidden"
+                  class="flex items-center gap-1 text-body-n text-text-secondary transition-colors hover:text-text-primary"
                   data-delete-selected
                 >
                   <span>Удалить</span>
-                  <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4 opacity-60" />
+                  <img src="../../assets/header/icon-close-s.svg" alt="" class="size-5 opacity-60" />
                 </button>
               </div>
               <div class="flex items-center gap-6">
@@ -170,7 +172,7 @@
         <!-- The sheet's CTA (2082:143084). Below `md` шаг 1 is a full-screen
              map, so it gets its own bar rather than the cart's. -->
         <div
-          class="fixed inset-x-0 bottom-[72px] z-50 hidden h-[60px] items-center justify-center bg-surface-inverted px-4 max-md:flex"
+          class="fixed inset-x-0 bottom-[72px] z-50 hidden h-[60px] items-center justify-center bg-surface-inverted px-4 shadow-navbar max-md:flex"
           data-step1-bar
         >
           <button type="button" class="btn btn-m btn-accent w-full text-m-button-m" data-pick-done disabled>
@@ -201,7 +203,7 @@
              отличие от H2. Слово «ваши» — из мобильного фрейма; на 1440
              дизайнер его не пишет, расхождение записано в BACKLOG.md. -->
         <div class="page-x pt-16 max-md:pt-10" data-step-anchor>
-          <h2 class="text-h2 text-text-primary max-md:hidden">Шаг 3 из 3. Контактные данные.</h2>
+          <h2 class="text-h2 text-text-primary max-md:hidden">Шаг 2 из 2. Контактные данные.</h2>
           <div class="h-2 max-md:hidden"></div>
           <p class="text-body-l text-text-primary max-md:leading-6">
             Пожалуйста, укажите ваши контактные данные для связи!
@@ -221,7 +223,7 @@
                 </label>
                 <label class="flex flex-col gap-1">
                   <span class="text-body-s text-text-primary">Телефон*</span>
-                  <input type="tel" name="phone" required placeholder="+7" class="order-input" />
+                  <input type="tel" name="phone" required placeholder="+7 (___) ___-__-__" class="order-input" />
                   <span class="mt-1 text-body-xs text-text-secondary max-md:text-m-body-xs">
                     На этот номер вам позвонит менеджер дилера для консультации подтверждения заказа,
                     или его корректировки
@@ -261,7 +263,7 @@
 
         <!-- mobile CTA (2082:145495) -->
         <div
-          class="fixed inset-x-0 bottom-[72px] z-40 hidden h-[60px] items-center justify-center bg-surface-inverted px-4 max-md:flex"
+          class="fixed inset-x-0 bottom-[72px] z-40 hidden h-[60px] items-center justify-center bg-surface-inverted px-4 shadow-navbar max-md:flex"
           data-step2-bar
         >
           <button type="submit" form="order-form" class="btn btn-m btn-accent w-full text-m-button-m">
@@ -282,7 +284,7 @@
            the one scrolled above it (2029:126838) does. order-cart.js watches
            the summary button and mirrors the state. -->
       <div
-        class="fixed inset-x-0 bottom-[72px] z-40 flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 opacity-0 transition-opacity duration-200 md:hidden"
+        class="fixed inset-x-0 bottom-[72px] z-40 flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 shadow-navbar opacity-0 transition-opacity duration-200 md:hidden"
         data-order-bar
         hidden
       >

@@ -11,7 +11,9 @@ import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { LINES } from "../../data/order.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
+import { setScrollLock } from "../../components/scroll-lock.js";
 
 // ---- shared chrome (header mega-menu + burger), same wiring as action.js ----
 setCatalogIconBase(ICON);
@@ -81,7 +83,7 @@ function setStep(n, { scroll = true } = {}) {
   Object.entries(stepBars).forEach(([k, bar]) => bar?.classList.toggle("max-md:hidden", Number(k) !== n));
   page.querySelector("[data-order-bar]")?.classList.toggle("max-md:hidden", n !== 0);
   // шаг 1 is a full-screen map below `md`; the page behind it must not scroll
-  document.body.classList.toggle("overflow-hidden", n === 1 && isMobile());
+  setScrollLock("order-step1-map", n === 1 && isMobile());
   if (n === 1) {
     // Below `md` шаг 1 covers the viewport, but not the header naming it — the
     // frames (2032:158435) put the map under a 78px bar, and that bar is 48px
@@ -133,7 +135,9 @@ setStoresBases({ home: HOME });
 const map = renderStoresMap(page.querySelector("[data-step-section='1']"), {
   stores,
   apiKey: import.meta.env?.VITE_YANDEX_MAPS_KEY || "73abf802-7fa6-4da1-bc36-7dd3457e4673",
-  title: "Шаг 2 из 3. Выбрать ближайший магазин.",
+  // Нумерация по новым кадрам (2241:171043 / 2396:152391): корзина шагом не
+  // считается, шагов два.
+  title: "Шаг 1 из 2. Выбрать ближайший магазин.",
   description:
     "Пожалуйста, выберите магазин нашего партнера, в который вам удобнее сделать заказ. " +
     "Менеджер партнера свяжется с вами для подтверждения заказа, консультации или корректировки.",
@@ -194,4 +198,5 @@ page.querySelector("[data-order-form]")?.addEventListener("submit", (e) => {
 setStep(0, { scroll: false });
 
 initModals();
+initPhoneMask();
 initCitySelect();

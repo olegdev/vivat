@@ -279,7 +279,9 @@
 
   /* ---- Shadows (Figma effect styles) ------------------------------------- */
   --shadow-dropdown: 0 4px 17.6px rgba(0, 0, 0, 0.14);
-  --shadow-navbar: 0 -3px 5px rgba(0, 0, 0, 0.2);
+  /* Единственная тень такого рода в макете — у `modal-button-container`
+     2027:89990: 0/−3, размытие 5, чёрный на 0.12. */
+  --shadow-navbar: 0 -3px 5px rgba(0, 0, 0, 0.12);
 
   /* ---- Layout grid (Figma grid styles) — reference values ----------------
      desktop "12": 12 cols · gutter 24 (gap-6) · margin 40 (px-10)
@@ -668,14 +670,16 @@
      for accessibility + free form semantics, restyled to the Figma control:
      a 24px square that fills dark with a white tick when checked. `.filter-check`
      is used plain (no responsive variant), so `@layer components` is correct. */
-  /* Figma checkbox+radio (759:76634): a light rounded square/circle that, when
-     checked, keeps its light fill and gains a DARK tick / centre dot plus a dark
-     border — it does NOT fill dark. */
+  /* Figma checkbox+radio (759:76634): невыбранная клетка ЗАЛИТА #f3f3f3 при
+     обводке #e7e7e7 (вариант `condition=normal`, 759:76630/76632), выбранная —
+     белая при обводке #cbcbcb (`condition=pressed`, 759:76642/76643) с тёмной
+     галкой. Тёмной она не становится ни в одном состоянии. Стояла белая заливка
+     в обоих. */
   .filter-check,
   .filter-radio {
-    @apply size-6 shrink-0 appearance-none border border-border-light bg-surface-inverted transition-colors;
+    @apply size-6 shrink-0 appearance-none border border-border-light bg-components-subtle transition-colors;
     @apply bg-center bg-no-repeat;
-    @apply checked:border-border-light-hover;
+    @apply checked:border-border-light-hover checked:bg-surface-inverted;
   }
   .filter-check { @apply rounded-n; }
   .filter-radio { @apply rounded-full; }
@@ -702,15 +706,15 @@
   }
   .order-input:user-invalid { @apply ring-1 ring-inset ring-border-error; }
 
-  /* ---- Order form select (`filters-sort` 1209:95256) --------------------
-     The dealer order's «Оплата» control: the same 44px field as `.order-input`
-     but pill-shaped (radius 24), with the chevron drawn by the call site. A
-     native <select> so the options are an @foreach in Blade; the design names
-     none of them yet, so today it holds only its placeholder — which it draws
-     in `text-primary`, not as a greyed-out placeholder. */
+  /* ---- Order form select (`Dropdown Trigger` 1271:51392) ----------------
+     Дилерский «Оплата»: то же поле 44, что и `.order-input`, — и тот же
+     радиус 4 (`form` 1271:51394, `rectangleTopLeftCornerRadius: 4`), а не
+     пилюля, как стояло. Шеврон рисует место вызова. Нативный <select>, чтобы
+     в Blade варианты стали @foreach; сегодня в нём только плейсхолдер, и он
+     серый — `value` 1271:51395 набран #808080. */
   .order-select {
-    @apply h-11 w-full appearance-none rounded-pill bg-components-subtle pl-4 pr-11;
-    @apply text-body-n text-text-primary outline-none transition-colors;
+    @apply h-11 w-full appearance-none rounded-n bg-components-subtle pl-4 pr-11;
+    @apply text-body-n text-text-secondary outline-none transition-colors;
     @apply focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-border-ring;
   }
 
@@ -725,11 +729,17 @@
   .modal-scrim {
     @apply fixed inset-0 z-[70] hidden items-center justify-center bg-overlay-strong;
     @apply max-md:items-end;
+    /* Ниже `md` окно встаёт НАД тапбаром, а не поверх него: так нарисованы оба
+       кадра, где тапбар вообще есть рядом с окном, — «Ваш заказ отправлен»
+       (2241:158305) и шторка модулей (2225:201034, панель кончается на 728 из
+       800). Кадры самих окон секции `B2b additional` тапбара не рисуют вовсе,
+       поэтому там панель дотянута до низа экрана; решение общее — см. BACKLOG. */
+    @apply max-md:pb-[72px];
   }
   .modal-scrim.is-open { @apply flex; }
   .modal-panel {
     @apply w-[485px] rounded-[var(--radius-l)] bg-surface-inverted;
-    @apply max-md:max-h-[95vh] max-md:w-full max-md:overflow-y-auto max-md:rounded-b-none;
+    @apply max-md:max-h-[calc(95vh-72px)] max-md:w-full max-md:overflow-y-auto max-md:rounded-b-none;
   }
 
   /* ---- Catalog filter drawer: slide-in ----------------------------------
@@ -763,12 +773,18 @@
   /* Colour swatch (Цвет block, color-swatch 759:78657 in the real filter-drawer
      instance 1859:351329 — 32px, not the 28px card swatch). The label wraps a
      visually-hidden checkbox (`.peer`) and this circle; the selected ring is
-     driven off `peer-checked` — border-alpha-pressed (rgba(20,20,20,.6)), a
-     2px ring 4px off the swatch, not the dark solid ring the card/PDP
-     selectors use. */
+     driven off `peer-checked`.
+
+     Кольцо выбора у всех селекторов цвета одно и то же — вариант
+     `condition=pressed` набора `color-swatch`: рамка 2px СПЛОШНЫМ `#141414` и
+     зазор 2px до самого кружка. Читается по вложенности: у 32px (759:78882)
+     `select` 28 в точке (2,2), внутри `container` 40×40 в (−6,−6), то есть
+     коробка 40 на кружке 32 с обводкой 2 внутрь; у 28px (759:78862) это
+     36 на 28 — те же 2 и 2. Стояло `border-alpha-pressed` (60% чёрного) с
+     зазором 4. */
   .filter-swatch {
     @apply size-8 shrink-0 rounded-full border border-border-alpha-default transition-shadow;
-    @apply peer-checked:ring-2 peer-checked:ring-border-alpha-pressed peer-checked:ring-offset-4;
+    @apply peer-checked:ring-2 peer-checked:ring-neutral-black peer-checked:ring-offset-2;
   }
 
   /* ---- Catalog mega-menu (from `menu` frames 882:119365 / 912:85445) -----
@@ -920,14 +936,14 @@
   }
 
   /* ---- Colour swatch (`color-swatch` 629:26578) ---------------------------
-     28px circle. Selected state read off the real swatch instance
-     (2238:153498, not the generic 629:26601 "focus" master): 2px ring,
-     4px offset, border-alpha-pressed. */
+     28px circle. Выбранный — `condition=pressed` того же набора, что и в ящике
+     фильтров: 2px сплошной `#141414` и зазор 2px (759:78862 → `container`
+     36×36 на кружке 28). Стояло 60% чёрного с зазором 4. */
   .pdp-swatch {
     @apply size-7 shrink-0 overflow-hidden rounded-full border border-border-alpha-default transition-shadow;
   }
   .pdp-swatch[aria-checked="true"] {
-    @apply ring-2 ring-border-alpha-pressed ring-offset-4;
+    @apply ring-2 ring-neutral-black ring-offset-2;
   }
 
   /* ---- Spec table leader (`line-dotted` 766:14631) ------------------------

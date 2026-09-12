@@ -178,15 +178,36 @@
           </button>
         </summary>
         <div class="pb-6">
+          <!-- `input size=S` 1604:67833: подпись 18, зазор до поля 4 (не 8), и
+               внутри поля справа стоит «₽» — `text2` 10×18 в
+               `input-container` с выключкой вправо. -->
           <div class="flex items-end gap-4 pb-4">
             <label class="min-w-0 flex-1">
-              <span class="block pb-2 text-body-s text-text-secondary">От</span>
-              <input type="text" inputmode="numeric" name="price_min" placeholder="132 000" class="order-input" />
+              <span class="block pb-1 text-body-s text-text-secondary">От</span>
+              <span class="order-input flex items-center gap-1">
+                <input
+                  type="text"
+                  inputmode="numeric"
+                  name="price_min"
+                  placeholder="132 000"
+                  class="min-w-0 flex-1 bg-transparent text-body-s text-text-primary outline-none placeholder:text-text-secondary max-md:text-m-body-s"
+                />
+                <span class="shrink-0 text-body-s text-text-primary max-md:text-m-body-s">₽</span>
+              </span>
             </label>
             <span class="pb-3 text-text-muted">–</span>
             <label class="min-w-0 flex-1">
-              <span class="block pb-2 text-body-s text-text-secondary">До</span>
-              <input type="text" inputmode="numeric" name="price_max" placeholder="560 200" class="order-input" />
+              <span class="block pb-1 text-body-s text-text-secondary">До</span>
+              <span class="order-input flex items-center gap-1">
+                <input
+                  type="text"
+                  inputmode="numeric"
+                  name="price_max"
+                  placeholder="560 200"
+                  class="min-w-0 flex-1 bg-transparent text-body-s text-text-primary outline-none placeholder:text-text-secondary max-md:text-m-body-s"
+                />
+                <span class="shrink-0 text-body-s text-text-primary max-md:text-m-body-s">₽</span>
+              </span>
             </label>
           </div>
           <label class="flex items-center gap-3 py-2.5"><input type="radio" name="price" value="any" class="filter-radio" checked /><span class="text-body-n text-text-primary max-md:text-m-body-n">Любая цена</span></label>
@@ -202,14 +223,18 @@
          selected somewhere in the form — with nothing picked it's just the
          dark "Показать" button, full width (flex-1, no plain text link). JS
          toggles `hidden` on the whole-form selection count. -->
-    <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:px-4">
+    <!-- Ниже `md` подвал такой же, как на 1440: поля 40, а не 16, и зазор 8 —
+         в кадре 1859:347076 две кнопки по 136 в 280 содержимого (360 − 40 − 40).
+         «Очистить» — не текстовая ссылка, а пилюля #f3f3f3: подвал такого же
+         цвета, поэтому в рендере она читается как текст. -->
+    <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:gap-2">
       <button
         type="button"
         data-filter-clear
         class="hidden btn btn-m flex-1 bg-components-subtle text-text-primary max-md:text-m-button-m hover:bg-components-subtle-hover"
       >
         Очистить
-        <img src="../../assets/header/icon-close-s.svg" alt="" class="size-4" />
+        <img src="../../assets/header/icon-close-s.svg" alt="" class="size-5" />
       </button>
       <button type="button" data-filter-apply class="btn btn-m btn-primary flex-1 max-md:text-m-button-m">
         Показать <span data-filter-count>0</span>

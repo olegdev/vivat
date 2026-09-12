@@ -39,8 +39,11 @@
       aria-expanded="false"
       aria-haspopup="dialog"
     >
+      <!-- Подчёркивание пунктиром здесь такое же, как на 1440: у текста
+           триггера в мобильной дилерской шапке (1739:219711) стоит
+           `textDecoration: UNDERLINE / DOTTED`. -->
       <span
-        class="transition-colors group-data-[price-enabled=false]:text-text-inverse-muted"
+        class="underline decoration-dotted decoration-1 underline-offset-4 transition-colors group-data-[price-enabled=false]:text-text-inverse-muted"
         data-price-trigger-label
         >Оптовая цена</span
       >

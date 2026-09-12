@@ -32,7 +32,8 @@ export function initOrderForms(root, { delivery, money, onDelivery, onSubmit } =
     card.querySelector("[data-surcharge-floor]").textContent =
       `+${money(delivery.surchargeFloor)}`;
     card.querySelector("[data-delivery-cost]").textContent =
-      `Стоимость доставки — ${delivery.cost} рублей. Оплачивается отдельно по тарифу перевозчика`;
+      // Перенос строки — из кадра (1415:67671): текст там 854×48, две строки.
+      `Стоимость доставки — ${delivery.cost} рублей.\nОплачивается отдельно по тарифу перевозчика`;
 
     // the summary's «Доставка» row reads this card, so it is told, not polled
     onDelivery?.({

@@ -13,6 +13,7 @@
 // узлы по data-атрибутам — разметку строками он не собирает.
 import { pageHref } from "./links.js";
 import { fillGallery, initProductCards } from "./product-card.js";
+import { setScrollLock } from "./scroll-lock.js";
 
 const MULTI = ["collection", "facade", "form", "color", "style"];
 
@@ -276,17 +277,22 @@ export function initCatalogListing({ products, rub }) {
   const filterTitle = drawer.querySelector("[data-filter-title]");
   const DEFAULT_TITLE = filterTitle.textContent;
   // Single-pill entry (913:86593) hides every OTHER group outright — not just
-  // collapses it — and the drawer's own title becomes that pill's label.
+  // collapses it. Заголовок окна при этом остаётся «Фильтры»: в мобильном
+  // кадре одиночного фильтра (1997:285890) в шапке стоит именно он, а имя
+  // группы — подзаголовок внутри. Решение клиента распространено на обе
+  // ширины. `label` больше не используется, но остаётся в сигнатуре: его
+  // передают вызовы из панели настроек.
   function openDrawer(section, label) {
+    void label;
     drawer.classList.add("is-open");
-    document.body.classList.add("overflow-hidden");
+    setScrollLock("filter-drawer", true);
     const target = section && form.querySelector(`[data-filter-section="${section}"]`);
     if (target) {
       for (const s of allSections()) {
         s.open = s === target;
         s.classList.toggle("hidden", s !== target);
       }
-      filterTitle.textContent = label || DEFAULT_TITLE;
+      filterTitle.textContent = DEFAULT_TITLE;
       form.scrollTop = 0;
     } else {
       for (const s of allSections()) {
@@ -299,7 +305,7 @@ export function initCatalogListing({ products, rub }) {
   }
   function closeDrawer() {
     drawer.classList.remove("is-open");
-    document.body.classList.remove("overflow-hidden");
+    setScrollLock("filter-drawer", false);
   }
   document.querySelectorAll("[data-filter-open]").forEach((b) =>
     b.addEventListener("click", () =>

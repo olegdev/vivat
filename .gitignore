@@ -13,3 +13,4 @@ docs/DEV_SERVER.md
 
 # screenshots from `npm run shot`
 .shots/
+_*.mjs

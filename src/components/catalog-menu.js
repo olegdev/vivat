@@ -9,6 +9,9 @@
 
 import { categories } from "../data/catalog-menu.js";
 import { catalogHref, pageHref } from "./links.js";
+import { isDealer } from "./session.js";
+import { setScrollLock } from "./scroll-lock.js";
+
 export { categories };
 
 let ICON = "../../assets/header";
@@ -82,6 +85,18 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
     // column 2 — sub-tabs + chips, nothing pre-selected
     const subItems = (cat.sub || []).map((s) => buildItem(s.label, { param: "view" }));
     col2Sub.replaceChildren(...subItems);
+
+    // «Только модули» — дилерская строка второй колонки (953:140979), между
+    // «Все кухни» и «Коллекциями». У покупателя её нет: кто читает страницу —
+    // сеанс, а не разметка, поэтому и здесь это `isDealer()`, а не отдельный
+    // параметр монтирования. Адрес тот же, что у дилерского тумблера
+    // «Только модули» в панели настроек каталога.
+    if (subItems.length && isDealer()) {
+      const modules = clone("[data-menu-item]");
+      modules.querySelector("[data-label]").textContent = "Только модули";
+      modules.href = `${pageHref("catalog.html")}?modules=1`;
+      col2Sub.insertBefore(modules, subItems[1] ?? null);
+    }
     col2Chips.replaceChildren(...(cat.chips || []).map(buildChip));
     const hasCol2 = !!(cat.sub?.length || cat.chips?.length);
     col2.classList.toggle("hidden", !hasCol2);
@@ -123,7 +138,7 @@ export function initCatalogMenu(anchor, { toggle } = {}) {
   function setOpen(open) {
     overlay.classList.toggle("hidden", !open);
     toggle?.setAttribute("aria-expanded", String(open));
-    document.documentElement.classList.toggle("overflow-hidden", open);
+    setScrollLock("catalog-menu", open);
     if (toggleIcon) {
       toggleIcon.src = `${ICON}/${open ? "icon-close" : "icon-burger"}.svg`;
     }

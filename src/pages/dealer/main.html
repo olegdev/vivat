@@ -70,28 +70,42 @@
       <div data-section="akcii"></div>
 
       <!-- ==================== Новости =================================== -->
-      <!-- На 1440 сетка 3x1 (882:109467). 360-фрейма у блока нет: ниже md он
-           становится рельсом из 320-х карточек — тем же, что у мобильных
-           «Акций», — а два действия уходят строкой под заголовок. -->
+      <!-- На 1440 сетка 3x1 (882:109467) и обе кнопки в строке заголовка.
+           На 360 (2432:143658) у блока свой порядок: заголовок 78, рельс из
+           320-х карточек 224, отбивка 16 и только потом две кнопки во всю
+           ширину — «Все новости» сверху, «Подписаться на рассылку» под ней.
+           Поэтому кнопки вынесены из строки заголовка в отдельный блок:
+           ниже `md` его двигает `order-last`, а на 1440 он поднимается на
+           строку заголовка отрицательным полем в свою же высоту (44).
+           Это второе место в проекте, где мобильная раскладка меняет ПОРЯДОК,
+           а не оформление, — см. SOLUTIONS.md. -->
       <section class="flex flex-col" data-section="news">
         <div class="page-x">
           <div class="h-20 max-xl:h-16 max-md:h-10"></div>
-          <div class="flex items-start justify-between max-md:flex-col max-md:gap-3">
+          <div class="flex items-center md:h-11">
             <h2 class="text-h2 text-text-primary max-md:text-m-h2">Новости</h2>
-            <!-- на 360 обе кнопки в ряд не помещаются: «Подписаться на
-                 рассылку» рвётся на две строки и вылезает из пилюли -->
-            <div class="flex items-center gap-2 max-md:w-full max-md:flex-col">
-              <a href="#" class="btn btn-m btn-primary max-md:w-full" data-news-subscribe data-modal-open="subscribe">
-                <span>Подписаться на рассылку</span>
-              </a>
-              <a href="news.html" class="btn btn-m btn-secondary max-md:w-full">
-                <span>Все новости</span>
-                <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
-              </a>
-            </div>
           </div>
-          <div class="h-6 max-md:h-3"></div>
         </div>
+
+        <!-- на 360 обе кнопки в ряд не помещаются: «Подписаться на рассылку»
+             рвётся на две строки и вылезает из пилюли, поэтому они стоят
+             столбиком. Порядок в кадре обратный порядку разметки, отсюда
+             `flex-col-reverse`. -->
+        <div class="page-x flex justify-end max-md:order-last max-md:pt-4 md:-mt-11">
+          <div class="flex items-center gap-2 max-md:w-full max-md:flex-col-reverse">
+            <a href="#" class="btn btn-m btn-primary max-md:w-full" data-news-subscribe data-modal-open="subscribe">
+              <span>Подписаться на рассылку</span>
+              <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-6" />
+            </a>
+            <a href="news.html" class="btn btn-m btn-secondary max-md:w-full">
+              <span>Все новости</span>
+              <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+            </a>
+          </div>
+        </div>
+
+        <div class="h-6 max-md:h-3"></div>
+
         <div
           class="page-x max-md:scroll-rail max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:overflow-x-auto"
           data-viewport

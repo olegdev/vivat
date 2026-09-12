@@ -12,6 +12,7 @@ import { renderStoresMap, setBases as setStoresMapBases } from "../../components
 import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-menu.js";
 import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
@@ -54,6 +55,7 @@ initSearch();
 initCart();
 initSession();
 initModals();
+initPhoneMask();
 initCitySelect();
 
 const sections = {
@@ -71,6 +73,10 @@ const sections = {
       desc: "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.",
       tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
       compactChips: true, // segments 60, не 76 — см. carousel.js
+      // Ниже `md` у этого рельса действия нет: `other-row` 542 = карточки 510
+      // плюс полоса прокрутки 32, кнопка за кадром (1968:201441 у покупателя,
+      // 2432:126371 у дилера). У «Модульных кухонь» и «Акций» она рисуется.
+      mobileAction: false,
       endpoint: "/catalog/popular",
       href: "catalog.html",
     },

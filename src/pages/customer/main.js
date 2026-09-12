@@ -12,6 +12,7 @@ import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { heroSlides, modularItems, popularItems, akciiItems, promoTiles } from "../../data/home.js";
 import { initModals } from "../../components/modals.js";
+import { initPhoneMask } from "../../components/phone-mask.js";
 import { initCitySelect } from "../../components/city-select.js";
 
 // ---- hero slider ------------------------------------------------------------
@@ -52,9 +53,9 @@ const sections = {
       desc: "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.",
       tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
       compactChips: true, // segments 60, не 76 — см. carousel.js
-      // Ниже md у этого рельса нет кнопки «В раздел»: other-row 2395:106175 —
-      // 542 при мастере 594, ровно минус кнопка 52 (у «Модульных» наоборот,
-      // 452 = 400 + 52). Скрыта свойством компонента, в дампах не видна.
+      // Ниже `md` у этого рельса действия нет: `other-row` 542 = карточки 510
+      // плюс полоса прокрутки 32, кнопка за кадром (1968:201441 у покупателя,
+      // 2432:126371 у дилера). У «Модульных кухонь» и «Акций» она рисуется.
       mobileAction: false,
       endpoint: "/catalog/popular", // tab seam target (see carousel.js initTabs)
       href: "catalog.html",
@@ -97,4 +98,5 @@ if (storesAnchor) {
 }
 
 initModals();
+initPhoneMask();
 initCitySelect();

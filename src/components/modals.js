@@ -14,11 +14,15 @@
 //       body: new FormData(form),
 //     });
 //
-// Экрана «отправлено» в макете нет ни у одного из четырёх окон, поэтому все
-// они после отправки просто закрываются — см. BACKLOG. Вход дополнительно
-// открывает дилерский сеанс и уводит на дилерскую главную: это наше решение,
-// а не макет.
+// Экран «отправлено» нарисован только у заявки на дилерство (2462:214093 /
+// 2462:213129) — она после отправки открывает его, остальные окна просто
+// закрываются, см. BACKLOG. Вход дополнительно открывает дилерский сеанс и
+// уводит на дилерскую главную: это наше решение, а не макет.
 import { signIn } from "./session.js";
+import { setScrollLock } from "./scroll-lock.js";
+
+// Окно, которое открывается вместо закрытого после успешной отправки.
+const DONE = { "dealer-request": "dealer-success" };
 
 const SEAMS = {
   "dealer-request": (values) => void values,
@@ -49,7 +53,7 @@ export function initModals() {
     const panel = openPanel();
     if (!panel) return;
     panel.classList.remove("is-open");
-    document.body.classList.remove("overflow-hidden");
+    setScrollLock("modal", false);
     opener?.focus();
     opener = null;
   }
@@ -64,7 +68,7 @@ export function initModals() {
     close();
     opener = outer ?? null;
     panel.classList.add("is-open");
-    document.body.classList.add("overflow-hidden");
+    setScrollLock("modal", true);
     panel.querySelector("input, textarea, button")?.focus();
   }
 
@@ -100,6 +104,7 @@ export function initModals() {
       const values = Object.fromEntries(new FormData(form));
       close();
       SEAMS[name]?.(values);
+      if (DONE[name]) open(DONE[name], null);
     });
 
     // «Поделиться»: VK/Telegram — их share-intent URL стабилен и публичен;

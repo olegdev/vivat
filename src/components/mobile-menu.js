@@ -15,6 +15,7 @@
 
 import { categories } from "./catalog-menu.js";
 import { catalogHref } from "./links.js";
+import { setScrollLock } from "./scroll-lock.js";
 
 // ---- data -------------------------------------------------------------------
 // Root level of the burger menu (Figma 1997:255059 "menu-main-block"). The
@@ -24,6 +25,10 @@ import { catalogHref } from "./links.js";
 // куда они должны вести из меню, не решено (BACKLOG), поэтому у них "#".
 const defaultRootSections = [
   { label: "Каталог", view: "catalog" },
+  // «Акции» дизайнер добавил вторым пунктом позже остальных (2462:219822);
+  // страница «Акций» на весь сайт одна, поэтому адрес покупательский и без
+  // `data-half`.
+  { label: "Акции", href: "../customer/action.html" },
   { label: "Где купить", href: "../customer/main.html#where" },
   { label: "Компания", href: "#" },
   { label: "Полезная информация", href: "#" },
@@ -161,7 +166,7 @@ export function initMobileMenu(anchor, { toggle, catalogToggle, rootSections = d
     overlay.classList.toggle("hidden", !open);
     toggles.forEach((t) => t.setAttribute("aria-expanded", String(open)));
     catalogToggle?.setAttribute("aria-expanded", String(open));
-    document.documentElement.classList.toggle("overflow-hidden", open);
+    setScrollLock("mobile-menu", open);
     if (open) focusables()[0]?.focus();
     else lastFocused?.focus?.();
   }

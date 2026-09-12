@@ -585,7 +585,8 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `pdp-photo-overlay`, `sticky-price`, `seo-kitchens`, `cart-card`,
 `order-summary`, `order-forms`, `order-modules`, `order-done`,
 `search-overlay`, `price-mode`, `modals` (хаб) and the four it pulls in —
-`modal-dealer-request`, `modal-dealer-login`, `modal-subscribe`,
+`modal-dealer-request`, `modal-dealer-success`, `modal-dealer-login`,
+`modal-subscribe`,
 `modal-director`, `modal-about`, `modal-bug-report`, and the content-page trio `menu-b2b`, `for-business-header`
 (which also carries the section-menu sheet) and `accordion`, plus
 `benefit-tile`, `session` and `schema-org`.
@@ -604,6 +605,13 @@ builds markup.
 The same plugin takes `markers: true` for the hand-off build, which wraps every
 splice in the `@include(...)` it becomes and re-indents the partial to the
 include's own depth. Nothing else in the pipeline changes.
+
+**Два общих модуля поведения, которые зовут все страницы.**
+`components/scroll-lock.js` — единственный замок прокрутки на все девять
+оверлеев: он считает владельцев по ключу, поэтому окно поверх бургера больше не
+снимает замок у меню (SOLUTIONS.md). `components/phone-mask.js` —
+маска `+7 (___) ___-__-__` во всех формах: один делегированный слушатель на
+`document`, разметке достаточно `type="tel"`.
 
 **Fixtures live in `src/data/`, one module per page — never in a page script or
 a component.** `asset-base.js` is the single place a media URL gets its prefix

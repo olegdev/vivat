@@ -19,6 +19,8 @@
 // Ряд чипсов и шаблон чипса не обязательны: у декоров они есть (кадр рисует
 // состояние выбранных параметров), у 3D-моделей их нет.
 
+import { setScrollLock } from "./scroll-lock.js";
+
 export function initFiltersPanel({ groups, price = false } = {}) {
   const GROUPS = groups;
   const drawer = document.querySelector("[data-filter-drawer]");
@@ -164,16 +166,20 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   const allSections = () => form.querySelectorAll("[data-filter-section]");
   const filterTitle = drawer.querySelector("[data-filter-title]");
   const DEFAULT_TITLE = filterTitle?.textContent;
+  // Заголовок окна остаётся «Фильтры» и при одиночном фильтре: в мобильном
+  // кадре (1997:285890) в шапке стоит он, а имя группы — подзаголовок внутри.
+  // `label` больше не используется, но приходит от вызовов из панели настроек.
   function openDrawer(section, label) {
+    void label;
     drawer.classList.add("is-open");
-    document.body.classList.add("overflow-hidden");
+    setScrollLock("filters-panel", true);
     const target = section && form.querySelector(`[data-filter-section="${section}"]`);
     if (target) {
       for (const s of allSections()) {
         s.open = s === target;
         s.classList.toggle("hidden", s !== target);
       }
-      if (filterTitle) filterTitle.textContent = label || DEFAULT_TITLE;
+      if (filterTitle) filterTitle.textContent = DEFAULT_TITLE;
       form.scrollTop = 0;
     } else {
       for (const s of allSections()) {
@@ -186,7 +192,7 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   }
   function closeDrawer() {
     drawer.classList.remove("is-open");
-    document.body.classList.remove("overflow-hidden");
+    setScrollLock("filters-panel", false);
   }
 
   for (const b of document.querySelectorAll("[data-filter-open]")) {

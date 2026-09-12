@@ -41,15 +41,16 @@
              в макете оно живёт внутри `text-container`. -->
         <div class="flex min-w-0 flex-1 flex-col max-md:w-full">
           <div class="flex min-h-11 items-center gap-3 max-md:min-h-6 max-md:gap-2">
-            <!-- Ниже md заголовок ПО СОДЕРЖИМОМУ. Мастер 1806:234561 держит
-                 его в 52 лишь потому, что текст мастера в две строки; экземпляр
-                 «Акции и скидки» (2395:106201) насчитан в 26 — одна строка.
-                 Стоял min-h-[52px], прочитанный с мастера как резерв. -->
+            <!-- Заголовок хагом, а не в фиксированных 52: 52 — это две строки
+                 Mobile/H2 у образца мастера, а инстанс с однострочным
+                 заголовком даёт 26 (1968:71566 «Акции и скидки»: title 26,
+                 весь блок 82 против 148). Резерв двигал вниз всё, что стоит
+                 под однострочным заголовком, на лишние 26. -->
             <h2 data-cs-title class="text-h2 text-text-primary max-md:text-m-h2"></h2>
             <span data-cs-count class="text-h2 text-text-muted max-md:self-start max-md:text-m-h2"></span>
           </div>
-          <!-- Между заголовком и описанием: 8 на 1440, 4 ниже md (spacing
-               1806:234568 внутри `description`). -->
+          <!-- Отбивка заголовок↔описание: 8 на 1440 (блок 178 против 148) и 4
+               ниже `md` (`description` 1806:234567 = spacing 4 + текст 40). -->
           <div data-cs-desc-gap class="h-2 max-md:h-1"></div>
           <!-- Описание на мобиле — Mobile/BodyN-accent (14/20 Medium), не
                Regular: text-m-body-n-accent, не text-m-body-n. -->
