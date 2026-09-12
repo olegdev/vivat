@@ -9,8 +9,24 @@
 // один скрипт на макет — разметке достаточно `type="tel"`.
 export const PHONE_PLACEHOLDER = "+7 (___) ___-__-__";
 
-// Десять цифр номера без кода страны.
+// Десять цифр номера без кода страны. Ведущие 7 и 8 — код страны и
+// междугородний префикс: их набирают по привычке, а в маске они уже есть.
+//
+// Работает это и когда пользователь печатает «+7» сам: «+» сразу рисует
+// префикс «+7 (», в поле появляется семёрка, и следующая набранная семёрка
+// снимается тем же правилом — то есть съедается именно код страны, а не первая
+// цифра номера.
 function nationalDigits(value) {
+  // Префикс «+7» в поле уже наш — цифры номера считаем после него. Иначе
+  // семёрка префикса сама съедала бы первую цифру набора.
+  if (value.startsWith("+7")) {
+    const rest = value.slice(2).replace(/\D/g, "");
+    // Единственная семёрка сразу за префиксом — это код страны, набранный
+    // руками поверх него: кодов на 7 в России нет, так что двусмысленности
+    // тут не возникает. Восьмёрка на этом месте, наоборот, настоящая цифра
+    // (800, 812, 831), и её не трогаем.
+    return (rest === "7" ? "" : rest).slice(0, 10);
+  }
   let d = value.replace(/\D/g, "");
   if (d.startsWith("7") || d.startsWith("8")) d = d.slice(1);
   return d.slice(0, 10);
@@ -42,10 +58,18 @@ function caretAfterDigits(text, n) {
   return text.length;
 }
 
-function reformat(input) {
+// `deleting` — это Backspace/Delete, и он обязан уметь стереть префикс. Без
+// него «+7 (» возвращалось бы после каждого удаления и поле нельзя было бы
+// очистить.
+function reformat(input, inputType = "") {
+  const deleting = String(inputType).startsWith("delete");
   const before = input.value.slice(0, input.selectionStart ?? input.value.length);
   const digitsBefore = nationalDigits(before).length;
-  const next = format(nationalDigits(input.value));
+  let next = format(nationalDigits(input.value));
+  // Набор начинают с «+», «7» или «8» — и все три съедаются как код страны,
+  // после чего поле выглядело мёртвым: символ ввели, а в нём пусто. Показываем
+  // начало маски, чтобы ввод был виден с первого нажатия.
+  if (!next && !deleting && input.value.trim()) next = "+7 (";
   if (next === input.value) return;
   input.value = next;
   const pos = caretAfterDigits(next, digitsBefore);
@@ -69,6 +93,6 @@ export function initPhoneMask(root = document) {
   document.documentElement.dataset.phoneMask = "on";
   document.addEventListener("input", (e) => {
     const el = e.target;
-    if (el instanceof HTMLInputElement && el.type === "tel") reformat(el);
+    if (el instanceof HTMLInputElement && el.type === "tel") reformat(el, e.inputType);
   });
 }

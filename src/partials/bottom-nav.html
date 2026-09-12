@@ -1,7 +1,9 @@
 <!-- Figma nav-bar 1739:218804 (b2c): five equal items, 24px icon in a
      32px box over a 12px muted label. Pinned to the viewport — hence the
-     top hairline (#e7e7e7, the bar's own stroke in 1739:218804 — the frame
-     gives it no shadow) — with the page reserving 72px for it.
+     без рамки и тени: у `nav-bar` 1739:218804 обводка нулевой толщины, а в
+     кадре 2225:167294 бар CTA и тапбар — одна белая поверхность без линии
+     между ними. Тень вверх рисует бар CTA над тапбаром, а не он сам.
+     Страница резервирует под него 72.
 
      ACTIVE ITEM. `nav-item condition=active` (1739:218606 and siblings) fills
      the 32px box dark, turns the glyph white and lifts the label from
@@ -11,7 +13,7 @@
      PDP and home frames carry no active item at all, so no other page sets
      it. -->
 <nav
-  class="fixed inset-x-0 bottom-0 z-40 flex h-[72px] items-center border-t border-divider-light bg-surface-inverted xl:hidden"
+  class="fixed inset-x-0 bottom-0 z-40 flex h-[72px] items-center bg-surface-inverted xl:hidden"
   aria-label="Основная навигация"
 >
   <a
