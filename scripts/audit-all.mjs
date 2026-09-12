@@ -90,11 +90,24 @@ for (const r of rows.filter(wanted)) {
   }
 }
 
+// Пятый аудит — постраничный, а не поблочный: ему не нужен ни селектор, ни
+// узел, поэтому он идёт по СТРАНИЦАМ реестра, а не по строкам.
+for (const page of [...new Set(rows.filter(wanted).map((r) => r.page))]) {
+  const out = run("scripts/audit-fit.mjs", [page, ...(onlyWidth ? ["--width", onlyWidth] : [])]);
+  checks++;
+  const lines = out.split("\n").filter((l) => /✗/.test(l) || /^\s+до \d+/.test(l));
+  hard += lines.filter((l) => /✗/.test(l)).length;
+  if (lines.length) {
+    console.log(`\n── ${page} · окно и перекрытия`);
+    console.log(lines.map((l) => "   " + l.trim()).join("\n"));
+  }
+}
+
 console.log(
   `\n  строк реестра ${rows.filter(wanted).length}, прогонов ${checks};` +
     ` расхождений ${hard}, подозрений ${soft}` +
     (hard || soft ? "" : " — всё сошлось") +
-    `\n  «расхождение» — кегль, вес или несошедшийся стык: смотреть обязательно.` +
+    `\n  «расхождение» — кегль, вес, несошедшийся стык, горизонтальная прокрутка\n  или перекрытый элемент управления: смотреть обязательно.` +
     `\n  «подозрение» — подсказка аудита ящиков. Часто это накопленное округление` +
     `\n  ширины текста или своя фикстура, но проверить стоит.\n`
 );

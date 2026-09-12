@@ -555,9 +555,19 @@
   .badge {
     @apply flex items-center rounded-pill px-2 text-text-inverse-primary;
   }
-  /* Mobile shrinks every badge to the same 20px / 11px pill (Figma `badge`
-     device=mobile), so the size variants converge below `md`. */
-  .badge-l { @apply h-8 py-0.5 text-body-n-accent max-md:h-5 max-md:py-0 max-md:pb-px max-md:text-m-body-xs; }
+  /* Набор `badge` (454:8606) — три оси: device x size x type, и по ширинам
+     он идёт ступенькой, а не двумя состояниями:
+       1440  device=desktop size=L   32, текст 16/22
+        768  device=desktop size=S   24, текст 14/18   (планшетная карточка
+                                                        `cards-kitchen
+                                                        device=tablet` держит
+                                                        именно её: 45x24)
+        360  device=mobile  size=S   20, текст 12/16
+     Поэтому у `badge-l` три ступени, а `badge-s` начинается со второй и к
+     ней же сводится на планшете. Ступень 768 жила инлайном в `categories`,
+     пока её не нашли второй раз в рельсе PDP — теперь она в самом классе,
+     и добавлять её к каждому месту вызова больше не нужно. */
+  .badge-l { @apply h-8 py-0.5 text-body-n-accent max-xl:h-6 max-xl:py-0 max-xl:pb-px max-xl:text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
   .badge-s { @apply h-6 pb-px text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
   .badge-new      { @apply bg-surface-accent-alt; }
   .badge-hit      { @apply bg-components-red; }
@@ -931,9 +941,12 @@
      (text-m-body-s-accent), border-active outline when checked. */
   /* Обводка INSIDE (мастер 922:91710): коробку не расширяет, поэтому кольцо, а
      не `border` — тот добавлял 2 к ширине, 78.4 вместо 77. */
+  /* На планшете пилюля 44 с текстом 16/22 (2483:243575) — крупнее и десктопа,
+     и телефона; ниже `md` снова 32 и 12/16 (1997:313165). */
   .pdp-segment {
     @apply flex h-8 items-center justify-center rounded-pill px-4 text-m-body-s-accent transition-colors;
     @apply text-text-secondary ring-1 ring-inset ring-border-default hover:ring-border-default-hover;
+    @apply max-xl:h-11 max-xl:text-body-n-accent max-md:h-8 max-md:text-m-body-s-accent;
   }
   .pdp-segment[aria-checked="true"] {
     @apply text-text-primary ring-border-active;
@@ -945,7 +958,7 @@
      36×36 на кружке 28). Стояло 60% чёрного с зазором 4. */
   .pdp-swatch {
     @apply size-7 shrink-0 overflow-hidden rounded-full border border-border-alpha-default transition-shadow;
-    @apply max-md:size-8;
+    @apply max-xl:size-8;
   }
   /* Выбранный образец: кольцо 2px с зазором 2 — коробка 36 вокруг кружка 28
      (759:78862), те же 2 и 2, что у `.filter-swatch`. Цвет — #141414 60%,

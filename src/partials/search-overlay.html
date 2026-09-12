@@ -30,7 +30,12 @@
   >
     <!-- panel header: the 112px band the site header occupied, with the field
          centred in it (723px, Figma 2337:159627) and the close × at the page's
-         40px gutter. Below `md` it is the 48px modal bar the mobile frames draw. -->
+         40px gutter. Below `md` it is the 48px modal bar the mobile frames draw.
+         Планшетного кадра у поиска нет, и × остаётся там, где нарисован —
+         на 40 от края. Ложилось на поле другое: 723 по центру при 768 оставляют
+         по 22 с боков, то есть поле само заезжало под ×. Ниже `xl` его ширина
+         считается от окна — 100vw минус по 40 на поле страницы, 40 на × и 16
+         зазора с каждой стороны, — и с 960 снова упирается в нарисованные 723. -->
     <div
       class="relative flex h-28 shrink-0 items-start justify-center px-10 pt-14 max-md:h-12 max-md:items-center max-md:px-4 max-md:pt-0"
     >
@@ -39,7 +44,7 @@
         action="/search"
         method="get"
         role="search"
-        class="flex h-11 w-[723px] items-center gap-4 rounded-pill bg-components-subtle px-4 max-md:w-auto max-md:min-w-0 max-md:flex-1"
+        class="flex h-11 w-[723px] items-center gap-4 rounded-pill bg-components-subtle px-4 max-xl:min-w-0 max-xl:max-w-[calc(100vw-12rem)] max-md:w-auto max-md:max-w-none max-md:flex-1"
       >
         <input
           data-search-input

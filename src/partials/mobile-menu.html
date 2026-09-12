@@ -37,25 +37,28 @@
       </div>
       <div class="mt-8 flex flex-1 flex-col justify-between px-4 md:mt-4 md:px-6">
         <nav data-mm-list class="flex flex-col md:gap-2"></nav>
-        <!-- Кнопка над соцсетями: 720x44 в планшетном меню (buttons
-             2483:194640) и 328x44 в мобильном (2483:200905, заливка #292929,
-             стрелка справа). В 360-фрейме её раньше не было — дизайнер
-             добавил её позже, поэтому она больше не `hidden md:flex`. -->
-        <a
-          href="#"
-          class="btn btn-m btn-primary mt-auto flex w-full gap-2"
-          data-mm-cabinet
-        >
-          <span>Личный кабинет</span>
-          <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-6" />
-        </a>
-        <div data-mm-social class="mt-8 flex shrink-0 items-center gap-2">
-          <a href="https://dzen.ru/id/62222e6dcff736707b7af89b" target="_blank" rel="noopener" aria-label="Дзен" class="social-icon size-10"><span class="size-8 social-zen"></span></a>
-          <a href="https://vk.com/vivatmebel_official" target="_blank" rel="noopener" aria-label="ВКонтакте" class="social-icon size-10"><span class="size-8 social-vk"></span></a>
-          <a href="https://t.me/mebeloptom_news" target="_blank" rel="noopener" aria-label="Telegram" class="social-icon size-10"><span class="size-8 social-tg"></span></a>
-          <a href="https://www.youtube.com/channel/UC0SbbyXmypztxDawulCWnAQ" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon size-10"><span class="size-8 social-yt"></span></a>
-          <a href="https://rutube.ru/channel/25863947/" target="_blank" rel="noopener" aria-label="Rutube" class="social-icon size-10"><span class="size-8 social-rt"></span></a>
-          <a href="#" aria-label="MAX" class="social-icon size-10"><span class="size-8 social-max"></span></a>
+        <!-- Нижний блок меню — `bottom` (768: 2483:194639, 720x116 при
+             зазоре 32; 360: 2483:200904, 328x116). Его НЕТ на шагах вглубь:
+             «step 2» и «Menu catalog» на обеих ширинах несут только список
+             (2483:196959 / 1997:255130), поэтому и кнопка, и соцсети живут на
+             первом шаге и скрываются вместе с ним.
+             Кнопка тянется на всю ширину: мастер `fill-width=on`, 188 в нём —
+             это ширина мастера. Ряд соцсетей 232 (пять икон 40 при зазоре 8) и
+             отцентрован — 244 из 720 на планшете, 48 из 328 у дилера на 360.
+             Иконок ПЯТЬ: zen, vk, tg, yt, rt. MAX есть в наборе и в подвале
+             (там ряд 280), но ни в одном кадре меню его нет. -->
+        <div data-mm-bottom class="mt-auto flex shrink-0 flex-col gap-8">
+          <a href="#" class="btn btn-m btn-primary flex w-full gap-2" data-mm-cabinet>
+            <span>Личный кабинет</span>
+            <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-6" />
+          </a>
+          <div class="flex shrink-0 items-center gap-2 max-xl:justify-center max-md:justify-start">
+            <a href="https://dzen.ru/id/62222e6dcff736707b7af89b" target="_blank" rel="noopener" aria-label="Дзен" class="social-icon size-10"><span class="size-8 social-zen"></span></a>
+            <a href="https://vk.com/vivatmebel_official" target="_blank" rel="noopener" aria-label="ВКонтакте" class="social-icon size-10"><span class="size-8 social-vk"></span></a>
+            <a href="https://t.me/mebeloptom_news" target="_blank" rel="noopener" aria-label="Telegram" class="social-icon size-10"><span class="size-8 social-tg"></span></a>
+            <a href="https://www.youtube.com/channel/UC0SbbyXmypztxDawulCWnAQ" target="_blank" rel="noopener" aria-label="YouTube" class="social-icon size-10"><span class="size-8 social-yt"></span></a>
+            <a href="https://rutube.ru/channel/25863947/" target="_blank" rel="noopener" aria-label="Rutube" class="social-icon size-10"><span class="size-8 social-rt"></span></a>
+          </div>
         </div>
       </div>
     </div>

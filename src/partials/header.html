@@ -193,8 +193,14 @@
               class="size-6 transition-[rotate,opacity] group-aria-[expanded=true]/pt:rotate-180 group-data-[price-enabled=false]:opacity-60"
             />
           </button>
+          <!-- На 1440 панель висит под триггером слева, как нарисовано. На
+               планшете полоса вдвое уже, триггер уезжает к правому краю (498 из
+               768), и те же 328 влево-вниз выходили за экран на 58 — страница
+               получала горизонтальную прокрутку. Открытого состояния планшет не
+               рисует, поэтому панель прижимается к правому краю триггера: это
+               единственная сторона, с которой она помещается. -->
           <div
-            class="absolute left-0 top-8 z-50 hidden w-[328px] rounded-[var(--radius-s)] bg-bg-page py-2 shadow-dropdown"
+            class="absolute left-0 top-8 z-50 hidden w-[328px] rounded-[var(--radius-s)] bg-bg-page py-2 shadow-dropdown max-xl:left-auto max-xl:right-0"
             data-price-panel
           >
             <div class="flex flex-col px-1" data-price-list></div>

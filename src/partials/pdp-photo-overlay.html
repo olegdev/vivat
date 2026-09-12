@@ -3,12 +3,24 @@
      is `md:hidden`. It sits on every slide rather than over the rail viewport:
      mid-swipe two slides are on screen, and an overlay pinned to the viewport
      would float over whichever one happened to be under it. -->
+<!-- Отбивки у планшета и телефона свои, и обе прочитаны с кадров, а не
+     унаследованы: 768 (2483:243140 в `image-container` 720) — плашки 10 от
+     верха и от правого края, шеринг 20; 360 (1997:308013 в 344) — плашки 4,
+     шеринг 8. Сам бейдж тоже разной величины: на планшете это
+     `badge device=mobile size=L` (24 при тексте 12/16), на телефоне
+     `device=mobile size=S` (20 при том же 12/16), поэтому `badge-s` здесь
+     получает кегль 12/16 уже с планшета. -->
 <div class="pointer-events-none absolute inset-0 xl:hidden">
-  <div class="absolute right-1 top-1 flex items-center gap-1">
-    <span class="badge badge-s badge-new">new</span>
-    <span class="badge badge-s badge-hit">хит</span>
+  <div class="absolute flex items-center gap-1 max-xl:right-2.5 max-xl:top-2.5 max-md:right-1 max-md:top-1">
+    <span class="badge badge-s badge-new max-xl:text-m-body-xs">new</span>
+    <span class="badge badge-s badge-hit max-xl:text-m-body-xs">хит</span>
   </div>
-  <button type="button" aria-label="Поделиться" data-modal-open="share" class="pointer-events-auto absolute bottom-2 right-2 size-6">
+  <button
+    type="button"
+    aria-label="Поделиться"
+    data-modal-open="share"
+    class="pointer-events-auto absolute size-6 max-xl:bottom-5 max-xl:right-5 max-md:bottom-2 max-md:right-2"
+  >
     <img src="../../assets/pdp/icon-share.svg" alt="" class="size-full" />
   </button>
 </div>

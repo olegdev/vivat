@@ -25,8 +25,11 @@
      Structure only; pdp.js fills the swatches from data and drives the two
      controls. The desktop title's share icon hides below `md` — mobile's own
      share action lives on the photo instead (partials/pdp-photo-overlay.html). -->
+<!-- Планшетная сводка (2483:243566) — с полями 16 сверху и снизу, и ещё 8
+     сверху у внутреннего `Top`: заголовок на 24 от верха. На 360 (1997:313148)
+     полей нет — там всё начинается с 8. -->
 <aside
-  class="flex w-[412px] shrink-0 flex-col gap-4 self-start rounded-n bg-surface-inverted ring-1 ring-inset ring-border-light xl:sticky xl:top-6 max-xl:w-full max-xl:gap-2 max-xl:rounded-none max-xl:pt-2 max-xl:ring-0"
+  class="flex w-[412px] shrink-0 flex-col gap-4 self-start rounded-n bg-surface-inverted ring-1 ring-inset ring-border-light xl:sticky xl:top-6 max-xl:w-full max-xl:gap-2 max-xl:rounded-none max-xl:pt-6 max-xl:pb-4 max-xl:ring-0 max-md:pt-2 max-md:pb-0"
   data-pdp-summary
 >
   <!-- `contents` below `md` so the four blocks become direct flex children of
@@ -35,16 +38,23 @@
   <div class="flex flex-col gap-4 px-6 pt-6 max-xl:contents">
     <!-- title 922:92247, share icon 24 to its right -->
     <div class="flex items-center gap-3 max-xl:order-1 max-xl:px-6 max-md:px-4">
-      <h1 class="min-w-0 flex-1 text-h3 text-text-primary" data-pdp-title>Кухня Фьюжн-05</h1>
+      <!-- Заголовок и цена идут ступенькой, и планшет здесь КРУПНЕЕ десктопа:
+           1440 — 24/28 (2238:153498), 768 — 30/36 (2483:243569, глифы; у самого
+           узла fontSize=22 протух), 360 — 22/26 (1997:313148). -->
+      <h1 class="min-w-0 flex-1 text-h3 text-text-primary max-xl:text-h2 max-md:text-m-h2" data-pdp-title>Кухня Фьюжн-05</h1>
       <button type="button" class="flex size-6 shrink-0 items-center justify-center max-xl:hidden" data-modal-open="share" aria-label="Поделиться">
         <img src="../../assets/pdp/icon-share.svg" alt="" class="size-6" />
       </button>
     </div>
 
     <!-- colour swatches + the selected colour's name -->
-    <div class="flex flex-col gap-2.5 max-xl:order-4 max-xl:px-6 max-xl:py-2 max-md:px-4">
-      <div class="flex items-center gap-3 max-md:gap-4" data-pdp-colors></div>
-      <p class="text-body-s text-text-secondary" data-pdp-color-name></p>
+    <!-- Поля блока цвета ниже `xl` несимметричны: 8 сверху, 12 снизу —
+         `stackPaddingBottom` 12 при `stackVerticalPadding` 8 и на планшете
+         (2483:243576), и на 360 (1997:313153, 78 = 8 + 32 + 10 + 16 + 12). -->
+    <div class="flex flex-col gap-2.5 max-xl:order-4 max-xl:px-6 max-xl:pt-2 max-xl:pb-3 max-md:px-4">
+      <!-- Образцы 28 на 1440, 32 с зазором 16 на 768 (2483:243577) и на 360. -->
+      <div class="flex items-center gap-3 max-xl:gap-4" data-pdp-colors></div>
+      <p class="text-body-s text-text-secondary max-md:text-m-body-s" data-pdp-color-name></p>
     </div>
 
     <!-- size / material, with the link into the Характеристики block -->
@@ -55,10 +65,13 @@
 
     <!-- geometry (Прямая / Угловая) — `segments` size=l outline=on, 32px pills.
          Only two fit the 160px desktop frame; below `md` the pair fills the row
-         (1997:313165), so the segments grow instead of hugging their labels. -->
-    <div class="flex items-center gap-1 py-1 max-xl:order-3 max-xl:gap-2 max-xl:px-6 max-md:px-4" role="radiogroup" aria-label="Геометрия" data-pdp-geometry>
-      <button type="button" class="pdp-segment max-xl:flex-1" aria-checked="true" role="radio" value="pryamaya">Прямая</button>
-      <button type="button" class="pdp-segment max-xl:flex-1" aria-checked="false" role="radio" value="uglovaya">Угловая</button>
+         (1997:313165), so the segments grow instead of hugging their labels.
+         Планшет — третий размер, а не растянутый мобильный: 2483:243575 держит
+         пилюли 44 с текстом 16/22, обнимающие подпись (92 и 95) при зазоре 4;
+         во всю строку они не тянутся. -->
+    <div class="flex items-center gap-1 py-1 max-xl:order-3 max-xl:px-6 max-md:gap-2 max-md:px-4" role="radiogroup" aria-label="Геометрия" data-pdp-geometry>
+      <button type="button" class="pdp-segment max-md:flex-1" aria-checked="true" role="radio" value="pryamaya">Прямая</button>
+      <button type="button" class="pdp-segment max-md:flex-1" aria-checked="false" role="radio" value="uglovaya">Угловая</button>
     </div>
   </div>
 
@@ -73,7 +86,7 @@
     <div class="flex items-center gap-4 max-md:gap-2">
       <div class="flex items-baseline gap-2">
         <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-md:text-m-body-n-accent">от</span>
-        <span class="text-h3 text-text-primary max-md:text-m-h2" data-pdp-price></span>
+        <span class="text-h3 text-text-primary max-xl:text-h2 max-md:text-m-h2" data-pdp-price></span>
         <span class="text-body-n text-text-secondary line-through empty:hidden group-data-[user=dealer]:hidden max-md:text-m-body-s-crossed" data-pdp-oldprice></span>
       </div>
       <span class="badge badge-s badge-discount empty:hidden group-data-[user=dealer]:hidden" data-pdp-discount></span>
@@ -81,10 +94,13 @@
 
     <button type="button" class="btn btn-m btn-primary w-fit max-xl:hidden" data-pdp-order>Сформировать заказ</button>
 
-    <!-- `notice` 943:108544 — 16px warning glyph + 14/18 muted copy. Дилерский
+    <!-- `notice` 943:108544 — 16px warning glyph + 14/18 muted copy; на 360 —
+         12/16 в две строки (2084:148153, глифы 12 при боксе 32). Ниже `xl`
+         кнопки нет, но её контейнер `button+notice` (padV 12) остаётся, и
+         извещение стоит на 12 ниже зазора — 2483:243592 и 2084:148152. Дилерский
          вариант сводки (953:142727) её не несёт, как и «от» выше: там цена одна
          строкой, поэтому панель на 49px ниже покупательской. -->
-    <p class="flex gap-2 text-body-s text-text-secondary group-data-[user=dealer]:hidden">
+    <p class="flex gap-2 text-body-s text-text-secondary group-data-[user=dealer]:hidden max-xl:min-h-8 max-xl:pt-3 max-md:text-m-body-s">
       <img src="../../assets/pdp/icon-warning.svg" alt="" class="size-4 shrink-0" />
       <span>Дилерская наценка может отличаться в зависимости от региона!</span>
     </p>

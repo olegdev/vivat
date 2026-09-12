@@ -116,7 +116,8 @@
         </div>
 
         <!-- one dot per photo, mobile only; pdp.js mirrors the rail's scroll -->
-        <div class="hidden items-center justify-center gap-2 pt-0 max-xl:flex" data-photo-dots></div>
+        <!-- Точки на планшете лежат на снимке, на 360 под ним — как у покупателя. -->
+        <div class="relative z-10 hidden items-center justify-center gap-2 pt-0 max-xl:-mt-4 max-xl:flex max-md:mt-0" data-photo-dots></div>
 
         <!--#include partials/pdp-summary.html -->
       </section>

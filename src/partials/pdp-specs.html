@@ -60,7 +60,11 @@
 
   <div class="h-2"></div>
 
-  <div class="pl-10 max-md:px-4" data-spec-panels>
+  <!-- Отступ панели не один на все ширины: на 1440 это только левые 40, а на
+       768 кадр (`container` 2483:243440) даёт поля 24 С ОБЕИХ сторон —
+       `table-container` там ровно 720 при экране 768. Без правого поля таблица
+       упиралась в край экрана. Ниже `md` поля 16. -->
+  <div class="pl-10 max-xl:px-6 max-md:px-4" data-spec-panels>
     <!-- ---- Описание: two column groups of dotted-leader rows -------------
          One column below `md` (1997:313653): the two groups stack, which is
          what the mobile frame's single 11-row table amounts to. -->

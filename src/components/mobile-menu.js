@@ -103,9 +103,11 @@ export function initMobileMenu(anchor, { toggle, catalogToggle, rootSections = d
   const closeBtn = anchor.querySelector("[data-mm-close]");
   const titleEl = anchor.querySelector("[data-mm-title]");
   const listEl = anchor.querySelector("[data-mm-list]");
-  const socialEl = anchor.querySelector("[data-mm-social]");
+  const bottomEl = anchor.querySelector("[data-mm-bottom]");
 
-  const ROOT_VIEW = { title: "Меню", items: rootSections, social: true };
+  // `bottom` (кнопка + соцсети) рисуется только на первом шаге меню:
+  // кадры «step 2» и «Menu catalog» несут один список.
+  const ROOT_VIEW = { title: "Меню", items: rootSections, bottom: true };
   const CATALOG_VIEW = { title: "Каталог", items: catalogItems };
 
   let stack = [ROOT_VIEW];
@@ -120,7 +122,7 @@ export function initMobileMenu(anchor, { toggle, catalogToggle, rootSections = d
     const view = stack[stack.length - 1];
     titleEl.textContent = view.title;
     show(backBtn, stack.length > 1);
-    show(socialEl, !!view.social);
+    show(bottomEl, !!view.bottom);
     listEl.replaceChildren(...view.items.map(buildRow));
     body.scrollTop = 0;
     // the row that triggered the drill-down is gone — keep focus inside
