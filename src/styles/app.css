@@ -1193,7 +1193,11 @@
    подложку и подрастает с 40 до 44; «Своя наценка» в выбранном виде — 108, эту
    высоту даёт раскрытое поле, а не правило. */
 @utility price-item {
-  @apply flex w-full flex-col rounded-[var(--radius-s)] px-3 py-2 text-left transition-colors;
+  /* Содержимое центрируется по вертикали: выбранная строка подрастает с 40 до
+     44, и в кадре (dropdown-item 2225:164852, align=CENTER) контент 24 стоит на
+     y=10, а не прижат к верхнему паддингу 8. Без центрирования он оставался на
+     8, и под ним висело 12. */
+  @apply flex w-full flex-col justify-center rounded-[var(--radius-s)] px-3 py-2 text-left transition-colors;
   min-height: 40px;
   &[aria-selected="true"] {
     @apply bg-components-subtle-hover;

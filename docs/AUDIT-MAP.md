@@ -65,6 +65,10 @@
 | сводка | `[data-pdp-summary]` | 2238:153498 | 2483:243566 | 1997:313148 | t b |
 | характеристики | `#specs` | — | 2483:243436 | — | b |
 | нижний бар | `nav.fixed` | — | 2477:181671 | — | t b |
+| рельс «Модули» | `[data-section="modules"] section` | — | 2483:238847 | 1997:315097 | b #depth=2 |
+| рельс «Добавьте» | `[data-section="add-to-cart"] section` | — | 2483:238848 | 1997:315101 | b #depth=2 |
+| карта салонов | `[data-stores-section]` | — | 2483:238865 | — | b #depth=2 |
+| подвал | `footer` | — | 2477:170496 | — | t b #depth=2 |
 
 ## dealer/pdp
 
