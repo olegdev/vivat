@@ -35,5 +35,5 @@ Bold при Thin в кадре (2029:156849/156850) — залитые круж�
 | `header/icon-profile.svg` | 1742:55344 | profile 24 Bold dark | шапка планшета 2477:181416 |
 | `header/icon-burger.svg` | 585:27301 | burger 24 Bold light | «Весь каталог» в шапке 1440 2248:97192 |
 | `header/icon-search.svg` | 964:37194 | search 24 Bold muted | поле поиска в шапке 1440 2248:97192 |
-| `header/icon-order-dark.svg` | 960:37179 | order 24 Bold dark | корзина в шапке 1440 2248:97192 |
+| `header/icon-order-dark.svg` | 960:37179 585:54882 | order 24 Bold dark; light — тот же файл под `brightness(0) invert(1)` в нажатой корзине | корзина в шапке 1440 2248:97192; страница заказа 942:110180 |
 | `pdp/icon-share.svg` | 963:37182 | share 24 Bold dark | заголовок сводки 2238:153498 |

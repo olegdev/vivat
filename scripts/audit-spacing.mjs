@@ -242,31 +242,18 @@ async function domGaps(browser, width) {
     // это стало фантомным воздухом. Расхождение вида «в макете 96, у нас
     // ничего» и без того видно строкой; идти и смотреть, откуда оно, всё равно
     // человеку.
-    //
-    // Одно узкое исключение всё же есть — лид-ин, выраженный паддингом
-    // НЕЗАКРАШЕННОЙ секции и размером с распорку (от 32): блок соцсетей несёт
-    // свои 96 как `pt-24` (на 360 — хвостовые 32 как `pb-8`), и снаружи это
-    // неотличимо от `spacing` макета. Порог 32 отсекает `py-4` крошек и `py-6`
-    // заголовков, а требование прозрачного фона — цветные плашки, у которых
-    // поле и есть часть плашки. Сверено по всем покупательским страницам:
-    // с порогом 40 — 43 расхождения, с 32 — 41; на главной без снятия было 7,
-    // с ним — 2, и оба оставшихся — хвостовые распорки макета внутри секций.
-    const leadIn = (el) => {
-      const cs = getComputedStyle(el);
-      const painted = cs.backgroundImage !== "none" || !/^rgba\(0, 0, 0, 0\)$|^transparent$/.test(cs.backgroundColor);
-      if (painted) return [0, 0];
-      const pt = parseFloat(cs.paddingTop) || 0;
-      const pb = parseFloat(cs.paddingBottom) || 0;
-      return [pt >= 32 ? pt : 0, pb >= 32 ? pb : 0];
-    };
+    // Перепроверено 13.09 на всех покупательских страницах с порогом «только
+    // незакрашенные секции, паддинг от 32/40»: без снятия 35 расхождений,
+    // с порогом 40 — 43, с 32 — 41. Лид-ин соцсетей чинится, но `pagination`
+    // макета несёт свои 64 как padV ЭКЗЕМПЛЯРА, и на его месте встаёт фантом.
+    // Симметрии нет ни при каком пороге — оставлено как есть.
     const secs = [];
     for (const el of root.children) {
       if (!(el instanceof HTMLElement)) continue;
       const r = el.getBoundingClientRect();
       if (r.height <= 0 || !inFlow(el)) continue;
       if (isSpacer(el)) continue; // it is the air, not a section
-      const [pt, pb] = leadIn(el);
-      secs.push({ label: label(el), top: r.top + scrollY + pt, bottom: r.bottom + scrollY - pb });
+      secs.push({ label: label(el), top: r.top + scrollY, bottom: r.bottom + scrollY });
     }
     return secs.slice(1).map((s, i) => ({
       from: secs[i].label,

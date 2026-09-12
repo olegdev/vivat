@@ -37,6 +37,9 @@ initOrderBar(page);
 // item, and it is always «Корзина» (2029:126838, 2084:145507, 2241:158297).
 // In Blade this is a parameter on the include, not a line of script.
 document.querySelector("[data-nav-cart]")?.setAttribute("aria-current", "page");
+// и корзина в шапке 1440 — `icon-button condition=pressed` (880:51719); у
+// дилерского заказа этого нет, там кадр держит обычную корзину
+document.querySelector("[data-cart]")?.setAttribute("aria-current", "page");
 
 // ---- the three steps --------------------------------------------------------
 // Figma draws Order-step0/1/2 as separate frames, but each is the previous one
