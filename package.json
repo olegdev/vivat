@@ -17,6 +17,7 @@
     "schema": "node scripts/check-schema.mjs",
     "audit:box": "node scripts/audit-box.mjs",
     "audit:fit": "node scripts/audit-fit.mjs",
+    "audit:icons": "node scripts/audit-icons.mjs",
     "audit:all": "node scripts/audit-all.mjs"
   },
   "devDependencies": {

@@ -72,6 +72,12 @@ for (const r of rows.filter(wanted)) {
         for (const l of out.split("\n")) if (/^✗/.test(l)) { lines.push("   кегль/вес " + l.trim()); hard++; }
         if (/селектор ничего не нашёл|не INSTANCE/.test(out)) { lines.push("   кегль/вес — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); hard++; }
       }
+      if (r.how.includes("i")) {
+        const out = run("scripts/audit-icons.mjs", [r.page, r.sel, id, "--width", w]);
+        checks++;
+        for (const l of out.split("\n")) if (/^[✗?]/.test(l)) { lines.push("   иконки " + l.trim()); if (l.startsWith("✗")) hard++; else soft++; }
+        if (/селектор ничего не нашёл/.test(out)) { lines.push("   иконки — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); hard++; }
+      }
       if (r.how.includes("b")) {
         const a = [r.page, r.sel, id, "--width", w, "--min", "12"];
         if (r.flags.depth) a.push("--depth", r.flags.depth);
@@ -108,7 +114,7 @@ console.log(
     ` расхождений ${hard}, подозрений ${soft}` +
     (hard || soft ? "" : " — всё сошлось") +
     `\n  «расхождение» — кегль, вес, несошедшийся стык, горизонтальная прокрутка\n  или перекрытый элемент управления: смотреть обязательно.` +
-    `\n  «подозрение» — подсказка аудита ящиков. Часто это накопленное округление` +
+    `\n  «подозрение» — подсказка аудита ящиков или файл иконки вне карты. Часто это накопленное округление` +
     `\n  ширины текста или своя фикстура, но проверить стоит.\n`
 );
 process.exit(hard ? 1 : 0);

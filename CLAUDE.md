@@ -10,6 +10,8 @@ npm run build:php # → dist-php/, the folder handed to the PHP developer
 npm run shot      # screenshots of dist/ at 1440 and 390 → .shots/
 npm run crop      # one block of one page, with --click for open states
 npm run audit     # ordered text diff: a Figma instance vs the rendered page
+npm run audit:all # every audit on every block of docs/AUDIT-MAP.md (spacing, type,
+                  # box, icons per block; fit — overflow and covered controls — per page)
 npm run schema    # микроразметка schema.org в dist/: состав и сверка крошек
 ```
 
@@ -679,6 +681,7 @@ node scripts/fig.mjs find <regex> [TYPE]   # search layer names
 node scripts/fig.mjs tree <id> [depth]     # dump a subtree
 node scripts/fig.mjs node <id>             # parent, siblings, master component
 node scripts/fig.mjs raw  <id> [k1,k2]     # full node JSON, for fields the index drops
+node scripts/fig.mjs icons <id>            # every icon under a node, with its VARIANT
 ```
 
 ids take either form: `1968:71551` or the `1968-71551` in Figma URLs.

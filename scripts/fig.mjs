@@ -18,6 +18,8 @@
 //   node scripts/fig.mjs tree <id> [depth]     dump a subtree (MASTER data for instances)
 //   node scripts/fig.mjs node <id>             one node: parent, siblings, raw keys
 //   node scripts/fig.mjs raw  <id> [k1,k2]     raw JSON for a node
+//   node scripts/fig.mjs icons <id>            every icon rendered under a node,
+//                                              with the VARIANT it points at
 //   node scripts/fig.mjs index --rebuild       force a cache rebuild
 //
 // ids accept either "1968:71551" or the "1968-71551" form Figma URLs use.
@@ -284,6 +286,72 @@ if (cmd === "index") {
   if (orphan.length) {
     console.log("\n  text overrides on nodes NOT in the computed layout:");
     for (const [p, t] of orphan) console.log(`  ${p.padEnd(30)} ${JSON.stringify(t)}`);
+  }
+} else if (cmd === "icons") {
+  // Какая именно иконка стоит в кадре — по ИМЕНИ ВАРИАНТА символа, а не по
+  // силуэту. Набор `service-icons` живёт по трём осям — `size=24 Thin`,
+  // `name=print`, `color=secondary` — и «та же» пиктограмма толщиной Bold
+  // против Thin выгружается другим файлом: у печати в строке «Выбрать все»
+  // так и вышло (кольца против залитых кружков, обводка 2 против 1.5).
+  // Геометрию пути экспорт не отдаёт (`commandsBlob`), так что сверить можно
+  // только это — и этого достаточно, чтобы выгрузить правильный символ.
+  //
+  // Идёт по поддереву: свои INSTANCE — из индекса, вложенные в инстансы — из
+  // `derivedSymbolData` (значит, только те, что реально отрисованы), с учётом
+  // подмены символа в `symbolOverrides`.
+  const { byId, kids } = load();
+  const id = norm(args[0]);
+  const root = byId.get(id);
+  if (!root) throw new Error(`no such node: ${id}`);
+  const fig = decodeFig();
+  const rawById = new Map(fig.map((x) => [gid(x.guid), x]));
+  const path = (g) => g.guids.map((x) => `${x.sessionID}:${x.localID}`).join(".");
+  const isIcon = (sym) => sym && /(^|, )name=/.test(sym.name ?? "") && /size=\d+/.test(sym.name ?? "");
+  const rows = [];
+  // Обход идёт по ДЕРЕВУ МАСТЕРА с наложением переопределений инстанса, а не
+  // по `derivedSymbolData`: derived перечисляет только узлы, у которых есть
+  // насчитанные данные, и иконку без единого переопределения (профиль в шапке
+  // планшета) просто не упоминает. Переопределения читаются с каждого инстанса
+  // в цепочке по пути относительно него: подмена иконки в ссылке бара
+  // (`overriddenSymbolID` → pin) лежит на самой ссылке, а не на корне бара.
+  const overridesOf = (id) => rawById.get(id)?.symbolData?.symbolOverrides ?? [];
+  // guidPath переопределения — это цепочка ИНСТАНСОВ от хозяина до узла плюс
+  // сам узел; обычные фреймы по дороге в него не входят.
+  const lookup = (hosts, id, key) => {
+    for (const h of hosts) {
+      const rel = [...h.rel, id].join(".");
+      for (const o of overridesOf(h.id)) if (path(o.guidPath) === rel && o[key] !== undefined) return o[key];
+    }
+    return undefined;
+  };
+  const visit = (n, hosts, via) => {
+    // hosts: инстансы, внутри которых мы сейчас; rel — инстансы, пройденные
+    // от каждого из них до родителя n
+    const here = via ? `${via} › ${n.name}` : n.name;
+    const vis = hosts.length ? lookup(hosts, n.id, "visible") : undefined;
+    if (vis === false || (n.hidden && vis !== true)) return;
+    if (n.symbol) {
+      const swap = hosts.length ? lookup(hosts, n.id, "overriddenSymbolID") : undefined;
+      const symId = swap ? gid(swap) : n.symbol;
+      const sym = byId.get(symId);
+      if (isIcon(sym)) { rows.push({ via, node: n, sym, nested: hosts.length > 0 }); return; }
+      // у инстанса с СОБСТВЕННЫМИ детьми в индексе отрисовка — это они
+      const own = kids.get(n.id) || [];
+      if (own.length) { for (const c of own) visit(c, hosts, here); return; }
+      const next = [...hosts.map((h) => ({ id: h.id, rel: [...h.rel, n.id] })), { id: n.id, rel: [] }];
+      for (const c of kids.get(symId) || []) visit(c, next, here);
+      return;
+    }
+    for (const c of kids.get(n.id) || []) visit(c, hosts, here);
+  };
+  visit(root, [], "");
+  console.log(`${id} ${root.name} — иконок в отрисовке: ${rows.length}`);
+  for (const r of rows) {
+    const m = Object.fromEntries((r.sym.name || "").split(", ").map((kv) => kv.split("=")));
+    console.log(
+      `  ${(m.name ?? r.sym.name).padEnd(22)} ${(m.size ?? "").padEnd(14)} ${(m.color ?? "").padEnd(12)}` +
+        ` ${r.sym.id.padEnd(13)} ${r.nested ? "(в инстансе) " : ""}${r.via}`
+    );
   }
 } else if (cmd === "tree") {
   const doc = load();
