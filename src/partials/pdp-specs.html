@@ -33,14 +33,22 @@
   <div class="h-8 max-md:h-6"></div>
 
   <!-- Tab 1686:58455 / mobile 1997:314997 — 24px SemiBold labels, 24px gaps,
-       active is dark and underlined; the rest are `text-secondary`. Below `md`
+       active is dark and underlined; the rest are `text-secondary`.
+
+       Ряд ВЫШЕ своих вкладок и центрирует их: 59 на 1440 и на 768
+       (2483:238824 — тот же Tab 59), 40 ниже `md`, при вкладках 32 и 28.
+       Ряд, облегающий кнопку, поджимал текст к фото на 13 и укорачивал весь
+       блок на 27 — отсюда «расстояние до следующего блока меньше, чем в
+       макете». Общая вертикаль блока: 32 + ряд + 8 + панель.
+
+       Below `md`
        the labels drop to 16/24 and the row scrolls: it is 636px of tabs in a
        360px frame, with a white gradient over the right edge to show there is
        more. `.pdp-tab-row` carries the fade so the row itself stays a plain
        scroll rail. -->
   <div class="pdp-tab-row max-xl:relative">
     <div
-      class="flex items-center gap-6 pl-10 max-xl:scroll-rail max-xl:overflow-x-auto max-xl:px-6 max-xl:[&>*]:shrink-0 max-md:gap-4 max-md:px-4"
+      class="flex h-[59px] items-center gap-6 pl-10 max-xl:scroll-rail max-xl:overflow-x-auto max-xl:px-6 max-xl:[&>*]:shrink-0 max-md:h-10 max-md:gap-4 max-md:px-4"
       role="tablist"
       data-spec-tabs
     >
@@ -52,7 +60,7 @@
 
   <div class="h-2"></div>
 
-  <div class="pb-2 pl-10 max-md:px-4" data-spec-panels>
+  <div class="pl-10 max-md:px-4" data-spec-panels>
     <!-- ---- Описание: two column groups of dotted-leader rows -------------
          One column below `md` (1997:313653): the two groups stack, which is
          what the mobile frame's single 11-row table amounts to. -->
