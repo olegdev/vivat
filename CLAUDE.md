@@ -184,7 +184,7 @@ own** — 882:107882 has no 360 counterpart. Where it came from matters:
 - **The chrome is designed, just filed elsewhere.** The dealer catalog's mobile
   frame (2225:160540) draws the whole dealer header — a 38px strip with «Москва»
   and the phone, a 40px dark row carrying the price-list trigger and the
-  «Показать цену» switch, then the usual 60px logo row — and a bottom nav whose
+  «Показать цену» switch, then the usual 65.56px logo row (мастер `device=mobile v1` перерисован: логотип 212 с подписью, как на планшете) — and a bottom nav whose
   third item is «Бизнесу», not «Акции». Both are built from it.
 - **The dealer header's menu row is not the customer's.** `menu-items` is a
   variant, not shared copy: b2c (604:23352) reads Кухни / Акции / Где купить,
