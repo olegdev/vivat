@@ -83,6 +83,10 @@ mountCarousel(
   document.querySelector('[data-section="modules"]'),
   {
     id: "modules",
+    // Ниже md у этого рельса кнопки нет: catalog-row 1997:315097 — 305 =
+    // карточки 273 + полоса прокрутки 32, а мастер 1968:186676 даёт 488 с
+    // кнопкой 52. То есть button-container снят вариантом.
+    mobileAction: false,
     title: "Модули",
     action: "Все модули Фьюжн",
     // Отдельной выдачи модулей в макете нет — это каталог с фильтром «только
