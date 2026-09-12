@@ -947,8 +947,15 @@
     @apply size-7 shrink-0 overflow-hidden rounded-full border border-border-alpha-default transition-shadow;
     @apply max-md:size-8;
   }
+  /* Выбранный образец — та же обводка 1px внутрь, но 60% вместо 22%:
+     `select` (759:78867) это 28x28 с `strokeWeight 1 INSIDE` поверх
+     `color-frame`, никакой внешней коробки и зазора. Стояло кольцо 2px
+     сплошного чёрного с отступом 2 — заметно тяжелее и крупнее.
+     Цвет краски в снимок не попал (strokePaints пуст), значение —
+     #141414 60%, то есть `border-alpha-pressed`, — подтверждено по живому
+     файлу. */
   .pdp-swatch[aria-checked="true"] {
-    @apply ring-2 ring-neutral-black ring-offset-2;
+    @apply border-border-alpha-pressed;
   }
 
   /* ---- Spec table leader (`line-dotted` 766:14631) ------------------------
