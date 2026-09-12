@@ -907,7 +907,7 @@
     @apply max-md:text-m-h4;
   }
   .pdp-tab-lg {
-    @apply text-h3 max-md:text-h5;
+    @apply text-h3 max-md:text-m-h3;
   }
   .pdp-tab[aria-selected="true"] {
     @apply text-text-primary shadow-[inset_0_-2px_0_var(--color-border-alpha-pressed)];
@@ -945,6 +945,7 @@
      36×36 на кружке 28). Стояло 60% чёрного с зазором 4. */
   .pdp-swatch {
     @apply size-7 shrink-0 overflow-hidden rounded-full border border-border-alpha-default transition-shadow;
+    @apply max-md:size-8;
   }
   .pdp-swatch[aria-checked="true"] {
     @apply ring-2 ring-neutral-black ring-offset-2;
