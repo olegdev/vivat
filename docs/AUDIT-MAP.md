@@ -74,7 +74,10 @@
 | характеристики | `#specs` | 1686:59210 | — | — | t b |
 | рельс «Модули» | `[data-section="modules"] section > div:nth-child(2)` | 1686:63217 | — | — | b #depth=2 |
 | рельс «Добавьте» | `[data-section="add-to-cart"] section > div:nth-child(2)` | 1686:68706 | — | — | b #depth=2 |
+| заголовок «Отзывы» | `[data-section="reviews"] section > div:first-child` | 1686:63219 | — | — | t |
 | карточка отзыва | `[data-section="reviews"] article` | 1686:63222 | — | — | t b |
+| рельс «Вся коллекция» | `[data-section="collection"] article` | 1686:63229 | — | — | b #depth=2 |
+| карта салонов | `[data-stores-section]` | 1686:63231 | — | — | b #depth=2 |
 | подвал | `footer` | 1058:176983 | — | — | t b #depth=2 |
 
 ## customer/order

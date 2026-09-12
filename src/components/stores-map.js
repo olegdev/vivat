@@ -301,7 +301,19 @@ export function renderStoresMap(anchor, opts) {
     detail,
     center = [55.7558, 37.6173], // 2.1 takes [lat, lon]
     zoom = 9,
+    // Коралловое поле под картой у каждой страницы своё: 80 на обеих PDP
+    // (map-general 1686:63231 — 938 при содержимом 858), 72 на главных
+    // (878:103602 — 952 при 880). Значение по умолчанию — главная.
+    padBottom = 72,
   } = opts;
+
+  // Значение кладём в атрибут, а не собираем класс строкой: Tailwind видит
+  // только то, что написано в исходниках, и `pb-[80px]`, склеенный в рантайме,
+  // не попадает в сборку — отступ просто обнуляется. Правило живёт в app.css.
+  if (padBottom !== 72) {
+    const section = anchor.querySelector("[data-stores-section]");
+    if (section) section.dataset.padBottom = String(padBottom);
+  }
 
   if (title) {
     anchor.querySelector("[data-stores-title]").textContent = title;

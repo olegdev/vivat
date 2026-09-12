@@ -148,6 +148,7 @@ const storesAnchor = document.querySelector('[data-section="salony"]');
 if (storesAnchor) {
   setStoresMapBases({ home: HOME });
   renderStoresMap(storesAnchor, {
+    padBottom: 80, // map-general 1686:63231 — 938 при содержимом 858
     stores,
     title: "Где купить",
     titleMobile: "Наши салоны",

@@ -90,6 +90,21 @@ const WEIGHT = { Thin: 100, ExtraLight: 200, Light: 300, Regular: 400, Medium: 5
 
 const hasDerivedText = [...derived.values()].some((e) => e.derivedTextData);
 
+// Пер-символьные заливки: у текста может быть несколько цветов. Берём тот,
+// что покрывает больше символов, — для «Отзывы 4» это цвет «4» только если
+// он и есть большинство, поэтому берём ПОСЛЕДНИЙ стиль: счётчик всегда в хвосте.
+const charFills = new Map();
+for (const o of inst?.symbolData?.symbolOverrides ?? []) {
+  const t = o.textData;
+  if (!t?.styleOverrideTable?.length) continue;
+  const last = t.styleOverrideTable[t.styleOverrideTable.length - 1];
+  const f = last?.fillPaints?.[0]?.color;
+  if (!f) continue;
+  const hex = "#" + [f.r, f.g, f.b].map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("");
+  charFills.set(pathOf(o.guidPath), hex);
+}
+const charColor = (path) => charFills.get(path) ?? null;
+
 const figText = [];
 (function walk(nodeId, prefix, seen) {
   for (const c of kids.get(nodeId) ?? []) {
@@ -129,6 +144,11 @@ const figText = [];
         weightFromMaster: true,
         // У FRAME метрика с самого узла — она и есть отрисованная.
         frame: isFrame,
+        // Цвет. Пер-символьные заливки (`styleOverrideTable`) тоже учитываем:
+        // счётчик «4» в «Отзывы 4» — один узел с двумя цветами, и без этого
+        // он читался бы цветом заголовка. Цвет всегда мягкий сигнал: у
+        // инстанса он может быть переопределён, а derived его не несёт.
+        color: charColor(path) ?? (c.fills?.[0]?.color ?? null),
       });
     }
     if (c.symbol) {
@@ -173,11 +193,13 @@ const domText = await p.evaluate((sel) => {
         const t = n.textContent.replace(/\s+/g, " ").trim();
         if (!t) continue;
         const cs = getComputedStyle(el);
+        const rgb = cs.color.match(/\d+/g);
         out.push({
           text: t,
           size: parseFloat(cs.fontSize),
           lh: cs.lineHeight === "normal" ? null : parseFloat(cs.lineHeight),
           weight: parseInt(cs.fontWeight, 10),
+          color: rgb ? "#" + rgb.slice(0, 3).map((v) => (+v).toString(16).padStart(2, "0")).join("") : null,
         });
       } else if (n.nodeType === 1) {
         const cs = getComputedStyle(n);
@@ -200,7 +222,7 @@ if (domText === null) {
 const key = (s) => s.toLowerCase().replace(/[«»"'`\s]/g, "");
 const half = (v) => (v == null ? null : Math.round(v * 2) / 2);
 const fmt = (r) =>
-  r ? `${r.size ?? "?"}/${half(r.lh) ?? "?"}${r.weight ? " " + r.weight : ""}` : "—";
+  r ? `${r.size ?? "?"}/${half(r.lh) ?? "?"}${r.weight ? " " + r.weight : ""}${r.color ? " " + r.color : ""}` : "—";
 
 console.log(`\n  ══ ${page} @ ${WIDTH}  ←→  ${figmaId}   ${selector}`);
 console.log(`  ${"строка".padEnd(38)} ${"МАКЕТ".padStart(12)}   ${"СТРАНИЦА".padStart(12)}`);
@@ -281,6 +303,12 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     } else if (lhBad) {
       flag = "лн";
       soft++;
+    } else if (f.color && d.color && f.color !== d.color) {
+      // Цвет — мягкий сигнал: у инстанса он может быть переопределён вариантом,
+      // а `derivedSymbolData` заливок не несёт. Но именно так нашёлся счётчик
+      // «Отзывы 4» — #888888 в кадре против #acacac у нас.
+      flag = "цв";
+      soft++;
     } else if (how === "порядок") {
       flag = "≈ ";
     }
@@ -300,6 +328,8 @@ console.log(
     `\n  «✗» — разошёлся КЕГЛЬ или ВЕС. Это дефект.` +
     `\n  «*» — метрика макета взята с МАСТЕРА (насчитанной для экземпляра нет).` +
     `\n        Мастер регулярно опровергается — идти и смотреть \`fig.mjs inst\`.` +
+    `\n  «цв» — разошёлся ЦВЕТ. Тоже мягкий: заливка берётся из мастера или из` +
+    `\n        пер-символьных стилей, инстанс может её переопределить.` +
     `\n  «лн» — разошёлся интерлиньяж. Смотреть глазами: он выведен из коробки,` +
     `\n         а коробку в макете случается растянуть руками (см. шапку скрипта).` +
     `\n  «≈» — пара найдена по ПОРЯДКУ, а не по тексту (свои фикстуры). Пара` +

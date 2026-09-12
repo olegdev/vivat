@@ -140,8 +140,10 @@ const domBoxes = await p.evaluate(
       for (const c of el.children) {
         if (!(c instanceof HTMLElement) || !seen(c)) continue;
         const r = c.getBoundingClientRect();
+        const pr = el.getBoundingClientRect();
         out.push({ depth: d, name: label(c), w: Math.round(r.width), h: Math.round(r.height),
-                   top: Math.round(r.top), bottom: Math.round(r.bottom), parent: pid });
+                   top: Math.round(r.top), bottom: Math.round(r.bottom), parent: pid,
+                   off: Math.round(r.top - pr.top) });
         walk(c, d + 1, (c.__uid = ++uid));
       }
     };
@@ -237,6 +239,25 @@ if (borderish.length) {
       `\n    Похоже на CSS \`border\` там, где в Figma обводка INSIDE: она не` +
       `\n    расширяет коробку. Рисовать кольцом (\`ring-1 ring-inset\`) или` +
       `\n    внутренней тенью, иначе всё внутри съедет на пиксель.`
+  );
+}
+
+// ---- смещение внутри родителя -------------------------------------------------
+// Высоты и зазоры могут совпасть, а элемент внутри строки будет стоять не там:
+// точечный выносной в характеристиках сидел по центру строки, где в кадре он на
+// базовой линии (28 при строке 44). Ни высоты, ни зазоры этого не видят —
+// ловится только смещением от верха родителя.
+// Пара должна совпасть И по высоте, И по ширине — иначе это просто два разных
+// ящика, случайно равных по высоте, и смещения у них сравнивать бессмысленно.
+const offPairs = align(figBoxes, domBoxes).filter(
+  ([f, d]) =>
+    f && d && f.y != null && d.off != null &&
+    f.h === d.h && Math.abs(f.w - d.w) <= 1 && Math.abs(f.y - d.off) > 2
+);
+if (offPairs.length) {
+  console.log(
+    `  ⚠ ${offPairs.length} пар(ы) совпали по высоте, но стоят на разной высоте внутри родителя:\n` +
+      offPairs.slice(0, 4).map(([f, d]) => `      ${f.name}: макет ${f.y} ↔ страница ${d.off}`).join("\n")
   );
 }
 
