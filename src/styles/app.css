@@ -947,15 +947,13 @@
     @apply size-7 shrink-0 overflow-hidden rounded-full border border-border-alpha-default transition-shadow;
     @apply max-md:size-8;
   }
-  /* Выбранный образец — та же обводка 1px внутрь, но 60% вместо 22%:
-     `select` (759:78867) это 28x28 с `strokeWeight 1 INSIDE` поверх
-     `color-frame`, никакой внешней коробки и зазора. Стояло кольцо 2px
-     сплошного чёрного с отступом 2 — заметно тяжелее и крупнее.
-     Цвет краски в снимок не попал (strokePaints пуст), значение —
-     #141414 60%, то есть `border-alpha-pressed`, — подтверждено по живому
-     файлу. */
+  /* Выбранный образец: кольцо 2px с зазором 2 — коробка 36 вокруг кружка 28
+     (759:78862), те же 2 и 2, что у `.filter-swatch`. Цвет — #141414 60%,
+     то есть `border-alpha-pressed`, а не сплошной чёрный.
+     `strokePaints` у узла `select` в снимке ПУСТ, поэтому цвет читается не
+     из экспорта; геометрия при этом в экспорте есть. */
   .pdp-swatch[aria-checked="true"] {
-    @apply border-border-alpha-pressed;
+    @apply ring-2 ring-border-alpha-pressed ring-offset-2;
   }
 
   /* ---- Spec table leader (`line-dotted` 766:14631) ------------------------
