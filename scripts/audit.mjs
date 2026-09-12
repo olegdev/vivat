@@ -29,7 +29,10 @@ import { chromium } from "playwright";
 import { execFileSync } from "node:child_process";
 import { resolve } from "node:path";
 
-const [page, selector, figmaId] = process.argv.slice(2);
+const argvAll = process.argv.slice(2);
+const wi = argvAll.indexOf("--width");
+const WIDTH = wi === -1 ? 1440 : Number(argvAll[wi + 1]);
+const [page, selector, figmaId] = argvAll.filter((a, i) => a !== "--width" && argvAll[i - 1] !== "--width");
 if (!page || !selector || !figmaId) {
   console.error("usage: node scripts/audit.mjs <page> <selector> <figma-id>");
   process.exit(1);
@@ -87,11 +90,12 @@ const figText = [];
 
 // ---- DOM side ----------------------------------------------------------------
 const browser = await chromium.launch();
-const p = await browser.newPage({ viewport: { width: 1440, height: 1000 } });
+const p = await browser.newPage({ viewport: { width: WIDTH, height: 1000 } });
 await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "load" });
 await p.waitForTimeout(1500);
 const domText = await p.evaluate((sel) => {
-  const root = document.querySelector(sel);
+  // первый ВИДИМЫЙ — у шапки и подвала два экземпляра под разные ширины
+  const root = [...document.querySelectorAll(sel)].find((r) => r.getClientRects().length);
   if (!root) return null;
   const out = [];
   const walk = (el) => {

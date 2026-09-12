@@ -72,6 +72,13 @@ for (const r of rows.filter(wanted)) {
         for (const l of out.split("\n")) if (/^✗/.test(l)) { lines.push("   кегль/вес " + l.trim()); hard++; }
         if (/селектор ничего не нашёл|не INSTANCE/.test(out)) { lines.push("   кегль/вес — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); hard++; }
       }
+      if (r.how.includes("c")) {
+        // копия — порядок и текст строк; только для INSTANCE с переопределениями
+        const out = run("scripts/audit.mjs", [r.page, r.sel, id, "--width", w]);
+        checks++;
+        for (const l of out.split("\n")) if (/^✗/.test(l)) { lines.push("   копия " + l.trim()); hard++; }
+        if (/is not an INSTANCE|селектор ничего не нашёл/.test(out)) { lines.push("   копия — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); soft++; }
+      }
       if (r.how.includes("i")) {
         const out = run("scripts/audit-icons.mjs", [r.page, r.sel, id, "--width", w]);
         checks++;
