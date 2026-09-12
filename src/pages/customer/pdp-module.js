@@ -11,6 +11,7 @@ import { initCart } from "../../components/cart.js";
 import { initSession } from "../../components/session.js";
 import { initModals } from "../../components/modals.js";
 import { initPhoneMask } from "../../components/phone-mask.js";
+import { initConsentGate } from "../../components/consent-gate.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { ICON, HOME } from "../../data/asset-base.js";
 import { stores } from "../../data/stores.js";
@@ -97,6 +98,7 @@ initStickyPrice(product);
 
 initModals();
 initPhoneMask();
+initConsentGate();
 initCitySelect();
 
 // «Сформировать заказ»: в корзину и на оформление (LINK-MAP §4.1).

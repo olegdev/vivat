@@ -14,6 +14,7 @@ import { HOME, ICON } from "../../data/asset-base.js";
 import { product, modules, addToCart, reviews, collection } from "../../data/pdp.js";
 import { initModals } from "../../components/modals.js";
 import { initPhoneMask } from "../../components/phone-mask.js";
+import { initConsentGate } from "../../components/consent-gate.js";
 import { initCitySelect } from "../../components/city-select.js";
 
 // ---- shared chrome (header mega-menu + burger), same wiring as main.js ------
@@ -164,6 +165,7 @@ document.querySelector("[data-seo-title]").textContent =
 
 initModals();
 initPhoneMask();
+initConsentGate();
 initCitySelect();
 
 // «Сформировать заказ»: в корзину и на оформление (LINK-MAP §4.1).

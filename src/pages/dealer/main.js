@@ -13,6 +13,7 @@ import { initCatalogMenu, setCatalogIconBase } from "../../components/catalog-me
 import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initModals } from "../../components/modals.js";
 import { initPhoneMask } from "../../components/phone-mask.js";
+import { initConsentGate } from "../../components/consent-gate.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
@@ -56,6 +57,7 @@ initCart();
 initSession();
 initModals();
 initPhoneMask();
+initConsentGate();
 initCitySelect();
 
 const sections = {

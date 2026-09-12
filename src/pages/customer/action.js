@@ -10,6 +10,7 @@ import { ICON } from "../../data/asset-base.js";
 import { promos, actionItems } from "../../data/action.js";
 import { initModals } from "../../components/modals.js";
 import { initPhoneMask } from "../../components/phone-mask.js";
+import { initConsentGate } from "../../components/consent-gate.js";
 import { initCitySelect } from "../../components/city-select.js";
 
 // ---- shared chrome (header mega-menu + burger), same wiring as main.js ------
@@ -55,4 +56,5 @@ mountCarousel(
 
 initModals();
 initPhoneMask();
+initConsentGate();
 initCitySelect();

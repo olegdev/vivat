@@ -7,6 +7,7 @@ import { initSession } from "../../components/session.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
 import { initPhoneMask } from "../../components/phone-mask.js";
+import { initConsentGate } from "../../components/consent-gate.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { renderStoresMap, setBases } from "../../components/stores-map.js";
 import { initCarousel } from "../../components/carousel.js";
@@ -221,4 +222,5 @@ initCarousel(document.querySelector("[data-gallery-section]"));
 
 initModals();
 initPhoneMask();
+initConsentGate();
 initCitySelect();

@@ -7,6 +7,7 @@ import { initSession } from "../../components/session.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
 import { initPhoneMask } from "../../components/phone-mask.js";
+import { initConsentGate } from "../../components/consent-gate.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { renderMenuB2b } from "../../components/menu-b2b.js";
 import { ICON } from "../../data/asset-base.js";
@@ -129,4 +130,5 @@ document.querySelector("[data-grid-noun]").textContent = "новостей";
 
 initModals();
 initPhoneMask();
+initConsentGate();
 initCitySelect();
