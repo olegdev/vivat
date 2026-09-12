@@ -26,13 +26,13 @@
      controls. The desktop title's share icon hides below `md` — mobile's own
      share action lives on the photo instead (partials/pdp-photo-overlay.html). -->
 <aside
-  class="flex w-[412px] shrink-0 flex-col self-start rounded-n border border-border-light bg-surface-inverted xl:sticky xl:top-6 max-xl:w-full max-xl:rounded-none max-xl:border-0 max-xl:pt-2"
+  class="flex w-[412px] shrink-0 flex-col gap-4 self-start rounded-n bg-surface-inverted ring-1 ring-inset ring-border-light xl:sticky xl:top-6 max-xl:w-full max-xl:gap-0 max-xl:rounded-none max-xl:pt-2 max-xl:ring-0"
   data-pdp-summary
 >
   <!-- `contents` below `md` so the four blocks become direct flex children of
        the panel and their `order-*` applies against the price block too. Their
        own padding moves onto each block, since this wrapper has no box then. -->
-  <div class="flex flex-col gap-4 p-6 max-xl:contents">
+  <div class="flex flex-col gap-4 px-6 pt-6 max-xl:contents">
     <!-- title 922:92247, share icon 24 to its right -->
     <div class="flex items-center gap-3 max-xl:order-1 max-xl:px-6 max-xl:pb-2 max-md:px-4">
       <h1 class="min-w-0 flex-1 text-h3 text-text-primary" data-pdp-title>Кухня Фьюжн-05</h1>
@@ -69,7 +69,7 @@
        граница ВНУТРЕННЕГО контейнера 364 (922:92211, 1px #e7e7e7), то есть он
        вставлен на те же 24, что и остальное содержимое. -->
   <div class="flex flex-col px-6 max-xl:order-5 max-xl:mx-6 max-xl:rounded-n max-xl:bg-bg-subtle max-xl:px-0 max-md:mx-4">
-    <div class="flex flex-col gap-3 border-t border-divider-light py-6 max-xl:gap-3 max-xl:border-0 max-xl:p-6 max-md:p-4">
+    <div class="flex flex-col gap-3 py-6 shadow-[inset_0_1px_0_var(--color-divider-light)] max-xl:gap-3 max-xl:p-6 max-xl:shadow-none max-md:p-4">
     <div class="flex items-center gap-4 max-md:gap-2">
       <div class="flex items-baseline gap-2">
         <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-md:text-m-body-n-accent">от</span>
@@ -84,7 +84,7 @@
     <!-- `notice` 943:108544 — 16px warning glyph + 14/18 muted copy. Дилерский
          вариант сводки (953:142727) её не несёт, как и «от» выше: там цена одна
          строкой, поэтому панель на 49px ниже покупательской. -->
-    <p class="flex gap-2 pt-0.5 text-body-s text-text-secondary group-data-[user=dealer]:hidden max-md:pt-0">
+    <p class="flex gap-2 text-body-s text-text-secondary group-data-[user=dealer]:hidden">
       <img src="../../assets/pdp/icon-warning.svg" alt="" class="-mt-0.5 size-6 -m-1 shrink-0" />
       <span>Дилерская наценка может отличаться в зависимости от региона!</span>
     </p>

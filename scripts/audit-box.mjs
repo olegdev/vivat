@@ -218,6 +218,25 @@ const seqOf = (boxes, keyY, keyH) => {
 };
 const figGaps = seqOf(figBoxes, "y", "h");
 const domGaps = seqOf(domBoxes.map((b) => ({ ...b, y: b.top })), "y", "h");
+// ---- подсказка про рамку ------------------------------------------------------
+// CSS `border` прибавляется к коробке, а `strokeAlign: INSIDE` в Figma — нет:
+// там паддинг отсчитывается от края рамки, и обводка ложится поверх него.
+// Поэтому наш блок выходит на 2 шире/выше, а всё внутри съезжает на 1. Так
+// уехала иконка шеринга в сводке PDP: ряд заголовка 362 против 364.
+// Признак: пары, где высоты совпали, а ширины разошлись ровно на 2.
+const borderish = align(figBoxes, domBoxes).filter(
+  ([f, d]) => f && d && f.h === d.h && Math.abs(f.w - d.w) === 2
+);
+if (borderish.length) {
+  console.log(
+    `  ⚠ ${borderish.length} пар(ы) совпали по высоте, но разошлись по ширине ровно на 2:\n` +
+      borderish.slice(0, 4).map(([f, d]) => `      ${f.name} ${f.w} ↔ ${d.name} ${d.w}`).join("\n") +
+      `\n    Похоже на CSS \`border\` там, где в Figma обводка INSIDE: она не` +
+      `\n    расширяет коробку. Рисовать кольцом (\`ring-1 ring-inset\`) или` +
+      `\n    внутренней тенью, иначе всё внутри съедет на пиксель.`
+  );
+}
+
 console.log("  зазоры между соседями, по вложенным рядам:");
 console.log(`    макет:    ${figGaps.join("  |  ") || "—"}`);
 console.log(`    страница: ${domGaps.join("  |  ") || "—"}`);
