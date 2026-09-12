@@ -117,11 +117,21 @@
             <span class="text-body-n text-text-primary max-md:text-m-body-n">Только фирменные магазины</span>
             <label class="relative inline-flex cursor-pointer items-center">
               <input type="checkbox" data-brand-only class="peer sr-only" />
-              <span class="block h-6 w-10 rounded-full bg-components-disabled transition-colors peer-checked:bg-components-red"></span>
+              <!-- `toggle` 637:18888 — вариант `design=dark` набора 604:24616:
+                   дорожка #e7e7e7 выключенной и #292929 включённой, ручка белая
+                   всегда. Коралловой она не бывает ни в одном состоянии. -->
+              <span class="block h-6 w-10 rounded-full bg-components-light transition-colors peer-checked:bg-components-strong"></span>
               <span class="pointer-events-none absolute left-0.5 top-0.5 size-5 rounded-full bg-surface-inverted transition-transform peer-checked:translate-x-4"></span>
             </label>
           </div>
         </div>
+        <!-- Слот сегментов «Опт / Розница» на 360: в мобильном варианте
+             (2225:107318) они стоят внутри панели ПОД ШАПКОЙ, а на 1440 — над
+             всем блоком карты. Страница клонирует в него свой <template>.
+             Стоять он обязан до списка магазинов: в рознице список длинный, и
+             из-под него сегменты уезжали за пределы экрана. -->
+        <div class="hidden px-4 py-2 md:hidden" data-store-audience></div>
+
         <!-- Пусто: регион, магазины которого ещё не пришли с бэка. Копия та
              же, что у пустой выдачи каталога. -->
         <p class="hidden px-10 py-10 text-body-n text-text-secondary max-md:px-4" data-store-empty>
@@ -149,11 +159,6 @@
              вместо списка салонов один адрес. Показывается режимом
              contactPage в components/stores-map.js, там же и наполняется.
              general-container 440×442: padH=24, зазор между блоками 24. -->
-        <!-- Слот сегментов «Опт / Розница» на 360: в мобильном варианте
-             (2225:107318) они стоят внутри панели под шапкой, а на 1440 — над
-             всем блоком карты. Страница клонирует в него свой <template>. -->
-        <div class="hidden px-4 py-2 md:hidden" data-store-audience></div>
-
         <!-- Второе тело панели — вариант `type=contact page` (1456:56787):
              вместо списка салонов один адрес. Показывается режимом
              contactPage в components/stores-map.js, там же и наполняется.

@@ -12,6 +12,7 @@ import { HOME, ICON } from "../../data/asset-base.js";
 import { LINES } from "../../data/order.js";
 import { initModals } from "../../components/modals.js";
 import { initPhoneMask } from "../../components/phone-mask.js";
+import { initConsentGate } from "../../components/consent-gate.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { setScrollLock } from "../../components/scroll-lock.js";
 
@@ -199,4 +200,5 @@ setStep(0, { scroll: false });
 
 initModals();
 initPhoneMask();
+initConsentGate();
 initCitySelect();

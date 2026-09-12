@@ -31,6 +31,13 @@
       </div>
     </div>
     <div class="h-9"></div>
-    <img src="../../assets/header/share-modal-photo.png" alt="" class="h-[121px] w-full object-cover" />
+    <!-- Полоса-снимок упирается в низ панели, поэтому нижние углы скругляет
+         она сама: `overflow-hidden` на панели нельзя — ниже `md` она же и
+         прокручивается. Внизу шторки скругления нет, как и у всех окон. -->
+    <img
+      src="../../assets/header/share-modal-photo.png"
+      alt=""
+      class="h-[121px] w-full rounded-b-[var(--radius-l)] object-cover max-md:rounded-b-none"
+    />
   </div>
 </div>

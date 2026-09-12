@@ -13,6 +13,7 @@ import { HOME, ICON } from "../../data/asset-base.js";
 import { heroSlides, modularItems, popularItems, akciiItems, promoTiles } from "../../data/home.js";
 import { initModals } from "../../components/modals.js";
 import { initPhoneMask } from "../../components/phone-mask.js";
+import { initConsentGate } from "../../components/consent-gate.js";
 import { initCitySelect } from "../../components/city-select.js";
 
 // ---- hero slider ------------------------------------------------------------
@@ -99,4 +100,5 @@ if (storesAnchor) {
 
 initModals();
 initPhoneMask();
+initConsentGate();
 initCitySelect();
