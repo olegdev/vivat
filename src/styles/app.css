@@ -728,18 +728,20 @@
      Используется без вариантов, поэтому `@layer components` уместен. */
   .modal-scrim {
     @apply fixed inset-0 z-[70] hidden items-center justify-center bg-overlay-strong;
+    /* Ниже `md` окно — шторка, прижатая к нижнему краю ЭКРАНА: тапбар она
+       закрывает, а не оставляет под собой (2209:213755 и соседние: панель
+       360×760 от y=40 до самого низа кадра). Скругление поэтому только
+       сверху. Исключения — два кадра, где тапбар нарисован рядом с окном:
+       «Ваш заказ отправлен» (2241:158305) и шторка модулей (2225:201034);
+       они резервируют 72 у себя. */
     @apply max-md:items-end;
-    /* Ниже `md` окно встаёт НАД тапбаром, а не поверх него: так нарисованы оба
-       кадра, где тапбар вообще есть рядом с окном, — «Ваш заказ отправлен»
-       (2241:158305) и шторка модулей (2225:201034, панель кончается на 728 из
-       800). Кадры самих окон секции `B2b additional` тапбара не рисуют вовсе,
-       поэтому там панель дотянута до низа экрана; решение общее — см. BACKLOG. */
-    @apply max-md:pb-[72px];
   }
   .modal-scrim.is-open { @apply flex; }
   .modal-panel {
-    @apply w-[485px] rounded-[var(--radius-l)] bg-surface-inverted;
-    @apply max-md:max-h-[calc(95vh-72px)] max-md:w-full max-md:overflow-y-auto max-md:rounded-b-none;
+    /* Панель никогда не выходит за экран: `max-h-full` считается от
+       содержимого скрима, то есть уже с учётом его полей. */
+    @apply max-h-full w-[485px] overflow-y-auto rounded-[var(--radius-l)] bg-surface-inverted;
+    @apply max-md:w-full max-md:rounded-b-none;
   }
 
   /* ---- Catalog filter drawer: slide-in ----------------------------------

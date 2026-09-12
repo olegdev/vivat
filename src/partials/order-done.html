@@ -7,9 +7,10 @@
      Both order pages mount this — the customer's and the dealer's — and its
      two links point at sibling pages (`main.html`, `catalog.html`), which
      resolve inside whichever page's folder splices it in. -->
-<!-- 72 под тапбар ниже `md` (2241:158305) приходят из `.modal-scrim` — теперь
-     так у всех окон сайта -->
-<div class="modal-scrim z-[60] max-md:items-center max-md:bg-transparent" data-order-done>
+<!-- Ниже `md` тапбар остаётся виден под окном (2241:158305) — это одно из двух
+     мест, где кадр рисует его рядом с окном, поэтому 72 резервируются здесь, а
+     не в общей оболочке. -->
+<div class="modal-scrim z-[60] max-md:items-center max-md:bg-transparent max-md:pb-[72px]" data-order-done>
   <div class="modal-panel relative h-[725px] overflow-hidden max-md:h-full max-md:max-h-none max-md:rounded-none">
     <!-- Снимок обрезан по макету, и на 1440 и на 360 это РАЗНЫЕ куски одного
          кадра: fill-transform у 2241:161138 берёт 0.312–0.818 по ширине, у
