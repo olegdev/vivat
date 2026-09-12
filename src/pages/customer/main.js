@@ -52,6 +52,10 @@ const sections = {
       desc: "Подберите полезные товары, которые идеально дополнят вашу кухню VIVAT.",
       tabs: ["Все сразу", "Столешницы", "Бытовая техника", "Системы выдвижения", "Мойки", "Смесители"],
       compactChips: true, // segments 60, не 76 — см. carousel.js
+      // Ниже md у этого рельса нет кнопки «В раздел»: other-row 2395:106175 —
+      // 542 при мастере 594, ровно минус кнопка 52 (у «Модульных» наоборот,
+      // 452 = 400 + 52). Скрыта свойством компонента, в дампах не видна.
+      mobileAction: false,
       endpoint: "/catalog/popular", // tab seam target (see carousel.js initTabs)
       href: "catalog.html",
     },
