@@ -697,15 +697,15 @@
   }
   .order-input:user-invalid { @apply ring-1 ring-inset ring-border-error; }
 
-  /* ---- Order form select (`filters-sort` 1209:95256) --------------------
-     The dealer order's «Оплата» control: the same 44px field as `.order-input`
-     but pill-shaped (radius 24), with the chevron drawn by the call site. A
-     native <select> so the options are an @foreach in Blade; the design names
-     none of them yet, so today it holds only its placeholder — which it draws
-     in `text-primary`, not as a greyed-out placeholder. */
+  /* ---- Order form select (`Dropdown Trigger` 1271:51392) ----------------
+     Дилерский «Оплата»: то же поле 44, что и `.order-input`, — и тот же
+     радиус 4 (`form` 1271:51394, `rectangleTopLeftCornerRadius: 4`), а не
+     пилюля, как стояло. Шеврон рисует место вызова. Нативный <select>, чтобы
+     в Blade варианты стали @foreach; сегодня в нём только плейсхолдер, и он
+     серый — `value` 1271:51395 набран #808080. */
   .order-select {
-    @apply h-11 w-full appearance-none rounded-pill bg-components-subtle pl-4 pr-11;
-    @apply text-body-n text-text-primary outline-none transition-colors;
+    @apply h-11 w-full appearance-none rounded-n bg-components-subtle pl-4 pr-11;
+    @apply text-body-n text-text-secondary outline-none transition-colors;
     @apply focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-border-ring;
   }
 

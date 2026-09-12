@@ -40,6 +40,9 @@ export function initOrderModules(root, { lines, money, onChange } = {}) {
   function paint(node, mod) {
     node.querySelector("[data-module-qty]").textContent = String(mod.qty);
     node.querySelector("[data-module-price]").textContent = money(mod.price);
+    // При единице левая кнопка степпера — мусорка, как в карточке заказа.
+    const stepper = node.querySelector("[data-module-stepper]");
+    if (stepper) stepper.dataset.count = mod.qty <= 1 ? "one" : "many";
   }
 
   // ---- the card's own list (1440) -----------------------------------------
@@ -63,14 +66,14 @@ export function initOrderModules(root, { lines, money, onChange } = {}) {
     openLine = line;
     sheetTitle.textContent = line.title;
     sheetList.replaceChildren(...rowsOf(line));
-    sheet.classList.remove("hidden");
+    sheet.classList.add("is-open");
     setScrollLock("order-modules", true);
   }
 
   function closeSheet() {
     if (!sheet) return;
     openLine = null;
-    sheet.classList.add("hidden");
+    sheet.classList.remove("is-open");
     setScrollLock("order-modules", false);
   }
 
