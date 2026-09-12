@@ -46,7 +46,8 @@ const run = (cmd, args) => {
   catch (e) { return (e.stdout || "") + (e.stderr || ""); }
 };
 
-let problems = 0;
+let hard = 0;   // расхождения: кегль, вес, несошедшийся стык
+let soft = 0;   // подозрения: подсказки аудита ящиков
 let checks = 0;
 for (const r of rows.filter(wanted)) {
   for (const w of WIDTHS) {
@@ -63,13 +64,13 @@ for (const r of rows.filter(wanted)) {
         : w === "768" ? run(a[0], [r.page, r.ids[1440], "--tablet", id, ...(r.flags.flatten ? ["--flatten", r.flags.flatten] : [])])
         : run(a[0], [r.page, r.ids[1440], id, ...(r.flags.flatten ? ["--flatten", r.flags.flatten] : [])]);
       checks++;
-      for (const l of out.split("\n")) if (/^✗/.test(l)) lines.push("   отступы " + l.trim());
+      for (const l of out.split("\n")) if (/^✗/.test(l)) { lines.push("   отступы " + l.trim()); hard++; }
     } else {
       if (r.how.includes("t")) {
         const out = run("scripts/audit-type.mjs", [r.page, r.sel, id, "--width", w]);
         checks++;
-        for (const l of out.split("\n")) if (/^✗/.test(l)) lines.push("   кегль/вес " + l.trim());
-        if (/селектор ничего не нашёл|не INSTANCE/.test(out)) lines.push("   кегль/вес — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop());
+        for (const l of out.split("\n")) if (/^✗/.test(l)) { lines.push("   кегль/вес " + l.trim()); hard++; }
+        if (/селектор ничего не нашёл|не INSTANCE/.test(out)) { lines.push("   кегль/вес — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); hard++; }
       }
       if (r.how.includes("b")) {
         const a = [r.page, r.sel, id, "--width", w, "--min", "12"];
@@ -77,13 +78,12 @@ for (const r of rows.filter(wanted)) {
         const out = run("scripts/audit-box.mjs", a);
         checks++;
         const warn = out.split("\n").findIndex((l) => l.includes("⚠"));
-        if (warn >= 0) lines.push("   ящики " + out.split("\n")[warn].trim());
-        if (/селектор ничего не нашёл|нет такого узла/.test(out)) lines.push("   ящики — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop());
+        if (warn >= 0) { lines.push("   ящики " + out.split("\n")[warn].trim()); soft++; }
+        if (/селектор ничего не нашёл|нет такого узла/.test(out)) { lines.push("   ящики — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); hard++; }
       }
     }
 
     if (lines.length) {
-      problems += lines.length;
       console.log(`\n── ${r.page} @${w} · ${r.name}`);
       console.log(lines.join("\n"));
     }
@@ -91,7 +91,11 @@ for (const r of rows.filter(wanted)) {
 }
 
 console.log(
-  `\n  строк реестра ${rows.filter(wanted).length}, прогонов ${checks}, требует внимания ${problems}` +
-    (problems ? "" : " — всё сошлось") + "\n"
+  `\n  строк реестра ${rows.filter(wanted).length}, прогонов ${checks};` +
+    ` расхождений ${hard}, подозрений ${soft}` +
+    (hard || soft ? "" : " — всё сошлось") +
+    `\n  «расхождение» — кегль, вес или несошедшийся стык: смотреть обязательно.` +
+    `\n  «подозрение» — подсказка аудита ящиков. Часто это накопленное округление` +
+    `\n  ширины текста или своя фикстура, но проверить стоит.\n`
 );
-process.exit(problems ? 1 : 0);
+process.exit(hard ? 1 : 0);
