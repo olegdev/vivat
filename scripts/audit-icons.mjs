@@ -39,8 +39,10 @@ if (!page || !selector || !figmaId) {
 // ---- карта файл → символ ----------------------------------------------------
 const map = new Map();   // "header/icon-pin-20.svg" → { id, variant }
 for (const line of readFileSync("docs/ICON-MAP.md", "utf8").split("\n")) {
-  const m = line.match(/^\|\s*`([^`]+)`\s*\|\s*([0-9]+:[0-9]+)\s*\|\s*([^|]*)\|/);
-  if (m) map.set(m[1], { id: m[2], variant: m[3].trim() });
+  // в колонке символа может стоять несколько id через пробел — один файл на
+  // варианты, различающиеся только цветом, который даёт CSS
+  const m = line.match(/^\|\s*`([^`]+)`\s*\|\s*([0-9:\s]+?)\s*\|\s*([^|]*)\|/);
+  if (m) map.set(m[1], { ids: m[2].trim().split(/\s+/), variant: m[3].trim() });
 }
 
 // ---- макет ------------------------------------------------------------------
@@ -85,9 +87,9 @@ let hard = 0, soft = 0;
 for (const f of files) {
   const known = map.get(f.file);
   if (!known) { rows.push(["?", "не в карте", `${f.file} ${f.w}x${f.h}`]); soft++; continue; }
-  const hit = pool.find((x) => !x.used && x.id === known.id);
+  const hit = pool.find((x) => !x.used && known.ids.includes(x.id));
   if (hit) { hit.used = true; rows.push([" ", `${hit.name} ${hit.variant} ${hit.id}`, `${f.file} ${f.w}x${f.h}`]); continue; }
-  rows.push(["✗", `— (в кадре нет ${known.variant} ${known.id})`, `${f.file} ${f.w}x${f.h}`]); hard++;
+  rows.push(["✗", `— (в кадре нет ${known.variant} ${known.ids.join("/")})`, `${f.file} ${f.w}x${f.h}`]); hard++;
 }
 for (const x of pool.filter((x) => !x.used)) { rows.push(["м", `${x.name} ${x.variant} ${x.id}`, `— (${x.via})`]); soft++; }
 
