@@ -13,7 +13,7 @@
      Their price carries `data-price-base`, so it follows the price list like
      every card price. See BACKLOG. -->
 <!-- Бар, открываемый скроллом, — только десктопный: ниже `xl` всегда виден
-     другой, `modal-button-container` (на планшете 2483:246944, 768x64). -->
+     другой, `modal-button-container` (на планшете 768x64, см. ниже). -->
 <div class="pdp-sticky fixed inset-x-0 bottom-0 z-40 hidden h-12 bg-surface-inverted shadow-navbar xl:block" data-sticky-price>
   <div class="page-x flex h-full items-center justify-between">
     <div class="flex items-center gap-4">
@@ -49,26 +49,47 @@
 
      It stacks directly on top of the bottom nav (60px bar over the 72px nav,
      which is why the page reserves 132px at the bottom below `md`). -->
-<!-- На планшете бар 64 высотой с полем 24. Части делят ширину НЕ пополам:
-     экземпляр 2483:246944 переопределяет `text-action` в 537x44, значит
-     537 + зазор 8 + кнопка 175 при внутренней ширине 720. Пополам (356+356)
-     рисует мастер, а не кадр. Ссылка внутри — `link-container` 144x32,
-     прижатый влево, с одной иконкой 20: правая в экземпляре не рендерится. -->
+<!-- На планшете это 2483:246944 в экранном кадре 2483:246910: бар 768x64,
+     поле 24, зазор 8 — и две РАВНЫЕ области по 356 (`text-action` @24 и
+     `buttons` @388). Каждая область заполняется своим ребёнком целиком:
+     `link-container` 356x48 с содержимым по центру (иконка 20 + зазор 4 +
+     текст 84 = 108, по 124 слака с боков), `button-container` 356x44 с
+     подписью 181 по центру. Мастер кнопки так и называется — `fill-width=on`,
+     `stackChildPrimaryGrow=1`: 188 в мастере это ШИРИНА МАСТЕРА, а не кнопки.
+     `inst` на самом баре врёт — отдаёт 537x44 ключом на дочерний узел мастера
+     (2027:89962); считать надо по собственным детям инстанса, у них есть
+     абсолютные координаты, и они сходятся с геометрией кадра
+     (768 − 2·24 = 720, (720 − 8)/2 = 356).
+     Ниже `md` (2027:89990) области не равны: ссылка 129 (содержимое 98 плюс
+     по 16 с боков), кнопка забирает остаток — 191 при поле 16 и зазоре 8.
+     Кегль тоже разный: 16/24 на планшете против 14/20 на телефоне —
+     подтверждено глифами derivedTextData, а не полем `fontSize`. -->
 <!-- Тень вверх рисует именно этот бар (2027:89990), а не тапбар под ним. -->
-<div class="fixed inset-x-0 bottom-[72px] z-40 flex h-16 items-center justify-center gap-2 bg-surface-inverted px-6 shadow-navbar xl:hidden max-md:h-[60px] max-md:px-4">
-  <a
-    href="#where"
-    class="flex items-center gap-1 px-2 text-m-body-n-accent text-text-secondary max-xl:h-8 max-xl:min-w-0 max-xl:flex-1 max-md:h-auto max-md:flex-none"
-  >
-    <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5 shrink-0 opacity-60" />
-    <span>Где купить</span>
-  </a>
+<div
+  class="fixed inset-x-0 bottom-[72px] z-40 flex h-16 items-center gap-2 bg-surface-inverted px-6 shadow-navbar xl:hidden max-md:h-[60px] max-md:px-4"
+  data-cta-bar
+>
+  <!-- Область и её ребёнок — разные ящики, и обёртка тут не для красоты:
+       `flex-1` прямо на кнопке даёт 340/372, а не 356/356, потому что при
+       `box-sizing: border-box` основа 0 упирается в её собственные поля 2x16.
+       Обёртка делит ширину, ребёнок внутри растягивается на всю область. -->
+  <div class="flex flex-1 max-md:flex-none">
+    <a
+      href="#where"
+      class="flex h-12 w-full items-center justify-center gap-1 text-button-m text-text-secondary max-md:h-11 max-md:px-4 max-md:text-m-body-n-accent"
+    >
+      <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5 shrink-0 opacity-60" />
+      <span>Где купить</span>
+    </a>
+  </div>
   <!-- The button's icon slot renders empty in the live frame — text only. -->
-  <button type="button" class="btn btn-m btn-accent text-m-button-m max-xl:flex-none" data-pdp-order>
-    <span
-      >Оформить&nbsp;•
-      <span class="group-data-[user=dealer]:hidden">от </span
-      ><span data-sticky-price-value></span
-    ></span>
-  </button>
+  <div class="flex flex-1">
+    <button type="button" class="btn btn-m btn-accent w-full max-md:text-m-button-m" data-pdp-order>
+      <span
+        >Оформить&nbsp;•
+        <span class="group-data-[user=dealer]:hidden">от </span
+        ><span data-sticky-price-value></span
+      ></span>
+    </button>
+  </div>
 </div>
