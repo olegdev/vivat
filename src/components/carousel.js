@@ -55,8 +55,11 @@ export function buildCarouselSection({
 
   if (desc) section.querySelector("[data-cs-desc]").textContent = desc;
   else {
-    drop(section, "[data-cs-desc-gap]");
     drop(section, "[data-cs-desc]");
+    // Без описания на 1440 зазора нет (контейнер 44 = одна строка заголовка),
+    // а ниже md он остаётся: макет держит схлопнутый `description` с его
+    // распоркой 4 — «Акции и скидки» 2395:106201 = 40 + 26 + 4 + 12 = 82.
+    section.querySelector("[data-cs-desc-gap]").className = "h-0 max-md:h-1";
   }
 
   if (!desktopAction) drop(section, "[data-cs-desktop-action]");
