@@ -15,7 +15,8 @@
     "audit:spacing": "node scripts/audit-spacing.mjs",
     "audit:type": "node scripts/audit-type.mjs",
     "schema": "node scripts/check-schema.mjs",
-    "audit:box": "node scripts/audit-box.mjs"
+    "audit:box": "node scripts/audit-box.mjs",
+    "audit:all": "node scripts/audit-all.mjs"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.0",

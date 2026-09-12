@@ -69,20 +69,21 @@ for (const n of idx.nodes) {
 }
 for (const a of kids.values()) a.sort((x, y) => String(x.order).localeCompare(String(y.order)));
 
+// Узел может быть и FRAME — например блок характеристик (1686:59210). Тогда
+// накладывать нечего: индекс и есть истина, метрика берётся прямо с узлов и
+// считается твёрдой. Раньше скрипт на таком просто отказывался работать, и
+// целые блоки оставались непроверенными.
 const inst = raw(figmaId.replace("-", ":"));
-if (!inst?.symbolData) {
-  console.error(`${figmaId} — не INSTANCE; аудит кеглей читает derivedSymbolData`);
-  process.exit(1);
-}
+const isFrame = !inst?.symbolData;
 const pathOf = (g) => g.guids.map((x) => `${x.sessionID}:${x.localID}`).join(".");
 
 const overrides = new Map();
-for (const o of inst.symbolData.symbolOverrides ?? [])
+for (const o of inst?.symbolData?.symbolOverrides ?? [])
   if (o.textData?.characters) overrides.set(pathOf(o.guidPath), o.textData.characters);
 
 // Derived layout, keyed by the same path — this is where the real metrics live.
 const derived = new Map();
-for (const e of inst.derivedSymbolData ?? []) derived.set(pathOf(e.guidPath), e);
+for (const e of inst?.derivedSymbolData ?? []) derived.set(pathOf(e.guidPath), e);
 
 const WEIGHT = { Thin: 100, ExtraLight: 200, Light: 300, Regular: 400, Medium: 500,
                  SemiBold: 600, Bold: 700, ExtraBold: 800, Black: 900 };
@@ -122,10 +123,12 @@ const figText = [];
         lh: box != null ? +(box / lines).toFixed(1) : (c.font?.lh ?? null),
         weight: c.font?.style ? (WEIGHT[c.font.style] ?? null) : null,
         // Метрика насчитана Figma для ЭТОГО экземпляра, а не взята с мастера.
-        firm: !!dt,
+        firm: !!dt || isFrame,
         // Начертание берётся из мастера: пер-экземплярного веса Figma в
         // derivedSymbolData не хранит. Помечаем, чтобы не читалось как факт.
         weightFromMaster: true,
+        // У FRAME метрика с самого узла — она и есть отрисованная.
+        frame: isFrame,
       });
     }
     if (c.symbol) {
@@ -136,9 +139,9 @@ const figText = [];
     }
   }
 })(
-  inst.symbolData.symbolID
+  inst?.symbolData?.symbolID
     ? `${inst.symbolData.symbolID.sessionID}:${inst.symbolData.symbolID.localID}`
-    : figmaId,
+    : figmaId.replace("-", ":"),
   "",
   new Set()
 );
