@@ -114,6 +114,7 @@ mountCarousel(
     compactChips: true, // segments size=s ниже md (1997:315100), 60 на 1440 (922:103133)
     variant: "other-s",
     desktopAction: false,
+    mobileDescGap: false, // как у покупателя: 1997:315099
     href: "catalog.html",
     arrowTop: 97,
     endpoint: "/product/fusion-05/addons", // tab seam target
@@ -131,6 +132,7 @@ mountCarousel(
     desktopAction: false,
     mobileAction: false,
     mobileProgress: false,
+    mobileDescGap: false, // 1997:315104
     arrowTop: 136, // 1686:58686 carousel-controls y=136 — not the card's own centre (148)
   },
   reviews
@@ -138,7 +140,13 @@ mountCarousel(
 
 mountCarousel(
   document.querySelector('[data-section="collection"]'),
-  { title: "Вся коллекция Фьюжн", action: "В раздел", href: "catalog.html?collection=Фьюжн", mobileAction: false },
+  {
+    title: "Вся коллекция Фьюжн",
+    action: "В раздел",
+    href: "catalog.html?collection=Фьюжн",
+    mobileAction: false,
+    mobileDescGap: false, // как у покупателя: 1997:315113
+  },
   collection
 );
 

@@ -42,6 +42,11 @@ export function buildCarouselSection({
   actionMobile,
   arrowTop = 139,
   compactChips = false,
+  // Без описания макет ниже md ведёт себя по-разному: на главной («Акции и
+  // скидки» 2395:106201) схлопнутый `description` держит распорку 4 и блок
+  // 82, а рельсы PDP (1997:315099/315104/315113) прячут его целиком — блок
+  // 78. Читается только по инстансу, поэтому это опция.
+  mobileDescGap = true,
   id,
 }) {
   const frag = clone("[data-carousel-section]");
@@ -59,7 +64,7 @@ export function buildCarouselSection({
     // Без описания на 1440 зазора нет (контейнер 44 = одна строка заголовка),
     // а ниже md он остаётся: макет держит схлопнутый `description` с его
     // распоркой 4 — «Акции и скидки» 2395:106201 = 40 + 26 + 4 + 12 = 82.
-    section.querySelector("[data-cs-desc-gap]").className = "h-0 max-md:h-1";
+    section.querySelector("[data-cs-desc-gap]").className = mobileDescGap ? "h-0 max-md:h-1" : "h-0";
   }
 
   if (!desktopAction) drop(section, "[data-cs-desktop-action]");

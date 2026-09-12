@@ -110,6 +110,7 @@ mountCarousel(
     // `other-row` (1997:315101) does carry the full-width "В раздел" action —
     // the two breakpoints genuinely differ here.
     desktopAction: false,
+    mobileDescGap: false, // 1997:315099 — контейнер заголовка 26, без распорки описания
     href: "catalog.html",
     arrowTop: 97,
     endpoint: "/product/fusion-05/addons", // tab seam target
@@ -130,6 +131,7 @@ mountCarousel(
     desktopAction: false,
     mobileAction: false,
     mobileProgress: false,
+    mobileDescGap: false, // 1997:315104
     arrowTop: 136, // 1686:58686 carousel-controls y=136 — not the card's own centre (148)
   },
   reviews
@@ -137,7 +139,13 @@ mountCarousel(
 
 mountCarousel(
   document.querySelector('[data-section="collection"]'),
-  { title: "Вся коллекция Фьюжн", action: "В раздел", href: "catalog.html?collection=Фьюжн", mobileAction: false },
+  {
+    title: "Вся коллекция Фьюжн",
+    action: "В раздел",
+    href: "catalog.html?collection=Фьюжн",
+    mobileAction: false,
+    mobileDescGap: false, // 1997:315113
+  },
   collection
 );
 
