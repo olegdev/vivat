@@ -94,6 +94,13 @@ function setStep(n, { scroll = true } = {}) {
     // on the steps with no subtitle, so it is measured, not hard-coded.
     const head = page.querySelector("[data-order-mheader]");
     storesSection.style.top = isMobile() ? `${Math.round(head.getBoundingClientRect().height)}px` : "";
+    // …и не под бар «Выберите дилера» с тапбаром: дорожка листа кончается на
+    // верхнем крае бара, иначе низ списка магазинов уходит под них и до
+    // последней карточки не домотать. Во фрейме тапбара нет, а бар нарисован
+    // поверх листа — на живом экране это 132px закрытого списка.
+    const bar = page.querySelector("[data-step1-bar]");
+    storesSection.style.bottom =
+      isMobile() && bar ? `${Math.round(window.innerHeight - bar.getBoundingClientRect().top)}px` : "";
     // both were laid out while their section was hidden and measured zero
     map?.refresh();
     sheet?.sync();
@@ -165,6 +172,7 @@ const sheet = initStoreSheet({
   sheet: page.querySelector("[data-store-panel]"),
   track: page.querySelector("[data-map-frame]"),
   grip: page.querySelector("[data-sheet-grip]"),
+  handles: [page.querySelector("[data-panel-head]")],
   // На шаге выбора магазина крестик над картой появляется вместе с поднятым
   // листом (2059:169141) и гасит его обратно.
   raiseClose: true,

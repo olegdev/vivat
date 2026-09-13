@@ -596,13 +596,17 @@
   }
 
   /* Выбранный дилер на шаге 1 заказа — рамка, а не подсветка: 1px #414141 и
-     радиус 4, одинаково на обеих ширинах (`type=order, condition=selected`
-     946:122008 на 1440 и 1859:333418 на 360). Было кольцо в 2px.
+     радиус 4 (`type=order, condition=selected` 946:122008 на 1440,
+     2477:169286 на 768). Ниже `md` рамки нет: там выбор показывает
+     радиокнопка карточки — макет 1859:333418 рамку рисует, но клиент снял
+     её (13.09.2026), см. BACKLOG.md. Было кольцо в 2px.
      Вложено в модификатор — на читающих страницах у aria-current нет
      собственного стиля вовсе (карточка всегда белая). */
   .stores-select .store-card[aria-current="true"] {
-    @apply rounded-n border border-border-active bg-surface-inverted;
+    @apply md:rounded-n md:border md:border-border-active bg-surface-inverted;
   }
+  /* Последняя карточка списка — без линии снизу: за ней край панели. */
+  .store-card:last-child { @apply border-b-0; }
   .store-card [data-chevron] { @apply transition-transform; }
   .store-card[aria-expanded="true"] [data-chevron] { rotate: 180deg; }
 
@@ -650,6 +654,11 @@
     opacity: 1;
     scale: 1.2;
   }
+
+  /* Промо-блок Яндекса («Как добраться», «Доехать на такси», «Создать свою
+     карту») появляется у нижнего края от 10-го зума и перекрывает полотно;
+     `suppressMapOpenBlock` его не касается. Копирайт и логотип остаются. */
+  [class*="-map-copyrights-promo"] { display: none; }
 
   .store-pin__popup {
     @apply pointer-events-none invisible absolute w-[240px] rounded-[var(--radius-l)] bg-surface-inverted p-3 opacity-0 shadow-dropdown transition-opacity;

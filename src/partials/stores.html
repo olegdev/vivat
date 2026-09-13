@@ -137,11 +137,6 @@
              из-под него сегменты уезжали за пределы экрана. -->
         <div class="hidden px-4 py-2 md:hidden" data-store-audience></div>
 
-        <!-- Пусто: регион, магазины которого ещё не пришли с бэка. Копия та
-             же, что у пустой выдачи каталога. -->
-        <p class="hidden px-10 py-10 text-body-n text-text-secondary max-md:px-4" data-store-empty>
-          Ничего не найдено
-        </p>
         <label class="mx-4 mb-2 mt-3 hidden h-11 items-center gap-2 rounded-[var(--radius-l)] bg-components-subtle px-3" data-sheet-search>
           <input
             type="search"
@@ -151,6 +146,13 @@
           />
           <img src="../../assets/header/icon-search.svg" alt="" class="size-5 shrink-0 opacity-60" />
         </label>
+
+        <!-- Пусто: ни фильтр, ни поиск по адресу ничего не оставили (или
+             регион, магазины которого ещё не пришли с бэка). Копия та же, что
+             у пустой выдачи каталога. Стоит ПОД полем поиска — это его ответ. -->
+        <p class="hidden px-10 py-10 text-body-n text-text-secondary max-md:px-4" data-store-empty>
+          Ничего не найдено
+        </p>
 
         <div data-store-list class="stores-scroll h-[580px] overflow-y-auto pb-4 pl-4 max-xl:pl-2 max-md:min-h-0 max-md:flex-1 max-md:border-t max-md:border-divider-light max-md:pb-0 max-md:pl-0"></div>
 

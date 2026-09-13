@@ -115,7 +115,11 @@ function enterSelectMode(anchor) {
     : anchor.querySelector("[data-stores-section]");
 
   section.classList.add("stores-select");
-  swap(section, ["bg-surface-accent", "pb-16", "max-md:pb-10"], [
+  // `max-xl:pb-0` снимается: на читающих страницах за картой на планшете
+  // сразу следующий блок, а здесь под ней плашка «Вы выбрали…» — без
+  // отступа она прилипает к рамке. Планшетного кадра у заказа нет, поэтому
+  // поле такое же, как на 1440 (64).
+  swap(section, ["bg-surface-accent", "pb-16", "max-md:pb-10", "max-xl:pb-0"], [
     "bg-bg-page",
     "pb-16",
     "max-md:fixed",
@@ -438,44 +442,81 @@ export function renderStoresMap(anchor, opts) {
     return show;
   }
 
+  // ---- лист ниже `md`: общее поведение всех хозяев --------------------------
+  // Лист создаётся по-разному — читающие страницы строят его по «Где купить»,
+  // шаг 1 заказа отдаёт свой через attachSheet(), — но ведёт себя одинаково:
+  //
+  //   · фокус в «Найти по адресу» раскрывает его — иначе клавиатура закрывает
+  //     и без того короткий свёрнутый список;
+  //   · тап по карте сворачивает — иначе из раскрытого состояния можно выйти
+  //     только ручкой. Ловим `pointerdown` в фазе перехвата, а не `click`:
+  //     полотно Яндекса обрабатывает указатель само и click до нас не доходит
+  //     вовсе — до документа не долетает даже перехватывающий слушатель.
+  //     Побочный эффект осознанный: начало панорамирования тоже сворачивает
+  //     лист — это то же «пользователь пошёл в карту». Метка — исключение:
+  //     тап по ней выбирает магазин, и лист со списком должен остаться;
+  //   · высота листа — это поле карты снизу: полёт к магазину целится в
+  //     видимую полосу, а не под лист (см. flyTo).
+  let sheet = null;
+  function wireSheet(api) {
+    if (!api) return;
+    sheet = api;
+    anchor.querySelector("[data-store-search]")?.addEventListener("focus", () => {
+      if (isMobileCity()) api.expand?.();
+    });
+    anchor.querySelector("[data-map-pane]")?.addEventListener(
+      "pointerdown",
+      (e) => {
+        if (e.target.closest("[data-map-cta], [data-map-close], [data-zoom], .store-pin")) return;
+        api.collapse?.();
+      },
+      true
+    );
+  }
+
+  // Полноэкранная карта — единственное состояние ниже `md`, где полотно
+  // тянется одним пальцем. В потоке страницы (320 на читающих, 360 на
+  // Контактах) перетаскивание выключено: иначе свайп по карте перехватывает
+  // прокрутку страницы и на ней «застреваешь». Двумя пальцами (multiTouch)
+  // карту по-прежнему можно двигать и масштабировать. Колесо выключено на всех
+  // ширинах — для масштаба есть свои «+»/«−», а колесо над картой посреди
+  // страницы должно листать страницу.
+  let fullscreen = selectable;
+  function syncBehaviors() {
+    if (!map) return;
+    map.behaviors.disable("scrollZoom");
+    if (isMobileCity() && !fullscreen) map.behaviors.disable("drag");
+    else map.behaviors.enable("drag");
+  }
+  window.matchMedia("(max-width: 47.99rem)").addEventListener("change", syncBehaviors);
+
   if (!selectable && !contactPage) {
-    let sheet = null;
     const closeBtn = anchor.querySelector("[data-map-close]");
     const open = (on) => {
       setFullMap(anchor, on);
+      fullscreen = on;
       if (on) {
-        sheet =
-          sheet ||
-          initStoreSheet({
-            sheet: anchor.querySelector("[data-store-panel]"),
-            track: anchor.querySelector("[data-map-frame]"),
-            grip: anchor.querySelector("[data-sheet-grip]"),
-            snaps: FULLMAP_SNAPS,
-          });
+        if (!sheet) {
+          wireSheet(
+            initStoreSheet({
+              sheet: anchor.querySelector("[data-store-panel]"),
+              track: anchor.querySelector("[data-map-frame]"),
+              grip: anchor.querySelector("[data-sheet-grip]"),
+              handles: [anchor.querySelector("[data-panel-head]")],
+              snaps: FULLMAP_SNAPS,
+            })
+          );
+        }
         // Дорожка до раскрытия имела нулевую высоту — лист надо перемерить,
         // ровно та же причина, по которой `sync` публичен для шага 1 заказа.
         sheet?.collapse?.();
         sheet?.sync?.();
       }
+      syncBehaviors();
       // Полотно меняет размер — карте надо пересчитаться, иначе она остаётся
       // с прежними границами и метки уезжают за край.
       requestAnimationFrame(() => map?.container?.fitToViewport?.());
     };
-    // Лист, растянутый на весь экран, сворачивается кликом по карте — иначе
-    // из раскрытого состояния можно выйти только ручкой.
-    // Ловим `pointerdown` в фазе перехвата, а не `click`: полотно Яндекса
-    // обрабатывает указатель само и click до нас не доходит вовсе — проверено,
-    // до документа не долетает даже перехватывающий слушатель. Побочный эффект
-    // осознанный: не только тап, но и начало панорамирования карты сворачивает
-    // лист — это то же «пользователь пошёл в карту».
-    anchor.querySelector("[data-map-pane]")?.addEventListener(
-      "pointerdown",
-      (e) => {
-        if (e.target.closest("[data-map-cta], [data-map-close], [data-zoom]")) return;
-        sheet?.collapse?.();
-      },
-      true
-    );
 
     anchor.querySelector("[data-map-cta]")?.addEventListener("click", (e) => {
       e.preventDefault();
@@ -595,7 +636,12 @@ export function renderStoresMap(anchor, opts) {
           : "Выбрать магазин";
         pick.querySelector("[data-store-pick-icon]").classList.toggle("hidden", !picked);
       }
-      if (picked && scroll) card.scrollIntoView({ block: "nearest", behavior: "smooth" });
+      // С метки на мобиле карточку ставим первой строкой списка: в свёрнутом
+      // листе видна одна-две строки, и «ближайшая» позиция оставила бы её за
+      // краем. На десктопе список высокий, там достаточно «nearest».
+      if (picked && scroll) {
+        card.scrollIntoView({ block: sheet && isMobileCity() ? "start" : "nearest", behavior: "smooth" });
+      }
     }
     for (const [id, entry] of marks) {
       entry.placemark.properties.set("selected", id === selectedId);
@@ -613,8 +659,17 @@ export function renderStoresMap(anchor, opts) {
     if (fly && selectedId && map) {
       const store = items.find((s) => s.id === selectedId);
       currentZoom = Math.max(currentZoom, 13);
-      map.setCenter(store.ll, currentZoom, { duration: 450 });
+      flyTo(store.ll, currentZoom);
     }
+  }
+
+  // Полёт к точке. Ниже `md` лист закрывает низ полотна, а setCenter целится
+  // в геометрический центр — метка приезжала под лист. `useMapMargin` сдвигает
+  // цель в видимую часть: поле снизу — текущая высота листа.
+  function flyTo(ll, z) {
+    if (!ll || !map) return;
+    map.margin.setDefaultMargin([0, 0, sheet?.height?.() ?? 0, 0]);
+    map.setCenter(ll, z, { duration: 450, useMapMargin: true });
   }
 
   // Десктоп, режим выбора: раскрытие — свой клик, не проходит через select().
@@ -655,6 +710,9 @@ export function renderStoresMap(anchor, opts) {
     if (selectedId && !visible.some((s) => s.id === selectedId)) selectedId = null;
     paintList();
     syncMarkers();
+    // Пустая выдача — «Ничего не найдено», а не пустая панель. Контакты
+    // ведут свою панель сами (contacts.js), их не трогаем.
+    if (!contactPage) anchor.querySelector("[data-store-empty]")?.classList.toggle("hidden", visible.length > 0);
   }
   function writeURL(brandOnly) {
     const params = new URLSearchParams(location.search);
@@ -763,6 +821,7 @@ export function renderStoresMap(anchor, opts) {
         currentZoom = map.getZoom();
       });
 
+      syncBehaviors();
       buildMarkers();
     })
     .catch(mapFailed);
@@ -803,6 +862,7 @@ export function renderStoresMap(anchor, opts) {
     // карточку магазина.
     attachSheet(sheetApi) {
       if (!selectable) return;
+      wireSheet(sheetApi);
       showDetailStep = wireStoreDetail(sheetApi);
       listEl?.addEventListener(
         "click",

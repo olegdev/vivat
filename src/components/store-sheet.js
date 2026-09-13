@@ -1,24 +1,17 @@
-// Bottom sheet over the dealer map — the order page's шаг 1 below `md`
-// (Figma 2032:158435 collapsed / 2059:169141 expanded).
-//
-// Figma draws three 360 frames for this step but only two distinct shapes:
-// the sheet's top edge sits 402px into the 722px map area collapsed, and 161px
-// expanded — 55.7% and 22.3%. Those are the snap points; the drag is real, and
-// a flick lands on whichever point the gesture is heading for.
-//
-// The gesture follows the rule this project already paid for once: NEVER take
-// pointer capture on `pointerdown`, only once a drag is actually under way,
-// or the browser dispatches the following `click` on the capturing element and
-// everything inside the sheet goes dead for mouse users (SOLUTIONS.md › Touch
-// gestures).
-// Точки прилипания — доля высоты дорожки, на которой стоит ВЕРХНИЙ край листа.
-// У шага 1 заказа дорожка это область карты 722 при листе 402/161. У читающих
-// страниц карта раскрывается на весь экран (812), и лист стоит на 402 и 80
-// (Figma state=ordinary-min 1859:334569 / -max 1859:334571) — отсюда второй
-// набор. Поэтому набор передаётся, а не зашит.
 const SNAPS_ORDER = [0.557, 0.223];
 
-export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER, raiseClose = false }) {
+// `handles` — дополнительные поверхности, за которые лист тянется помимо
+// ручки: шапка панели (город + тумблер). Порог 4px оставляет тап тапом, так
+// что кнопки внутри шапки продолжают нажиматься.
+export function initStoreSheet({
+  sheet,
+  track,
+  grip,
+  handles = [],
+  onSnap,
+  snaps = SNAPS_ORDER,
+  raiseClose = false,
+}) {
   const SNAPS = snaps;
   if (!sheet || !track) return null;
 
@@ -27,16 +20,11 @@ export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER
   let captured = false;
   let startY = 0;
   let startH = 0;
+  let handle = null;
 
   const trackH = () => track.getBoundingClientRect().height;
   const heightFor = (i) => Math.round(trackH() * (1 - SNAPS[i]));
 
-  // Крестик над картой рисуется только у поднятого листа: во фрейме свёрнутого
-  // шага (2032:158435) его нет, у поднятого (2059:169141) есть. Кнопка та же
-  // самая `close-panel`, что гасит раскрытую карту на читающих страницах, —
-  // отсюда флаг: там она видна всё время, пока карта раскрыта, и трогать её
-  // нельзя. Класс, а не правило в CSS: `hidden` — утилита, и правило из
-  // `@layer components` ей бы проиграло (SOLUTIONS.md › «Слои»).
   const closeBand = raiseClose ? track.querySelector("[data-map-close]") : null;
   const setBand = (on) => {
     closeBand?.classList.toggle("hidden", !on);
@@ -49,15 +37,14 @@ export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER
     sheet.style.height = `${heightFor(index)}px`;
     sheet.dataset.snap = index === 0 ? "collapsed" : "expanded";
     setBand(index > 0);
-    onSnap?.(sheet.dataset.snap);
+    onSnap?.(sheet.dataset.snap, heightFor(index));
   }
 
-  // Read the track per gesture rather than caching it — it changes with the
-  // viewport, and a stale value drifts after a rotate/resize.
   function onDown(e) {
     if (e.button !== undefined && e.button !== 0) return;
     dragging = true;
     captured = false;
+    handle = e.currentTarget;
     startY = e.clientY;
     startH = sheet.getBoundingClientRect().height;
     sheet.style.transition = "";
@@ -69,7 +56,7 @@ export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER
     if (!captured) {
       if (Math.abs(dy) < 4) return; // still a tap, leave clicks alone
       captured = true;
-      grip.setPointerCapture?.(e.pointerId);
+      handle.setPointerCapture?.(e.pointerId);
     }
     const max = heightFor(SNAPS.length - 1);
     const min = heightFor(0);
@@ -79,19 +66,22 @@ export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER
   function onUp(e) {
     if (!dragging) return;
     dragging = false;
-    if (captured) grip.releasePointerCapture?.(e.pointerId);
-    if (!captured) return apply(index === 0 ? 1 : 0); // a tap on the grip toggles
+    if (captured) handle.releasePointerCapture?.(e.pointerId);
+    // Тап по ручке переключает лист; тап по шапке — нет, там свои кнопки.
+    if (!captured) return handle === grip ? apply(index === 0 ? 1 : 0) : undefined;
 
-    // Land on the snap the gesture is heading for, not the nearest one.
     const h = sheet.getBoundingClientRect().height;
     const mid = (heightFor(0) + heightFor(1)) / 2;
     apply(h > mid ? 1 : 0);
   }
 
-  grip.addEventListener("pointerdown", onDown);
-  grip.addEventListener("pointermove", onMove);
-  grip.addEventListener("pointerup", onUp);
-  grip.addEventListener("pointercancel", onUp);
+  for (const el of [grip, ...handles]) {
+    if (!el) continue;
+    el.addEventListener("pointerdown", onDown);
+    el.addEventListener("pointermove", onMove);
+    el.addEventListener("pointerup", onUp);
+    el.addEventListener("pointercancel", onUp);
+  }
 
   const mq = window.matchMedia("(max-width: 47.99rem)");
   const sync = () => (mq.matches ? apply(index, { animate: false }) : (sheet.style.height = ""));
@@ -99,18 +89,23 @@ export function initStoreSheet({ sheet, track, grip, onSnap, snaps = SNAPS_ORDER
   window.addEventListener("resize", sync);
   sync();
 
-  // `sync` is public because the order page lays this out while шаг 1 is still
-  // hidden — the track measures 0 then, and the sheet must be re-measured when
-  // the step opens (same reason the map needs `refresh`).
-  // Карточка магазина поднимает лист выше обеих точек прилипания: во фрейме
-  // 2397:154868 полоса карты остаётся 50 из 722, то есть верх листа на 0.058.
-  // Перетаскивание при этом по-прежнему ходит между двумя обычными точками.
   function peak(fraction) {
     sheet.style.transition = "height 220ms cubic-bezier(0.22, 0.61, 0.36, 1)";
-    sheet.style.height = `${Math.round(trackH() * (1 - fraction))}px`;
+    const h = Math.round(trackH() * (1 - fraction));
+    sheet.style.height = `${h}px`;
     sheet.dataset.snap = "expanded";
     setBand(true);
+    onSnap?.("expanded", h);
   }
 
-  return { sync, expand: () => apply(1), collapse: () => apply(0), peak, closeBtn: closeBand };
+  return {
+    sync,
+    expand: () => apply(1),
+    collapse: () => apply(0),
+    peak,
+    closeBtn: closeBand,
+    isExpanded: () => index > 0,
+    // Текущая высота листа — столько карты снизу закрыто.
+    height: () => (mq.matches ? sheet.getBoundingClientRect().height : 0),
+  };
 }
