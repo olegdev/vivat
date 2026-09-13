@@ -174,6 +174,10 @@ const ctxOf = (r) => ({
         color: charColor(path) ?? (c.fills?.[0]?.color ?? null),
       });
     }
+    // Скрытый фрейм ВНЕ инстанса скрыт по-настоящему (это не «hidden-in-master»,
+    // который экземпляр может показать): в его детей не спускаемся — иначе
+    // спрятанная старая цена в сводке модуля встаёт против нашей цены.
+    if (c.hidden && !inInstance && !c.symbol) continue;
     if (c.symbol) {
       if (seen.has(c.symbol)) continue;
       // вложенный инстанс вне контекста инстанса — свой derived, путь с нуля
