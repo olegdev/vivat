@@ -46,7 +46,11 @@ const opt = (n, d) => {
   return i === -1 ? d : argv[i + 1];
 };
 const WIDTH = Number(opt("--width", 1440));
-const pos = argv.filter((a, i) => !a.startsWith("--") && argv[i - 1] !== "--width");
+// `--session dealer` — страницы раздела «Для бизнеса» шарятся и читают, кто
+// смотрит, из localStorage; кадры рисуют дилерскую шапку, а свежий браузер
+// аудита — покупательскую.
+const SESSION = opt("--session", null);
+const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session"].includes(argv[i - 1]));
 const [page, selector, figmaId] = pos;
 if (!page || !selector || !figmaId) {
   console.error(
@@ -105,10 +109,22 @@ for (const o of inst?.symbolData?.symbolOverrides ?? []) {
 }
 const charColor = (path) => charFills.get(path) ?? null;
 
+// Контекст обхода: чей derived/overrides накладывать. У корня-INSTANCE — его
+// собственные; у корня-FRAME их нет, и каждый вложенный инстанс (карточка
+// декора, строка меню) получает СВОЙ контекст из своего raw — иначе его текст
+// читался бы с мастера и считался твёрдым: «Белый» 14/20 по мастеру карточки
+// при 16/24 в насчитанной укладке инстанса.
 const figText = [];
-(function walk(nodeId, prefix, seen) {
+const ctxOf = (r) => ({
+  derived: new Map((r?.derivedSymbolData ?? []).map((e) => [pathOf(e.guidPath), e])),
+  overrides: new Map(
+    (r?.symbolData?.symbolOverrides ?? []).filter((o) => o.textData?.characters).map((o) => [pathOf(o.guidPath), o.textData.characters])
+  ),
+});
+(function walk(nodeId, prefix, seen, ctx = { derived, overrides }, inInstance = !isFrame) {
   for (const c of kids.get(nodeId) ?? []) {
     const path = prefix ? `${prefix}.${c.id}` : c.id;
+    const { derived, overrides } = ctx;
     const d = derived.get(path);
     // Отсутствие в `derivedSymbolData` НЕ значит «не рендерится»: туда попадает
     // то, что отличается от мастера. Заголовок «Популярные товары для кухни»
@@ -142,9 +158,10 @@ const figText = [];
         // цифры только насчитанные (derived); с мастера их нет.
         lines: dt ? lines : null,
         boxW: dt?.layoutSize?.x ?? null,
+        autoW: !!c.font?.autoW,
         weight: c.font?.style ? (WEIGHT[c.font.style] ?? null) : null,
         // Метрика насчитана Figma для ЭТОГО экземпляра, а не взята с мастера.
-        firm: !!dt || isFrame,
+        firm: !!dt || !inInstance,
         // Начертание берётся из мастера: пер-экземплярного веса Figma в
         // derivedSymbolData не хранит. Помечаем, чтобы не читалось как факт.
         weightFromMaster: true,
@@ -159,9 +176,11 @@ const figText = [];
     }
     if (c.symbol) {
       if (seen.has(c.symbol)) continue;
-      walk(c.symbol, path, new Set([...seen, c.symbol]));
+      // вложенный инстанс вне контекста инстанса — свой derived, путь с нуля
+      if (!inInstance) walk(c.symbol, "", new Set([...seen, c.symbol]), ctxOf(raw(c.id)), true);
+      else walk(c.symbol, path, new Set([...seen, c.symbol]), ctx, true);
     } else {
-      walk(c.id, prefix, seen);
+      walk(c.id, prefix, seen, ctx, inInstance);
     }
   }
 })(
@@ -175,6 +194,7 @@ const figText = [];
 // ---- DOM side ----------------------------------------------------------------
 const browser = await chromium.launch();
 const p = await browser.newPage({ viewport: { width: WIDTH, height: 1000 } });
+if (SESSION) await p.addInitScript((u) => localStorage.setItem("vivat:user", u), SESSION);
 await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "load" });
 await p.waitForTimeout(1500);
 const domText = await p.evaluate((sel) => {
@@ -318,7 +338,7 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     // и 3%) — трекинг, начертание или другой шрифт.
     const same = how === "текст" && f.lines != null && d.lines != null;
     const wrapBad = same && !sizeBad && f.lines !== d.lines;
-    const widthBad = same && !sizeBad && f.lines === 1 && d.lines === 1 && f.boxW != null && d.boxW != null &&
+    const widthBad = same && !sizeBad && f.autoW && f.lines === 1 && d.lines === 1 && f.boxW != null && d.boxW != null &&
       Math.abs(f.boxW - d.boxW) > Math.max(4, 0.03 * f.boxW);
     if (sizeBad && !f.firm) {
       // Метрика с мастера — сигнал, а не приговор. Считать её дефектом значит

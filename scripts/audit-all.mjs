@@ -66,8 +66,9 @@ for (const r of rows.filter(wanted)) {
       checks++;
       for (const l of out.split("\n")) if (/^✗/.test(l)) { lines.push("   отступы " + l.trim()); hard++; }
     } else {
+      const sess = r.flags.session ? ["--session", r.flags.session] : [];
       if (r.how.includes("t")) {
-        const out = run("scripts/audit-type.mjs", [r.page, r.sel, id, "--width", w]);
+        const out = run("scripts/audit-type.mjs", [r.page, r.sel, id, "--width", w, ...sess]);
         checks++;
         for (const l of out.split("\n")) {
           if (/^✗/.test(l)) { lines.push("   кегль/перенос " + l.trim()); hard++; }
@@ -83,7 +84,7 @@ for (const r of rows.filter(wanted)) {
         if (/is not an INSTANCE|селектор ничего не нашёл/.test(out)) { lines.push("   копия — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); soft++; }
       }
       if (r.how.includes("i")) {
-        const out = run("scripts/audit-icons.mjs", [r.page, r.sel, id, "--width", w]);
+        const out = run("scripts/audit-icons.mjs", [r.page, r.sel, id, "--width", w, ...sess]);
         checks++;
         for (const l of out.split("\n")) if (/^[✗?]/.test(l)) { lines.push("   иконки " + l.trim()); if (l.startsWith("✗")) hard++; else soft++; }
         if (/селектор ничего не нашёл/.test(out)) { lines.push("   иконки — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); hard++; }
@@ -92,6 +93,7 @@ for (const r of rows.filter(wanted)) {
         const a = [r.page, r.sel, id, "--width", w, "--min", "12"];
         if (r.flags.depth) a.push("--depth", r.flags.depth);
         if (r.flags.click) a.push("--click", r.flags.click);
+        a.push(...sess);
         const out = run("scripts/audit-box.mjs", a);
         checks++;
         // все подсказки с их строками-примерами (они идут следом с отступом 6)

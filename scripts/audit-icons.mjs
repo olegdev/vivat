@@ -29,7 +29,8 @@ import { resolve } from "node:path";
 const argv = process.argv.slice(2);
 const opt = (n, d) => { const i = argv.indexOf(n); return i === -1 ? d : argv[i + 1]; };
 const WIDTH = Number(opt("--width", 1440));
-const pos = argv.filter((a, i) => !a.startsWith("--") && argv[i - 1] !== "--width");
+const SESSION = opt("--session", null);
+const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session"].includes(argv[i - 1]));
 const [page, selector, figmaId] = pos;
 if (!page || !selector || !figmaId) {
   console.error("usage: node scripts/audit-icons.mjs <page> <selector> <figma-id> [--width 1440]");
@@ -56,6 +57,7 @@ for (const l of figOut.split("\n").slice(1)) {
 // ---- страница ---------------------------------------------------------------
 const browser = await chromium.launch();
 const p = await browser.newPage({ viewport: { width: WIDTH, height: 900 } });
+if (SESSION) await p.addInitScript((u) => localStorage.setItem("vivat:user", u), SESSION);
 await p.goto(`file://${resolve(`dist/pages/${page}.html`)}`, { waitUntil: "load" });
 await p.waitForTimeout(400);
 const files = await p.$$eval(selector, (roots) => {

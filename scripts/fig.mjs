@@ -135,6 +135,10 @@ function slim(n) {
             box: box != null ? +box.toFixed(2) : null,
             lines: lines || null,
             decoration: n.textDecoration ?? null,
+            // Ширина текста по содержимому (auto width) — только тогда
+            // `layoutSize.x` это ширина букв; у фиксированного ящика это ширина
+            // контейнера (подвальные строки 1372, подпись логотипа 212).
+            autoW: n.textAutoResize === "WIDTH_AND_HEIGHT",
           };
         })()
       : null,

@@ -44,7 +44,8 @@ const MIN = Number(opt("--min", 8)); // ящики ниже этого не пе
 // до замера — так сверяются открытая панель прайс-листа, ящик фильтров, шаг
 // меню. Без этого аудит видит только то, что нарисовано при загрузке.
 const CLICKS = opt("--click", "") ? String(opt("--click")).split(",") : [];
-const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--depth", "--min", "--click"].includes(argv[i - 1]));
+const SESSION = opt("--session", null); // см. audit-type: кто смотрит страницу
+const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--depth", "--min", "--click", "--session"].includes(argv[i - 1]));
 const [page, selector, figmaId] = pos;
 if (!page || !selector || !figmaId) {
   console.error(
@@ -142,6 +143,7 @@ else walkFig(root.id, 1, null, "");
 // ---- DOM side ----------------------------------------------------------------
 const browser = await chromium.launch();
 const p = await browser.newPage({ viewport: { width: WIDTH, height: 1000 } });
+if (SESSION) await p.addInitScript((u) => localStorage.setItem("vivat:user", u), SESSION);
 await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "domcontentloaded" });
 await p.waitForTimeout(2500);
 for (const c of CLICKS) {

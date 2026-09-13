@@ -14,21 +14,27 @@
      - иконка «поделиться» рядом с заголовком здесь ВИДНА (2488:130062): у
        кухни этот слот белым по белому и потому не рендерится.
 
-     Порядок блоков одинаков на всех трёх ширинах, меняются только поля:
-     24 на десктопе и планшете, 16 на мобиле. Ниже `xl` панель разворачивается
-     во всю ширину и теряет рамку — как и кухонная. Кнопка остаётся ВНУТРИ
-     сводки на всех ширинах: нижнего бара у этой страницы нет ни в одном
-     фрейме.
+     Ниже `xl` порядок другой (размер выше комплектации) и низ другой —
+     серая карточка с ценой и ссылкой, без кнопки: см. комментарий у `aside`.
+     Кнопка на 1440 внутри сводки; ниже — в нижнем баре, добавленном по
+     решению клиента.
 
      Структура — HTML, поведение (выбор сегмента и образца) —
      components/pdp-module.js. -->
+<!-- Ниже `xl` порядок и низ ДРУГИЕ (2488:136034 / 2488:128734): заголовок →
+     размер с «Подробнее» → «Комплектация» → «Каркас» → «Фасад» → серая
+     карточка с ценой и ссылкой «Получить оптовую цену» в одну строку;
+     кнопки и извещения нет (CTA — в нижнем баре). Как у кухонной сводки,
+     обёртка `max-xl:contents` и `order-*` пересобирают десктопный порядок.
+     Поля: сводка 16 сверху (снизу 16 на 768, 0 на 360), `Top` 8 сверху и
+     зазор 12 между блоками, боковые 24 / 16. -->
 <aside
-  class="flex w-[412px] shrink-0 flex-col self-start rounded-n border border-border-light bg-surface-inverted xl:sticky xl:top-6 max-xl:w-full max-xl:rounded-none max-xl:border-0"
+  class="flex w-[412px] shrink-0 flex-col self-start rounded-n border border-border-light bg-surface-inverted xl:sticky xl:top-6 max-xl:w-full max-xl:gap-3 max-xl:rounded-none max-xl:border-0 max-xl:pt-6 max-xl:pb-4 max-md:pb-0"
   data-module-summary
 >
-  <div class="flex flex-col gap-4 p-6 max-xl:px-6 max-xl:py-4 max-md:px-4">
-    <div class="flex items-start gap-3">
-      <!-- 30/36 на планшете, как у кухонной сводки (2488:136037) -->
+  <div class="flex flex-col gap-4 p-6 max-xl:contents">
+    <div class="flex items-start gap-3 max-xl:order-1 max-xl:px-6 max-md:px-4">
+      <!-- 30/36 на планшете, как у кухонной сводки (2488:136037); 22/26 на 360 -->
       <h1 class="min-w-0 flex-1 text-h3 text-text-primary max-xl:text-h2 max-md:text-m-h2" data-module-title></h1>
       <!-- На 1440 «поделиться» стоит в сводке (2488:130062), ниже `xl` — на
            самом снимке, как в мобильном фрейме. -->
@@ -37,20 +43,24 @@
       </button>
     </div>
 
-    <!-- комплектация: подпись и сегменты `segments` size=l outline=on -->
-    <div class="flex flex-col gap-2">
-      <p class="text-body-n text-text-primary" data-module-packaging-label></p>
-      <div class="flex items-center gap-1" role="radiogroup" aria-label="Комплектация" data-module-packaging></div>
+    <!-- комплектация: подпись и сегменты `segments` size=l outline=on.
+         Ниже `xl` — `color` 2488:136043: подпись 16/22 (14/20), зазор 6,
+         сегменты 40 (padV 4 вокруг пилюль 32), без полей. -->
+    <!-- Под сегментами до «Каркаса» 16 на 768 (нижнее поле `color` 84 − 68) и
+         12 на 360 (78 − 66): зазор сводки даёт 12, на планшете добираем 4. -->
+    <div class="flex flex-col gap-2 max-xl:order-3 max-xl:gap-1.5 max-xl:px-6 max-xl:pb-1 max-md:px-4 max-md:pb-0">
+      <p class="text-body-n text-text-primary max-xl:text-body-n-accent max-md:text-m-body-n-accent" data-module-packaging-label></p>
+      <div class="flex items-center gap-1 max-xl:py-1" role="radiogroup" aria-label="Комплектация" data-module-packaging></div>
     </div>
 
     <!-- по одной группе на «Каркас» и «Фасад» -->
-    <div class="flex flex-col gap-4" data-module-colors></div>
+    <div class="flex flex-col gap-4 max-xl:order-4 max-xl:gap-0 max-xl:px-6 max-md:px-4" data-module-colors></div>
 
-    <div class="flex flex-col border-t border-divider-light pt-4">
-      <p class="text-body-n text-text-primary" data-module-size></p>
+    <div class="flex flex-col border-t border-divider-light pt-4 max-xl:order-2 max-xl:border-0 max-xl:px-6 max-xl:pt-0 max-md:px-4">
+      <p class="text-body-n text-text-primary max-md:text-m-body-n" data-module-size></p>
       <a
         href="#specs"
-        class="w-fit text-body-n text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+        class="w-fit text-body-n text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary max-md:text-m-body-n"
         >Подробнее</a
       >
     </div>
@@ -61,20 +71,31 @@
   <!-- Разделитель — верхняя граница ВНУТРЕННЕГО контейнера (2488:130077,
        1px #e7e7e7): он вставлен на те же 24, что и содержимое, а не идёт от
        края до края панели. -->
-  <div class="flex flex-col px-6 max-md:px-4">
-    <div class="flex flex-col gap-3 border-t border-divider-light py-6 max-xl:py-4">
-      <!-- Цены в макете модуля нет — блок добавлен по решению клиента и
-           повторяет ценовой ряд кухонной сводки. -->
-      <div class="flex items-center gap-4">
+  <!-- Ниже `xl` это серая карточка `bottom` (2488:136063 / 2488:128751):
+       на 768 поля 8 + 16, цена 30/36 и ссылка через 16; на 360 поля 0 + 16,
+       цена 22/26 и ссылка у правого края (space-between). Кнопка и извещение
+       там не рисуются. -->
+  <div class="flex flex-col px-6 max-xl:order-5 max-xl:mx-6 max-xl:rounded-n max-xl:bg-bg-subtle max-xl:px-6 max-xl:py-2 max-md:mx-4 max-md:px-4 max-md:py-0">
+    <div class="flex flex-col gap-3 border-t border-divider-light py-6 max-xl:border-0 max-xl:py-4">
+      <!-- Цены в макете 1440 нет — блок добавлен по решению клиента; 768 и
+           360 её уже рисуют (2488:136068 / 2488:128753). -->
+      <div class="flex items-center gap-4 max-md:justify-between max-md:gap-3">
         <div class="flex items-baseline gap-2">
-          <span class="text-body-n-accent text-text-primary">от</span>
-          <span class="text-h3 text-text-primary" data-module-price></span>
-          <span class="text-body-n text-text-secondary line-through empty:hidden" data-module-oldprice></span>
+          <span class="text-body-n-accent text-text-primary max-xl:hidden">от</span>
+          <span class="text-h3 text-text-primary max-xl:text-h2 max-md:text-m-h2" data-module-price></span>
+          <span class="text-body-n text-text-secondary line-through empty:hidden max-xl:hidden" data-module-oldprice></span>
         </div>
-        <span class="badge badge-s badge-discount empty:hidden" data-module-discount></span>
+        <span class="badge badge-s badge-discount empty:hidden max-xl:hidden" data-module-discount></span>
+        <!-- `text-action device=mobile size=s` (1739:226487): значок info 16
+             dark, зазор 4, текст 12/16 Medium #292929 — на обеих ширинах
+             (2488:136072 / 2488:130646, глифы 12). -->
+        <a href="#" class="hidden h-8 items-center gap-1 text-m-body-s-accent text-text-primary max-xl:flex" data-module-notice-inline>
+          <img src="../../assets/pdp/icon-warning-dark.svg" alt="" class="size-4 shrink-0" />
+          <span data-module-notice-inline-text></span>
+        </a>
       </div>
-      <button type="button" class="btn btn-m btn-primary w-full" data-pdp-order data-module-order></button>
-      <p class="flex items-center justify-center gap-2 text-body-s text-text-primary">
+      <button type="button" class="btn btn-m btn-primary w-full max-xl:hidden" data-pdp-order data-module-order></button>
+      <p class="flex items-center justify-center gap-2 text-body-s text-text-primary max-xl:hidden">
         <img src="../../assets/pdp/icon-warning.svg" alt="" class="size-6 -m-1 shrink-0" />
         <a href="#" class="link-dotted" data-module-notice></a>
       </p>
@@ -83,22 +104,28 @@
 </aside>
 
 <!-- одна группа цветов (future @foreach($product->colorGroups as $group)) -->
+<!-- Ниже `xl` группа — `color` с полями: 768 — 16 сверху, зазор 10, образцы 28
+     через 12 (2488:136047); 360 — 12 сверху, зазор 8, образцы 32 через 16
+     (2488:130551). Нижние 16 только у последней (2488:136055 / 130559). -->
 <template data-module-color-group>
-  <div class="flex flex-col gap-2.5">
-    <p class="text-body-n text-text-primary" data-group-label></p>
-    <div class="flex items-center gap-3" data-group-colors></div>
-    <p class="text-body-s text-text-secondary" data-group-name></p>
+  <div class="flex flex-col gap-2.5 max-xl:pt-4 max-xl:last:pb-4 max-md:gap-2 max-md:pt-3">
+    <p class="text-body-n text-text-primary max-xl:text-body-n-accent max-md:text-m-body-n-accent" data-group-label></p>
+    <div class="flex items-center gap-3 max-md:gap-4" data-group-colors></div>
+    <p class="text-body-s text-text-secondary max-md:text-m-body-s" data-group-name></p>
   </div>
 </template>
 
 <!-- один образец цвета -->
 <template data-module-swatch>
-  <button type="button" class="pdp-swatch" role="radio" aria-checked="false">
+  <!-- Образцы модуля на планшете 28 (2488:136050), на 360 — 32 (2488:130553) -->
+  <button type="button" class="pdp-swatch max-xl:size-7 max-md:size-8" role="radio" aria-checked="false">
     <img alt="" class="size-full rounded-full object-cover" />
   </button>
 </template>
 
 <!-- один сегмент комплектации -->
+<!-- У модуля пилюли 32 с 12/16 и на планшете (2488:136046 — 56x32, глифы 12),
+     тогда как у кухни там 44 с 16/22; переопределяем ступень `.pdp-segment`. -->
 <template data-module-segment>
-  <button type="button" class="pdp-segment" role="radio" aria-checked="false"></button>
+  <button type="button" class="pdp-segment max-xl:h-8 max-xl:text-m-body-s-accent" role="radio" aria-checked="false"></button>
 </template>
