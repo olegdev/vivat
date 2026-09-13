@@ -69,7 +69,10 @@ for (const r of rows.filter(wanted)) {
       if (r.how.includes("t")) {
         const out = run("scripts/audit-type.mjs", [r.page, r.sel, id, "--width", w]);
         checks++;
-        for (const l of out.split("\n")) if (/^✗/.test(l)) { lines.push("   кегль/вес " + l.trim()); hard++; }
+        for (const l of out.split("\n")) {
+          if (/^✗/.test(l)) { lines.push("   кегль/перенос " + l.trim()); hard++; }
+          else if (/^шр/.test(l)) { lines.push("   ширина текста " + l.trim()); soft++; }
+        }
         if (/селектор ничего не нашёл|не INSTANCE/.test(out)) { lines.push("   кегль/вес — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); hard++; }
       }
       if (r.how.includes("c")) {

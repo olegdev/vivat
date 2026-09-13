@@ -136,6 +136,12 @@ const figText = [];
         text: t.replace(/\s+/g, " ").trim(),
         size: dt?.glyphs?.[0]?.fontSize ?? c.font?.size ?? null,
         lh: box != null ? +(box / lines).toFixed(1) : (c.font?.lh ?? null),
+        // Метрики шрифта: число уложенных строк и ширина уложенного текста.
+        // Кегль может сойтись, а Onest в браузере уложит строку иначе, чем
+        // Figma, — и заголовок в 22 px на 328 станет на строку короче. Обе
+        // цифры только насчитанные (derived); с мастера их нет.
+        lines: dt ? lines : null,
+        boxW: dt?.layoutSize?.x ?? null,
         weight: c.font?.style ? (WEIGHT[c.font.style] ?? null) : null,
         // Метрика насчитана Figma для ЭТОГО экземпляра, а не взята с мастера.
         firm: !!dt || isFrame,
@@ -194,10 +200,19 @@ const domText = await p.evaluate((sel) => {
         if (!t) continue;
         const cs = getComputedStyle(el);
         const rgb = cs.color.match(/\d+/g);
+        // Уложенный текст: прямоугольник самого текстового узла (Range), а не
+        // элемента — у элемента есть паддинги и ширина контейнера.
+        const range = document.createRange();
+        range.selectNodeContents(n);
+        const rects = [...range.getClientRects()];
+        const rb = range.getBoundingClientRect();
+        const lhPx = cs.lineHeight === "normal" ? null : parseFloat(cs.lineHeight);
         out.push({
           text: t,
           size: parseFloat(cs.fontSize),
-          lh: cs.lineHeight === "normal" ? null : parseFloat(cs.lineHeight),
+          lh: lhPx,
+          lines: lhPx ? Math.max(1, Math.round(rb.height / lhPx)) : rects.length || null,
+          boxW: Math.round(rb.width),
           weight: parseInt(cs.fontWeight, 10),
           color: rgb ? "#" + rgb.slice(0, 3).map((v) => (+v).toString(16).padStart(2, "0")).join("") : null,
         });
@@ -274,6 +289,7 @@ function pairLeftovers(rows) {
 }
 
 let bad = 0;
+let wrap = 0;
 let soft = 0;
 let only = 0;
 let guessed = 0;
@@ -296,6 +312,14 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     // протухшему полю, что я один раз уже сделал.
     const wBad = f.weight != null && d.weight != null && f.weight !== d.weight;
     const lhBad = f.lh != null && d.lh != null && Math.abs(f.lh - d.lh) > 1;
+    // Метрики шрифта — только у пар ПО ТЕКСТУ (одна и та же строка) с
+    // насчитанной укладкой. Разное число строк — перенос: кегль тот же, а блок
+    // на строку выше или ниже. Разная ширина однострочного текста (больше 4px
+    // и 3%) — трекинг, начертание или другой шрифт.
+    const same = how === "текст" && f.lines != null && d.lines != null;
+    const wrapBad = same && !sizeBad && f.lines !== d.lines;
+    const widthBad = same && !sizeBad && f.lines === 1 && d.lines === 1 && f.boxW != null && d.boxW != null &&
+      Math.abs(f.boxW - d.boxW) > Math.max(4, 0.03 * f.boxW);
     if (sizeBad && !f.firm) {
       // Метрика с мастера — сигнал, а не приговор. Считать её дефектом значит
       // выдумывать: на якорном ряду PDP так получилось пять расхождений подряд,
@@ -305,6 +329,12 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     } else if (sizeBad) {
       flag = how === "порядок" ? "≈✗" : "✗ ";
       bad++;
+    } else if (wrapBad) {
+      flag = "✗п";
+      wrap++;
+    } else if (widthBad) {
+      flag = "шр";
+      soft++;
     } else if (wBad) {
       flag = "вес";
       soft++;
@@ -326,14 +356,20 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     how === "порядок"
       ? `${(f.text ?? "").slice(0, 16)} ⟷ ${(d.text ?? "").slice(0, 16)}`
       : (f?.text ?? d?.text ?? "").slice(0, 37);
-  console.log(`${flag}${label.padEnd(38)} ${fmt(f).padStart(12)}   ${fmt(d).padStart(12)}`);
+  const metric = (flag === "✗п" || flag === "шр") && f && d
+    ? `   строк ${f.lines}↔${d.lines}, ширина ${f.boxW}↔${d.boxW}` : "";
+  console.log(`${flag}${label.padEnd(38)} ${fmt(f).padStart(12)}   ${fmt(d).padStart(12)}${metric}`);
 }
 
 console.log(
   `\n  строк: в макете ${figText.length}, на странице ${domText.length};` +
-    ` расхождений кегля ${bad}, интерлиньяжа ${soft};` +
+    ` расхождений кегля ${bad}, переносов ${wrap}, мягких ${soft};` +
     ` сведено по порядку ${guessed}, без пары ${only}` +
     `\n  «✗» — разошёлся КЕГЛЬ. Это дефект.` +
+    `\n  «✗п» — та же строка уложена в другое число строк: перенос. Метрики` +
+    `\n         шрифта или ширина контейнера — блок на строку выше/ниже.` +
+    `\n  «шр» — однострочный текст другой ширины (>4px и >3%): трекинг,` +
+    `\n         начертание или не тот шрифт.` +
     `\n  «вес» — разошёлся ВЕС. Мягкий: derived его не несёт, читается с мастера,` +
     `\n         а поле fontName там протухает так же, как fontSize.` +
     `\n  «*» — метрика макета взята с МАСТЕРА (насчитанной для экземпляра нет).` +
@@ -347,4 +383,4 @@ console.log(
     `\n  «м»/«с» — строка только в макете / только на странице; метрику не сверить.` +
     `\n  Вес берётся из мастера: вариант, меняющий начертание, аудит не увидит.\n`
 );
-process.exit(bad ? 1 : 0);
+process.exit(bad || wrap ? 1 : 0);
