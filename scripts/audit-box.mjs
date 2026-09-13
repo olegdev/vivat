@@ -2,7 +2,7 @@
 // page renders. Fourth of the family, after `audit.mjs` (copy),
 // `audit-spacing.mjs` (section joints) and `audit-type.mjs` (kegel).
 //
-//   node scripts/audit-box.mjs <page> <selector> <figma-id> [--width 1440] [--depth 4]
+//   node scripts/audit-box.mjs <page> <selector> <figma-id> [--width 1440] [--depth 4] [--click sel,sel]
 //   node scripts/audit-box.mjs customer/pdp '#specs' 914:103290
 //
 // Why a fourth: the other three all miss the same class of defect, and it is
@@ -40,7 +40,11 @@ const opt = (n, d) => { const i = argv.indexOf(n); return i === -1 ? d : argv[i 
 const WIDTH = Number(opt("--width", 1440));
 const DEPTH = Number(opt("--depth", 4));
 const MIN = Number(opt("--min", 8)); // ящики ниже этого не печатаем: иконки и линии
-const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--depth", "--min"].includes(argv[i - 1]));
+// Состояния: `--click sel,sel` жмёт первый ВИДИМЫЙ элемент по каждому селектору
+// до замера — так сверяются открытая панель прайс-листа, ящик фильтров, шаг
+// меню. Без этого аудит видит только то, что нарисовано при загрузке.
+const CLICKS = opt("--click", "") ? String(opt("--click")).split(",") : [];
+const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--depth", "--min", "--click"].includes(argv[i - 1]));
 const [page, selector, figmaId] = pos;
 if (!page || !selector || !figmaId) {
   console.error(
@@ -137,6 +141,10 @@ const browser = await chromium.launch();
 const p = await browser.newPage({ viewport: { width: WIDTH, height: 1000 } });
 await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "domcontentloaded" });
 await p.waitForTimeout(2500);
+for (const c of CLICKS) {
+  await p.$$eval(c, (els) => { const v = els.find((e) => e.getClientRects().length); if (v) v.click(); });
+  await p.waitForTimeout(400);
+}
 const domBoxes = await p.evaluate(
   ({ sel, depth: maxDepth, min }) => {
     const seen = (el) => {

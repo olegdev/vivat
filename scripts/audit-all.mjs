@@ -88,6 +88,7 @@ for (const r of rows.filter(wanted)) {
       if (r.how.includes("b")) {
         const a = [r.page, r.sel, id, "--width", w, "--min", "12"];
         if (r.flags.depth) a.push("--depth", r.flags.depth);
+        if (r.flags.click) a.push("--click", r.flags.click);
         const out = run("scripts/audit-box.mjs", a);
         checks++;
         // все подсказки с их строками-примерами (они идут следом с отступом 6)
