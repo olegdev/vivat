@@ -476,7 +476,11 @@
     @apply flex size-12 items-center justify-center rounded-full transition-colors;
     @apply border border-border-default bg-components-subtle;
     @apply hover:border-border-subtle-hover hover:bg-components-subtle-hover;
-    @apply disabled:pointer-events-none disabled:opacity-40;
+    /* У набора `carousel-controls` три состояния — default / hover / pressed,
+       выключенного нет, и кадры рисуют обе стрелки в начале рельса в полный
+       цвет (766:30341/30342). Приглушение до 40% было нашим — снято; стрелка у
+       края просто не реагирует. Вопрос дизайнеру — в BACKLOG. */
+    @apply disabled:pointer-events-none;
   }
 
   /* ---- Promo tiles (А как вам вот такое) --------------------------------

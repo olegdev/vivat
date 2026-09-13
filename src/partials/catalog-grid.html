@@ -23,8 +23,11 @@
       </a>
       <div data-card-badges class="absolute right-2 top-2 flex items-center gap-1 max-md:right-1 max-md:top-1"></div>
       <!-- Filled per photo by fillGallery(); the dots the design draws here
-           are the gallery's, not decoration. -->
-      <div class="pointer-events-none absolute inset-x-0 bottom-2 flex items-center justify-center gap-2 [&>*]:pointer-events-auto max-md:bottom-1 max-md:gap-1" data-card-dots></div>
+           are the gallery's, not decoration. Ряд точек 16 стоит вплотную к
+           низу картинки: `carousel` @226 в `Img-container` 242 (2250:137846)
+           и @109 в 125 на мобиле (1997:308273) — без отступа, как в
+           `product-card`. -->
+      <div class="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 [&>*]:pointer-events-auto max-md:gap-1" data-card-dots></div>
     </div>
     <div class="flex flex-col gap-1 px-1 py-3 max-md:gap-0 max-md:pb-0 max-md:pt-1.5">
       <div class="flex items-start gap-4 max-md:gap-0">

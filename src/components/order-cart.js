@@ -17,6 +17,8 @@
 //       body: JSON.stringify({ lines: state.map(({ id, qty, selected }) => …) }),
 //     });
 //     paint((await res.json()).lines);   // server owns quantities and totals
+import { setCartCount } from "./cart.js";
+
 const clone = (sel) => document.querySelector(sel).content.cloneNode(true);
 
 const money = (n) => `${n.toLocaleString("ru-RU").replace(/ /g, " ")}₽`;
@@ -44,6 +46,8 @@ export function initOrderCart(root, { lines } = {}) {
   // the pre-discount total, «Скидка» what the old prices give back, «Итого»
   // the difference. Only selected lines count.
   function paintSummary() {
+    // счётчик в шапке — все строки корзины, не только отмеченные
+    setCartCount(state.reduce((n, l) => n + l.qty, 0));
     const picked = state.filter((l) => l.selected);
     const count = picked.reduce((n, l) => n + l.qty, 0);
     const subtotal = picked.reduce((s, l) => s + (l.oldPrice || l.price) * l.qty, 0);

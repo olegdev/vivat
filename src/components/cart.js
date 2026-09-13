@@ -68,6 +68,15 @@ export function addToCart(id, qty = 1) {
   paintCartState();
 }
 
+// Страница заказа знает состав корзины точнее счётчика: её строки — это и
+// есть корзина. Она выставляет счётчик по ним (в Blade его отдаёт сервер
+// вместе со строками), иначе в шапке заказа значок пуст при трёх позициях в
+// списке — а кадр 942:110180 рисует нажатую корзину со счётчиком.
+export function setCartCount(n) {
+  localStorage.setItem(KEY, String(n));
+  paint(n);
+}
+
 export function initCart(root = document) {
   paint();
   paintCartState(root);

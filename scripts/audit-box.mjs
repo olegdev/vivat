@@ -105,7 +105,10 @@ function walkFig(nodeId, depth, derived, prefix, parentKey = "root") {
     if (derived && !d && prefix) continue; // внутри инстанса — то, чего нет в раскладке, не рендерится
     if (h == null || h < MIN) continue;
     const y = d?.transform?.m12 ?? c.y ?? 0;
-    const x = d?.transform?.m02 ?? c.x ?? 0;
+    // У отражённого узла (m00 < 0 — стрелки рельса) transform.x — это ПРАВЫЙ
+    // край; левый = x − ширина. Иначе стрелка «стоит» на 64, когда видна на 16.
+    const m00 = d?.transform?.m00 ?? c.m?.[0] ?? 1;
+    const x = (d?.transform?.m02 ?? c.x ?? 0) - (m00 < 0 ? w : 0);
     figBoxes.push({
       depth, name: c.name ?? c.type, w: Math.round(w), h: Math.round(h), y: Math.round(y), x: Math.round(x),
       parent: nodeId, uid: `${prefix}|${c.id}`, pkey: parentKey,
