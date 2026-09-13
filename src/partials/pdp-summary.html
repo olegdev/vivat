@@ -97,10 +97,12 @@
     <!-- `notice` 943:108544 — 16px warning glyph + 14/18 muted copy; на 360 —
          12/16 в две строки (2084:148153, глифы 12 при боксе 32). Ниже `xl`
          кнопки нет, но её контейнер `button+notice` (padV 12) остаётся, и
-         извещение стоит на 12 ниже зазора — 2483:243592 и 2084:148152. Дилерский
+         извещение стоит на 12 ниже зазора — 2483:243592 и 2084:148152; у того же
+         контейнера `borderTopWeight` 1 #eeeeee (`borderStrokeWeightsIndependent`)
+         — линия над извещением, внутренней тенью, чтобы не расти. Дилерский
          вариант сводки (953:142727) её не несёт, как и «от» выше: там цена одна
          строкой, поэтому панель на 49px ниже покупательской. -->
-    <p class="flex gap-2 text-body-s text-text-secondary group-data-[user=dealer]:hidden max-xl:min-h-8 max-xl:pt-3 max-md:text-m-body-s">
+    <p class="flex gap-2 text-body-s text-text-secondary group-data-[user=dealer]:hidden max-xl:min-h-8 max-xl:pt-3 max-xl:shadow-[inset_0_1px_0_var(--color-divider-soft)] max-md:text-m-body-s">
       <img src="../../assets/pdp/icon-warning.svg" alt="" class="size-4 shrink-0" />
       <span>Дилерская наценка может отличаться в зависимости от региона!</span>
     </p>

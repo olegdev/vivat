@@ -138,6 +138,20 @@ function slim(n) {
           };
         })()
       : null,
+    // Обводка — для аудита цвета (`audit-box` подсказка «цвет»): первая
+    // видимая сплошная, толщина и сторона. Пустой `strokePaints` — это «не
+    // знаю», а не «нет обводки» (см. SOLUTIONS), поэтому null, а не «нет».
+    stroke: (() => {
+      const sp = (n.strokePaints || []).filter((p) => p.visible !== false && p.type === "SOLID");
+      if (!sp.length) return null;
+      // Стороны: при `borderStrokeWeightsIndependent` толщина по сторонам своя
+      // (линия только сверху у извещения в сводке — `borderTopWeight 1`).
+      const sides = n.borderStrokeWeightsIndependent
+        ? { t: n.borderTopWeight ?? 0, r: n.borderRightWeight ?? 0, b: n.borderBottomWeight ?? 0, l: n.borderLeftWeight ?? 0 }
+        : null;
+      return { color: hex(sp[0].color), opacity: sp[0].opacity != null ? +sp[0].opacity.toFixed(3) : 1,
+               weight: n.strokeWeight ?? 1, align: n.strokeAlign ?? null, sides };
+    })(),
     stack: n.stackMode
       ? {
           mode: n.stackMode,

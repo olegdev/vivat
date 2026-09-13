@@ -69,7 +69,24 @@ const raw = (id) => {
 const pathOf = (g) => g.guids.map((x) => `${x.sessionID}:${x.localID}`).join(".");
 
 const figBoxes = [];
-function walkFig(nodeId, depth, derived, prefix) {
+const hex = (col) =>
+  col ? "#" + [col.r, col.g, col.b].map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("") : null;
+// Заливка ящика: первая видимая сплошная. Внутри инстанса переопределение
+// `fillPaints` (symbolOverrides по тому же пути) важнее заливки мастера.
+const fillOf = (c, ovr) => {
+  if (ovr?.fillPaints) {
+    const f = ovr.fillPaints.find((p) => p.visible !== false && p.type === "SOLID");
+    return f ? { color: hex(f.color), opacity: f.opacity ?? 1 } : null;
+  }
+  const f = (c.fills || []).find((p) => p.type === "SOLID" && p.color);
+  return f ? { color: f.color, opacity: f.opacity ?? 1 } : null;
+};
+const layoutOf = (r) =>
+  ({
+    d: new Map((r.derivedSymbolData ?? []).map((e) => [pathOf(e.guidPath), e])),
+    o: new Map((r.symbolData?.symbolOverrides ?? []).map((e) => [pathOf(e.guidPath), e])),
+  });
+function walkFig(nodeId, depth, derived, prefix, parentKey = "root") {
   if (depth > DEPTH) return;
   const children = (kids.get(nodeId) ?? []).filter((c) => !c.hidden && c.h != null);
   // Визуальный порядок: сверху вниз, затем слева направо.
@@ -77,25 +94,31 @@ function walkFig(nodeId, depth, derived, prefix) {
   for (const c of children) {
     const p = prefix ? `${prefix}.${c.id}` : c.id;
     // Геометрия из насчитанной раскладки, если мы внутри инстанса.
-    const d = derived?.get(p);
+    const d = derived?.d.get(p);
+    const ovr = derived?.o.get(p);
     const w = d?.size?.x ?? c.w;
     const h = d?.size?.y ?? c.h;
     if (derived && !d && prefix) continue; // внутри инстанса — то, чего нет в раскладке, не рендерится
     if (h == null || h < MIN) continue;
     const y = d?.transform?.m12 ?? c.y ?? 0;
-    figBoxes.push({ depth, name: c.name ?? c.type, w: Math.round(w), h: Math.round(h), y: Math.round(y), parent: nodeId });
+    const x = d?.transform?.m02 ?? c.x ?? 0;
+    figBoxes.push({
+      depth, name: c.name ?? c.type, w: Math.round(w), h: Math.round(h), y: Math.round(y), x: Math.round(x),
+      parent: nodeId, uid: `${prefix}|${c.id}`, pkey: parentKey,
+      text: c.text != null, fill: fillOf(c, ovr), stroke: c.stroke ?? null,
+      opacity: c.opacity ?? 1,
+    });
     if (c.symbol) {
       // Спускаемся в мастер, но геометрию берём из derivedSymbolData инстанса.
       let own = derived;
       let ownPrefix = p;
       if (!derived) {
-        const r = raw(c.id);
-        own = new Map((r.derivedSymbolData ?? []).map((e) => [pathOf(e.guidPath), e]));
+        own = layoutOf(raw(c.id));
         ownPrefix = "";
       }
-      walkFig(c.symbol, depth + 1, own, ownPrefix);
+      walkFig(c.symbol, depth + 1, own, ownPrefix, `${prefix}|${c.id}`);
     } else {
-      walkFig(c.id, depth + 1, derived, prefix);
+      walkFig(c.id, depth + 1, derived, prefix, `${prefix}|${c.id}`);
     }
   }
 }
@@ -104,11 +127,10 @@ if (!root) {
   console.error(`нет такого узла в экспорте: ${figmaId}`);
   process.exit(1);
 }
-figBoxes.push({ depth: 0, name: `${root.name} (корень)`, w: Math.round(root.w), h: Math.round(root.h) });
-if (root.symbol) {
-  const r = raw(root.id);
-  walkFig(root.symbol, 1, new Map((r.derivedSymbolData ?? []).map((e) => [pathOf(e.guidPath), e])), "");
-} else walkFig(root.id, 1, null, "");
+figBoxes.push({ depth: 0, name: `${root.name} (корень)`, w: Math.round(root.w), h: Math.round(root.h),
+                uid: "root", fill: fillOf(root), stroke: root.stroke ?? null, opacity: root.opacity ?? 1 });
+if (root.symbol) walkFig(root.symbol, 1, layoutOf(raw(root.id)), "");
+else walkFig(root.id, 1, null, "");
 
 // ---- DOM side ----------------------------------------------------------------
 const browser = await chromium.launch();
@@ -132,8 +154,24 @@ const domBoxes = await p.evaluate(
       const cls = (el.className || "").toString().split(/\s+/).filter(Boolean).slice(0, 2).join(".");
       return `${el.tagName.toLowerCase()}${ds ? "[" + ds + "]" : cls ? "." + cls : ""}`;
     };
+    // Цвет и рамка — из computed style. Кольцо Tailwind и внутренняя тень —
+    // это box-shadow, поэтому он тоже читается: из него берутся все цвета.
+    const paint = (el) => {
+      const cs = getComputedStyle(el);
+      const colors = (s) => [...s.matchAll(/rgba?\([^)]*\)/g)].map((m) => m[0]);
+      const sides = ["Top", "Right", "Bottom", "Left"]
+        .map((k) => ({ w: parseFloat(cs[`border${k}Width`]) || 0, style: cs[`border${k}Style`], color: cs[`border${k}Color`] }))
+        .filter((b) => b.w > 0 && b.style !== "none");
+      return {
+        bg: cs.backgroundColor,
+        border: sides.length ? { colors: sides.map((b) => b.color), width: Math.max(...sides.map((b) => b.w)) } : null,
+        shadow: cs.boxShadow && cs.boxShadow !== "none" ? { raw: cs.boxShadow, colors: colors(cs.boxShadow) } : null,
+        opacity: parseFloat(cs.opacity),
+        text: !el.children.length && !!el.textContent.trim(),
+      };
+    };
     const r0 = root.getBoundingClientRect();
-    out.push({ depth: 0, name: label(root) + " (корень)", w: Math.round(r0.width), h: Math.round(r0.height) });
+    out.push({ depth: 0, name: label(root) + " (корень)", w: Math.round(r0.width), h: Math.round(r0.height), uid: 0, ...paint(root) });
     let uid = 0;
     const walk = (el, d, pid) => {
       if (d > maxDepth) return;
@@ -141,10 +179,11 @@ const domBoxes = await p.evaluate(
         if (!(c instanceof HTMLElement) || !seen(c)) continue;
         const r = c.getBoundingClientRect();
         const pr = el.getBoundingClientRect();
+        const id = ++uid;
         out.push({ depth: d, name: label(c), w: Math.round(r.width), h: Math.round(r.height),
-                   top: Math.round(r.top), bottom: Math.round(r.bottom), parent: pid,
-                   off: Math.round(r.top - pr.top) });
-        walk(c, d + 1, (c.__uid = ++uid));
+                   top: Math.round(r.top), bottom: Math.round(r.bottom), parent: pid, uid: id,
+                   off: Math.round(r.top - pr.top), offX: Math.round(r.left - pr.left), ...paint(c) });
+        walk(c, d + 1, id);
       }
     };
     walk(root, 1, 0);
@@ -259,6 +298,87 @@ if (offPairs.length) {
     `  ⚠ ${offPairs.length} пар(ы) совпали по высоте, но стоят на разной высоте внутри родителя:\n` +
       offPairs.slice(0, 4).map(([f, d]) => `      ${f.name}: макет ${f.y} ↔ страница ${d.off}`).join("\n")
   );
+}
+
+// ---- горизонталь ---------------------------------------------------------------
+// Высота, зазоры и вертикальное смещение могут сойтись, а элемент стоит не там
+// по горизонтали: плашки на фото планшета сидели на 4 от края при 10 в кадре.
+// Та же пара «высота + ширина совпали», но смещение от ЛЕВОГО края родителя.
+// Пара «надёжная», если и РОДИТЕЛИ обеих коробок образуют пару: иначе это два
+// разных ящика, случайно равных по высоте (у шапки `phone` 128x24 против нашего
+// ряда 211x24), и сравнивать у них x, ширину и цвет бессмысленно.
+const allPairs = align(figBoxes, domBoxes).filter(([f, d]) => f && d);
+const pairKey = new Set(allPairs.map(([f, d]) => `${f.uid}→${d.uid}`));
+const trusted = ([f, d]) =>
+  (f.pkey == null && d.parent == null) || (f.pkey === "root" && d.parent === 0) || pairKey.has(`${f.pkey}→${d.parent}`);
+const pairs = allPairs.filter(trusted);
+const xPairs = pairs.filter(
+  ([f, d]) => f.x != null && d.offX != null && f.h === d.h && Math.abs(f.w - d.w) <= 1 && Math.abs(f.x - d.offX) > 2
+);
+if (xPairs.length) {
+  console.log(
+    `  ⚠ ${xPairs.length} пар(ы) совпали по размеру, но стоят на разном расстоянии от левого края родителя:\n` +
+      xPairs.slice(0, 6).map(([f, d]) => `      ${f.name}: макет ${f.x} ↔ страница ${d.offX}`).join("\n")
+  );
+}
+// ---- ширина ----------------------------------------------------------------------
+// Пары одной высоты с разной шириной. Текстовые ящики не считаются — их ширина
+// от своих фикстур; страничные (от 1000) тоже: холст 1442 при окне 1440.
+const wPairs = pairs.filter(
+  ([f, d]) => f.h === d.h && !f.text && !d.text && Math.abs(f.w - d.w) > 2 && f.w < 1000 && d.w < 1000
+);
+if (wPairs.length) {
+  console.log(
+    `  ⚠ ${wPairs.length} пар(ы) совпали по высоте, но разошлись по ширине:\n` +
+      wPairs.slice(0, 6).map(([f, d]) => `      ${f.name} ${f.w} ↔ ${d.name} ${d.w}`).join("\n")
+  );
+}
+// ---- цвет ------------------------------------------------------------------------
+// Заливка и обводка. Сравниваются только пары одной высоты и ширины — у двух
+// разных ящиков цвета сравнивать нечего. Белая заливка кадра при прозрачном
+// элементе не считается: страница и так на белом, и Figma красит белым все
+// секции подряд. Обводка Figma ищется среди `border` и цветов `box-shadow`
+// (кольцо и внутренняя тень — это он).
+const rgb = (s) => {
+  const m = s && s.match(/rgba?\(\s*(\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/);
+  return m ? { r: +m[1], g: +m[2], b: +m[3], a: m[4] == null ? 1 : +m[4] } : null;
+};
+const hx = (h) => (h ? { r: parseInt(h.slice(1, 3), 16), g: parseInt(h.slice(3, 5), 16), b: parseInt(h.slice(5, 7), 16) } : null);
+const near = (a, b) => a && b && Math.abs(a.r - b.r) <= 3 && Math.abs(a.g - b.g) <= 3 && Math.abs(a.b - b.b) <= 3;
+const show = (c) => (c ? `#${[c.r, c.g, c.b].map((v) => v.toString(16).padStart(2, "0")).join("")}${c.a != null && c.a < 1 ? ` ${Math.round(c.a * 100)}%` : ""}` : "—");
+const colorRows = [];
+for (const [f, d] of pairs) {
+  if (f.h !== d.h || Math.abs(f.w - d.w) > 1) continue;
+  // заливка (у TEXT это цвет букв — его сверяет audit:type, тут пропуск)
+  const fb = f.fill && !f.text ? { ...hx(f.fill.color), a: f.fill.opacity } : null;
+  const db = rgb(d.bg);
+  const dbSolid = db && db.a > 0.02 ? db : null;
+  // Заливка сверяется в одну сторону — от кадра к странице: у нас цвет часто
+  // висит на уровень ниже или выше, чем в Figma (образец цвета красит кнопку,
+  // Figma — вложенный `color`), и «у Figma нет, у нас есть» почти всегда это.
+  // Обратное — «в кадре есть, у нас прозрачно» — проверяется ещё и по детям
+  // нашего ящика: если цвет лежит на ребёнке, это та же заливка уровнем ниже.
+  if (fb && f.fill.color !== "#ffffff") {
+    const kidsBg = domBoxes.filter((k) => k.parent === d.uid).map((k) => rgb(k.bg)).filter((c) => c && c.a > 0.02);
+    const ok = (c) => near(fb, c) && Math.abs(fb.a - c.a) <= 0.06;
+    if (!dbSolid && !kidsBg.some(ok)) colorRows.push(`${f.name}: заливка ${show(fb)} ↔ прозрачно (${d.name})`);
+    else if (dbSolid && !ok(dbSolid) && !kidsBg.some(ok)) colorRows.push(`${f.name}: заливка ${show(fb)} ↔ ${show(dbSolid)} (${d.name})`);
+  }
+  // обводка — только с ненулевой толщиной хотя бы по одной стороне
+  const sw = f.stroke && (f.stroke.sides ? Math.max(...Object.values(f.stroke.sides)) : f.stroke.weight);
+  if (f.stroke && sw > 0) {
+    const fs = { ...hx(f.stroke.color), a: f.stroke.opacity };
+    const where = f.stroke.sides ? Object.entries(f.stroke.sides).filter(([, w]) => w > 0).map(([k]) => k).join("") : "";
+    const cands = [...(d.border?.colors ?? []), ...(d.shadow?.colors ?? [])].map(rgb).filter(Boolean);
+    if (!cands.length) colorRows.push(`${f.name}: обводка ${show(fs)} ${sw}${where ? " (" + where + ")" : ""} ↔ нет ни border, ни box-shadow (${d.name})`);
+    else if (!cands.some((c) => near(fs, c) && Math.abs(fs.a - c.a) <= 0.06))
+      colorRows.push(`${f.name}: обводка ${show(fs)} ↔ ${cands.map(show).join(" / ")} (${d.name})`);
+  }
+  if (Math.abs((f.opacity ?? 1) - (d.opacity ?? 1)) > 0.05) colorRows.push(`${f.name}: прозрачность ${f.opacity} ↔ ${d.opacity}`);
+}
+if (colorRows.length) {
+  console.log(`  ⚠ ${colorRows.length} пар(ы) разошлись по цвету (заливка, обводка, прозрачность):\n` +
+    colorRows.slice(0, 8).map((r) => `      ${r}`).join("\n"));
 }
 
 console.log("  зазоры между соседями, по вложенным рядам:");

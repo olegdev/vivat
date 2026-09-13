@@ -90,8 +90,14 @@ for (const r of rows.filter(wanted)) {
         if (r.flags.depth) a.push("--depth", r.flags.depth);
         const out = run("scripts/audit-box.mjs", a);
         checks++;
-        const warn = out.split("\n").findIndex((l) => l.includes("⚠"));
-        if (warn >= 0) { lines.push("   ящики " + out.split("\n")[warn].trim()); soft++; }
+        // все подсказки с их строками-примерами (они идут следом с отступом 6)
+        const ls = out.split("\n");
+        for (let i = 0; i < ls.length; i++) {
+          if (!ls[i].includes("⚠")) continue;
+          lines.push("   ящики " + ls[i].trim());
+          soft++;
+          for (let j = i + 1; j < ls.length && /^      \S/.test(ls[j]); j++) lines.push("         " + ls[j].trim());
+        }
         if (/селектор ничего не нашёл|нет такого узла/.test(out)) { lines.push("   ящики — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); hard++; }
       }
     }
