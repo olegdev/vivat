@@ -119,7 +119,10 @@ function enterSelectMode(anchor) {
   // сразу следующий блок, а здесь под ней плашка «Вы выбрали…» — без
   // отступа она прилипает к рамке. Планшетного кадра у заказа нет, поэтому
   // поле такое же, как на 1440 (64).
-  swap(section, ["bg-surface-accent", "pb-16", "max-md:pb-10", "max-xl:pb-0"], [
+  // Снимать надо настоящий `pb-[72px]` партиала: раньше здесь стоял `pb-16`,
+  // которого у секции нет, и 72 оставались поверх 64 — шаг 1 выходил на 8
+  // выше кадра (map-general 942:110251).
+  swap(section, ["bg-surface-accent", "pb-[72px]", "max-md:pb-10", "max-xl:pb-0"], [
     "bg-bg-page",
     "pb-16",
     "max-md:fixed",
@@ -130,6 +133,10 @@ function enterSelectMode(anchor) {
 
   // the step's own heading sits above the block on mobile, in the modal header
   q("[data-stores-head]")?.classList.add("max-md:hidden");
+  // Над заголовком шага поле 64, а не 80 читающих страниц: text-container
+  // 953:115274 с padV 64 сразу под плашкой.
+  const headGap = q("[data-stores-head]")?.firstElementChild;
+  if (headGap) swap(headGap, ["h-20"], ["h-16"]);
   // Подзаголовок шага — 20/32 (953:120993), а не 16/22 читающих страниц.
   swap(q("[data-stores-desc]"), ["text-body-n-accent"], ["text-body-l"]);
 

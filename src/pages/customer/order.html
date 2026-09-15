@@ -87,7 +87,7 @@
            overridden to "Мой заказ" and an empty `buttons` frame, i.e. no
            controls next to the heading. The mobile frames carry no H1 at all;
            the modal header above is their title. -->
-      <div class="page-x pt-6 max-md:hidden">
+      <div class="page-x pt-6 pb-1 max-md:hidden">
         <h1 class="text-h1 text-text-primary">Мой заказ</h1>
       </div>
       <div class="h-6 max-md:hidden"></div>
@@ -155,9 +155,10 @@
            alert band, which the mobile frames don't carry. -->
       <section data-step-section="1" hidden>
         <div class="page-x max-md:hidden">
-          <!-- alert 1604:72204 — 40px band, `surface-accent-subtle`, radius n -->
+          <!-- alert 1604:72204 — 40px band, `surface-accent-subtle`, radius n.
+               Значок подменён на `check 16` (961:37200), как и у шага 2. -->
           <div class="flex h-10 items-center gap-2 rounded-n bg-surface-accent-subtle px-4" data-alert>
-            <img src="../../assets/order/icon-info-dark.svg" alt="" class="size-6 -m-1 shrink-0" />
+            <img src="../../assets/order/icon-check-16-dark.svg" alt="" class="size-4 shrink-0" />
             <p class="flex-1 text-body-n text-text-primary">Отлично! Ваш заказ сформирован.</p>
           </div>
         </div>
@@ -186,7 +187,7 @@
                переопределяет его (у шага 0 и у «сокращённого графика» остаётся
                info). Зазор до текста 8. -->
           <div class="flex h-10 items-center gap-2 rounded-n bg-surface-accent-subtle px-4">
-            <img src="../../assets/header/icon-check.svg" alt="" class="size-4 shrink-0" />
+            <img src="../../assets/order/icon-check-16-dark.svg" alt="" class="size-4 shrink-0" />
             <p class="flex-1 text-body-n text-text-primary">
               Вы выбрали <span data-picked-store></span>
             </p>
@@ -213,11 +214,11 @@
             <form id="order-form" class="flex w-[535px] shrink-0 flex-col gap-4 px-10 py-8 max-md:w-full max-md:px-0 max-md:py-0" data-order-form>
               <div class="flex flex-col gap-6">
                 <label class="flex flex-col gap-1">
-                  <span class="text-body-s text-text-primary">Ваше имя*</span>
+                  <span class="text-body-s text-text-primary max-md:text-m-body-s">Ваше имя*</span>
                   <input type="text" name="name" required placeholder="Введите ваше имя" class="order-input" />
                 </label>
                 <label class="flex flex-col gap-1">
-                  <span class="text-body-s text-text-primary">Телефон*</span>
+                  <span class="text-body-s text-text-primary max-md:text-m-body-s">Телефон*</span>
                   <input type="tel" name="phone" required placeholder="+7 (___) ___-__-__" class="order-input" />
                   <span class="mt-1 text-body-xs text-text-secondary max-md:text-m-body-xs">
                     <!-- пунктуация исправлена против макета: там «для консультации
@@ -228,7 +229,7 @@
                   </span>
                 </label>
                 <label class="flex flex-col gap-1">
-                  <span class="text-body-s text-text-primary">Email*</span>
+                  <span class="text-body-s text-text-primary max-md:text-m-body-s">Email*</span>
                   <input type="email" name="email" required placeholder="Введите e-mail" class="order-input" />
                   <span class="mt-1 text-body-xs text-text-secondary max-md:text-m-body-xs">
                     На этот адрес вам будет выслан pdf документ заказа
@@ -236,7 +237,8 @@
                 </label>
               </div>
 
-              <label class="flex items-start gap-3 py-2">
+              <!-- control+text: зазор 12 на 1440 (953:59696), 8 на 360 (2082:145244) -->
+              <label class="flex items-start gap-3 py-2 max-md:gap-2">
                 <input type="checkbox" name="consent" required class="filter-check" />
                 <span class="text-body-s text-text-primary max-md:text-m-body-s">
                   Я согласен с тем что мои контактные данные будут переданы выбранному дилеру

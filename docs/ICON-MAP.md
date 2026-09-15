@@ -46,5 +46,8 @@ Bold при Thin в кадре (2029:156849/156850) — залитые круж�
 | `header/icon-filter.svg` | 963:37179 | filter 24 Bold dark (две шкалы) | воронка каталога 1440 882:89607; выгружен fig-svg |
 | `header/icon-filter-thin.svg` | 2214:190873 | filter 24 Thin dark (воронка) | воронка каталога 360 1997:267660; fig-svg |
 | `header/chevron-down.svg` | 978:49801 | chevron-down 24 Bold secondary | сортировка 1440 |
+| `header/chevron-down-dark.svg` | 960:37200 | chevron-down 24 Bold dark | карточка магазина: заказ 942:110251, главная 878:103602 |
+| `order/icon-check-16-dark.svg` | 961:37200 | check 16 dark | плашки шагов 1 и 2 заказа (1604:72204 / 953:121000) |
+| `header/icon-close-s-light.svg` | 882:87667 | close-s 24 Bold light | `close-panel`: крышка карты 2059:167060, окно «Заказ оформлен» 360 2241:158304 |
 | `header/chevron-down-thin.svg` | 2214:190639 | chevron-down 24 Thin secondary | сортировка 360; fig-svg |
 | `header/icon-more-16.svg` | 979:49801 | more 16 secondary | чип «Больше» на всех ширинах; fig-svg |
