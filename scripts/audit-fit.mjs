@@ -147,8 +147,8 @@ for (const page of targets) {
   if (!existsSync(file)) { console.error(`нет файла: ${file}`); continue; }
   for (const width of WIDTHS) {
     const p = await browser.newPage({ viewport: { width, height: 900 } });
-    await p.goto(`file://${file}`, { waitUntil: "load" });
-    await p.waitForTimeout(450);
+    await p.goto(`file://${file}`, { waitUntil: "domcontentloaded" });
+    await p.waitForTimeout(900);
     for (const c of CLICKS) {
       await p.$$eval(c, (els) => { const v = els.find((e) => e.getClientRects().length); if (v) v.click(); });
       await p.waitForTimeout(350);

@@ -95,7 +95,7 @@ const figText = [];
 // ---- DOM side ----------------------------------------------------------------
 const browser = await chromium.launch();
 const p = await browser.newPage({ viewport: { width: WIDTH, height: 1000 } });
-await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "load" });
+await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "domcontentloaded" });
 await p.waitForTimeout(1500);
 const domText = await p.evaluate((sel) => {
   // первый ВИДИМЫЙ — у шапки и подвала два экземпляра под разные ширины

@@ -150,13 +150,33 @@
 
 ## customer/order
 
+Состояния — одна страница, `data-step`: шаг 1 открывает «Оформить»
+(`[data-order-submit]`), шаг 2 — выбор магазина (`[data-store-pick]`; на 360 ещё
+«Выберите дилера» `[data-pick-done]`, а магазин там выбирается кликом по карточке
+`[data-store]`). Бар шага 0 на 360 виден только прокрученным — `#scroll=`. Окно «Заказ оформлен» открывает только
+валидная форма, поэтому ему `#open=` ставит `.is-open`. Строки «СТРАНИЦА, …»
+с `f` гоняют только поток (`audit:flow`) в своём состоянии.
+
 | блок | селектор | 1440 | 768 | 360 | чем |
 |---|---|---|---|---|---|
-| СТРАНИЦА | — | 942:110179 | — | — | s |
+| СТРАНИЦА | — | 953:119640 | — | 2084:145507 | s |
+| СТРАНИЦА, шаг 1 | — #click=[data-order-submit] | 953:120306 | — | — | f |
+| СТРАНИЦА, шаг 2 | — #click=[data-order-submit],[data-store-pick] | 942:110179 | — | — | f |
 | шапка | `header` | 942:110180 | — | — | t b i |
+| шапка шага (360) | `[data-order-mheader]` | — | — | 2029:153971 | t b i |
 | заголовок | `h1` | 943:39460 | — | — | t |
 | строка корзины | `[data-cart-line]` | 953:151123 | — | — | t b |
 | сводка заказа | `[data-order-summary]` | 946:110156 | — | — | t b |
+| бар шага 0 (360) | `[data-order-bar] #scroll=900` | — | — | 2082:144086 | t b i |
+| тапбар (360) | `nav.fixed` | — | — | 2082:144087 | t b |
+| шаг 1: блок | `[data-step-section="1"] #click=[data-order-submit]` | 942:110251 | — | — | t b i #depth=3 |
+| шаг 1: шапка (360) | `[data-order-mheader] #click=[data-order-submit]` | — | — | 2082:143141 | t b i |
+| шаг 1: бар (360) | `[data-step1-bar] #click=[data-order-submit]` | — | — | 2082:143084 | t b i |
+| шаг 2: блок | `[data-step-section="2"] #click=[data-order-submit],[data-store-pick]` | 953:59446 | — | — | t b i #depth=3 |
+| шаг 2: форма (360) | `[data-order-form] #click=[data-order-submit],[data-store],[data-pick-done]` | — | — | 2082:145239 | t b #depth=3 |
+| шаг 2: бар (360) | `[data-step2-bar] #click=[data-order-submit],[data-store],[data-pick-done]` | — | — | 2082:145495 | t b i |
+| окно «Заказ оформлен» | `[data-order-done] .modal-panel #open=[data-order-done]` | 2241:158412 | — | 2241:158298 | t b i #depth=3 |
+| подвал | `footer` | 942:110257 | — | — | t b #depth=2 |
 
 ## dealer/main
 

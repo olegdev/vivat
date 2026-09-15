@@ -44,8 +44,14 @@ const MIN = Number(opt("--min", 8)); // ящики ниже этого не пе
 // до замера — так сверяются открытая панель прайс-листа, ящик фильтров, шаг
 // меню. Без этого аудит видит только то, что нарисовано при загрузке.
 const CLICKS = opt("--click", "") ? String(opt("--click")).split(",") : [];
+// `--open sel,sel` — оверлей, до которого кликом не дойти (окно «Заказ
+// оформлен» открывает только валидная форма): ему ставится `.is-open`.
+const OPENS = opt("--open", "") ? String(opt("--open")).split(",") : [];
+// `--scroll Y` — прокрутить окно: бар шага 0 заказа появляется только когда
+// кнопка сводки ушла за экран (2029:126838 нарисован прокрученным)
+const SCROLL = opt("--scroll", null);
 const SESSION = opt("--session", null); // см. audit-type: кто смотрит страницу
-const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--depth", "--min", "--click", "--session"].includes(argv[i - 1]));
+const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--depth", "--min", "--click", "--session", "--open", "--scroll"].includes(argv[i - 1]));
 const [page, selector, figmaId] = pos;
 if (!page || !selector || !figmaId) {
   console.error(
@@ -170,6 +176,14 @@ await p.waitForTimeout(2500);
 for (const c of CLICKS) {
   await p.$$eval(c, (els) => { const v = els.find((e) => e.getClientRects().length); if (v) v.click(); });
   await p.waitForTimeout(400);
+}
+for (const o of OPENS) {
+  await p.$$eval(o, (els) => els.forEach((e) => e.classList.add("is-open")));
+  await p.waitForTimeout(300);
+}
+if (SCROLL != null) {
+  await p.evaluate((y) => window.scrollTo(0, Number(y)), SCROLL);
+  await p.waitForTimeout(700);
 }
 const domRes = await p.evaluate(
   ({ sel, depth: maxDepth, min }) => {

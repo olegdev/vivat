@@ -32,7 +32,7 @@ const browser = await chromium.launch();
 console.log(`  ══ ${page} @ ${WIDTH}   ${selector}`);
 for (const scale of SCALES) {
   const p = await browser.newPage({ viewport: { width: WIDTH, height: 900 }, deviceScaleFactor: scale });
-  await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "load" });
+  await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "domcontentloaded" });
   await p.waitForTimeout(600);
   const el = (await p.$$(selector));
   let shot = null;

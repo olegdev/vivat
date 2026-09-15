@@ -31,8 +31,11 @@ const SESSION = opt("--session", null);
 // герой 744 вместо нарисованных 640, и поток главной расходится с первого же
 // блока. Кадр нарисован под окно 796 = 116 + 40 + 640.
 const HEIGHT = Number(opt("--height", 900));
+// состояния страницы: шаги заказа — кликами, окно подтверждения — классом
+const CLICKS = opt("--click", "") ? String(opt("--click")).split(",") : [];
+const OPENS = opt("--open", "") ? String(opt("--open")).split(",") : [];
 const TOL = 1.5; // 2 ловил случайные края: низ последнего фото плитки (2077.5) «совпадал» с низом сетки кадра (2075.6)
-const [page, frameId] = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session", "--height"].includes(argv[i - 1]));
+const [page, frameId] = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session", "--height", "--click", "--open"].includes(argv[i - 1]));
 if (!page || !frameId) {
   console.error("usage: node scripts/audit-flow.mjs <page> <frame-id> [--width 1440]");
   process.exit(2);
@@ -52,8 +55,14 @@ for (const k of kids) {
 const browser = await chromium.launch();
 const p = await browser.newPage({ viewport: { width: WIDTH, height: HEIGHT } });
 if (SESSION) await p.addInitScript((u) => localStorage.setItem("vivat:user", u), SESSION);
-await p.goto(`file://${resolve(`dist/pages/${page}.html`)}`, { waitUntil: "load" });
+await p.goto(`file://${resolve(`dist/pages/${page}.html`)}`, { waitUntil: "domcontentloaded" });
 await p.waitForTimeout(1200);
+for (const c of CLICKS) {
+  await p.$$eval(c, (els) => { const v = els.find((e) => e.getClientRects().length); if (v) v.click(); });
+  await p.waitForTimeout(700);
+}
+for (const o of OPENS) await p.$$eval(o, (els) => els.forEach((e) => e.classList.add("is-open")));
+if (CLICKS.length || OPENS.length) { await p.evaluate(() => window.scrollTo(0, 0)); await p.waitForTimeout(400); }
 const domEdges = await p.evaluate(() => {
   const out = [];
   const label = (el) => el.getAttribute("data-section") || `${el.tagName.toLowerCase()}.${(el.getAttribute("class") || "").split(/\s+/).slice(0, 2).join(".")}`;

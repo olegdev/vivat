@@ -196,7 +196,7 @@ const figGaps = (secs) =>
 // ---- DOM side ----------------------------------------------------------------
 async function domGaps(browser, width) {
   const p = await browser.newPage({ viewport: { width, height: 1000 } });
-  await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "load" });
+  await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "domcontentloaded" });
   await p.waitForTimeout(1200);
   const out = await p.evaluate(() => {
     const root = document.querySelector("body > div");

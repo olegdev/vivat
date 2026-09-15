@@ -56,12 +56,15 @@ for (const r of rows.filter(wanted)) {
     if (!id || id === "—") continue;
     const lines = [];
 
-    if (r.name === "СТРАНИЦА") {
+    if (r.name.startsWith("СТРАНИЦА")) {
       // поток: края блоков кадра против краёв блоков страницы. Печатается
       // первый разошедшийся край — ниже всё обычно едет на ту же величину.
       const sess = r.flags.session ? ["--session", r.flags.session] : [];
-      const hgt = r.flags.height && w === "1440" ? ["--height", r.flags.height] : [];
-      const fo = run("scripts/audit-flow.mjs", [r.page, id, "--width", w, ...sess, ...hgt]);
+      // высота окна: у главных — полноэкранный герой на 1440, у экранов заказа
+      // на 360 — кадр 800 с прибитыми барами
+      const hgt = r.flags.height ? ["--height", r.flags.height] : [];
+      const st = [...(r.flags.click ? ["--click", r.flags.click] : []), ...(r.flags.open ? ["--open", r.flags.open] : []), ...(r.flags.scroll ? ["--scroll", r.flags.scroll] : [])];
+      const fo = run("scripts/audit-flow.mjs", [r.page, id, "--width", w, ...sess, ...hgt, ...st]);
       checks++;
       const first = fo.split("\n").filter((l) => l.startsWith("✗"));
       if (first.length) {
@@ -82,7 +85,7 @@ for (const r of rows.filter(wanted)) {
     } else {
       const sess = r.flags.session ? ["--session", r.flags.session] : [];
       if (r.how.includes("t")) {
-        const out = run("scripts/audit-type.mjs", [r.page, r.sel, id, "--width", w, ...sess, ...(r.flags.click ? ["--click", r.flags.click] : [])]);
+        const out = run("scripts/audit-type.mjs", [r.page, r.sel, id, "--width", w, ...sess, ...(r.flags.click ? ["--click", r.flags.click] : []), ...(r.flags.open ? ["--open", r.flags.open] : []), ...(r.flags.scroll ? ["--scroll", r.flags.scroll] : [])]);
         checks++;
         for (const l of out.split("\n")) {
           if (/^✗/.test(l)) { lines.push("   кегль/перенос " + l.trim()); hard++; }
@@ -98,7 +101,7 @@ for (const r of rows.filter(wanted)) {
         if (/is not an INSTANCE|селектор ничего не нашёл/.test(out)) { lines.push("   копия — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); soft++; }
       }
       if (r.how.includes("i")) {
-        const out = run("scripts/audit-icons.mjs", [r.page, r.sel, id, "--width", w, ...sess, ...(r.flags.click ? ["--click", r.flags.click] : [])]);
+        const out = run("scripts/audit-icons.mjs", [r.page, r.sel, id, "--width", w, ...sess, ...(r.flags.click ? ["--click", r.flags.click] : []), ...(r.flags.open ? ["--open", r.flags.open] : []), ...(r.flags.scroll ? ["--scroll", r.flags.scroll] : [])]);
         checks++;
         for (const l of out.split("\n")) if (/^[✗?]/.test(l)) { lines.push("   иконки " + l.trim()); if (l.startsWith("✗")) hard++; else soft++; }
         if (/селектор ничего не нашёл/.test(out)) { lines.push("   иконки — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); hard++; }
@@ -107,6 +110,8 @@ for (const r of rows.filter(wanted)) {
         const a = [r.page, r.sel, id, "--width", w, "--min", "12"];
         if (r.flags.depth) a.push("--depth", r.flags.depth);
         if (r.flags.click) a.push("--click", r.flags.click);
+        if (r.flags.open) a.push("--open", r.flags.open);
+        if (r.flags.scroll) a.push("--scroll", r.flags.scroll);
         a.push(...sess);
         const out = run("scripts/audit-box.mjs", a);
         checks++;

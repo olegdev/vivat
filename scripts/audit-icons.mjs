@@ -33,7 +33,13 @@ const SESSION = opt("--session", null);
 // `--click sel,sel` — открыть состояние (ящик фильтров, меню): закрытое скрыто, и
 // селектор «ничего не находит»
 const CLICKS = opt("--click", "") ? String(opt("--click")).split(",") : [];
-const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session", "--click"].includes(argv[i - 1]));
+// `--open sel,sel` — оверлей, до которого кликом не дойти (окно «Заказ
+// оформлен» открывает только валидная форма): ему ставится `.is-open`.
+const OPENS = opt("--open", "") ? String(opt("--open")).split(",") : [];
+// `--scroll Y` — прокрутить окно: бар шага 0 заказа появляется только когда
+// кнопка сводки ушла за экран (2029:126838 нарисован прокрученным)
+const SCROLL = opt("--scroll", null);
+const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session", "--click", "--open", "--scroll"].includes(argv[i - 1]));
 const [page, selector, figmaId] = pos;
 if (!page || !selector || !figmaId) {
   console.error("usage: node scripts/audit-icons.mjs <page> <selector> <figma-id> [--width 1440]");
@@ -61,11 +67,19 @@ for (const l of figOut.split("\n").slice(1)) {
 const browser = await chromium.launch();
 const p = await browser.newPage({ viewport: { width: WIDTH, height: 900 } });
 if (SESSION) await p.addInitScript((u) => localStorage.setItem("vivat:user", u), SESSION);
-await p.goto(`file://${resolve(`dist/pages/${page}.html`)}`, { waitUntil: "load" });
-await p.waitForTimeout(400);
+await p.goto(`file://${resolve(`dist/pages/${page}.html`)}`, { waitUntil: "domcontentloaded" });
+await p.waitForTimeout(1000);
 for (const c of CLICKS) {
   await p.$$eval(c, (els) => { const v = els.find((e) => e.getClientRects().length); if (v) v.click(); });
   await p.waitForTimeout(400);
+}
+for (const o of OPENS) {
+  await p.$$eval(o, (els) => els.forEach((e) => e.classList.add("is-open")));
+  await p.waitForTimeout(300);
+}
+if (SCROLL != null) {
+  await p.evaluate((y) => window.scrollTo(0, Number(y)), SCROLL);
+  await p.waitForTimeout(700);
 }
 const files = await p.$$eval(selector, (roots) => {
   const root = roots.find((r) => r.getClientRects().length);
