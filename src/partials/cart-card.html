@@ -33,7 +33,14 @@
          partials/order-modules.html). Below `md` the same list is the bottom
          sheet in that partial, so the card renders no inline list there. -->
 <template data-cart-card>
-  <article class="border-b border-divider-light px-6 py-6 max-md:px-4 max-md:py-4" data-cart-line>
+  <!-- Разделитель строк. На 1440 это нижняя обводка ВНУТРЕННЕГО контейнера
+       (945:39238 / 953:151785), а поля 24 — у самой карточки: линия отступает
+       от краёв на 24. На планшете у карточки полей нет (2490:151908), на 360
+       тоже (2029:129231, там линия #eeeeee) — линия во всю ширину. У последней
+       строки линии нет: она совпадает с рамкой списка и давала двойную. Обводка в
+       кадре INSIDE — внутренней тенью, не border: иначе строка 159, а не 158. -->
+  <article class="group/line px-6 py-6 shadow-[inset_0_-1px_0_var(--color-divider-light)] last:shadow-none max-md:px-4 max-md:py-4 max-md:shadow-[inset_0_-1px_0_var(--color-divider-soft)] max-md:last:shadow-none xl:py-0 xl:shadow-none" data-cart-line>
+   <div class="xl:py-6 xl:shadow-[inset_0_-1px_0_var(--color-divider-light)] xl:group-last/line:shadow-none">
    <div class="flex max-md:flex-col max-md:gap-2">
     <!-- ---- image + title (desktop: 739 of 920; mobile: the top row) ---- -->
     <div class="flex min-w-0 flex-1">
@@ -221,5 +228,6 @@
       class="hidden flex-col gap-0.5 pl-[204px] max-md:hidden md:-mt-[22px]"
       data-line-modules-list
     ></div>
+   </div>
   </article>
 </template>
