@@ -379,6 +379,7 @@ let wrap = 0;
 let soft = 0;
 let only = 0;
 let guessed = 0;
+const extraOf = new Map();
 for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
   let flag = "  ";
   if (!f || !d) {
@@ -459,6 +460,15 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
       flag = "≈ ";
     }
     if (how === "порядок") guessed++;
+    // Первое расхождение не должно прятать остальные: «Оптовая цена» в
+    // дилерской шапке показала только «✗д» (линия), а вес 400↔500 рядом
+    // промолчал — и прошёл. Всё прочее, что тоже разошлось, — хвостом строки.
+    const also = [];
+    if (sizeBad && !flag.includes("✗")) also.push(`кегль ${f.size}↔${d.size}`);
+    if ((f.decor ?? null) !== (d.decor ?? null) && flag !== "✗д" && how === "текст") also.push(`линия ${f.decor ?? "нет"}↔${d.decor ?? "нет"}`);
+    if (wBad && flag !== "✗в" && flag !== "вес") also.push(`вес ${f.weight}↔${d.weight}${f.weightFromMaster ? " (мастер)" : ""}`);
+    if (lhBad && flag !== "✗л" && flag !== "лн") also.push(`лн ${f.lh}↔${d.lh}`);
+    if (also.length) extraOf.set(f, also);
   }
   const label =
     how === "порядок"
@@ -467,7 +477,8 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
   const metric = (flag === "✗п" || flag === "шр") && f && d
     ? `   строк ${f.lines}↔${d.lines}, ширина ${f.boxW}↔${d.boxW}`
     : flag === "✗д" ? `   линия ${f.decor ?? "нет"}↔${d.decor ?? "нет"}` : "";
-  console.log(`${flag}${label.padEnd(38)} ${fmt(f).padStart(12)}   ${fmt(d).padStart(12)}${metric}`);
+  const tail = f && extraOf.has(f) ? `   + ${extraOf.get(f).join(", ")}` : "";
+  console.log(`${flag}${label.padEnd(38)} ${fmt(f).padStart(12)}   ${fmt(d).padStart(12)}${metric}${tail}`);
 }
 
 console.log(

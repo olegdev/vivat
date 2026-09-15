@@ -49,5 +49,7 @@ Bold при Thin в кадре (2029:156849/156850) — залитые круж�
 | `header/chevron-down-dark.svg` | 960:37200 | chevron-down 24 Bold dark | карточка магазина: заказ 942:110251, главная 878:103602 |
 | `order/icon-check-16-dark.svg` | 961:37200 | check 16 dark | плашки шагов 1 и 2 заказа (1604:72204 / 953:121000) |
 | `header/icon-close-s-light.svg` | 882:87667 | close-s 24 Bold light | `close-panel`: крышка карты 2059:167060, окно «Заказ оформлен» 360 2241:158304 |
+| `header/arrow-right-bold-dark.svg` | 962:37191 | arrow-right 24 Bold dark | кнопки btn-m secondary: «В раздел» 2432:126398, «Все акции» 2432:126380, заголовки 1440 |
+| `header/arrow-right-bold-light.svg` | 585:22188 | arrow-right 24 Bold light | кнопки btn-m primary: «Личный кабинет» 1440, «Оформить заказ» 953:59156 |
 | `header/chevron-down-thin.svg` | 2214:190639 | chevron-down 24 Thin secondary | сортировка 360; fig-svg |
 | `header/icon-more-16.svg` | 979:49801 | more 16 secondary | чип «Больше» на всех ширинах; fig-svg |

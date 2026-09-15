@@ -3,12 +3,13 @@
 <template data-news-card>
   <!-- 263 на 1440 (882:110636), 224 на 360 (news-items 2432:143660) -->
   <article class="flex h-[263px] flex-col justify-between rounded-[var(--radius-l)] bg-bg-subtle p-6 max-md:h-[224px]">
-    <div class="flex flex-col gap-3">
-      <!-- заголовок на 1440 — 16/24 SemiBold (882:110643, вес по ширине глифа);
-           мобильный вариант пока не сверен твёрдо — см. отчёт 15.09 -->
-      <a href="#" class="text-body-n font-semibold text-text-primary max-md:text-body-n-accent max-md:font-medium" data-news-title></a>
-      <p class="line-clamp-4 text-body-n text-text-primary" data-news-desc></p>
+    <!-- 1440 (882:110636): заголовок 16/24 SemiBold, зазор 12, 4 строки, дата 14/18.
+         360 (1821:326539): заголовок Mobile/H5 14/20 SemiBold, зазор 8, описание
+         16/24 до 5 строк, дата Mobile/BodyS 12/16. -->
+    <div class="flex flex-col gap-3 max-md:gap-2">
+      <a href="#" class="text-body-n font-semibold text-text-primary max-md:text-m-h5" data-news-title></a>
+      <p class="line-clamp-4 text-body-n text-text-primary max-md:line-clamp-5" data-news-desc></p>
     </div>
-    <time class="text-body-s text-text-secondary" data-news-date></time>
+    <time class="text-body-s text-text-secondary max-md:text-m-body-s" data-news-date></time>
   </article>
 </template>

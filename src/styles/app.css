@@ -620,7 +620,9 @@
      макет ставит текст на 2.5, что даёт 6.5 / 7.5, а Chrome умеет только 7 / 7
      (`pb-px`) или 6 / 8 — оставлен центр. Сверено по 4x-экспорту дизайнера
      (docs/figma-exports/badge-s-discount-4x.png) маской белых пикселей, 15.09. */
-  .badge-l { @apply h-8 pt-[3px] pb-px text-body-n-accent max-xl:h-6 max-xl:pt-0 max-xl:pb-px max-xl:text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
+  /* 1440: текст на 2px выше, чем было (поля 3/1 → 1/3) — по замечанию
+     клиента 15.09 «текст заметно сместился вниз» на карточках 882:107939 */
+  .badge-l { @apply h-8 pt-px pb-[3px] text-body-n-accent max-xl:h-6 max-xl:pt-0 max-xl:pb-px max-xl:text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
   .badge-s { @apply h-6 pb-px text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
   .badge-new      { @apply bg-surface-accent-alt; }
   .badge-hit      { @apply bg-components-red; }
