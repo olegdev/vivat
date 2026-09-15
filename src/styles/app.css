@@ -345,12 +345,15 @@
   html {
     font-family: var(--font-sans);
   }
-  /* Зачёркнутая цена: в Figma STRIKETHROUGH — линия толщиной 1 (strokeWeight
-     у текста) и в 12 px тоже 1. У браузера толщина `auto` берётся из шрифта и
-     в 12/16 у Onest выходит ~0.75 px — на ретине это тонкая серая нитка,
-     на 1x — ничего. Фиксируем 1 px. */
+  /* Зачёркнутая цена. Figma рисует STRIKETHROUGH по таблице OS/2 шрифта:
+     у Onest yStrikeoutSize 50/1000 = 0.05em (0.6 px при 12, 0.8 при 16),
+     позиция 0.25em над базовой линией. Chrome при `auto` берёт ту же
+     толщину, но не тоньше 1 CSS px — на ретине это 2 физических пикселя
+     против одного у Figma, и линия читается жирнее. Задаём толщину явно в em:
+     она совпадает с макетом на любой плотности. Позицию задаёт шрифт, и она
+     у обоих одна. */
   .line-through {
-    text-decoration-thickness: 1px;
+    text-decoration-thickness: 0.05em;
   }
   body {
     background-color: var(--color-bg-page);
