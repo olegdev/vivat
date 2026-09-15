@@ -275,15 +275,28 @@ export function initCatalogListing({ products, rub }) {
   // always", which is what a hardcoded `open` on every <details> gave us.
   const allSections = () => form.querySelectorAll("[data-filter-section]");
   const filterTitle = drawer.querySelector("[data-filter-title]");
-  const DEFAULT_TITLE = filterTitle.textContent;
-  // Single-pill entry (913:86593) hides every OTHER group outright — not just
-  // collapses it. Заголовок окна при этом остаётся «Фильтры»: в мобильном
-  // кадре одиночного фильтра (1997:285890) в шапке стоит именно он, а имя
-  // группы — подзаголовок внутри. Решение клиента распространено на обе
-  // ширины. `label` больше не используется, но остаётся в сигнатуре: его
-  // передают вызовы из панели настроек.
+  // Заголовок — два span'а (покупатель/дилер, по data-user); в одиночном
+  // режиме на их место встаёт имя группы, а исходная разметка возвращается
+  // обратно из этой копии.
+  const DEFAULT_TITLE_HTML = filterTitle.innerHTML;
+  let singleGroup = null;
+  // Одиночный фильтр (пилюля с именем группы, кадр 953:122063 «Catalog-1-filter»)
+  // — решение клиента 15.09: вместо «Фильтры» в шапке имя группы («Форма
+  // кухни», 953:122112), у самой группы заголовка нет (16 после шапки — и
+  // сразу варианты), в подвале только «Показать», и только когда в группе
+  // что-то отмечено; «Очистить» там не рисуется. Воронка / «Больше» — общий
+  // режим: все группы с заголовками, «очистить» у каждого, оба действия в
+  // подвале. Режим и пустота группы — data-атрибуты на корне, стили — рядом
+  // с разметкой (`group-data-[mode=single]/fd`).
+  function syncSingleEmpty() {
+    if (!singleGroup) { drawer.dataset.empty = "false"; return; }
+    const st = readState();
+    const n = singleGroup === "price"
+      ? (st.price !== "any" || st.price_min || st.price_max ? 1 : 0)
+      : (st[singleGroup] || []).length;
+    drawer.dataset.empty = n === 0 ? "true" : "false";
+  }
   function openDrawer(section, label) {
-    void label;
     drawer.classList.add("is-open");
     setScrollLock("filter-drawer", true);
     const target = section && form.querySelector(`[data-filter-section="${section}"]`);
@@ -292,17 +305,23 @@ export function initCatalogListing({ products, rub }) {
         s.open = s === target;
         s.classList.toggle("hidden", s !== target);
       }
-      filterTitle.textContent = DEFAULT_TITLE;
-      form.scrollTop = 0;
+      singleGroup = section;
+      drawer.dataset.mode = "single";
+      filterTitle.textContent = label || target.querySelector("summary span")?.textContent?.trim() || "";
     } else {
       for (const s of allSections()) {
         s.open = true;
         s.classList.remove("hidden");
       }
-      filterTitle.textContent = DEFAULT_TITLE;
-      form.scrollTop = 0;
+      singleGroup = null;
+      drawer.dataset.mode = "all";
+      filterTitle.innerHTML = DEFAULT_TITLE_HTML;
     }
+    syncSingleEmpty();
+    form.scrollTop = 0;
   }
+  form.addEventListener("change", syncSingleEmpty);
+  form.addEventListener("input", syncSingleEmpty);
   function closeDrawer() {
     drawer.classList.remove("is-open");
     setScrollLock("filter-drawer", false);
@@ -446,9 +465,12 @@ export function initCatalogListing({ products, rub }) {
     });
     // Per-group "Очистить" inside the drawer's <summary> — shown only when
     // that group itself has a selection, not whenever the drawer is open.
+    // «очистить» у заголовка группы в кадре стоит всегда (1859:339044: слот
+    // clear+collapse 84 — текст и невидимый шеврон); прячем не саму кнопку, а
+    // её кликабельность, когда чистить нечего.
     document.querySelectorAll("[data-filter-clear-group]").forEach((btn) => {
       const n = groupCount(state, btn.dataset.filterClearGroup);
-      btn.classList.toggle("hidden", n === 0);
+      btn.classList.toggle("pointer-events-none", n === 0);
     });
   }
 

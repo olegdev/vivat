@@ -40,35 +40,35 @@
            пилюли нет ни счётчика, ни чипса. Список пуст намеренно. -->
       <details data-filter-section="structure" class="group">
         <summary
-          class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
+          class="flex min-h-[49px] list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Структура</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent max-md:text-text-secondary">Структура</span>
           <button
             type="button"
             data-filter-clear-group="structure"
-            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+            class="mr-8 text-body-xs text-text-secondary transition-colors hover:text-text-primary"
           >
             очистить
           </button>
         </summary>
-        <div class="pb-4" data-filter-options="structure"></div>
+        <div data-filter-options="structure"></div>
       </details>
 
       <!-- ---- Материал ---- -->
       <details data-filter-section="material" class="group">
         <summary
-          class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
+          class="flex min-h-[49px] list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Материал</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent max-md:text-text-secondary">Материал</span>
           <button
             type="button"
             data-filter-clear-group="material"
-            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+            class="mr-8 text-body-xs text-text-secondary transition-colors hover:text-text-primary"
           >
             очистить
           </button>
         </summary>
-        <div class="pb-4" data-filter-options="material">
+        <div data-filter-options="material">
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="material[]" value="dsp" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">ДСП</span></label>
         </div>
       </details>
@@ -76,18 +76,18 @@
       <!-- ---- Цвет ---- -->
       <details data-filter-section="color" class="group">
         <summary
-          class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
+          class="flex min-h-[49px] list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
         >
-          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Цвет</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent max-md:text-text-secondary">Цвет</span>
           <button
             type="button"
             data-filter-clear-group="color"
-            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+            class="mr-8 text-body-xs text-text-secondary transition-colors hover:text-text-primary"
           >
             очистить
           </button>
         </summary>
-        <div class="pb-4" data-filter-options="color">
+        <div data-filter-options="color">
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="color[]" value="svetlye" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Светлые</span></label>
         </div>
       </details>

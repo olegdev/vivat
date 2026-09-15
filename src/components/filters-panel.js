@@ -120,7 +120,7 @@ export function initFiltersPanel({ groups, price = false } = {}) {
     // значением, а не постоянно/никогда.
     for (const btn of document.querySelectorAll("[data-filter-clear-group]")) {
       const n = groupCount(state, btn.dataset.filterClearGroup);
-      btn.classList.toggle("hidden", n === 0);
+      btn.classList.toggle("pointer-events-none", n === 0); // в кадре стоит всегда
     }
   }
 

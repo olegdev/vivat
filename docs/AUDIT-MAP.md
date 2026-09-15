@@ -74,6 +74,8 @@
 | панель настроек | `[data-catalog-settings]` | 882:89607 | 2483:202341 | 1997:267660 | t b i |
 | карточка сетки | `[data-grid] > *` | 2250:137846 | 2483:234513 | 1997:282272 | t b |
 | пагинация | `[data-pagination]` | 758:57039 | — | 1997:267692 | t b i |
+| ящик фильтров, все | `.filter-drawer__panel #click=.filter-funnel` | 1859:351329 | — | 1997:296995 | t b i #depth=5 |
+| ящик фильтров, один | `.filter-drawer__panel #click=[data-filter-open=form]` | 953:122111 | — | — | t b #depth=5 |
 | рельс «Популярные» | `[data-section="popular"] section` | — | — | 1997:267695 | t b #depth=4 |
 | подвал | `footer` | — | — | 1997:267698 | t b |
 

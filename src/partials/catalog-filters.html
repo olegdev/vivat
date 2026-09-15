@@ -15,7 +15,7 @@
      Each filter group is a <details> so collapse is native + Blade-trivial; the
      option lists are written out (one <label> each) so they map 1:1 onto a
      Blade @foreach over $collections / $colors / … -->
-<div data-filter-drawer class="filter-drawer fixed inset-0 z-50">
+<div data-filter-drawer data-mode="all" class="filter-drawer group/fd fixed inset-0 z-50">
   <!-- scrim -->
   <div data-filter-dismiss class="filter-drawer__scrim absolute inset-0 bg-overlay-strong"></div>
 
@@ -27,7 +27,13 @@
          no border; mobile (1997:296995) is a DIFFERENT header — h-48 (not 64),
          border-b/divider-light, H3 shrinks to Mobile/H3 (18/24). -->
     <div class="flex h-16 shrink-0 items-center justify-between py-2 pl-10 pr-6 max-md:h-12 max-md:border-b max-md:border-divider-light max-md:px-4 max-md:py-0">
-      <h2 class="text-h3 text-text-primary max-md:text-m-h3" data-filter-title>Фильтры</h2>
+      <!-- «Фильтры» у покупателя, «Все фильтры» у дилера (953:121956 — в кадре
+           с опечаткой «фильры»). В одиночном режиме JS ставит сюда имя группы
+           (953:122112: «Форма кухни») и запоминает свой текст по data-атрибуту. -->
+      <h2 class="text-h3 text-text-primary max-md:text-m-h3" data-filter-title>
+        <span class="group-data-[user=dealer]:hidden">Фильтры</span>
+        <span class="hidden group-data-[user=dealer]:inline">Все фильтры</span>
+      </h2>
       <button
         type="button"
         data-filter-close
@@ -39,22 +45,22 @@
     </div>
 
     <!-- form: the request payload. `name`s are the query contract. -->
-    <form data-filter-form class="flex-1 overflow-y-auto px-10 max-md:px-4">
+    <form data-filter-form class="flex-1 overflow-y-auto px-10 max-md:px-4 group-data-[mode=single]/fd:pt-4">
       <!-- ---- Коллекция ---- -->
       <details data-filter-section="collection" class="group">
         <summary
-          class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
+          class="flex min-h-[49px] list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden group-data-[mode=single]/fd:hidden"
         >
-          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Коллекция</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent max-md:text-text-secondary">Коллекция</span>
           <button
             type="button"
             data-filter-clear-group="collection"
-            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+            class="mr-8 text-body-xs text-text-secondary transition-colors hover:text-text-primary"
           >
             очистить
           </button>
         </summary>
-        <div class="grid grid-cols-2 gap-x-6 pb-4">
+        <div class="grid grid-cols-2 gap-x-6">
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="fusion" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Фьюжн</span></label>
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="freym" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Фрейм</span></label>
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="collection[]" value="neo" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Нео</span></label>
@@ -78,18 +84,18 @@
       <!-- ---- Фасад ---- -->
       <details data-filter-section="facade" class="group">
         <summary
-          class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
+          class="flex min-h-[49px] list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden group-data-[mode=single]/fd:hidden"
         >
-          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Фасад</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent max-md:text-text-secondary">Фасад</span>
           <button
             type="button"
             data-filter-clear-group="facade"
-            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+            class="mr-8 text-body-xs text-text-secondary transition-colors hover:text-text-primary"
           >
             очистить
           </button>
         </summary>
-        <div class="pb-4">
+        <div>
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="facade[]" value="ldsp" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">ЛДСП</span></label>
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="facade[]" value="mdf" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">МДФ</span></label>
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="facade[]" value="mdf-steklo" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">МДФ / Стекло</span></label>
@@ -99,18 +105,18 @@
       <!-- ---- Форма ---- -->
       <details data-filter-section="form" class="group">
         <summary
-          class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
+          class="flex min-h-[49px] list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden group-data-[mode=single]/fd:hidden"
         >
-          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Форма</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent max-md:text-text-secondary">Форма</span>
           <button
             type="button"
             data-filter-clear-group="form"
-            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+            class="mr-8 text-body-xs text-text-secondary transition-colors hover:text-text-primary"
           >
             очистить
           </button>
         </summary>
-        <div class="pb-4">
+        <div>
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="form[]" value="pryamaya" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Прямая</span></label>
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="form[]" value="uglovaya" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Угловая</span></label>
         </div>
@@ -119,18 +125,18 @@
       <!-- ---- Цвет ---- -->
       <details data-filter-section="color" class="group">
         <summary
-          class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
+          class="flex min-h-[49px] list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden group-data-[mode=single]/fd:hidden"
         >
-          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Цвет</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent max-md:text-text-secondary">Цвет</span>
           <button
             type="button"
             data-filter-clear-group="color"
-            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+            class="mr-8 text-body-xs text-text-secondary transition-colors hover:text-text-primary"
           >
             очистить
           </button>
         </summary>
-        <div class="grid grid-cols-2 gap-x-6 pb-4">
+        <div class="grid grid-cols-2 gap-x-6">
           <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="bezhevyy" class="peer sr-only" /><span class="filter-swatch" style="background:#e4dac4"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Бежевый</span></label>
           <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="svetlo-seryy" class="peer sr-only" /><span class="filter-swatch" style="background:#d9d9d9"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Светло-серый</span></label>
           <label class="flex items-center gap-2 py-2.5"><input type="checkbox" name="color[]" value="belyy" class="peer sr-only" /><span class="filter-swatch" style="background:#ffffff"></span><span class="text-body-n text-text-primary max-md:text-m-body-n">Белый</span></label>
@@ -146,18 +152,18 @@
       <!-- ---- Стиль ---- -->
       <details data-filter-section="style" class="group">
         <summary
-          class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
+          class="flex min-h-[49px] list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden group-data-[mode=single]/fd:hidden"
         >
-          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Стиль</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent max-md:text-text-secondary">Стиль</span>
           <button
             type="button"
             data-filter-clear-group="style"
-            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+            class="mr-8 text-body-xs text-text-secondary transition-colors hover:text-text-primary"
           >
             очистить
           </button>
         </summary>
-        <div class="pb-4">
+        <div>
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="style[]" value="klassika" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Классика</span></label>
           <label class="flex items-center gap-3 py-2.5"><input type="checkbox" name="style[]" value="sovremennyy" class="filter-check" /><span class="text-body-n text-text-primary max-md:text-m-body-n">Современный</span></label>
         </div>
@@ -166,24 +172,26 @@
       <!-- ---- Цена ---- -->
       <details data-filter-section="price" class="group">
         <summary
-          class="flex list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden"
+          class="flex min-h-[49px] list-none items-center justify-between pt-4 pb-2 [&::-webkit-details-marker]:hidden group-data-[mode=single]/fd:hidden"
         >
-          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent">Цена</span>
+          <span class="text-h5 text-text-primary max-md:text-m-body-n-accent max-md:text-text-secondary">Цена</span>
           <button
             type="button"
             data-filter-clear-group="price"
-            class="hidden text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 transition-colors hover:text-text-primary"
+            class="mr-8 text-body-xs text-text-secondary transition-colors hover:text-text-primary"
           >
             очистить
           </button>
         </summary>
-        <div class="pb-6">
-          <!-- `input size=S` 1604:67833: подпись 18, зазор до поля 4 (не 8), и
-               внутри поля справа стоит «₽» — `text2` 10×18 в
-               `input-container` с выключкой вправо. -->
-          <div class="flex items-end gap-4 pb-4">
-            <label class="min-w-0 flex-1">
-              <span class="block pb-1 text-body-s text-text-secondary">От</span>
+        <div>
+          <!-- Ряд цены — `form` 1604:67832: два `input size=S` по 140, между
+               ними «-» 14/18 #acacac, зазор 16, поля 8 сверху/снизу, пресеты
+               сразу под ним. Сам инпут (1604:67833): подпись 14/18 #292929 (не
+               серая), зазор 4, поле 44 #f3f3f3 с полями 16, значение 14/18
+               #292929, плейсхолдер #808080, «₽» — 14/18 #acacac у правого края. -->
+          <div class="flex items-end gap-4 py-2">
+            <label class="w-[140px] shrink-0 max-md:min-w-0 max-md:flex-1">
+              <span class="block pb-1 text-body-s text-text-primary">От</span>
               <span class="order-input flex items-center gap-1">
                 <input
                   type="text"
@@ -192,12 +200,12 @@
                   placeholder="132 000"
                   class="min-w-0 flex-1 bg-transparent text-body-s text-text-primary outline-none placeholder:text-text-secondary max-md:text-m-body-s"
                 />
-                <span class="shrink-0 text-body-s text-text-primary max-md:text-m-body-s">₽</span>
+                <span class="shrink-0 text-body-s text-text-muted max-md:text-m-body-s">₽</span>
               </span>
             </label>
-            <span class="pb-3 text-text-muted">–</span>
-            <label class="min-w-0 flex-1">
-              <span class="block pb-1 text-body-s text-text-secondary">До</span>
+            <span class="pb-[13px] text-body-s text-text-muted">-</span>
+            <label class="w-[140px] shrink-0 max-md:min-w-0 max-md:flex-1">
+              <span class="block pb-1 text-body-s text-text-primary">До</span>
               <span class="order-input flex items-center gap-1">
                 <input
                   type="text"
@@ -206,7 +214,7 @@
                   placeholder="560 200"
                   class="min-w-0 flex-1 bg-transparent text-body-s text-text-primary outline-none placeholder:text-text-secondary max-md:text-m-body-s"
                 />
-                <span class="shrink-0 text-body-s text-text-primary max-md:text-m-body-s">₽</span>
+                <span class="shrink-0 text-body-s text-text-muted max-md:text-m-body-s">₽</span>
               </span>
             </label>
           </div>
@@ -227,11 +235,14 @@
          в кадре 1859:347076 две кнопки по 136 в 280 содержимого (360 − 40 − 40).
          «Очистить» — не текстовая ссылка, а пилюля #f3f3f3: подвал такого же
          цвета, поэтому в рендере она читается как текст. -->
-    <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:gap-2">
+    <!-- Одиночный фильтр (953:122134): подвал 92 с полями 24, одна кнопка во
+         всю ширину, и только когда в группе есть выбранное; «Очистить» там не
+         рисуется — JS ставит data-mode и data-empty на корень. -->
+    <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:gap-2 group-data-[mode=single]/fd:h-[92px] group-data-[mode=single]/fd:group-data-[empty=true]/fd:hidden">
       <button
         type="button"
         data-filter-clear
-        class="hidden btn btn-m flex-1 bg-components-subtle text-text-primary max-md:text-m-button-m hover:bg-components-subtle-hover"
+        class="hidden btn btn-m flex-1 bg-components-subtle text-text-primary max-md:text-m-button-m hover:bg-components-subtle-hover group-data-[mode=single]/fd:hidden!"
       >
         Очистить
         <img src="../../assets/header/icon-close-s.svg" alt="" class="size-5" />
