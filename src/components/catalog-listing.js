@@ -465,12 +465,11 @@ export function initCatalogListing({ products, rub }) {
     });
     // Per-group "Очистить" inside the drawer's <summary> — shown only when
     // that group itself has a selection, not whenever the drawer is open.
-    // «очистить» у заголовка группы в кадре стоит всегда (1859:339044: слот
-    // clear+collapse 84 — текст и невидимый шеврон); прячем не саму кнопку, а
-    // её кликабельность, когда чистить нечего.
+    // «очистить» у заголовка группы — только когда в группе есть галка
+    // (решение клиента 15.09; в кадре 1859:339044 слот стоит всегда).
     document.querySelectorAll("[data-filter-clear-group]").forEach((btn) => {
       const n = groupCount(state, btn.dataset.filterClearGroup);
-      btn.classList.toggle("pointer-events-none", n === 0);
+      btn.classList.toggle("hidden", n === 0);
     });
   }
 

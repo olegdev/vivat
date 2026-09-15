@@ -73,7 +73,7 @@ const hex = (c) =>
       [c.r, c.g, c.b].map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("")
     : null;
 
-function slim(n) {
+function slim(n, styleDecor = new Map()) {
   const t = n.transform;
   const rotated = t && (t.m01 !== 0 || t.m10 !== 0 || t.m00 !== 1 || t.m11 !== 1);
   return {
@@ -134,7 +134,11 @@ function slim(n) {
             style: n.fontName?.style ?? null,
             box: box != null ? +box.toFixed(2) : null,
             lines: lines || null,
-            decoration: n.textDecoration ?? null,
+            // Подчёркивание чаще приходит СО СТИЛЕМ, а не с узла: «очистить» в
+            // ящике фильтров (759:79196) своего `textDecoration` не несёт, а
+            // стиль «Link XS underline» (604:23985) — несёт. Читать только поле
+            // узла — значит однажды снять подчёркивание, которое в кадре есть.
+            decoration: n.textDecoration ?? styleDecor.get(gid(n.styleIdForText?.guid)) ?? null,
             // Ширина текста по содержимому (auto width) — только тогда
             // `layoutSize.x` это ширина букв; у фиксированного ящика это ширина
             // контейнера (подвальные строки 1372, подпись логотипа 212).
@@ -169,7 +173,9 @@ function slim(n) {
 }
 
 function build() {
-  const nodes = decodeFig().map(slim);
+  const decoded = decodeFig();
+  const styleDecor = new Map(decoded.filter((n) => n.textDecoration && n.styleType === "TEXT").map((n) => [gid(n.guid), n.textDecoration]));
+  const nodes = decoded.map((n) => slim(n, styleDecor));
   writeFileSync(CACHE, JSON.stringify({ builtFrom: statSync(FIG).mtimeMs, nodes }));
   return nodes;
 }

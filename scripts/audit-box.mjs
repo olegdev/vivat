@@ -91,8 +91,12 @@ const layoutOf = (r) =>
     d: new Map((r.derivedSymbolData ?? []).map((e) => [pathOf(e.guidPath), e])),
     o: new Map((r.symbolData?.symbolOverrides ?? []).map((e) => [pathOf(e.guidPath), e])),
   });
-function walkFig(nodeId, depth, derived, prefix, parentKey = "root") {
-  if (depth > DEPTH) return;
+const figTexts = []; // надписи auto-width: текст и x от левого края корня
+function walkFig(nodeId, depth, derived, prefix, parentKey = "root", baseX = 0) {
+  // Ящики — до --depth; глубже идём только за надписями (крошка в кадре лежит
+  // на пятом уровне), и без новых `raw`: каждый заново распаковывает .fig.
+  if (depth > DEPTH + 6) return;
+  const deep = depth > DEPTH;
   const children = (kids.get(nodeId) ?? []).filter((c) => !c.hidden && c.h != null);
   // Визуальный порядок: сверху вниз, затем слева направо.
   children.sort((a, b) => (a.y ?? 0) - (b.y ?? 0) || (a.x ?? 0) - (b.x ?? 0));
@@ -104,12 +108,23 @@ function walkFig(nodeId, depth, derived, prefix, parentKey = "root") {
     const w = d?.size?.x ?? c.w;
     const h = d?.size?.y ?? c.h;
     if (derived && !d && prefix) continue; // внутри инстанса — то, чего нет в раскладке, не рендерится
-    if (h == null || h < MIN) continue;
-    const y = d?.transform?.m12 ?? c.y ?? 0;
     // У отражённого узла (m00 < 0 — стрелки рельса) transform.x — это ПРАВЫЙ
     // край; левый = x − ширина. Иначе стрелка «стоит» на 64, когда видна на 16.
     const m00 = d?.transform?.m00 ?? c.m?.[0] ?? 1;
     const x = (d?.transform?.m02 ?? c.x ?? 0) - (m00 < 0 ? w : 0);
+    // надписи собираются до отсечки по высоте: строка 12/16 ниже MIN
+    const chars = ovr?.textData?.characters ?? c.text;
+    // только твёрдая копия: оверрайд или узел вне инстанса; мастерская
+    // «Главная» в каждом шаге крошек каталога — заглушка, не надпись
+    const firmCopy = ovr?.textData?.characters != null || !derived;
+    if (firmCopy && chars?.trim() && c.font?.autoW) figTexts.push({ text: chars.replace(/\s+/g, " ").trim(), x: baseX + x });
+    if (deep) {
+      if (c.symbol && derived) walkFig(c.symbol, depth + 1, derived, p, "", baseX + x);
+      else if (!c.symbol) walkFig(c.id, depth + 1, derived, prefix, "", baseX + x);
+      continue;
+    }
+    if (h == null || h < MIN) continue;
+    const y = d?.transform?.m12 ?? c.y ?? 0;
     figBoxes.push({
       depth, name: c.name ?? c.type, w: Math.round(w), h: Math.round(h), y: Math.round(y), x: Math.round(x),
       parent: nodeId, uid: `${prefix}|${c.id}`, pkey: parentKey,
@@ -124,9 +139,9 @@ function walkFig(nodeId, depth, derived, prefix, parentKey = "root") {
         own = layoutOf(raw(c.id));
         ownPrefix = "";
       }
-      walkFig(c.symbol, depth + 1, own, ownPrefix, `${prefix}|${c.id}`);
+      walkFig(c.symbol, depth + 1, own, ownPrefix, `${prefix}|${c.id}`, baseX + x);
     } else {
-      walkFig(c.id, depth + 1, derived, prefix, `${prefix}|${c.id}`);
+      walkFig(c.id, depth + 1, derived, prefix, `${prefix}|${c.id}`, baseX + x);
     }
   }
 }
@@ -150,7 +165,7 @@ for (const c of CLICKS) {
   await p.$$eval(c, (els) => { const v = els.find((e) => e.getClientRects().length); if (v) v.click(); });
   await p.waitForTimeout(400);
 }
-const domBoxes = await p.evaluate(
+const domRes = await p.evaluate(
   ({ sel, depth: maxDepth, min }) => {
     const seen = (el) => {
       const cs = getComputedStyle(el);
@@ -204,11 +219,25 @@ const domBoxes = await p.evaluate(
       }
     };
     walk(root, 1, 0);
-    return out;
+    // Надписи: левый край самого текстового узла (Range), без глубины — ряд
+    // крошек у нас плоский, а в макете каждая крошка в своём «шаге».
+    const texts = [];
+    const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    for (let n; (n = tw.nextNode()); ) {
+      const t = n.textContent.replace(/\s+/g, " ").trim();
+      if (!t || !n.parentElement || !seen(n.parentElement)) continue;
+      const rg = document.createRange();
+      rg.selectNodeContents(n);
+      const rr = rg.getBoundingClientRect();
+      if (rr.width) texts.push({ text: t, x: rr.left - r0.left });
+    }
+    return { out, texts };
   },
   { sel: selector, depth: DEPTH, min: MIN }
 );
 await browser.close();
+const domTexts = domRes?.texts ?? [];
+const domBoxes = domRes?.out ?? null;
 if (domBoxes === null) {
   console.error(`селектор ничего не нашёл: ${selector}`);
   process.exit(1);
@@ -324,6 +353,25 @@ if (offPairs.length) {
   );
 }
 
+// ---- x надписей -----------------------------------------------------------------
+// Пары по ТЕКСТУ, а не по высоте: одна и та же надпись в кадре и на странице
+// обязана начинаться в одной точке от левого края корня. Ящики тут не помогут:
+// в кадре крошка — «шаг» 54 (текст 46 + 2 + точка в ящике 6), у нас ряд
+// плоский, и «Акции» прилипла к глифу точки на 2px левее — высоты сошлись,
+// пар не было. Только auto-width тексты: у них ящик равен самим буквам.
+const usedT = new Set();
+const textX = [];
+for (const f of figTexts) {
+  const i = domTexts.findIndex((d, k) => !usedT.has(k) && d.text === f.text);
+  if (i === -1) continue;
+  usedT.add(i);
+  if (Math.abs(f.x - domTexts[i].x) > 1.5) textX.push(`«${f.text.slice(0, 30)}»: макет ${Math.round(f.x)} ↔ страница ${domTexts[i].x.toFixed(1)}`);
+}
+if (textX.length) {
+  console.log(`  ✗ x надписи: ${textX.length} текст(а) начинаются не там, где в кадре (от левого края корня):\n` +
+    textX.slice(0, 8).map((r) => `      ${r}`).join("\n"));
+}
+
 // ---- горизонталь ---------------------------------------------------------------
 // Высота, зазоры и вертикальное смещение могут сойтись, а элемент стоит не там
 // по горизонтали: плашки на фото планшета сидели на 4 от края при 10 в кадре.
@@ -415,4 +463,4 @@ console.log(
     `\n  Пары строятся по ВЫСОТЕ: совпавший прогон держит выравнивание,` +
     `\n  одиночная строка «м» рядом со строкой «с» — это и есть расхождение.\n`
 );
-process.exit(only || rootBad ? 1 : 0);
+process.exit(only || rootBad || textX.length ? 1 : 0);

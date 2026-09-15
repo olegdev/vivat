@@ -13,7 +13,7 @@
 // Печатается только то, что требует внимания: расхождения кегля и веса,
 // предупреждение про рамку, несошедшиеся стыки. Совпавшее молчит.
 import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 
 const argv = process.argv.slice(2);
 const opt = (n, d) => { const i = argv.indexOf(n); return i === -1 ? d : argv[i + 1]; };
@@ -68,7 +68,7 @@ for (const r of rows.filter(wanted)) {
     } else {
       const sess = r.flags.session ? ["--session", r.flags.session] : [];
       if (r.how.includes("t")) {
-        const out = run("scripts/audit-type.mjs", [r.page, r.sel, id, "--width", w, ...sess]);
+        const out = run("scripts/audit-type.mjs", [r.page, r.sel, id, "--width", w, ...sess, ...(r.flags.click ? ["--click", r.flags.click] : [])]);
         checks++;
         for (const l of out.split("\n")) {
           if (/^✗/.test(l)) { lines.push("   кегль/перенос " + l.trim()); hard++; }
@@ -99,6 +99,12 @@ for (const r of rows.filter(wanted)) {
         // все подсказки с их строками-примерами (они идут следом с отступом 6)
         const ls = out.split("\n");
         for (const l of ls) if (/^✗ корень/.test(l)) { lines.push("   ящики " + l.trim()); hard++; }
+        // x надписи — твёрдо, с примерами (строки с отступом 6)
+        for (let i = 0; i < ls.length; i++) {
+          if (!/^\s*✗ x надписи/.test(ls[i])) continue;
+          lines.push("   ящики " + ls[i].trim()); hard++;
+          for (let j = i + 1; j < ls.length && /^      \S/.test(ls[j]); j++) lines.push("         " + ls[j].trim());
+        }
         for (let i = 0; i < ls.length; i++) {
           if (!ls[i].includes("⚠")) continue;
           lines.push("   ящики " + ls[i].trim());
@@ -113,6 +119,27 @@ for (const r of rows.filter(wanted)) {
       console.log(`\n── ${r.page} @${w} · ${r.name}`);
       console.log(lines.join("\n"));
     }
+  }
+}
+
+// Статический проход по исходникам: SVG в data-URI с сырым `#`. Всё после `#`
+// браузер читает как якорь, путь обрывается — и картинки нет, без единой
+// ошибки в консоли. Так галка в чекбоксе фильтров (`fill="#292929"`) пропала,
+// и выбранная клетка стала белой на белом. Цвет пишется `%23292929`.
+{
+  const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? walk(`${dir}/${e.name}`) : /\.(css|html|js)$/.test(e.name) ? [`${dir}/${e.name}`] : []);
+  const bad = [];
+  for (const f of walk("src")) {
+    readFileSync(f, "utf8").split("\n").forEach((l, i) => {
+      for (const m of l.matchAll(/data:image\/svg\+xml(?!;base64)[,;][^"')]*/g)) if (m[0].includes("#")) bad.push(`${f}:${i + 1}`);
+    });
+  }
+  checks++;
+  if (bad.length) {
+    hard += bad.length;
+    console.log(`\n── исходники · SVG data-URI с сырым «#» (картинка не рисуется)`);
+    console.log(bad.map((b) => "   ✗ " + b).join("\n"));
   }
 }
 

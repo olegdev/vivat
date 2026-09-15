@@ -51,7 +51,9 @@ const WIDTH = Number(opt("--width", 1440));
 // смотрит, из localStorage; кадры рисуют дилерскую шапку, а свежий браузер
 // аудита — покупательскую.
 const SESSION = opt("--session", null);
-const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session"].includes(argv[i - 1]));
+// `--click sel,sel` — открыть состояние (ящик фильтров, меню) перед сверкой
+const CLICKS = opt("--click", "") ? String(opt("--click")).split(",") : [];
+const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session", "--click"].includes(argv[i - 1]));
 const [page, selector, figmaId] = pos;
 if (!page || !selector || !figmaId) {
   console.error(
@@ -116,6 +118,7 @@ const charColor = (path) => charFills.get(path) ?? null;
 // читался бы с мастера и считался твёрдым: «Белый» 14/20 по мастеру карточки
 // при 16/24 в насчитанной укладке инстанса.
 const figText = [];
+const decorOf = (v) => (v === "UNDERLINE" ? "under" : v === "STRIKETHROUGH" ? "strike" : null);
 const ctxOf = (r) => ({
   derived: new Map((r?.derivedSymbolData ?? []).map((e) => [pathOf(e.guidPath), e])),
   overrides: new Map(
@@ -179,6 +182,9 @@ const ctxOf = (r) => ({
         // он читался бы цветом заголовка. Цвет всегда мягкий сигнал: у
         // инстанса он может быть переопределён, а derived его не несёт.
         color: charColor(path) ?? (c.fills?.[0]?.color ?? null),
+        // Подчёркивание/зачёркивание: с узла или с его текстового стиля (индекс
+        // разрешает стиль). «очистить» в ящике фильтров несёт его только стилем.
+        decor: decorOf(c.font?.decoration),
       });
     }
     // Скрытый фрейм ВНЕ инстанса скрыт по-настоящему (это не «hidden-in-master»,
@@ -208,6 +214,10 @@ const p = await browser.newPage({ viewport: { width: WIDTH, height: 1000 } });
 if (SESSION) await p.addInitScript((u) => localStorage.setItem("vivat:user", u), SESSION);
 await p.goto(`file://${resolve("dist/pages", page)}.html`, { waitUntil: "load" });
 await p.waitForTimeout(1500);
+for (const c of CLICKS) {
+  await p.$$eval(c, (els) => { const v = els.find((e) => e.getClientRects().length); if (v) v.click(); });
+  await p.waitForTimeout(400);
+}
 const domText = await p.evaluate((sel) => {
   // Берём первый ВИДИМЫЙ подходящий узел, а не первый попавшийся. В разметке
   // соседствуют десктопный и мобильный варианты одного блока, и на 1440
@@ -245,6 +255,15 @@ const domText = await p.evaluate((sel) => {
           lines: lhPx ? Math.max(1, Math.round(rb.height / lhPx)) : rects.length || null,
           boxW: Math.round(rb.width),
           weight: parseInt(cs.fontWeight, 10),
+          // text-decoration не наследуется, а РИСУЕТСЯ с предка — идём вверх
+          decor: (() => {
+            for (let e = el; e && e !== root.parentElement; e = e.parentElement) {
+              const l = getComputedStyle(e).textDecorationLine;
+              if (l.includes("underline")) return "under";
+              if (l.includes("line-through")) return "strike";
+            }
+            return null;
+          })(),
           color: rgb ? "#" + rgb.slice(0, 3).map((v) => (+v).toString(16).padStart(2, "0")).join("") : null,
         });
       } else if (n.nodeType === 1) {
@@ -374,6 +393,10 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     } else if (widthBad) {
       flag = "шр";
       soft++;
+    } else if ((f.decor ?? null) !== (d.decor ?? null) && how === "текст") {
+      // подчёркивание — не оттенок: оно есть или его нет
+      flag = "✗д";
+      wrap++;
     } else if (wBad && !f.weightFromMaster) {
       // вес прочитан по ширине глифа — это расхождение, а не подозрение
       flag = "✗в";
@@ -400,7 +423,8 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
       ? `${(f.text ?? "").slice(0, 16)} ⟷ ${(d.text ?? "").slice(0, 16)}`
       : (f?.text ?? d?.text ?? "").slice(0, 37);
   const metric = (flag === "✗п" || flag === "шр") && f && d
-    ? `   строк ${f.lines}↔${d.lines}, ширина ${f.boxW}↔${d.boxW}` : "";
+    ? `   строк ${f.lines}↔${d.lines}, ширина ${f.boxW}↔${d.boxW}`
+    : flag === "✗д" ? `   линия ${f.decor ?? "нет"}↔${d.decor ?? "нет"}` : "";
   console.log(`${flag}${label.padEnd(38)} ${fmt(f).padStart(12)}   ${fmt(d).padStart(12)}${metric}`);
 }
 
@@ -413,6 +437,8 @@ console.log(
     `\n         шрифта): твёрдо, в отличие от «вес» с мастера.` +
     `\n  «✗п» — та же строка уложена в другое число строк: перенос. Метрики` +
     `\n         шрифта или ширина контейнера — блок на строку выше/ниже.` +
+    `\n  «✗д» — у той же строки подчёркивание/зачёркивание есть с одной стороны:` +
+    `\n         в макете оно часто приходит со СТИЛЕМ текста, а не с узла.` +
     `\n  «шр» — однострочный текст другой ширины (>4px и >3%): трекинг,` +
     `\n         начертание или не тот шрифт.` +
     `\n  «вес» — разошёлся ВЕС. Мягкий: derived его не несёт, читается с мастера,` +
