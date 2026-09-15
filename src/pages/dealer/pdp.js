@@ -101,6 +101,7 @@ mountCarousel(
     // фрейма у неё нет вовсе (CLAUDE.md). Адрес карточек даёт сам вариант —
     // см. DEFAULT_HREF в components/product-card.js.
     variant: "modul",
+    mobileDescGap: false, // как у покупателя: 1997:315096 — контейнер заголовка 26, без распорки описания
     arrowTop: 53, // 914:103437 carousel-controls y=53 — NOT centred on the 242px image
   },
   modules

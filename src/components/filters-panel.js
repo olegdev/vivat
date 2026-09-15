@@ -20,12 +20,14 @@
 // состояние выбранных параметров), у 3D-моделей их нет.
 
 import { setScrollLock } from "./scroll-lock.js";
+import { formatThousands, initPriceInputs } from "./price-input.js";
 
 export function initFiltersPanel({ groups, price = false } = {}) {
   const GROUPS = groups;
   const drawer = document.querySelector("[data-filter-drawer]");
   const form = document.querySelector("[data-filter-form]");
   if (!drawer || !form) return;
+  if (price) initPriceInputs(form);
 
   const grid = document.querySelector("[data-decors], [data-models]");
   const badge = document.querySelector("[data-filter-badge]");
@@ -251,7 +253,7 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   if (price) {
     for (const f of ["price_min", "price_max"]) {
       const input = form.querySelector(`input[name="${f}"]`);
-      if (input && params.get(f)) input.value = params.get(f);
+      if (input && params.get(f)) input.value = formatThousands(params.get(f).replace(/\D/g, ""));
     }
     const preset = params.get("price");
     if (preset) {

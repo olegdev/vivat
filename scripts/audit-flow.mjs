@@ -26,8 +26,13 @@ const argv = process.argv.slice(2);
 const opt = (n, d) => { const i = argv.indexOf(n); return i === -1 ? d : argv[i + 1]; };
 const WIDTH = Number(opt("--width", 1440));
 const SESSION = opt("--session", null);
+// `--height` — высота окна. С 1440 шапка+алерт+герой занимают весь экран
+// (решение клиента 26.08, BACKLOG › «Порог полноэкранного героя»): при окне 900
+// герой 744 вместо нарисованных 640, и поток главной расходится с первого же
+// блока. Кадр нарисован под окно 796 = 116 + 40 + 640.
+const HEIGHT = Number(opt("--height", 900));
 const TOL = 1.5; // 2 ловил случайные края: низ последнего фото плитки (2077.5) «совпадал» с низом сетки кадра (2075.6)
-const [page, frameId] = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session"].includes(argv[i - 1]));
+const [page, frameId] = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session", "--height"].includes(argv[i - 1]));
 if (!page || !frameId) {
   console.error("usage: node scripts/audit-flow.mjs <page> <frame-id> [--width 1440]");
   process.exit(2);
@@ -45,7 +50,7 @@ for (const k of kids) {
 }
 
 const browser = await chromium.launch();
-const p = await browser.newPage({ viewport: { width: WIDTH, height: 900 } });
+const p = await browser.newPage({ viewport: { width: WIDTH, height: HEIGHT } });
 if (SESSION) await p.addInitScript((u) => localStorage.setItem("vivat:user", u), SESSION);
 await p.goto(`file://${resolve(`dist/pages/${page}.html`)}`, { waitUntil: "load" });
 await p.waitForTimeout(1200);

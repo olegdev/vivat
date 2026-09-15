@@ -40,7 +40,9 @@
         class="flex size-6 items-center justify-center"
         aria-label="Закрыть фильтры"
       >
-        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6" />
+        <!-- 1440 — close-l (963:37209), 360 — close-s (963:37212, глиф 11.9) -->
+        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6 max-md:hidden" />
+        <img src="../../assets/header/icon-close-s.svg" alt="" class="hidden size-6 max-md:block" />
       </button>
     </div>
 
@@ -231,8 +233,10 @@
          selected somewhere in the form — with nothing picked it's just the
          dark "Показать" button, full width (flex-1, no plain text link). JS
          toggles `hidden` on the whole-form selection count. -->
-    <!-- Ниже `md` подвал такой же, как на 1440: поля 40, а не 16, и зазор 8 —
-         в кадре 1859:347076 две кнопки по 136 в 280 содержимого (360 − 40 − 40).
+    <!-- Ниже `md` подвал как на 1440: слева поле 40 и зазор 24 — в кадрах
+         1859:347076 и 1859:343990 кнопки по 136 стоят на 40 и 200. Правая
+         кнопка кончается на 336, то есть справа поле 24, а не 40: содержимое
+         шире 280 и вылезает в паддинг. Было зазор 8 — «недобор».
          «Очистить» — не текстовая ссылка, а пилюля #f3f3f3: подвал такого же
          цвета, поэтому в рендере она читается как текст. -->
     <!-- Одиночный фильтр (953:122134): подвал 92 с полями 24, одна кнопка во
@@ -240,7 +244,7 @@
          не рисует, но она есть — решение клиента 15.09 (иначе выбранное не
          снять), и сбрасывает только эту группу. JS ставит data-mode и
          data-empty на корень. -->
-    <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:gap-2 group-data-[mode=single]/fd:h-[92px] group-data-[mode=single]/fd:group-data-[empty=true]/fd:hidden">
+    <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:pr-6 group-data-[mode=single]/fd:h-[92px] group-data-[mode=single]/fd:group-data-[empty=true]/fd:hidden">
       <button
         type="button"
         data-filter-clear

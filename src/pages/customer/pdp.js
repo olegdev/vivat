@@ -94,6 +94,7 @@ mountCarousel(
     // (docs/LINK-MAP.md §4.16).
     href: "catalog.html?modules=1",
     variant: "modul",
+    mobileDescGap: false, // 1997:315096 — контейнер заголовка 26, без распорки описания
     arrowTop: 53, // 914:103437 carousel-controls y=53 — NOT centred on the 242px image
   },
   modules

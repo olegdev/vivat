@@ -64,6 +64,9 @@ const pathOf = (g) => g.guids.map((x) => `${x.sessionID}:${x.localID}`).join("."
 const overrides = new Map();
 for (const o of inst.symbolData.symbolOverrides ?? [])
   if (o.textData?.characters) overrides.set(pathOf(o.guidPath), o.textData.characters);
+const swaps = new Map();
+for (const o of inst.symbolData.symbolOverrides ?? [])
+  if (o.overriddenSymbolID) swaps.set(pathOf(o.guidPath), `${o.overriddenSymbolID.sessionID}:${o.overriddenSymbolID.localID}`);
 const participates = new Set((inst.derivedSymbolData ?? []).map((e) => pathOf(e.guidPath)));
 
 const figText = [];
@@ -79,9 +82,10 @@ const figText = [];
     const shown = participates.has(path) || overrides.has(path);
     const t = overrides.get(path) ?? c.text;
     if (t && t.trim() && shown) figText.push(t.replace(/\s+/g, " ").trim());
-    if (c.symbol) {
-      if (seen.has(c.symbol)) continue;
-      walk(c.symbol, path, new Set([...seen, c.symbol]));
+    const sym = swaps.get(path) ?? c.symbol; // подмена варианта (overriddenSymbolID)
+    if (sym) {
+      if (seen.has(sym)) continue;
+      walk(sym, path, new Set([...seen, sym]));
     } else {
       walk(c.id, prefix, seen);
     }

@@ -12,6 +12,7 @@
 // `catalog-filters` (ящик фильтров). Компонент клонирует <template> и запрашивает
 // узлы по data-атрибутам — разметку строками он не собирает.
 import { pageHref } from "./links.js";
+import { formatThousands, initPriceInputs } from "./price-input.js";
 import { fillGallery, initProductCards } from "./product-card.js";
 import { setScrollLock } from "./scroll-lock.js";
 
@@ -151,6 +152,7 @@ export function initCatalogListing({ products, rub }) {
   // exactly as-is. `params` below is already the query string the server will get.
   // See SOLUTIONS.md › "Filters: form + request seam".
   const form = document.querySelector("[data-filter-form]");
+  initPriceInputs(form);
   const drawer = document.querySelector("[data-filter-drawer]");
   const countEl = document.querySelector("[data-filter-count]");
   const badge = document.querySelector("[data-filter-badge]");
@@ -545,8 +547,8 @@ export function initCatalogListing({ products, rub }) {
     }
     const pmin = params.get("price_min");
     const pmax = params.get("price_max");
-    if (pmin) form.querySelector('input[name="price_min"]').value = pmin;
-    if (pmax) form.querySelector('input[name="price_max"]').value = pmax;
+    if (pmin) form.querySelector('input[name="price_min"]').value = formatThousands(pmin);
+    if (pmax) form.querySelector('input[name="price_max"]').value = formatThousands(pmax);
     const price = params.get("price");
     if (price) {
       const r = form.querySelector(`input[name="price"][value="${price}"]`);

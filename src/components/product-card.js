@@ -326,8 +326,9 @@ export function renderCarousel(el, items, opts = {}) {
   // Ряд 320-х плиток в кадре (`other-row size=L` 1968:150250, 444 = ряд 360 +
   // скролл 32 + кнопка 52) обнимает САМУЮ высокую карточку — третью, 360, —
   // поэтому под обычной 352 остаётся 8. У нас фикстуры ровные, ряд вышел бы
-  // 352 и отступ после «Столешницы 31» короче кадра.
-  el.classList.toggle("max-md:min-h-[360px]", opts.mobile === "l");
+  // 352 и отступ после «Столешницы 31» короче кадра. Тот же мастер у рельса
+  // «Добавьте в корзину» на PDP 360 (1997:315101), собранного из `other-s`.
+  el.classList.toggle("max-md:min-h-[360px]", opts.mobile === "l" || opts.variant === "other-s");
   if (items.length > 2 && opts.mobile !== "l" && !opts.variant && items.every((p) => p.category)) {
     el.classList.add("rail-2row");
     el.style.setProperty("--cols", String(Math.ceil(items.length / 2)));

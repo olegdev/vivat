@@ -90,8 +90,13 @@ const layoutOf = (r) =>
   ({
     d: new Map((r.derivedSymbolData ?? []).map((e) => [pathOf(e.guidPath), e])),
     o: new Map((r.symbolData?.symbolOverrides ?? []).map((e) => [pathOf(e.guidPath), e])),
+    // подмена варианта вложенного инстанса — см. audit-type.mjs › swapsOf
   });
 const figTexts = []; // надписи auto-width: текст и x от левого края корня
+const swapOf = (lay, path) => {
+  const s = lay?.o.get(path)?.overriddenSymbolID;
+  return s ? `${s.sessionID}:${s.localID}` : null;
+};
 function walkFig(nodeId, depth, derived, prefix, parentKey = "root", baseX = 0) {
   // Ящики — до --depth; глубже идём только за надписями (крошка в кадре лежит
   // на пятом уровне), и без новых `raw`: каждый заново распаковывает .fig.
@@ -119,7 +124,8 @@ function walkFig(nodeId, depth, derived, prefix, parentKey = "root", baseX = 0) 
     const firmCopy = ovr?.textData?.characters != null || !derived;
     if (firmCopy && chars?.trim() && c.font?.autoW) figTexts.push({ text: chars.replace(/\s+/g, " ").trim(), x: baseX + x });
     if (deep) {
-      if (c.symbol && derived) walkFig(c.symbol, depth + 1, derived, p, "", baseX + x);
+      const symD = swapOf(derived, p) ?? c.symbol;
+      if (symD && derived) walkFig(symD, depth + 1, derived, p, "", baseX + x);
       else if (!c.symbol) walkFig(c.id, depth + 1, derived, prefix, "", baseX + x);
       continue;
     }
@@ -139,7 +145,7 @@ function walkFig(nodeId, depth, derived, prefix, parentKey = "root", baseX = 0) 
         own = layoutOf(raw(c.id));
         ownPrefix = "";
       }
-      walkFig(c.symbol, depth + 1, own, ownPrefix, `${prefix}|${c.id}`, baseX + x);
+      walkFig(swapOf(derived, p) ?? c.symbol, depth + 1, own, ownPrefix, `${prefix}|${c.id}`, baseX + x);
     } else {
       walkFig(c.id, depth + 1, derived, prefix, `${prefix}|${c.id}`, baseX + x);
     }

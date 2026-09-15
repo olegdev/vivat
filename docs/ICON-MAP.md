@@ -25,6 +25,7 @@ Bold при Thin в кадре (2029:156849/156850) — залитые круж�
 | `header/icon-burger-bold.svg` | 960:37182 | burger 24 Bold dark | шапка планшета 2483:238825 |
 | `header/icon-search-dark.svg` | 960:37194 | search 24 Bold dark | шапка планшета 2483:238825 |
 | `header/icon-close-s.svg` | 963:37212 | close-s 24 Bold dark | шапка меню 2483:196822 |
+| `header/icon-close-dark.svg` | 963:37209 | close-l 24 Bold dark | шапка ящика фильтров 1440 1859:339041 (на 360 там close-s, 1859:339806) |
 | `header/chevron-left.svg` | 962:37188 | chevron-left 24 Bold dark | шапка меню 2483:196822 |
 | `header/chevron-right-s.svg` | 961:37182 | chevron-right 24 Bold dark | строки меню 2483:194632 |
 | `order/icon-print.svg` | 2225:169315 | print 24 Thin secondary | строка «Выбрать все» 2029:156848 |

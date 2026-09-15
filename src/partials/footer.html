@@ -2,10 +2,14 @@
 <!-- Figma footer 1821:327818: centred logo + 6 socials over a divider,
      then the same four link groups reflowed as wrapping inline rows. -->
 <footer class="bg-bg-subtle px-4 py-6 md:hidden">
-  <div class="flex flex-col items-center gap-4 border-b border-divider-light pb-4">
-    <div class="flex h-10 flex-col items-center justify-center gap-[5px]">
-      <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[22px] w-[99px]" />
-      <span class="text-[9px] font-medium uppercase leading-4 text-icon-primary"
+  <!-- линия под соцсетями — обводка INSIDE у `top` 1821:327820 (117.56 = 45.56 +
+       16 + 40 + 16), высоты не добавляет: внутренняя тень, не border -->
+  <div class="flex flex-col items-center gap-4 pb-4 shadow-[inset_0_-1px_0_var(--color-divider-light)]">
+    <!-- logo 1821:327821 — 212×45.56: знак 124.3×27.56, зазор 2, подпись 212×16;
+         тот же перерисованный мастер, что в мобильной шапке. -->
+    <div class="flex w-[212px] flex-col items-center gap-0.5">
+      <img src="../../assets/header/logo.svg" alt="VIVAT" class="h-[27.56px] w-[124.3px]" />
+      <span class="w-full whitespace-nowrap text-center text-[9px] font-medium uppercase leading-4 tracking-[0.08em] text-icon-primary"
         >фабрика мебели. Официальный сайт</span
       >
     </div>
@@ -56,7 +60,8 @@
         >
       </div>
     </div>
-    <div class="flex flex-col justify-center gap-2 py-2">
+    <!-- колонки идут парами (center 1821:327828): внутри пары 16, между парами 8 -->
+    <div class="-mt-2 flex flex-col justify-center gap-2 py-2">
       <p class="text-m-h5">Полезная информация</p>
       <div class="flex flex-wrap gap-x-3 gap-y-3 text-m-body-s">
         <a href="../dealer/certificates.html" class="whitespace-nowrap">Сертификаты</a>

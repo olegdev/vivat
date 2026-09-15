@@ -67,7 +67,7 @@
       <div class="flex items-center gap-4 py-1">
         <div class="flex min-w-0 flex-1 items-center gap-2">
           <div class="flex items-center gap-2" data-card-swatches></div>
-          <span class="text-body-s text-text-secondary empty:hidden" data-card-more></span>
+          <span class="text-body-s text-text-secondary underline decoration-from-font underline-offset-2 empty:hidden" data-card-more></span>
         </div>
         <a href="#reviews" class="flex items-center gap-1" data-card-reviews-link aria-label="Отзывы">
           <span class="text-body-s text-text-secondary" data-card-comments></span>
@@ -192,12 +192,14 @@
     <div class="flex flex-col gap-2 px-1 py-3 max-md:gap-1 max-md:px-1 max-md:py-1.5">
       <div class="flex items-start gap-4 max-md:gap-3">
         <div class="flex min-w-0 flex-1 flex-col">
-          <div class="flex h-8 items-baseline gap-2 max-md:h-auto">
+          <!-- 360 (1821:292059): Top 24 = цена 20 и поля 2/2; ярлык размера и
+               значение вплотную — col 40 = 20 + 20. -->
+          <div class="flex h-8 items-baseline gap-2 max-md:h-auto max-md:py-0.5">
             <a href="#" class="text-h3 font-medium text-text-primary max-md:text-m-body-n-accent" data-card-price data-card-link></a>
             <span class="text-body-n text-text-secondary line-through empty:hidden max-md:text-m-body-s-crossed" data-card-oldprice></span>
           </div>
           <a href="#" class="line-clamp-2 pt-1 text-body-n text-text-primary max-md:pt-1 max-md:text-m-body-compact" data-card-title data-card-link></a>
-          <div class="flex flex-col gap-0.5 pt-1 max-md:pt-1">
+          <div class="flex flex-col gap-0.5 pt-1 max-md:gap-0 max-md:pt-1">
             <span class="text-body-n text-text-secondary max-md:text-m-body-compact" data-card-speclabel></span>
             <span class="text-body-n text-text-primary max-md:text-m-body-compact" data-card-specvalue></span>
           </div>
@@ -210,7 +212,8 @@
       <div class="flex items-center gap-4 py-1 max-md:gap-4 max-md:py-1">
         <div class="flex min-w-0 flex-1 items-center gap-2 max-md:gap-1 max-md:[&>[data-card-swatches]>*]:size-[18px]">
           <div class="flex items-center gap-2 max-md:gap-1" data-card-swatches></div>
-          <span class="text-body-s text-text-secondary empty:hidden max-md:text-m-body-xs" data-card-more></span>
+          <!-- «+N» — `color-palette` (1816:157339 и соседи): подчёркнут во всех вариантах, 14/18 и на 360 12/16, как в карточке сетки -->
+          <span class="text-body-s text-text-secondary underline decoration-from-font underline-offset-2 empty:hidden max-md:text-m-body-s" data-card-more></span>
         </div>
         <a href="#reviews" class="flex items-center gap-1 max-md:hidden" data-card-reviews-link aria-label="Отзывы">
           <span class="text-body-s text-text-secondary max-md:text-m-body-xs" data-card-comments></span>

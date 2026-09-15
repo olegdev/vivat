@@ -30,7 +30,10 @@ const argv = process.argv.slice(2);
 const opt = (n, d) => { const i = argv.indexOf(n); return i === -1 ? d : argv[i + 1]; };
 const WIDTH = Number(opt("--width", 1440));
 const SESSION = opt("--session", null);
-const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session"].includes(argv[i - 1]));
+// `--click sel,sel` — открыть состояние (ящик фильтров, меню): закрытое скрыто, и
+// селектор «ничего не находит»
+const CLICKS = opt("--click", "") ? String(opt("--click")).split(",") : [];
+const pos = argv.filter((a, i) => !a.startsWith("--") && !["--width", "--session", "--click"].includes(argv[i - 1]));
 const [page, selector, figmaId] = pos;
 if (!page || !selector || !figmaId) {
   console.error("usage: node scripts/audit-icons.mjs <page> <selector> <figma-id> [--width 1440]");
@@ -60,6 +63,10 @@ const p = await browser.newPage({ viewport: { width: WIDTH, height: 900 } });
 if (SESSION) await p.addInitScript((u) => localStorage.setItem("vivat:user", u), SESSION);
 await p.goto(`file://${resolve(`dist/pages/${page}.html`)}`, { waitUntil: "load" });
 await p.waitForTimeout(400);
+for (const c of CLICKS) {
+  await p.$$eval(c, (els) => { const v = els.find((e) => e.getClientRects().length); if (v) v.click(); });
+  await p.waitForTimeout(400);
+}
 const files = await p.$$eval(selector, (roots) => {
   const root = roots.find((r) => r.getClientRects().length);
   if (!root) return null;

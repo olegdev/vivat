@@ -29,7 +29,8 @@
         class="flex size-6 items-center justify-center"
         aria-label="Закрыть фильтры"
       >
-        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6" />
+        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6 max-md:hidden" />
+        <img src="../../assets/header/icon-close-s.svg" alt="" class="hidden size-6 max-md:block" />
       </button>
     </div>
 
@@ -96,7 +97,7 @@
     <!-- footer: reset + apply. «Показать N» держит applyDecorFilters(). Та же
          панель, что в каталоге (1859:341783) — два РАВНЫХ pill-кнопки. -->
     <!-- поля и зазор подвала те же, что у каталога (1859:347076) -->
-    <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:gap-2">
+    <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:pr-6">
       <button
         type="button"
         data-filter-clear

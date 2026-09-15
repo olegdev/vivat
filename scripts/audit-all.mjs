@@ -60,12 +60,13 @@ for (const r of rows.filter(wanted)) {
       // поток: края блоков кадра против краёв блоков страницы. Печатается
       // первый разошедшийся край — ниже всё обычно едет на ту же величину.
       const sess = r.flags.session ? ["--session", r.flags.session] : [];
-      const fo = run("scripts/audit-flow.mjs", [r.page, id, "--width", w, ...sess]);
+      const hgt = r.flags.height && w === "1440" ? ["--height", r.flags.height] : [];
+      const fo = run("scripts/audit-flow.mjs", [r.page, id, "--width", w, ...sess, ...hgt]);
       checks++;
       const first = fo.split("\n").filter((l) => l.startsWith("✗"));
       if (first.length) {
         lines.push(`   поток ✗ ${first[0].slice(2).trim()}`);
-        lines.push(`         (краёв без пары ${first.length}; подробно: node scripts/audit-flow.mjs ${r.page} ${id} --width ${w})`);
+        lines.push(`         (краёв без пары ${first.length}; подробно: node scripts/audit-flow.mjs ${r.page} ${id} --width ${w} ${hgt.join(" ")})`);
         hard++;
       }
     }
@@ -97,7 +98,7 @@ for (const r of rows.filter(wanted)) {
         if (/is not an INSTANCE|селектор ничего не нашёл/.test(out)) { lines.push("   копия — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); soft++; }
       }
       if (r.how.includes("i")) {
-        const out = run("scripts/audit-icons.mjs", [r.page, r.sel, id, "--width", w, ...sess]);
+        const out = run("scripts/audit-icons.mjs", [r.page, r.sel, id, "--width", w, ...sess, ...(r.flags.click ? ["--click", r.flags.click] : [])]);
         checks++;
         for (const l of out.split("\n")) if (/^[✗?]/.test(l)) { lines.push("   иконки " + l.trim()); if (l.startsWith("✗")) hard++; else soft++; }
         if (/селектор ничего не нашёл/.test(out)) { lines.push("   иконки — НЕ ПРОВЕРЕН: " + out.trim().split("\n").pop()); hard++; }

@@ -87,11 +87,13 @@
          <template> на строку и одна сетка на все три роли.
 
          Ниже `xl` таблица прокручивается вбок: своего фрейма у этого блока на
-         768 и 360 ещё нет (см. BACKLOG.md), а пять колонок туда не влезают. -->
+         768 и 360 ещё нет (см. BACKLOG.md), а пять колонок туда не влезают.
+         Ниже `md` — кегль и строки соседней вкладки «Описание» (1997:314224):
+         40 и 12/16, «Итого» 12/16 Medium; по замечанию клиента 15.09. -->
     <div class="hidden flex-col gap-2" data-panel="moduli">
       <div class="max-xl:scroll-rail max-xl:overflow-x-auto">
         <div class="min-w-[901px]" data-package-table>
-          <div class="package-row text-body-s text-text-secondary" data-package-head>
+          <div class="package-row text-body-s text-text-secondary max-md:h-10 max-md:text-m-body-s" data-package-head>
             <span>Пакет</span>
             <span>В*Ш*Г, мм</span>
             <span>Вес, кг</span>
@@ -99,7 +101,7 @@
             <span class="text-right">Шт.</span>
           </div>
           <div class="flex flex-col" data-package-list></div>
-          <div class="package-row text-body-n-accent text-text-primary" data-package-total>
+          <div class="package-row text-body-n-accent text-text-primary max-md:h-10 max-md:text-m-body-s-accent" data-package-total>
             <span>Итого:</span>
             <span></span>
             <span data-total-weight></span>
@@ -134,7 +136,7 @@
      lead across. -->
 <!-- одна строка комплектации (future @foreach($package as $row)) -->
 <template data-package-row>
-  <div class="package-row text-body-n text-text-primary">
+  <div class="package-row text-body-n text-text-primary max-md:h-10 max-md:text-m-body-s">
     <span data-package-name></span>
     <span data-package-size></span>
     <span data-package-weight></span>

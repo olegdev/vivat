@@ -88,6 +88,15 @@ const overrides = new Map();
 for (const o of inst?.symbolData?.symbolOverrides ?? [])
   if (o.textData?.characters) overrides.set(pathOf(o.guidPath), o.textData.characters);
 
+// Подмена варианта во вложенном инстансе (`overriddenSymbolID`): карточки в
+// рельсе «Модули» на 360 (1997:315097) стоят в мастере как `cards-modul size=l`
+// 320, а инстанс подменил их на `size=m` 160 (1821:292059). Спускаться надо в
+// ПОДМЕНЁННЫЙ мастер — иначе кегли читаются с чужого варианта (цена 18/26
+// вместо 14/20) и сверка врёт в обе стороны.
+const swapsOf = (r) => new Map((r?.symbolData?.symbolOverrides ?? []).filter((o) => o.overriddenSymbolID)
+  .map((o) => [pathOf(o.guidPath), `${o.overriddenSymbolID.sessionID}:${o.overriddenSymbolID.localID}`]));
+const swaps = swapsOf(inst);
+
 // Derived layout, keyed by the same path — this is where the real metrics live.
 const derived = new Map();
 for (const e of inst?.derivedSymbolData ?? []) derived.set(pathOf(e.guidPath), e);
@@ -120,12 +129,13 @@ const charColor = (path) => charFills.get(path) ?? null;
 const figText = [];
 const decorOf = (v) => (v === "UNDERLINE" ? "under" : v === "STRIKETHROUGH" ? "strike" : null);
 const ctxOf = (r) => ({
+  swaps: swapsOf(r),
   derived: new Map((r?.derivedSymbolData ?? []).map((e) => [pathOf(e.guidPath), e])),
   overrides: new Map(
     (r?.symbolData?.symbolOverrides ?? []).filter((o) => o.textData?.characters).map((o) => [pathOf(o.guidPath), o.textData.characters])
   ),
 });
-(function walk(nodeId, prefix, seen, ctx = { derived, overrides }, inInstance = !isFrame) {
+(function walk(nodeId, prefix, seen, ctx = { derived, overrides, swaps }, inInstance = !isFrame) {
   for (const c of kids.get(nodeId) ?? []) {
     const path = prefix ? `${prefix}.${c.id}` : c.id;
     const { derived, overrides } = ctx;
@@ -191,11 +201,12 @@ const ctxOf = (r) => ({
     // который экземпляр может показать): в его детей не спускаемся — иначе
     // спрятанная старая цена в сводке модуля встаёт против нашей цены.
     if (c.hidden && !inInstance && !c.symbol) continue;
-    if (c.symbol) {
-      if (seen.has(c.symbol)) continue;
+    const sym = ctx.swaps?.get(path) ?? c.symbol;
+    if (sym) {
+      if (seen.has(sym)) continue;
       // вложенный инстанс вне контекста инстанса — свой derived, путь с нуля
-      if (!inInstance) walk(c.symbol, "", new Set([...seen, c.symbol]), ctxOf(raw(c.id)), true);
-      else walk(c.symbol, path, new Set([...seen, c.symbol]), ctx, true);
+      if (!inInstance) walk(sym, "", new Set([...seen, sym]), ctxOf(raw(c.id)), true);
+      else walk(sym, path, new Set([...seen, sym]), ctx, true);
     } else {
       walk(c.id, prefix, seen, ctx, inInstance);
     }
