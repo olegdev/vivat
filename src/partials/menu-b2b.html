@@ -48,7 +48,11 @@
      блоков здесь 14/20 Medium (глифы 2209:212697), а не 16/22, как на 1440. -->
 <div class="modal-scrim xl:hidden" data-menu-sheet>
   <div class="modal-panel max-h-[calc(100%-2.5rem)]" data-menu-sheet-panel role="dialog" aria-label="Разделы для дилеров">
-    <div class="flex h-5 items-center justify-center pt-2">
+    <!-- Ручка и строка заголовка — зона перетаскивания: потянуть вниз и
+         отпустить закрывает шторку (menu-b2b.js). Список ниже прокручивается
+         сам и жест не перехватывает. -->
+    <div class="touch-none select-none" data-menu-sheet-grab>
+    <div class="flex h-5 cursor-grab items-center justify-center pt-2">
       <span class="h-1 w-8 rounded-pill bg-surface-raised"></span>
     </div>
 
@@ -58,6 +62,7 @@
         <!-- close-s (963:37212), не close-l: глиф 11.9, как у шторки «Наценка» -->
         <img src="../../assets/header/icon-close-s.svg" alt="Закрыть" class="size-6" />
       </button>
+    </div>
     </div>
 
     <div class="px-4 pt-1">

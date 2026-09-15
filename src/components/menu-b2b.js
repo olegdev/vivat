@@ -55,6 +55,45 @@ function initSheet() {
     setScrollLock("menu-b2b", false);
   };
 
+  // Свайп вниз за ручку или заголовок закрывает шторку. Прототипа на ручке в
+  // макете нет — жест добавлен по решению клиента 15.09 (BACKLOG.md). Панель
+  // едет за пальцем; отпущенная ниже 80px или брошенная быстрым движением
+  // закрывается, иначе возвращается на место.
+  const panel = sheet.querySelector("[data-menu-sheet-panel]");
+  const grab = sheet.querySelector("[data-menu-sheet-grab]");
+  if (panel && grab) {
+    let start = null;
+    const settle = () => {
+      panel.style.transition = "transform 0.2s ease-out";
+      panel.style.transform = "";
+      panel.addEventListener("transitionend", () => (panel.style.transition = ""), { once: true });
+    };
+    grab.addEventListener("pointerdown", (e) => {
+      if (e.button !== 0 || e.target.closest("button")) return;
+      start = { y: e.clientY, t: e.timeStamp, dy: 0 };
+      panel.style.transition = "none";
+      grab.setPointerCapture(e.pointerId);
+    });
+    grab.addEventListener("pointermove", (e) => {
+      if (!start) return;
+      start.dy = Math.max(0, e.clientY - start.y);
+      panel.style.transform = `translateY(${start.dy}px)`;
+    });
+    const end = (e) => {
+      if (!start) return;
+      const { dy, t } = start;
+      start = null;
+      const fast = dy > 24 && dy / Math.max(1, e.timeStamp - t) > 0.5;
+      if (dy > 80 || fast) {
+        close();
+        panel.style.transition = "";
+        panel.style.transform = "";
+      } else settle();
+    };
+    grab.addEventListener("pointerup", end);
+    grab.addEventListener("pointercancel", end);
+  }
+
   document.addEventListener("click", (e) => {
     if (e.target.closest("[data-menu-sheet-open]")) {
       sheet.classList.add("is-open");
