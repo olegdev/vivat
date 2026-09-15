@@ -38,6 +38,8 @@ Bold при Thin в кадре (2029:156849/156850) — залитые круж�
 | `header/icon-burger.svg` | 585:27301 | burger 24 Bold light | «Весь каталог» в шапке 1440 2248:97192 |
 | `header/icon-search.svg` | 964:37194 | search 24 Bold muted | поле поиска в шапке 1440 2248:97192 |
 | `header/icon-order-dark.svg` | 960:37179 585:54882 | order 24 Bold dark; light — тот же файл под `brightness(0) invert(1)` в нажатой корзине | корзина в шапке 1440 2248:97192; страница заказа 942:110180 |
+| `header/icon-order-thin-dark.svg` | 2214:190729 | order 24 Thin dark | плитка 320 на 360: «Популярные» каталога 1997:267695, «Добавьте» PDP 1997:315101 |
+| `header/icon-order-16-dark.svg` | 1821:161663 | order 16 dark | пилюля «в корзину» на 360: 2432:126371, 2488:131443, 2338:239772 |
 | `pdp/icon-share.svg` | 963:37182 | share 24 Bold dark | заголовок сводки 2238:153498 |
 | `header/arrow-right-24.svg` | 2214:190537 | arrow-right 24 Thin dark | пилюля большой плитки категорий 1003:157502 |
 | `header/arrow-right-20.svg` | 2214:190549 | arrow-right 20 dark | пилюли плиток категорий 1003:157538, планшет 2477:166905 |
