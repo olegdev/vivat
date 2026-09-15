@@ -472,14 +472,16 @@
   }
   /* Корзина в шапке на странице заказа — `icon-button condition=pressed`
      (880:51719): круг #292929, белый глиф (`order 24 Bold light` 585:54882),
-     счётчик белый с тёмной цифрой. Ровно как активная «Корзина» в тапбаре:
-     страница ставит `aria-current="page"` на `[data-cart]`. Только у
+     счётчик — `badge-number design=outline` (881:24493): белый, тёмная цифра
+     и обводка 1px #414141 внутрь. Это НЕ бейдж активной «Корзины» в тапбаре —
+     тот `design=light` (#e7e7e7, без обводки). Страница ставит
+     `aria-current="page"` на `[data-cart]`, как и на пункте тапбара. Только у
      покупательского заказа (942:110180) — дилерские кадры (1209:95220,
      1415:67609) держат обычную корзину. Нашлось аудитом иконок: в кадре
      `order light`, у нас `order dark`. */
   [data-cart][aria-current="page"] .icon-btn { @apply bg-components-strong hover:bg-components-strong-hover; }
   [data-cart][aria-current="page"] .icon-btn > img { filter: brightness(0) invert(1); }
-  [data-cart][aria-current="page"] .badge-number { @apply bg-components-white text-text-primary; }
+  [data-cart][aria-current="page"] .badge-number { @apply border border-border-active bg-components-white text-text-primary; }
 
   /* ---- Carousel arrow --------------------------------------------------- */
   .carousel-arrow {
