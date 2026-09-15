@@ -85,7 +85,10 @@ function setStep(n, { scroll = true } = {}) {
   mTitle.textContent = STEP_TITLES[n].title;
   mSub.textContent = STEP_TITLES[n].sub;
   Object.entries(stepBars).forEach(([k, bar]) => bar?.classList.toggle("max-md:hidden", Number(k) !== n));
-  page.querySelector("[data-order-bar]")?.classList.toggle("max-md:hidden", n !== 0);
+  // Бар «Сформировать заказ» — только на шаге 0 и до `xl`: на планшете шаги
+  // накапливаются, как на 1440, и после «Сформировать» кнопка в баре уже ни к
+  // чему (решение клиента 15.09); ниже `md` это и так отдельный экран.
+  page.querySelector("[data-order-bar]")?.classList.toggle("max-xl:hidden", n !== 0);
   // шаг 1 is a full-screen map below `md`; the page behind it must not scroll
   setScrollLock("order-step1-map", n === 1 && isMobile());
   if (n === 1) {
