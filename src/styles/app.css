@@ -419,6 +419,13 @@
   .btn[aria-disabled="true"] {
     @apply pointer-events-none bg-components-disabled text-text-disabled;
   }
+  /* Иконка в неактивной кнопке — `icon-disabled` #999999, как текст. Файлы
+     иконок цветные (белая стрелка на коралловой «Оформить заказ»), поэтому
+     перекрашиваем фильтром: brightness(0) даёт чёрный, invert(0.6) — #999. */
+  .btn:disabled img,
+  .btn[aria-disabled="true"] img {
+    filter: brightness(0) invert(0.6);
+  }
 
   /* sizes */
   .btn-s { @apply h-8 gap-1.5 px-3 text-button-s; }

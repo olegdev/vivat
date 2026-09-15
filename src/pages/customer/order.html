@@ -36,7 +36,11 @@
          is replaced by a modal-style bar (`header` 1859:338425 — back, title,
          close) whose title changes per step, and the red CTA moves into a bar
          above the bottom nav. -->
-    <div class="w-full max-xl:pb-[132px]" data-order data-step="0">
+    <!-- Ниже `md` шаги 1 и 2 — экраны визарда, а не страница: в кадрах
+         2032:158435 / 2059:169141 / 2082:145162 нет ни тапбара, ни подвала, и
+         бар CTA стоит у нижнего края экрана. Прячется по `data-step` корня;
+         тапбар и подвал — общие партиалы, поэтому произвольным вариантом отсюда. -->
+    <div class="w-full max-xl:pb-[132px] max-md:[&[data-step='1']_nav[aria-label='Основная_навигация']]:hidden max-md:[&[data-step='2']_nav[aria-label='Основная_навигация']]:hidden max-md:[&[data-step='2']_footer]:hidden max-md:[&[data-step='2']]:pb-[60px]" data-order data-step="0">
       <!-- ==================== SITE HEADER (desktop only) =============== -->
       <div class="max-md:hidden">
         <!--#include partials/header.html -->
@@ -100,11 +104,10 @@
         <div class="min-w-0 flex-1">
           <div class="overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-md:rounded-none max-md:border-x-0 max-md:border-t-0">
             <!-- panel header 953:151121 — select-all + delete, print + share.
-                 The live mobile render shows no "Удалить" (the node is in the
-                 tree but does not paint), so it is desktop-only here. -->
+                 На 360 «Удалить» нет: text-action 2029:156847 скрыт (visible
+                 false), select-delete 116 — только флажок. Иконки на 1440 —
+                 Bold secondary (981:49799 / 981:49790), на 360 — Thin. -->
             <div class="flex items-center justify-between border-b border-divider-light px-6 py-1 max-md:px-4 max-md:py-1.5">
-              <!-- «Удалить» есть и на 360: `select-delete` 2029:156845 — флажок 116,
-                   зазор 24 и ссылка 79 -->
               <div class="flex items-center gap-6">
                 <label class="flex items-center gap-3 py-2.5 max-md:gap-2">
                   <input type="checkbox" class="filter-check" data-select-all checked />
@@ -112,19 +115,23 @@
                 </label>
                 <button
                   type="button"
-                  class="flex items-center gap-1 text-body-n text-text-secondary transition-colors hover:text-text-primary"
+                  class="flex items-center gap-1 text-body-n text-text-secondary transition-colors hover:text-text-primary max-md:hidden"
                   data-delete-selected
                 >
                   <span>Удалить</span>
-                  <img src="../../assets/header/icon-close-s.svg" alt="" class="size-5 opacity-60" />
+                  <!-- close-s Bold secondary (981:49820) сплошным #808080 в клетке 20 —
+                       не тёмный файл под opacity: сглаженные края светлели -->
+                  <img src="../../assets/header/icon-close-s-secondary.svg" alt="" class="size-5" />
                 </button>
               </div>
               <div class="flex items-center gap-6">
                 <button type="button" class="flex size-6 items-center justify-center" aria-label="Распечатать заказ" data-order-print>
-                  <img src="../../assets/order/icon-print.svg" alt="" class="size-6" />
+                  <img src="../../assets/order/icon-print-bold.svg" alt="" class="size-6 max-md:hidden" />
+                  <img src="../../assets/order/icon-print.svg" alt="" class="hidden size-6 max-md:block" />
                 </button>
                 <button type="button" class="flex size-6 items-center justify-center" data-modal-open="share" aria-label="Поделиться заказом">
-                  <img src="../../assets/order/icon-share.svg" alt="" class="size-6" />
+                  <img src="../../assets/order/icon-share-bold.svg" alt="" class="size-6 max-md:hidden" />
+                  <img src="../../assets/order/icon-share.svg" alt="" class="hidden size-6 max-md:block" />
                 </button>
               </div>
             </div>
@@ -146,7 +153,9 @@
         </aside>
       </section>
 
-      <div class="h-16 max-md:h-10"></div>
+      <!-- на шаге 2 ниже `md` этой распорки нет: подзаголовок стоит на 40 от
+           шапки (form-container 2082:145239, padV 40), а не на 80 -->
+      <div class="h-16 max-md:h-10 max-md:in-data-[step=2]:hidden"></div>
 
       <!-- ==================== ШАГ 1 — ВЫБОР МАГАЗИНА ===================
            Figma map-general 942:110251. The heading and the map are the shared
@@ -168,7 +177,7 @@
         <!-- The sheet's CTA (2082:143084). Below `md` шаг 1 is a full-screen
              map, so it gets its own bar rather than the cart's. -->
         <div
-          class="fixed inset-x-0 bottom-[72px] z-50 hidden h-[60px] items-center justify-center bg-surface-inverted px-4 shadow-navbar max-md:flex"
+          class="fixed inset-x-0 bottom-[72px] z-50 hidden h-[60px] items-center justify-center bg-surface-inverted px-4 shadow-navbar max-md:flex max-md:in-data-[step=1]:bottom-0"
           data-step1-bar
         >
           <button type="button" class="btn btn-m btn-accent w-full text-m-button-m" data-pick-done disabled>
@@ -263,7 +272,7 @@
 
         <!-- mobile CTA (2082:145495) -->
         <div
-          class="fixed inset-x-0 bottom-[72px] z-40 hidden h-[60px] items-center justify-center bg-surface-inverted px-4 shadow-navbar max-md:flex"
+          class="fixed inset-x-0 bottom-[72px] z-[41] hidden h-[60px] items-center justify-center bg-surface-inverted px-4 shadow-navbar max-md:flex max-md:in-data-[step=2]:bottom-0"
           data-step2-bar
         >
           <button type="submit" form="order-form" class="btn btn-m btn-accent w-full text-m-button-m">
@@ -284,12 +293,14 @@
            the one scrolled above it (2029:126838) does. order-cart.js watches
            the summary button and mirrors the state. -->
       <div
-        class="fixed inset-x-0 bottom-[72px] z-40 flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 shadow-navbar opacity-0 transition-opacity duration-200 md:hidden"
+        class="fixed inset-x-0 bottom-[72px] z-[41] flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 shadow-navbar opacity-0 transition-opacity duration-200 md:hidden"
         data-order-bar
         hidden
       >
         <button type="button" class="btn btn-m btn-accent w-full text-m-button-m" data-order-submit>
-          <span>Сформировать заказ&nbsp;• от <span data-summary-total></span></span>
+          <!-- сумме зарезервировано место под «999 999₽», выключка влево: при
+               пересчёте «Сформировать заказ» не ездит (решение клиента 15.09) -->
+          <span>Сформировать заказ&nbsp;• от <span class="inline-block min-w-[4.6em] text-left" data-summary-total></span></span>
         </button>
       </div>
 

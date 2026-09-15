@@ -18,7 +18,10 @@
          файла, а не один `object-cover`: он бы центрировал кадр и увёл чайник
          за нижний край. -->
     <img src="../../assets/order/thanks-src.jpg" alt="" class="absolute inset-0 size-full object-cover max-md:hidden" />
-    <img src="../../assets/order/thanks-mobile-src.jpg" alt="" class="absolute inset-0 hidden size-full object-cover max-md:block" />
+    <!-- снимок выгружен ровно под кадр 360×728; на других экранах `cover` режет
+         его, и по центру чайник уходил низом за тапбар — кадрируем от низа:
+         режется стена сверху, чайник остаётся целым над тапбаром -->
+    <img src="../../assets/order/thanks-mobile-src.jpg" alt="" class="absolute inset-0 hidden size-full object-cover object-bottom max-md:block" />
 
     <!-- Закрыть: на 1440 это простой тёмный глиф 24 у правого края шапки
          (modal-header 2241:158413), на 360 — круглая кнопка `close-panel`

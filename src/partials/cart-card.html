@@ -90,10 +90,11 @@
       </div>
     </div>
 
-    <!-- ---- price + stepper (desktop: the 181 column; mobile: bottom row)
-         181 is the design's width for a 7-digit price next to a 7-digit old
-         one; `min-w` rather than `w` so a longer number pushes the column out
-         instead of wrapping mid-price, and the title column (min-w-0) yields. -->
+    <!-- ---- price + stepper (desktop: the price column; mobile: bottom row)
+         Колонка ОБНИМАЕТ строку цены и прижата вправо: в инстансе 953:151123
+         она 176 при 181 у мастера, и цена начинается на 816, а не на 809.
+         Стоявший `min-w-[181px]` уводил её на 5 левее; длинное число колонку
+         по-прежнему расширяет, а заголовок (min-w-0) уступает. -->
     <!-- the dealer's 1440 row is [stepper][price] inside 278 (953:152373); the
          DOM stays [price][stepper] and `flex-row-reverse` turns it round, and
          the rule is scoped to `md:` so the shared mobile row is untouched.
@@ -101,7 +102,7 @@
          the title (953:151798 is at y=24, the same y as the image) — without
          it the column stretches and `items-center` drops it half a card down. -->
     <div
-      class="flex min-w-[181px] shrink-0 flex-col gap-3 max-md:w-full max-md:min-w-0 max-md:flex-row max-md:items-center max-md:gap-3 max-md:py-1 md:group-data-[user=dealer]:min-w-[278px] md:group-data-[user=dealer]:flex-row-reverse md:group-data-[user=dealer]:items-center md:group-data-[user=dealer]:gap-6 md:group-data-[user=dealer]:self-start"
+      class="flex shrink-0 flex-col gap-3 max-md:w-full max-md:min-w-0 max-md:flex-row max-md:items-center max-md:gap-3 max-md:py-1 md:group-data-[user=dealer]:min-w-[278px] md:group-data-[user=dealer]:flex-row-reverse md:group-data-[user=dealer]:items-center md:group-data-[user=dealer]:gap-6 md:group-data-[user=dealer]:self-start"
     >
       <!-- Цена — клетка постоянной ширины, а не хаг, везде, где степпер стоит
            с ней в один ряд: 86 на покупательской карточке 360 (2029:157694),
@@ -116,7 +117,8 @@
              struck-through old price beside it (2029:157697 is hidden in the
              master and no 360 instance turns it back on); the dealer drops
              them at both widths, like every other dealer price -->
-        <span class="text-body-n text-text-primary max-md:hidden group-data-[user=dealer]:hidden">от</span>
+        <!-- «от» — 16/22 Medium (943:34269), не Regular -->
+        <span class="text-body-n-accent text-text-primary max-md:hidden group-data-[user=dealer]:hidden">от</span>
         <!-- Onest SemiBold 20/24 — это `h4`, а не `h3`: в кадре 943:34268
              ряд 181 складывается как 18 + 8 + 82 + 8 + 65, и 82 наш шрифт даёт
              ровно на 20 (на 24 выходит 99). Дилерская клетка 953:152377 несёт
@@ -148,23 +150,35 @@
           data-step-down
           aria-label="Уменьшить количество"
         >
+          <!-- 1440 — Bold dark (963:37200 / 963:37197), 360 — Thin secondary
+               (2214:191071 / 2214:191047, варианты 2029:129546 и 2462:220050) -->
           <img
             src="../../assets/order/icon-trash.svg"
             alt=""
-            class="hidden size-6 group-data-[count=one]/step:block"
+            class="hidden size-6 group-data-[count=one]/step:block max-md:group-data-[count=one]/step:hidden"
             data-step-down-trash
+          />
+          <img
+            src="../../assets/order/icon-trash-thin.svg"
+            alt=""
+            class="hidden size-6 max-md:group-data-[count=one]/step:block"
           />
           <img
             src="../../assets/order/icon-minus.svg"
             alt=""
-            class="block size-6 group-data-[count=one]/step:hidden"
+            class="block size-6 group-data-[count=one]/step:hidden max-md:hidden"
             data-step-down-minus
           />
+          <img
+            src="../../assets/order/icon-minus-thin.svg"
+            alt=""
+            class="hidden size-6 max-md:block max-md:group-data-[count=one]/step:hidden"
+          />
         </button>
-        <!-- 1440 prints the count in `text-primary` (943:79880), 360 in
-             `#808080` (953:152667) -->
+        <!-- счёт — `text-primary` на обеих ширинах: 943:79880 и 953:152667
+             (#292929; прежний комментарий про #808080 был ошибкой) -->
         <span
-          class="flex h-11 w-14 items-center justify-center text-body-n text-text-primary max-md:h-10 max-md:w-12 max-md:rounded-n max-md:border max-md:border-border-light max-md:bg-surface-inverted max-md:text-m-body-n max-md:text-text-secondary"
+          class="flex h-11 w-14 items-center justify-center text-body-n text-text-primary max-md:h-10 max-md:w-12 max-md:rounded-n max-md:border max-md:border-border-light max-md:bg-surface-inverted max-md:text-m-body-n"
           data-line-qty
         >1</span>
         <button
@@ -173,7 +187,8 @@
           data-step-up
           aria-label="Увеличить количество"
         >
-          <img src="../../assets/order/icon-plus.svg" alt="" class="size-6" />
+          <img src="../../assets/order/icon-plus.svg" alt="" class="size-6 max-md:hidden" />
+          <img src="../../assets/order/icon-plus-thin.svg" alt="" class="hidden size-6 max-md:block" />
         </button>
       </div>
 

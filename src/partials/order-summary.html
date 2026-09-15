@@ -65,9 +65,11 @@
          row — that is the frame, not an omission on our side. -->
     <div class="flex h-10 items-center gap-4 max-md:h-8 md:group-data-[user=dealer]:hidden">
       <dt class="w-[134px] shrink-0 text-body-n text-text-primary max-md:w-[150px] max-md:text-m-body-n">Итого</dt>
-      <dd class="flex items-baseline gap-2">
-        <span class="text-body-n text-text-primary max-md:text-m-body-n group-data-[user=dealer]:hidden">от</span>
-        <span class="text-h3 leading-7 text-text-primary" data-summary-total></span>
+      <!-- большая сумма не переносится и не вылезает: order-cart.js уменьшает
+           её кегль, пока строка не влезет в ячейку (решение клиента 15.09) -->
+      <dd class="flex min-w-0 flex-1 items-baseline gap-2 overflow-hidden" data-fit-row>
+        <span class="shrink-0 text-body-n text-text-primary max-md:text-m-body-n group-data-[user=dealer]:hidden">от</span>
+        <span class="whitespace-nowrap text-h3 leading-7 text-text-primary" data-summary-total data-fit-text></span>
       </dd>
     </div>
   </dl>

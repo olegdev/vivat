@@ -175,10 +175,12 @@
            The frame's label reads «• от 43 335₽»; dealer prices go without
            «от» by the client's decision — see BACKLOG. -->
       <div
-        class="fixed inset-x-0 bottom-[72px] z-40 flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 shadow-navbar md:hidden"
+        class="fixed inset-x-0 bottom-[72px] z-[41] flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 shadow-navbar md:hidden"
       >
         <button type="submit" form="dealer-order-form" class="btn btn-m btn-accent w-full text-m-button-m">
-          <span>Сформировать заказ&nbsp;• <span data-summary-total></span></span>
+          <!-- сумме зарезервировано место под «999 999₽», выключка влево: при
+               пересчёте «Сформировать заказ» не ездит (решение клиента 15.09) -->
+          <span>Сформировать заказ&nbsp;• <span class="inline-block min-w-[4.6em] text-left" data-summary-total></span></span>
         </button>
       </div>
 

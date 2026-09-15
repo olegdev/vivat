@@ -193,6 +193,9 @@ const done = page.querySelector("[data-order-done]");
 function submitOrder(payload) {
   void payload; // (the prototype has nowhere to send it)
   done.classList.add("is-open"); // `.modal-scrim` держит `hidden`, показывает `.is-open`
+  // Экран «Заказ оформлен» (2241:158297) — снимок над ТАПБАРОМ, а шаг 2 его
+  // прячет: уходим из состояния шага, иначе снизу торчит бар «Завершить».
+  page.dataset.step = "done";
   document.body.classList.add("overflow-hidden");
 }
 

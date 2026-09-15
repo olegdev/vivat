@@ -60,10 +60,30 @@ export function initOrderCart(root, { lines } = {}) {
     put("subtotal", money(subtotal));
     put("discount", money(subtotal - total));
     put("total", money(total));
+    fitTotals();
 
     const submit = root.querySelectorAll("[data-order-submit]");
     submit.forEach((b) => (b.disabled = count === 0));
   }
+
+  // «Итого» с большой суммой: кегль уменьшается, пока строка не влезет в свою
+  // ячейку. Сначала сбрасываем — иначе однажды уменьшенный кегль не вернётся,
+  // когда сумма снова станет короткой.
+  function fitTotals() {
+    root.querySelectorAll("[data-fit-row]").forEach((row) => {
+      const text = row.querySelector("[data-fit-text]");
+      if (!text || !row.clientWidth) return;
+      text.style.fontSize = "";
+      text.style.lineHeight = "";
+      const over = row.scrollWidth - row.clientWidth;
+      if (over <= 0) return;
+      const fs = parseFloat(getComputedStyle(text).fontSize);
+      const k = (text.offsetWidth - over) / text.offsetWidth;
+      text.style.fontSize = `${Math.max(12, Math.floor(fs * k * 10) / 10)}px`;
+      text.style.lineHeight = "1.2";
+    });
+  }
+  window.addEventListener("resize", fitTotals);
 
   // ---- one line -----------------------------------------------------------
   function buildLine(line) {
