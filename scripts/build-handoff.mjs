@@ -128,6 +128,10 @@ for (const page of pages) {
   const up = "../".repeat(rel.split("/").length - 1) || "./";
 
   let html = transformIndexHtml.handler(readFileSync(page, "utf8"));
+  // partials/fonts.html writes its url() from the public root — that is the one
+  // spelling Vite resolves without a warning and rewrites per page. Here nothing
+  // rewrites, so bring it in line with every other ../../assets/ path.
+  html = html.replaceAll('url("/assets/', `url("${up}assets/`);
   html = html.replace(
     /(\s*)<script type="module" src="\.\/([\w-]+)\.js"><\/script>/,
     (_, ws, name) =>

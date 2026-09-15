@@ -591,7 +591,10 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `modal-subscribe`,
 `modal-director`, `modal-about`, `modal-bug-report`, and the content-page trio `menu-b2b`, `for-business-header`
 (which also carries the section-menu sheet) and `accordion`, plus
-`benefit-tile`, `session` and `schema-org`.
+`benefit-tile`, `session`, `schema-org` and `fonts` — the `@font-face` block
+for Onest, which is self-hosted from `public/assets/fonts/` (the same variable
+file Google Fonts serves and Figma renders; no page loads anything from
+`fonts.googleapis.com` any more).
 Several carry both a static shell and the `<template>` unit(s) their component
 clones (`catalog-menu`, `mobile-menu`, `stores`, `pdp-summary`, `pdp-specs`,
 `search-overlay`, `price-mode`, `order-modules`);

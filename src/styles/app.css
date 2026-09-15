@@ -563,8 +563,10 @@
   }
 
   /* The six glyphs live next to this file rather than in `public/`, so Vite
-     resolves and inlines them; a `url()` pointing into `public/` can only be
-     resolved at runtime and made the build warn on every page. */
+     resolves and inlines them; a relative `url()` pointing into `public/` can
+     only be resolved at runtime and made the build warn on every page. (A
+     root-relative `url("/assets/…")` does resolve — that is how the fonts are
+     declared, see SOLUTIONS.md — but inlining spares the six requests.) */
   .social-zen { --icon: url("./social/zen.svg"); }
   .social-vk  { --icon: url("./social/vk.svg"); }
   .social-tg  { --icon: url("./social/tg.svg"); }
