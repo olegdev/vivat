@@ -593,7 +593,15 @@
      ней же сводится на планшете. Ступень 768 жила инлайном в `categories`,
      пока её не нашли второй раз в рельсе PDP — теперь она в самом классе,
      и добавлять её к каждому месту вызова больше не нужно. */
-  .badge-l { @apply h-8 py-0.5 text-body-n-accent max-xl:h-6 max-xl:py-0 max-xl:pb-px max-xl:text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
+  /* Вертикаль текста в пилюле — не только `items-center`. Chrome кладёт
+     базовую линию на целый пиксель, округляя ВНИЗ (21.32 → 21 на 1x, 42.64 →
+     42 на 2x), и цифры в L-бейдже 32 сидели на 9 сверху / 11 снизу при
+     10.1 / 10.7 в макете (текст @5, базовая 5 + 0.8 + 15.52). Поля 3/1
+     вместо 2/2 опускают строку на пиксель — 10 / 10 на 1x и 2x. У S (24)
+     макет ставит текст на 2.5, что даёт 6.5 / 7.5, а Chrome умеет только 7 / 7
+     (`pb-px`) или 6 / 8 — оставлен центр. Сверено по 4x-экспорту дизайнера
+     (docs/figma-exports/badge-s-discount-4x.png) маской белых пикселей, 15.09. */
+  .badge-l { @apply h-8 pt-[3px] pb-px text-body-n-accent max-xl:h-6 max-xl:pt-0 max-xl:pb-px max-xl:text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
   .badge-s { @apply h-6 pb-px text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
   .badge-new      { @apply bg-surface-accent-alt; }
   .badge-hit      { @apply bg-components-red; }
