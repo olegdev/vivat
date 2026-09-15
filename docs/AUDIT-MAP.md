@@ -209,6 +209,7 @@
 | заголовок | `h1` | 953:121914 | — | 2225:160587 | t |
 | крошки | `nav.page-x` | 953:121913 | — | — | t b |
 | зелёная полоса | `section.bg-surface-accent-alt` | 1650:87849 | — | — | t b |
+| рельс «Популярные» | `[data-section="popular"] section` | — | — | 1997:267695 | t b #depth=4 |
 
 ## dealer/order
 
