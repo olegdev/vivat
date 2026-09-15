@@ -113,16 +113,19 @@
           <img src="../../assets/header/icon-order-ok-light.svg" alt="В корзине" class="size-6" data-in-cart-only />
         </button>
       </div>
-      <!-- 360: рубрика ровно посередине между названием (181) и кнопкой (211):
-           30 − 14 = по 8. Сверху поле строки 8; снизу 6 поля Info + 2 отступа
-           кнопки. Карточка остаётся 243 (1884:363393). -->
-      <div class="flex items-center gap-4 py-1 max-md:gap-0.5 max-md:pb-0 max-md:pt-2" data-card-category-row>
+      <!-- 360: рубрика посередине между названием и кнопкой ПО ВИДИМОМУ ТЕКСТУ,
+           не по коробкам: у 11/14 буквы начинаются на 3.5 ниже верха строки, а
+           подчёркивание выходит на 0.5 за низ. По коробкам 8/8 глазу давало
+           14.5 сверху и 7.5 снизу (замечание клиента, «должно быть по 10»).
+           Поле 4 сверху + 6 поля Info + 6 отступа кнопки: ≈10.5 / 11.5 по
+           чернилам, карточка остаётся 243. -->
+      <div class="flex items-center gap-4 py-1 max-md:gap-0.5 max-md:pb-0 max-md:pt-1" data-card-category-row>
         <a href="#" class="text-body-xs text-text-secondary underline decoration-from-font underline-offset-2 max-md:truncate max-md:text-m-body-xs" data-card-category></a>
       </div>
     </div>
     <!-- «buttons» (1884:363392) сидит СНАРУЖИ паддинга «container» (px-1
          выше), а не внутри — во всю ширину карточки, а не 152−8. -->
-    <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-0.5 max-md:flex">
+    <button type="button" data-add-to-cart class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:mt-1.5 max-md:flex">
       <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" data-idle-only />
       <img src="../../assets/header/icon-order-ok-light.svg" alt="" class="size-4" data-in-cart-only />
       <span class="text-m-button-s text-text-primary" data-idle-only>в корзину</span>
