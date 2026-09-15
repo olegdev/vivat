@@ -4,7 +4,8 @@
      components/price-mode.js; строк тут не собирается ни в одном JS. -->
 
 <!-- `dropdown-item` 606:26531 / 2225:165635: 40 в обычном виде, 44 выбранная,
-     108 у раскрытой «Своей наценки». -->
+     108 у раскрытой «Своей наценки» — 8 + 24 + зазор 8 + data-container 60
+     (поля 8 сверху и снизу) + 8: у поля поэтому 16 сверху и 8 снизу. -->
 <template data-price-item>
   <div class="price-item md:min-h-11" data-price-item-id>
     <button type="button" class="flex w-full items-center gap-2 text-left" data-price-item-select>
@@ -19,7 +20,7 @@
         data-price-item-check
       />
     </button>
-    <div class="hidden items-center gap-4 pt-2" data-price-item-field>
+    <div class="hidden items-center gap-4 pt-4 pb-2" data-price-item-field>
       <label class="flex h-11 w-[100px] items-center gap-1 rounded-[var(--radius-s)] bg-bg-page px-3">
         <input
           type="number"
@@ -36,8 +37,13 @@
 </template>
 
 <!-- Шторка выбора прайс-листа на 360 — 2225:163666 / 2225:164865: оверлей
-     #141414/0.9, панель 400 снизу, шапка 56 с заголовком и ×, кнопка
+     #141414/0.9, панель снизу, шапка 56 с заголовком и ×, кнопка
      «Применить» только у «Своей наценки». Выше md не рендерится.
+
+     Высота — по содержимому, как у остальных шторок сайта: 400 в кадрах —
+     фиксированная рамка, внутри которой список в обоих состояниях
+     недотягивает (224 из 400 и 52 пустых над «Применить», 2225:165273).
+     Эти пустоты не повторяем (BACKLOG.md).
 
      Оболочка — общая, `.modal-scrim` + `.modal-panel`: у шторки был свой
      контейнер без скругления верхних углов, и она единственная на сайте
@@ -46,7 +52,7 @@
 <div data-price-sheet class="modal-scrim md:hidden">
   <div class="absolute inset-0" data-price-close></div>
   <div
-    class="modal-panel relative flex h-[400px] flex-col"
+    class="modal-panel relative flex flex-col"
     role="dialog"
     aria-modal="true"
     aria-label="Наценка"
@@ -62,7 +68,7 @@
         <img src="../../assets/header/icon-close-s.svg" alt="" class="size-6" />
       </button>
     </div>
-    <div class="flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto px-4 py-4" data-price-list></div>
+    <div class="flex min-h-0 flex-col gap-1.5 overflow-y-auto px-4 py-4" data-price-list></div>
     <!-- modal-button-container 2225:165727 -->
     <div class="hidden shrink-0 px-4 py-2" data-price-apply-row>
       <button type="button" class="btn btn-m btn-primary w-full" data-price-apply>

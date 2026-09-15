@@ -167,7 +167,9 @@ export function initFiltersPanel({ groups, price = false } = {}) {
   // без группы — разворачивает всё сразу. Не «всегда всё открыто».
   const allSections = () => form.querySelectorAll("[data-filter-section]");
   const filterTitle = drawer.querySelector("[data-filter-title]");
-  const DEFAULT_TITLE = filterTitle?.textContent;
+  // innerHTML, не textContent: в заголовке два span под покупателя и дилера
+  // («Фильтры» / «Все фильтры»), и textContent склеивал их в одну строку.
+  const DEFAULT_TITLE = filterTitle?.innerHTML;
   // Заголовок окна остаётся «Фильтры» и при одиночном фильтре: в мобильном
   // кадре (1997:285890) в шапке стоит он, а имя группы — подзаголовок внутри.
   // `label` больше не используется, но приходит от вызовов из панели настроек.
@@ -181,14 +183,14 @@ export function initFiltersPanel({ groups, price = false } = {}) {
         s.open = s === target;
         s.classList.toggle("hidden", s !== target);
       }
-      if (filterTitle) filterTitle.textContent = DEFAULT_TITLE;
+      if (filterTitle) filterTitle.innerHTML = DEFAULT_TITLE;
       form.scrollTop = 0;
     } else {
       for (const s of allSections()) {
         s.open = true;
         s.classList.remove("hidden");
       }
-      if (filterTitle) filterTitle.textContent = DEFAULT_TITLE;
+      if (filterTitle) filterTitle.innerHTML = DEFAULT_TITLE;
       form.scrollTop = 0;
     }
   }

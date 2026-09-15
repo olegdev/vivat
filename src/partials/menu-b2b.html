@@ -22,7 +22,7 @@
 <!-- один блок (future @foreach($menu as $block)) -->
 <template data-menu-b2b-block>
   <nav class="flex flex-col">
-    <p class="flex h-10 items-center px-4 text-body-n-accent text-text-muted max-md:h-11" data-block-title></p>
+    <p class="flex h-10 items-center px-4 text-body-n-accent text-text-muted max-md:h-11 max-md:text-m-body-n-accent" data-block-title></p>
     <!-- В шторке пункты вложены в `menu` с padH=16 (2209:212892), поэтому
          ниже md они сдвинуты на 16 относительно заголовка блока, а плашка
          активного пункта не доходит до краёв панели. На 1440 обёртки нет. -->
@@ -42,9 +42,12 @@
 <!-- ==================== ШТОРКА МЕНЮ РАЗДЕЛА (360) =====================
      Figma 2209:213627 — оверлей #141414/0.9 и панель с ручкой перетаскивания
      32×4, заголовком с крестиком, полем поиска и теми же тремя блоками меню.
-     Строки в шторке 44, а не 40: блоки 220 / 396 / 176 делятся на 44 ровно. -->
+     Строки в шторке 44, а не 40: блоки 220 / 396 / 176 делятся на 44 ровно.
+     Панель не доходит до верха экрана: left-side 2209:213655 стоит на 40 от
+     верха при высоте 760 из 800 — над ней остаётся полоса оверлея. Заголовки
+     блоков здесь 14/20 Medium (глифы 2209:212697), а не 16/22, как на 1440. -->
 <div class="modal-scrim xl:hidden" data-menu-sheet>
-  <div class="modal-panel" data-menu-sheet-panel role="dialog" aria-label="Разделы для дилеров">
+  <div class="modal-panel max-h-[calc(100%-2.5rem)]" data-menu-sheet-panel role="dialog" aria-label="Разделы для дилеров">
     <div class="flex h-5 items-center justify-center pt-2">
       <span class="h-1 w-8 rounded-pill bg-surface-raised"></span>
     </div>
@@ -52,7 +55,8 @@
     <div class="flex h-10 items-center justify-between px-4">
       <p class="text-m-h2 text-text-primary">Для бизнеса</p>
       <button type="button" class="flex size-6 items-center justify-center" data-menu-sheet-close>
-        <img src="../../assets/header/icon-close-dark.svg" alt="Закрыть" class="size-6" />
+        <!-- close-s (963:37212), не close-l: глиф 11.9, как у шторки «Наценка» -->
+        <img src="../../assets/header/icon-close-s.svg" alt="Закрыть" class="size-6" />
       </button>
     </div>
 
