@@ -82,16 +82,17 @@ export const PRODUCTS = Array.from({ length: 24 }, (_, i) => {
 // =============================================================================
 // `tab` maps each item to a carousel tab (the tab seam filters on it — see
 // carousel.js initTabs); tab-less items show only under "Все сразу".
+// id нужен шву корзины: без него «в корзину» в рельсе ничего не делал
 export const popularItems = [
-  { image: `${HOME}/prod-pop-1-src.png`, price: "5 991₽", title: "Столешница Hard-38 кромка с 4-х сторон Прямая", category: { label: "Столешницы", count: 31 }, tab: "Столешницы" },
-  { image: `${HOME}/prod-pop-2-src.png`, price: "22 120₽", title: "Электрический духовой шкаф EDM 045 BBL", category: { label: "Духовые шкафы", count: 12 }, tab: "Бытовая техника" },
-  { image: `${HOME}/prod-pop-3-src.png`, price: "210₽", oldPrice: "43 335₽", badges: [{ text: "- 10%", tone: "discount" }], title: "Табурет CHICO (SL1)", category: { label: "Табуреты", count: 31 } },
-  { image: `${HOME}/prod-mod-2-src.png`, price: "8 470₽", title: "Мойка Vivat Granite GR-52, кварц, песочный", category: { label: "Мойки", count: 22 }, tab: "Мойки" },
-  { image: `${HOME}/prod-mod-3-src.png`, price: "3 190₽", oldPrice: "4 100₽", badges: [{ text: "хит", tone: "hit" }], title: "Смеситель для кухни VIVAT SM-11, хром", category: { label: "Смесители", count: 18 }, tab: "Смесители" },
-  { image: `${HOME}/prod-mod-4-src.png`, price: "15 640₽", title: "Система выдвижения Tandembox, полное выдвижение", category: { label: "Системы выдвижения", count: 9 }, tab: "Системы выдвижения" },
-  { image: `${HOME}/prod-pop-1-src.png`, price: "7 250₽", title: "Столешница Hard-38 кромка с 2-х сторон Угловая", category: { label: "Столешницы", count: 31 }, tab: "Столешницы" },
-  { image: `${HOME}/prod-pop-3-src.png`, price: "5 700₽", badges: [{ text: "new", tone: "new" }], title: "Стул VERONA, велюр, тёмно-серый", category: { label: "Стулья", count: 16 } },
-  { image: `${HOME}/prod-pop-2-src.png`, price: "22 490₽", title: "Варочная панель индукционная EIP 640 BL", category: { label: "Варочные панели", count: 24 }, tab: "Бытовая техника" },
-  { image: `${HOME}/prod-mod-1-src.png`, price: "1 890₽", title: "Сушилка для посуды в шкаф, нержавеющая сталь", category: { label: "Аксессуары", count: 47 } },
+  { id: "cat-pop-0", image: `${HOME}/prod-pop-1-src.png`, price: "5 991₽", title: "Столешница Hard-38 кромка с 4-х сторон Прямая", category: { label: "Столешницы", count: 31 }, tab: "Столешницы" },
+  { id: "cat-pop-1", image: `${HOME}/prod-pop-2-src.png`, price: "22 120₽", title: "Электрический духовой шкаф EDM 045 BBL", category: { label: "Духовые шкафы", count: 12 }, tab: "Бытовая техника" },
+  { id: "cat-pop-2", image: `${HOME}/prod-pop-3-src.png`, price: "210₽", oldPrice: "43 335₽", badges: [{ text: "- 10%", tone: "discount" }], title: "Табурет CHICO (SL1)", category: { label: "Табуреты", count: 31 } },
+  { id: "cat-pop-3", image: `${HOME}/prod-mod-2-src.png`, price: "8 470₽", title: "Мойка Vivat Granite GR-52, кварц, песочный", category: { label: "Мойки", count: 22 }, tab: "Мойки" },
+  { id: "cat-pop-4", image: `${HOME}/prod-mod-3-src.png`, price: "3 190₽", oldPrice: "4 100₽", badges: [{ text: "хит", tone: "hit" }], title: "Смеситель для кухни VIVAT SM-11, хром", category: { label: "Смесители", count: 18 }, tab: "Смесители" },
+  { id: "cat-pop-5", image: `${HOME}/prod-mod-4-src.png`, price: "15 640₽", title: "Система выдвижения Tandembox, полное выдвижение", category: { label: "Системы выдвижения", count: 9 }, tab: "Системы выдвижения" },
+  { id: "cat-pop-6", image: `${HOME}/prod-pop-1-src.png`, price: "7 250₽", title: "Столешница Hard-38 кромка с 2-х сторон Угловая", category: { label: "Столешницы", count: 31 }, tab: "Столешницы" },
+  { id: "cat-pop-7", image: `${HOME}/prod-pop-3-src.png`, price: "5 700₽", badges: [{ text: "new", tone: "new" }], title: "Стул VERONA, велюр, тёмно-серый", category: { label: "Стулья", count: 16 } },
+  { id: "cat-pop-8", image: `${HOME}/prod-pop-2-src.png`, price: "22 490₽", title: "Варочная панель индукционная EIP 640 BL", category: { label: "Варочные панели", count: 24 }, tab: "Бытовая техника" },
+  { id: "cat-pop-9", image: `${HOME}/prod-mod-1-src.png`, price: "1 890₽", title: "Сушилка для посуды в шкаф, нержавеющая сталь", category: { label: "Аксессуары", count: 47 } },
 ];
 
