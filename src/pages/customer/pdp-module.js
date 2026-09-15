@@ -12,7 +12,7 @@ import { initPhoneMask } from "../../components/phone-mask.js";
 import { initConsentGate } from "../../components/consent-gate.js";
 import { initCitySelect } from "../../components/city-select.js";
 import { ICON } from "../../data/asset-base.js";
-import { product, specs, modules, railTitle } from "../../data/pdp-module.js";
+import { product, specs, packageRows, modules, railTitle } from "../../data/pdp-module.js";
 
 // ---- общий chrome, та же обвязка, что у остальных страниц -------------------
 setCatalogIconBase(ICON);
@@ -31,11 +31,13 @@ initModuleSummary(product);
 
 // ---- Характеристики ---------------------------------------------------------
 // Таблица у модуля своей копии в макете не получила (см. data/pdp-module.js).
-// Ярлыков в блоке три — «Описание», «Комплектация», «Где купить», — но
-// «Где купить» ведёт к карте салонов, которой у модуля нет (решение клиента
-// 15.09), поэтому этот якорь страница снимает.
-document.querySelector('[data-spec-tabs] a[href="#where"]')?.remove();
-initSpecTabs({ specs, package: [] });
+// Ярлыков в блоке три — «Описание», «Комплектация», «Где купить». Карты
+// салонов у модуля нет, но пункт «Где купить» клиент оставил (15.09) — и в
+// ряду вкладок, и в якорном баре — просто без перехода.
+document.querySelectorAll('a[href="#where"]').forEach((a) => a.addEventListener("click", (e) => e.preventDefault()));
+// Комплектация — фикстура «чтобы не пустая» (решение клиента 15.09): своей
+// таблицы у модуля в макете нет.
+initSpecTabs({ specs, package: packageRows });
 enableDragScroll(document.querySelector("[data-spec-tabs]"));
 
 // ---- рельс «Модули композиции …» ---------------------------------------------

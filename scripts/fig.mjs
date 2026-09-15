@@ -73,7 +73,7 @@ const hex = (c) =>
       [c.r, c.g, c.b].map((v) => Math.round(v * 255).toString(16).padStart(2, "0")).join("")
     : null;
 
-function slim(n, styleDecor = new Map()) {
+function slim(n, styleDecor = new Map(), styleKnown = new Set()) {
   const t = n.transform;
   const rotated = t && (t.m01 !== 0 || t.m10 !== 0 || t.m00 !== 1 || t.m11 !== 1);
   return {
@@ -134,11 +134,18 @@ function slim(n, styleDecor = new Map()) {
             style: n.fontName?.style ?? null,
             box: box != null ? +box.toFixed(2) : null,
             lines: lines || null,
-            // Подчёркивание чаще приходит СО СТИЛЕМ, а не с узла: «очистить» в
-            // ящике фильтров (759:79196) своего `textDecoration` не несёт, а
-            // стиль «Link XS underline» (604:23985) — несёт. Читать только поле
-            // узла — значит однажды снять подчёркивание, которое в кадре есть.
-            decoration: n.textDecoration ?? styleDecor.get(gid(n.styleIdForText?.guid)) ?? null,
+            // Линия — со СТИЛЯ, если стиль наложен: поле узла при наложенном
+            // стиле протухает, как `fontSize`. Обе ошибки уже сделаны:
+            // «очистить» (759:79196) — у узла поля нет, у стиля «Link XS
+            // underline» есть, и подчёркивание было снято; «+5» палитры
+            // (629:26709) — у узла UNDERLINE, у стиля «Desktop/BodyS» линии
+            // нет, и подчёркивание было добавлено. Узел — только без стиля
+            // (или когда стиль библиотечный и в файле его нет).
+            decoration: (() => {
+              const sid = gid(n.styleIdForText?.guid);
+              if (sid && styleKnown.has(sid)) return styleDecor.get(sid) ?? null;
+              return n.textDecoration && n.textDecoration !== "NONE" ? n.textDecoration : null;
+            })(),
             // Ширина текста по содержимому (auto width) — только тогда
             // `layoutSize.x` это ширина букв; у фиксированного ящика это ширина
             // контейнера (подвальные строки 1372, подпись логотипа 212).
@@ -174,8 +181,10 @@ function slim(n, styleDecor = new Map()) {
 
 function build() {
   const decoded = decodeFig();
-  const styleDecor = new Map(decoded.filter((n) => n.textDecoration && n.styleType === "TEXT").map((n) => [gid(n.guid), n.textDecoration]));
-  const nodes = decoded.map((n) => slim(n, styleDecor));
+  const textStyles = decoded.filter((n) => n.styleType === "TEXT");
+  const styleKnown = new Set(textStyles.map((n) => gid(n.guid)));
+  const styleDecor = new Map(textStyles.filter((n) => n.textDecoration && n.textDecoration !== "NONE").map((n) => [gid(n.guid), n.textDecoration]));
+  const nodes = decoded.map((n) => slim(n, styleDecor, styleKnown));
   writeFileSync(CACHE, JSON.stringify({ builtFrom: statSync(FIG).mtimeMs, nodes }));
   return nodes;
 }
