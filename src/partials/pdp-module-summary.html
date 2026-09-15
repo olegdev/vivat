@@ -29,10 +29,12 @@
      Поля: сводка 16 сверху (снизу 16 на 768, 0 на 360), `Top` 8 сверху и
      зазор 12 между блоками, боковые 24 / 16. -->
 <aside
-  class="flex w-[412px] shrink-0 flex-col self-start rounded-n border border-border-light bg-surface-inverted xl:sticky xl:top-6 max-xl:w-full max-xl:gap-3 max-xl:rounded-none max-xl:border-0 max-xl:pt-6 max-xl:pb-4 max-md:pb-0"
+  class="flex w-[412px] shrink-0 flex-col self-start rounded-n bg-surface-inverted ring-1 ring-inset ring-border-light xl:sticky xl:top-6 max-xl:w-full max-xl:gap-3 max-xl:rounded-none max-xl:pt-6 max-xl:pb-4 max-xl:ring-0 max-md:pb-0"
   data-module-summary
 >
-  <div class="flex flex-col gap-4 p-6 max-xl:contents">
+  <!-- Top 2488:130059: поля 24 сверху и по бокам, снизу 0 — дальше зазор 16
+       сводки до линии над кнопкой. Обводка панели INSIDE: кольцом, не border. -->
+  <div class="flex flex-col gap-4 px-6 pt-6 pb-4 max-xl:contents">
     <div class="flex items-start gap-3 max-xl:order-1 max-xl:px-6 max-md:px-4">
       <!-- 30/36 на планшете, как у кухонной сводки (2488:136037); 22/26 на 360 -->
       <h1 class="min-w-0 flex-1 text-h3 text-text-primary max-xl:text-h2 max-md:text-m-h2" data-module-title></h1>
@@ -48,15 +50,22 @@
          сегменты 40 (padV 4 вокруг пилюль 32), без полей. -->
     <!-- Под сегментами до «Каркаса» 16 на 768 (нижнее поле `color` 84 − 68) и
          12 на 360 (78 − 66): зазор сводки даёт 12, на планшете добираем 4. -->
-    <div class="flex flex-col gap-2 max-xl:order-3 max-xl:gap-1.5 max-xl:px-6 max-xl:pb-1 max-md:px-4 max-md:pb-0">
-      <p class="text-body-n text-text-primary max-xl:text-body-n-accent max-md:text-m-body-n-accent" data-module-packaging-label></p>
-      <div class="flex items-center gap-1 max-xl:py-1" role="radiogroup" aria-label="Комплектация" data-module-packaging></div>
+    <!-- `color` 2488:130063 / 136043 / 130547 — на ВСЕХ ширинах с нижней линией
+         1px #e7e7e7 (INSIDE): подпись 22, зазор 6, сегменты 40, поле 16 (12 на
+         360) до линии. Линия во ширину содержимого — поэтому поля отступом, а
+         не паддингом. -->
+    <div class="flex flex-col gap-1.5 pb-4 shadow-[inset_0_-1px_0_var(--color-divider-light)] max-xl:order-3 max-xl:mx-6 max-md:mx-4 max-md:pb-3">
+      <p class="text-body-n leading-[22px] text-text-primary max-xl:text-body-n-accent max-md:text-m-body-n-accent max-md:leading-5" data-module-packaging-label></p>
+      <div class="flex items-center gap-1 py-1" role="radiogroup" aria-label="Комплектация" data-module-packaging></div>
     </div>
 
     <!-- по одной группе на «Каркас» и «Фасад» -->
-    <div class="flex flex-col gap-4 max-xl:order-4 max-xl:gap-0 max-xl:px-6 max-md:px-4" data-module-colors></div>
+    <!-- На 1440 после «Фасада» ещё поле 16 и линия (2488:130165); ниже `xl`
+         линии нет, а первая группа своим верхним полем стоит сразу под линией
+         комплектации — зазор сводки 12 гасится. -->
+    <div class="flex flex-col gap-4 pb-4 shadow-[inset_0_-1px_0_var(--color-divider-light)] max-xl:order-4 max-xl:-mt-3 max-xl:gap-0 max-xl:px-6 max-xl:pb-0 max-xl:shadow-none max-md:px-4" data-module-colors></div>
 
-    <div class="flex flex-col border-t border-divider-light pt-4 max-xl:order-2 max-xl:border-0 max-xl:px-6 max-xl:pt-0 max-md:px-4">
+    <div class="flex flex-col max-xl:order-2 max-xl:px-6 max-md:px-4">
       <p class="text-body-n text-text-primary max-md:text-m-body-n" data-module-size></p>
       <a
         href="#specs"
@@ -76,7 +85,7 @@
        цена 22/26 и ссылка у правого края (space-between). Кнопка и извещение
        там не рисуются. -->
   <div class="flex flex-col px-6 max-xl:order-5 max-xl:mx-6 max-xl:rounded-n max-xl:bg-bg-subtle max-xl:px-6 max-xl:py-2 max-md:mx-4 max-md:px-4 max-md:py-0">
-    <div class="flex flex-col gap-3 border-t border-divider-light py-6 max-xl:border-0 max-xl:py-4">
+    <div class="flex flex-col gap-3 py-6 shadow-[inset_0_1px_0_var(--color-divider-light)] max-xl:py-4 max-xl:shadow-none">
       <!-- Цены в макете 1440 нет — блок добавлен по решению клиента; 768 и
            360 её уже рисуют (2488:136068 / 2488:128753). -->
       <div class="flex items-center gap-4 max-md:justify-between max-md:gap-3">
@@ -87,16 +96,19 @@
         </div>
         <span class="badge badge-s badge-discount empty:hidden max-xl:hidden" data-module-discount></span>
         <!-- `text-action device=mobile size=s` (1739:226487): значок info 16
-             dark, зазор 4, текст 12/16 Medium #292929 — на обеих ширинах
-             (2488:136072 / 2488:130646, глифы 12). -->
-        <a href="#" class="hidden h-8 items-center gap-1 text-m-body-s-accent text-text-primary max-xl:flex" data-module-notice-inline>
-          <img src="../../assets/pdp/icon-warning-dark.svg" alt="" class="size-4 shrink-0" />
-          <span data-module-notice-inline-text></span>
+             dark, зазор 4. Текст — НЕ Button S мастера: инстанс переопределяет
+             стиль на «Mobile/Link S dotted» (1623:55227) — 12/16 Regular,
+             пунктир; на обеих ширинах (2488:136072 / 2488:130646). -->
+        <a href="#" class="hidden h-8 items-center gap-1 text-m-body-s text-text-primary max-xl:flex" data-module-notice-inline>
+          <img src="../../assets/pdp/icon-info-16-dark.svg" alt="" class="size-4 shrink-0" />
+          <span class="link-dotted" data-module-notice-inline-text></span>
         </a>
       </div>
       <button type="button" class="btn btn-m btn-primary w-full max-xl:hidden" data-pdp-order data-module-order></button>
-      <p class="flex items-center justify-center gap-2 text-body-s text-text-primary max-xl:hidden">
-        <img src="../../assets/pdp/icon-warning.svg" alt="" class="size-6 -m-1 shrink-0" />
+      <!-- text-action 2488:130396: иконка подменена на info 16 DARK (962:37179) —
+           в цвет ссылки, не серая; зазор 4, стрелки справа нет (184 = 16+4+164) -->
+      <p class="flex h-8 items-center justify-center gap-1 text-body-s text-text-primary max-xl:hidden">
+        <img src="../../assets/pdp/icon-info-16-dark.svg" alt="" class="size-4 shrink-0" />
         <a href="#" class="link-dotted" data-module-notice></a>
       </p>
     </div>
@@ -109,7 +121,7 @@
      (2488:130551). Нижние 16 только у последней (2488:136055 / 130559). -->
 <template data-module-color-group>
   <div class="flex flex-col gap-2.5 max-xl:pt-4 max-xl:last:pb-4 max-md:gap-2 max-md:pt-3">
-    <p class="text-body-n text-text-primary max-xl:text-body-n-accent max-md:text-m-body-n-accent" data-group-label></p>
+    <p class="text-body-n leading-[22px] text-text-primary max-xl:text-body-n-accent max-md:text-m-body-n-accent max-md:leading-5" data-group-label></p>
     <div class="flex items-center gap-3 max-md:gap-4" data-group-colors></div>
     <p class="text-body-s text-text-secondary max-md:text-m-body-s" data-group-name></p>
   </div>

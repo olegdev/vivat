@@ -96,6 +96,13 @@ for (const o of inst?.symbolData?.symbolOverrides ?? [])
 const swapsOf = (r) => new Map((r?.symbolData?.symbolOverrides ?? []).filter((o) => o.overriddenSymbolID)
   .map((o) => [pathOf(o.guidPath), `${o.overriddenSymbolID.sessionID}:${o.overriddenSymbolID.localID}`]));
 const swaps = swapsOf(inst);
+// Стиль текста, переопределённый в инстансе (`styleIdForText`): «Получить
+// оптовую цену» в мастере — Button S, а инстанс ставит «Link S dotted». Без
+// этого линия читалась с мастера — и ложное «✗д» на 1440, и пропущенный
+// пунктир на 360.
+const stylesOf = (r) => new Map((r?.symbolData?.symbolOverrides ?? []).filter((o) => o.styleIdForText?.guid)
+  .map((o) => [pathOf(o.guidPath), `${o.styleIdForText.guid.sessionID}:${o.styleIdForText.guid.localID}`]));
+const styles = stylesOf(inst);
 
 // Derived layout, keyed by the same path — this is where the real metrics live.
 const derived = new Map();
@@ -130,12 +137,13 @@ const figText = [];
 const decorOf = (v) => (v === "UNDERLINE" ? "under" : v === "STRIKETHROUGH" ? "strike" : null);
 const ctxOf = (r) => ({
   swaps: swapsOf(r),
+  styles: stylesOf(r),
   derived: new Map((r?.derivedSymbolData ?? []).map((e) => [pathOf(e.guidPath), e])),
   overrides: new Map(
     (r?.symbolData?.symbolOverrides ?? []).filter((o) => o.textData?.characters).map((o) => [pathOf(o.guidPath), o.textData.characters])
   ),
 });
-(function walk(nodeId, prefix, seen, ctx = { derived, overrides, swaps }, inInstance = !isFrame) {
+(function walk(nodeId, prefix, seen, ctx = { derived, overrides, swaps, styles }, inInstance = !isFrame) {
   for (const c of kids.get(nodeId) ?? []) {
     const path = prefix ? `${prefix}.${c.id}` : c.id;
     const { derived, overrides } = ctx;
@@ -161,7 +169,10 @@ const ctxOf = (r) => ({
     if (t && t.trim() && shown) {
       const dt = d?.derivedTextData;
       const g0 = dt?.glyphs?.[0];
-      const glyphWeight = g0 ? weightOf(t.replace(/\s+/g, " ").trim()[g0.firstCharacter ?? 0], g0.advance) : null;
+      // Цифры в Onest моноширинные: «6» и «8» одной ширины во всех начертаниях,
+      // и вес по ним «читался» как 400 у «600» и 500 у «800» при одном advance.
+      const ch0 = g0 ? t.replace(/\s+/g, " ").trim()[g0.firstCharacter ?? 0] : null;
+      const glyphWeight = g0 && !/\d/.test(ch0) ? weightOf(ch0, g0.advance) : null;
       const lines = dt?.baselines?.length || 1;
       const box = dt?.layoutSize?.y ?? d?.size?.y ?? c.font?.box ?? null;
       figText.push({
@@ -194,7 +205,7 @@ const ctxOf = (r) => ({
         color: charColor(path) ?? (c.fills?.[0]?.color ?? null),
         // Подчёркивание/зачёркивание: с узла или с его текстового стиля (индекс
         // разрешает стиль). «очистить» в ящике фильтров несёт его только стилем.
-        decor: decorOf(c.font?.decoration),
+        decor: decorOf(ctx.styles?.has(path) ? byId.get(ctx.styles.get(path))?.font?.decoration : c.font?.decoration),
       });
     }
     // Скрытый фрейм ВНЕ инстанса скрыт по-настоящему (это не «hidden-in-master»,
@@ -375,7 +386,7 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     // порядку, ширина первого глифа всё равно насчитана для НАСТОЯЩЕГО текста
     // (переопределение вложенного инстанса): читаем вес по первой букве нашей
     // строки — она и есть та буква.
-    if (f.weightFromMaster && f.adv != null && d.text) {
+    if (f.weightFromMaster && f.adv != null && d.text && !/\d/.test(d.text[f.advIdx] ?? d.text[0])) {
       const w = weightOf(d.text[f.advIdx] ?? d.text[0], f.adv);
       if (w != null) { f.weight = w; f.weightFromMaster = false; }
     }
@@ -415,6 +426,12 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     } else if (wBad) {
       flag = "вес";
       soft++;
+    } else if (lhBad && f.autoW && f.firm && f.lines === 1) {
+      // У auto-width строки коробку руками не растянешь — она и есть строка.
+      // Цена карточки модуля 24/32 в кадре (752:71772) против 24/28 у нас
+      // сидела на 2px выше и прошла мягким «лн».
+      flag = "✗л";
+      wrap++;
     } else if (lhBad) {
       flag = "лн";
       soft++;
@@ -450,6 +467,8 @@ console.log(
     `\n         шрифта или ширина контейнера — блок на строку выше/ниже.` +
     `\n  «✗д» — у той же строки подчёркивание/зачёркивание есть с одной стороны:` +
     `\n         в макете оно часто приходит со СТИЛЕМ текста, а не с узла.` +
+    `\n  «✗л» — интерлиньяж однострочного auto-width текста: коробка = строка,` +
+    `\n         растянуть её в макете нельзя, значит базовая линия съехала.` +
     `\n  «шр» — однострочный текст другой ширины (>4px и >3%): трекинг,` +
     `\n         начертание или не тот шрифт.` +
     `\n  «вес» — разошёлся ВЕС. Мягкий: derived его не несёт, читается с мастера,` +

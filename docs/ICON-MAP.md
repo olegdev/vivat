@@ -25,12 +25,13 @@ Bold при Thin в кадре (2029:156849/156850) — залитые круж�
 | `header/icon-burger-bold.svg` | 960:37182 | burger 24 Bold dark | шапка планшета 2483:238825 |
 | `header/icon-search-dark.svg` | 960:37194 | search 24 Bold dark | шапка планшета 2483:238825 |
 | `header/icon-close-s.svg` | 963:37212 | close-s 24 Bold dark | шапка меню 2483:196822 |
+| `pdp/icon-info-16-dark.svg` | 962:37179 | info 16 dark | плашка «Внимание» 1686:58490; ссылка «Получить оптовую цену» в сводке модуля |
+| `pdp/icon-info-16-secondary.svg` | 980:49774 | info 16 secondary | извещение в сводке PDP 2238:153498 |
 | `header/icon-close-dark.svg` | 963:37209 | close-l 24 Bold dark | шапка ящика фильтров 1440 1859:339041 (на 360 там close-s, 1859:339806) |
 | `header/chevron-left.svg` | 962:37188 | chevron-left 24 Bold dark | шапка меню 2483:196822 |
 | `header/chevron-right-s.svg` | 961:37182 | chevron-right 24 Bold dark | строки меню 2483:194632 |
 | `order/icon-print.svg` | 2225:169315 | print 24 Thin secondary | строка «Выбрать все» 2029:156848 |
 | `order/icon-share.svg` | 2214:190927 | share 24 Thin secondary | строка «Выбрать все» 2029:156848 |
-| `pdp/icon-warning.svg` | 980:49774 | info 16 secondary | извещение в сводке 2483:243566 |
 | `header/icon-pin.svg` | 960:37188 | pin 16 dark | «Москва» в шапке планшета 2477:180973 (символ 16 — это холст 24 в окне 16, отсюда `size-6 -m-1`) |
 | `header/icon-arrow-right.svg` | 961:37191 | arrow-right 16 dark | «Войти в режим дилера» 2477:180979 |
 | `header/icon-profile.svg` | 1742:55344 | profile 24 Bold dark | шапка планшета 2477:181416 |
@@ -38,7 +39,6 @@ Bold при Thin в кадре (2029:156849/156850) — залитые круж�
 | `header/icon-search.svg` | 964:37194 | search 24 Bold muted | поле поиска в шапке 1440 2248:97192 |
 | `header/icon-order-dark.svg` | 960:37179 585:54882 | order 24 Bold dark; light — тот же файл под `brightness(0) invert(1)` в нажатой корзине | корзина в шапке 1440 2248:97192; страница заказа 942:110180 |
 | `pdp/icon-share.svg` | 963:37182 | share 24 Bold dark | заголовок сводки 2238:153498 |
-| `pdp/icon-warning-dark.svg` | 962:37179 | info 16 dark | ссылка «Получить оптовую цену» в сводке модуля ниже `xl` 2488:136072 |
 | `header/arrow-right-24.svg` | 2214:190537 | arrow-right 24 Thin dark | пилюля большой плитки категорий 1003:157502 |
 | `header/arrow-right-20.svg` | 2214:190549 | arrow-right 20 dark | пилюли плиток категорий 1003:157538, планшет 2477:166905 |
 | `header/icon-pagination-left.svg` | 966:37194 | arrow-left 24 Bold muted | пагинация, «В начало» 758:56943 |

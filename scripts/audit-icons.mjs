@@ -93,7 +93,20 @@ if (!files) { console.error(`селектор ничего не нашёл (ви
 const pool = figIcons.map((f) => ({ ...f, used: false }));
 const rows = [];
 let hard = 0, soft = 0;
+// Холст файла против отрисованного размера. Иконка набора 24, поставленная в
+// `size-4`, ужимает рисунок на треть: плашка «Внимание» и сноска сводки PDP
+// показывали глиф ~9px вместо ~14 у настоящего символа `info 16`. Вариант при
+// этом «сходился» — карта называла файл символом 16. Уменьшенный холст — это
+// всегда не тот файл: у набора есть свой символ на каждый размер.
+const canvasOf = (file) => {
+  try {
+    const m = readFileSync(`public/assets/${file}`, "utf8").match(/viewBox="0 0 ([\d.]+) ([\d.]+)"/);
+    return m ? Number(m[1]) : null;
+  } catch { return null; }
+};
 for (const f of files) {
+  const cv = canvasOf(f.file);
+  if (cv && f.w < cv - 0.5) { rows.push(["✗", `холст ${cv} ужат до ${f.w} — нужен символ ${f.w}`, `${f.file} ${f.w}x${f.h}`]); hard++; }
   const known = map.get(f.file);
   if (!known) { rows.push(["?", "не в карте", `${f.file} ${f.w}x${f.h}`]); soft++; continue; }
   const hit = pool.find((x) => !x.used && known.ids.includes(x.id));

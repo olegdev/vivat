@@ -24,20 +24,19 @@ export const product = {
   colorGroups: [
     {
       label: "Каркас",
-      name: "Цвет Silky White/Silky Light Grey",
+      // имя в макете одно — у первого образца; два других — фикстура (BACKLOG)
       colors: [
-        { id: "white", img: `${PDP}/swatch-grey-src.png` },
-        { id: "grey", img: `${PDP}/swatch-wood-src.png` },
-        { id: "brown", img: `${PDP}/swatch-dark-src.png` },
+        { id: "white", name: "Silky White/Silky Light Grey", img: `${PDP}/swatch-grey-src.png` },
+        { id: "grey", name: "Silky Wood", img: `${PDP}/swatch-wood-src.png` },
+        { id: "brown", name: "Silky Graphite", img: `${PDP}/swatch-dark-src.png` },
       ],
     },
     {
       label: "Фасад",
-      name: "Цвет Silky White/Silky Light Grey",
       colors: [
-        { id: "cashmere", img: `${PDP}/swatch-grey-src.png` },
-        { id: "grey", img: `${PDP}/swatch-wood-src.png` },
-        { id: "brown", img: `${PDP}/swatch-dark-src.png` },
+        { id: "cashmere", name: "Silky White/Silky Light Grey", img: `${PDP}/swatch-grey-src.png` },
+        { id: "grey", name: "Silky Wood", img: `${PDP}/swatch-wood-src.png` },
+        { id: "brown", name: "Silky Graphite", img: `${PDP}/swatch-dark-src.png` },
       ],
     },
   ],

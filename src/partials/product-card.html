@@ -195,7 +195,7 @@
           <!-- 360 (1821:292059): Top 24 = цена 20 и поля 2/2; ярлык размера и
                значение вплотную — col 40 = 20 + 20. -->
           <div class="flex h-8 items-baseline gap-2 max-md:h-auto max-md:py-0.5">
-            <a href="#" class="text-h3 font-medium text-text-primary max-md:text-m-body-n-accent" data-card-price data-card-link></a>
+            <a href="#" class="text-body-xl text-text-primary max-md:text-m-body-n-accent" data-card-price data-card-link></a>
             <span class="text-body-n text-text-secondary line-through empty:hidden max-md:text-m-body-s-crossed" data-card-oldprice></span>
           </div>
           <a href="#" class="line-clamp-2 pt-1 text-body-n text-text-primary max-md:pt-1 max-md:text-m-body-compact" data-card-title data-card-link></a>
@@ -221,6 +221,16 @@
         </a>
       </div>
     </div>
+    <!-- «buttons» карточки size=m (1821:292083, 32 под Info 154): на кухонной
+         PDP снята свойством (1997:315097), на странице модуля видна
+         (2488:131443) — поэтому пилюля по умолчанию удаляется, а рельс
+         страницы модуля оставляет её опцией `mobileCart`. -->
+    <button type="button" data-add-to-cart data-card-cart-pill class="hidden h-8 w-full items-center justify-center gap-1.5 rounded-pill bg-components-subtle px-3 transition-colors hover:bg-components-subtle-hover max-md:flex">
+      <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-4" data-idle-only />
+      <img src="../../assets/header/icon-order-ok-light.svg" alt="" class="size-4" data-in-cart-only />
+      <span class="text-m-button-s text-text-primary" data-idle-only>в корзину</span>
+      <span class="text-m-button-s" data-in-cart-only>в корзине</span>
+    </button>
   </article>
 </template>
 
@@ -293,7 +303,7 @@
       <div class="flex items-start gap-4 max-md:gap-0">
         <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
           <div class="flex items-baseline gap-2 max-md:gap-1">
-            <a href="#" class="text-h3 font-medium text-text-primary max-md:text-m-body-n-accent" data-card-price data-card-link></a>
+            <a href="#" class="text-body-xl text-text-primary max-md:text-m-body-n-accent" data-card-price data-card-link></a>
             <span class="text-body-n text-text-secondary line-through max-md:text-m-body-s-crossed empty:hidden" data-card-oldprice></span>
           </div>
           <a href="#" class="line-clamp-2 h-12 text-body-n text-text-primary max-md:h-10 max-md:text-m-body-compact" data-card-title data-card-link></a>

@@ -94,15 +94,17 @@
 | якорный ряд | `[data-section-nav]` | — | 2483:238827 | — | t b |
 | медиа | `#photos` | — | 2483:238828 | — | b #depth=3 |
 | сводка | `[data-pdp-summary]` | 2238:153498 | 2483:243566 | 1997:313148 | t b i |
+| плашка «Внимание» | `[data-spec-panels] .pdp-alert` | 1686:58490 | — | — | t b i |
 | характеристики | `#specs` | — | 2483:243436 | — | b |
 | тапбар | `nav.fixed` | — | 2477:181671 | — | t b |
 | бар CTA | `[data-cta-bar]` | — | 2483:246944 | 2027:89990 | t b i |
 | меню, шаг 1 | `[data-mm-panel] #click=[data-mobile-menu]` | — | 2483:192772 | 1997:255052 | b #depth=5 |
 | карточка «Вся коллекция» | `[data-section="collection"] article` | — | 2477:125565 | — | t b |
-| фото: слайд с плашками | `[data-photo-rail] > div` | — | 2483:238830 | 1997:308011 | b #depth=2 |
+| фото: слайд с плашками | `[data-photo-rail] > div` | — | 2483:238830 | 1997:308011 | t b #depth=2 |
 | панель «Описание» | `[data-spec-panels]` | — | 2483:243440 | — | b #depth=3 |
-| рельс «Модули» | `[data-section="modules"] section` | — | 2483:238847 | 1997:315097 | t b #depth=2 |
+| рельс «Модули» | `[data-section="modules"] section` | 914:103437 | 2483:238847 | 1997:315097 | t b #depth=2 |
 | рельс «Добавьте» | `[data-section="add-to-cart"] section` | — | 2483:238848 | 1997:315101 | t b #depth=2 |
+| карточка отзыва | `[data-section="reviews"] article` | — | 2483:238856 | — | t b |
 | карта салонов | `[data-stores-section]` | — | 2483:238865 | — | b #depth=2 |
 | подвал | `footer` | — | 2477:170496 | — | t b #depth=2 |
 

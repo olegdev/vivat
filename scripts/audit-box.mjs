@@ -274,14 +274,19 @@ function align(a, b) {
 // не спаривались и тонули в «м»/«с»; так панель настроек каталога на 360
 // (116 против 112 — верхнее поле 12 вместо 16) прошла три прогона незамеченной.
 const rootF = figBoxes[0], rootD = domBoxes[0];
-const rootBad = rootF && rootD && Math.abs(rootF.h - rootD.h) > 1;
+const rootHBad = rootF && rootD && Math.abs(rootF.h - rootD.h) > 1;
+// Ширина корня — там, где она своя, а не холста (< 1000): карточка отзыва на
+// 768 была 437 вместо 332 при той же высоте 296 и прошла молча.
+const rootWBad = rootF && rootD && rootF.w < 1000 && rootD.w < 1000 && Math.abs(rootF.w - rootD.w) > 1;
+const rootBad = rootHBad || rootWBad;
 const fmt = (r) => (r ? `${r.w}×${r.h}` : "—");
 const nm = (r) => (r ? "  ".repeat(Math.min(r.depth, 6)) + r.name : "—");
 console.log(`\n  ══ ${page} @ ${WIDTH}  ←→  ${figmaId}   ${selector}`);
 console.log(`  ${"МАКЕТ".padEnd(40)} ${"".padStart(11)}   ${"СТРАНИЦА".padEnd(34)}`);
 console.log(`  ${"—".repeat(40)} ${"—".repeat(11)}   ${"—".repeat(34)}`);
 let only = 0;
-if (rootBad) console.log(`✗ корень: макет ${rootF.h}, страница ${rootD.h} — блок другой высоты (${rootD.h - rootF.h > 0 ? "+" : ""}${rootD.h - rootF.h})`);
+if (rootHBad) console.log(`✗ корень: макет ${rootF.h}, страница ${rootD.h} — блок другой высоты (${rootD.h - rootF.h > 0 ? "+" : ""}${rootD.h - rootF.h})`);
+if (rootWBad) console.log(`✗ корень: ширина в макете ${rootF.w}, на странице ${rootD.w} (${rootD.w - rootF.w > 0 ? "+" : ""}${rootD.w - rootF.w})`);
 for (const [f, d] of align(figBoxes, domBoxes)) {
   const flag = f && d ? "  " : f ? "м " : "с ";
   if (!f || !d) only++;

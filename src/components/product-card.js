@@ -89,7 +89,7 @@ export function fillGallery(node, p, { smallDots = false } = {}) {
   });
 }
 
-function buildCard(p, { mobile = "s", variant, href } = {}) {
+function buildCard(p, { mobile = "s", variant, href, mobileCart = false } = {}) {
   const compact = !!p.category;
   const large = compact && mobile === "l";
   const smallTile = !variant && compact && !large; // the 152px mobile tile
@@ -97,6 +97,9 @@ function buildCard(p, { mobile = "s", variant, href } = {}) {
     TEMPLATE[variant] ||
       (large ? "[data-pcard-compact-l]" : compact ? "[data-pcard-compact]" : "[data-pcard]")
   );
+
+  // пилюля «в корзину» модульной карточки — только там, где рельс её просит
+  if (!mobileCart) node.querySelector("[data-card-cart-pill]")?.remove();
 
   fillGallery(node, p, { smallDots: smallTile });
 

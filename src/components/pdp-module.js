@@ -51,13 +51,18 @@ export function initModuleSummary(product) {
   product.colorGroups.forEach((group) => {
     const node = clone("[data-module-color-group]");
     node.querySelector("[data-group-label]").textContent = group.label;
-    node.querySelector("[data-group-name]").textContent = group.name;
+    // Подпись под образцами называет ВЫБРАННЫЙ цвет группы — как у кухонной
+    // сводки (pdp.js, data-pdp-color-name); по замечанию клиента 15.09.
+    const nameEl = node.querySelector("[data-group-name]");
+    const say = (c) => (nameEl.textContent = `Цвет ${c.name}`);
+    say(group.colors[0]);
     const box = node.querySelector("[data-group-colors]");
     const swatches = group.colors.map((c, i) => {
       const btn = clone("[data-module-swatch]");
       btn.querySelector("img").src = c.img;
+      btn.setAttribute("aria-label", c.name);
       if (i === 0) btn.setAttribute("aria-checked", "true");
-      btn.addEventListener("click", () => pick(swatches, btn));
+      btn.addEventListener("click", () => { pick(swatches, btn); say(c); });
       return btn;
     });
     box.append(...swatches);

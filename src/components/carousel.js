@@ -70,6 +70,9 @@ export function buildCarouselSection({
   if (!desktopAction) drop(section, "[data-cs-desktop-action]");
   if (!mobileAction) drop(section, "[data-cs-mobile-action]");
   if (!mobileProgress) drop(section, "[data-cs-progress]");
+  // "always" — полоса видна, даже когда прокручивать нечего: рельс модулей на
+  // 360 (2488:131443) рисует её при двух карточках.
+  if (mobileProgress === "always") section.querySelector("[data-progress]")?.setAttribute("data-progress-always", "");
 
   // Обычно у обеих кнопок (ряд заголовка и мобильная во всю ширину) копия одна,
   // но не всегда: у «Акций и скидок» на 1440 написано «В каталог»
@@ -228,7 +231,7 @@ export function initScrollProgress(sectionEl) {
     const max = viewport.scrollWidth - viewport.clientWidth;
     // Same threshold as the desktop arrows below — nothing to scroll, hide
     // the affordance instead of showing a dead/full-width bar.
-    progress.classList.toggle("hidden", max <= SCROLL_EPSILON);
+    progress.classList.toggle("hidden", max <= SCROLL_EPSILON && !progress.hasAttribute("data-progress-always"));
     const frac = max > 0 ? viewport.clientWidth / viewport.scrollWidth : 1;
     const pos = max > 0 ? viewport.scrollLeft / max : 0;
     // `translate` composes ahead of `scale`, so the offset is in the track's own
@@ -349,7 +352,7 @@ export function mountCarousel(anchor, cfg, items) {
   const track = anchor.querySelector("[data-track]");
   // `href` у секции — адрес кнопки «В раздел», `cardHref` — адрес карточки.
   // Разные вещи, поэтому в опции карточки первый не попадает.
-  const cardOpts = { mobile: cfg.mobileCard, variant: cfg.variant, href: cfg.cardHref };
+  const cardOpts = { mobile: cfg.mobileCard, variant: cfg.variant, href: cfg.cardHref, mobileCart: cfg.mobileCart };
   const render = cfg.render || renderCarousel;
   render(track, items, cardOpts);
   const carousel = initCarousel(anchor);
