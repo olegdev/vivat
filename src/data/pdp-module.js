@@ -113,6 +113,17 @@ export const modules = [
     swatches: RAIL_SWATCHES,
     more: "+5",
   },
+  // третья карточка — фикстура (клиент, 15.09): в кадре 360 видны две, и
+  // нарисованная полоса прокрутки при двух карточках ничего не прокручивает
+  {
+    id: "mod-frame-wall-600",
+    price: "21 840₽",
+    title: "Каркас верхнего шкафа В 600",
+    spec: { label: "Размер (В*Ш*Г), мм:", value: "720*600*300" },
+    image: `${PDP}/module-wall-2door-src.png`,
+    swatches: RAIL_SWATCHES,
+    more: "+5",
+  },
 ];
 
 export const iconBase = ICON;
