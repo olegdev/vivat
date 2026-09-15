@@ -346,14 +346,24 @@
     font-family: var(--font-sans);
   }
   /* Зачёркнутая цена. Figma рисует STRIKETHROUGH по таблице OS/2 шрифта:
-     у Onest yStrikeoutSize 50/1000 = 0.05em (0.6 px при 12, 0.8 при 16),
-     позиция 0.25em над базовой линией. Chrome при `auto` берёт ту же
-     толщину, но не тоньше 1 CSS px — на ретине это 2 физических пикселя
-     против одного у Figma, и линия читается жирнее. Задаём толщину явно в em:
-     она совпадает с макетом на любой плотности. Позицию задаёт шрифт, и она
-     у обоих одна. */
+     у Onest yStrikeoutSize 50/1000 = 0.05em, yStrikeoutPosition 250/1000 —
+     ВЕРХ полосы на 0.25em над базовой линией. Chrome ни то, ни другое не
+     берёт: толщину округляет до 1 CSS px (на ретине вдвое жирнее), а линию
+     кладёт по своей формуле — центр на ~0.31em, на 0.08em выше макета
+     (≈1px при 14, ≈2px при 24). Высоту `line-through` в CSS не задать,
+     поэтому линию рисуем сами — полосой фона по метрике шрифта (решение
+     клиента 15.09), а родную прячем прозрачным цветом (утилита задаёт только
+     `text-decoration-line`, цвет ей не мешает).
+
+     Все зачёркнутые цены — flex-элементы, то есть коробка = строка: верх
+     содержимого (1lh − 1.275em)/2 (fontLineHeight Onest 1.275), базовая линия
+     ещё на 0.97em ниже (typo ascender), полоса — на 0.25em выше неё. */
   .line-through {
-    text-decoration-thickness: 0.05em;
+    text-decoration-color: transparent;
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-size: 100% 0.05em;
+    background-position: 0 calc((1lh - 1.275em) / 2 + 0.97em - 0.25em);
   }
   body {
     background-color: var(--color-bg-page);
