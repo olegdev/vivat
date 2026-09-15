@@ -14,8 +14,12 @@
   class="page-x group/pag flex flex-col items-center gap-10 pt-16 pb-10 max-xl:pt-10 max-xl:pb-10 max-md:gap-8"
   data-pagination
 >
+  <!-- Подпись — ОДНИМ span: `.btn` — inline-flex, и три текстовых куска
+       (число, существительное, «из …») становились отдельными flex-элементами,
+       а пробелы между ними — зазорами `gap-2` по 8 вместо пробела в 4:
+       «расколбас с пробелами». -->
   <button type="button" class="btn btn-m btn-primary max-md:w-full max-md:text-m-button-m">
-    Показать еще 40 <span data-grid-noun>товаров</span> из <span data-grid-total>123</span>
+    <span>Показать еще 40 <span data-grid-noun>товаров</span> из <span data-grid-total>123</span></span>
   </button>
   <!-- 758:57039: gap между «В начало»/цифрами/«В конец» — 32px (gap-8), не
        24; между цифрами — 8px (gap-2), не 4; текст всего блока Medium 500,
@@ -23,7 +27,11 @@
        (text-disabled/иконка text-muted) — в макете нет состояния «доступно
        назад», это статичная страница 1 везде. -->
   <nav class="flex items-center gap-8 text-body-n font-medium">
-    <a href="#" class="flex items-center gap-2 text-text-disabled max-md:hidden">
+    <!-- «В начало» / «В конец» — `buttons value=ghost` (587:22124 disabled /
+         587:22100 default): прозрачные кнопки с полями 16, поэтому от стрелки
+         до номеров 32 + 16 = 48, а не 32. Иконки — arrow-left 24 Bold muted и
+         arrow-right 24 Bold dark. -->
+    <a href="#" class="flex items-center gap-2 px-4 text-text-disabled max-md:hidden">
       <img src="../../assets/header/icon-pagination-left.svg" alt="" class="size-6" />
       В начало
     </a>
@@ -39,7 +47,7 @@
       <button type="button" class="flex size-11 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden max-md:hidden">6</button>
       <button type="button" class="flex size-11 items-center justify-center rounded-full text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden">7</button>
     </div>
-    <a href="#" class="flex items-center gap-2 text-text-primary max-md:hidden">
+    <a href="#" class="flex items-center gap-2 px-4 text-text-primary max-md:hidden">
       В конец
       <img src="../../assets/header/icon-pagination-right.svg" alt="" class="size-6" />
     </a>

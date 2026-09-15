@@ -864,8 +864,9 @@
      `more` (···) glyph by default, `close-s` (×) once the chip is active. */
   .catalog-chip {
     @apply inline-flex h-8 items-center gap-2 rounded-pill border border-border-light px-4 transition-colors;
-    @apply text-body-s-accent text-text-secondary hover:border-border-default;
-    @apply max-md:text-m-body-s-accent;
+    /* Regular: «П» 0.73 при 14 и 12 — Onest 400 (см. catalog-settings) */
+    @apply text-body-s text-text-secondary hover:border-border-default;
+    @apply max-md:text-m-body-s;
   }
   .catalog-chip--active {
     @apply border-transparent bg-components-subtle-hover;

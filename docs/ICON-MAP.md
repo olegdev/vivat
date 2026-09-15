@@ -40,3 +40,5 @@ Bold при Thin в кадре (2029:156849/156850) — залитые круж�
 | `pdp/icon-warning-dark.svg` | 962:37179 | info 16 dark | ссылка «Получить оптовую цену» в сводке модуля ниже `xl` 2488:136072 |
 | `header/arrow-right-24.svg` | 2214:190537 | arrow-right 24 Thin dark | пилюля большой плитки категорий 1003:157502 |
 | `header/arrow-right-20.svg` | 2214:190549 | arrow-right 20 dark | пилюли плиток категорий 1003:157538, планшет 2477:166905 |
+| `header/icon-pagination-left.svg` | 966:37194 | arrow-left 24 Bold muted | пагинация, «В начало» 758:56943 |
+| `header/icon-pagination-right.svg` | 962:37191 | arrow-right 24 Bold dark | пагинация, «В конец» 758:56959 |

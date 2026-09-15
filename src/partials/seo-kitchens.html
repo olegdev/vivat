@@ -37,20 +37,24 @@
       У мебели для кухни от Фабрики мебели VIVAT имеется целый ряд неоспоримых
       достоинств:
     </p>
-    <ol class="mt-3 flex list-decimal flex-col gap-3 pl-6 text-body-n marker:text-text-inverse-primary max-md:text-m-body-n">
-      <li>
+    <!-- Пункт списка в макете (`list` 759:59555): `number-container` 24 с
+         номером, прижатым вправо (align MAX), зазор 8, текст с 32. Штатный
+         `list-decimal` ставит маркер на свой вкус (текст с 24), поэтому номер
+         рисуется `::before` шириной 24 через счётчик. -->
+    <ol class="mt-3 flex flex-col gap-3 text-body-n [counter-reset:item] max-md:text-m-body-n">
+      <li class="flex gap-2 [counter-increment:item] before:w-6 before:shrink-0 before:text-right before:content-[counter(item)_'.']">
         Доступные цены. Благодаря отлично организованному современному
         производству и продуманной логистике, покупка нашей кухни выгодна для
         любого, кто умеет считать деньги. Выбирая кухни VIVAT, вы получаете
         высшее качество по цене изготовителя.
       </li>
-      <li>
+      <li class="flex gap-2 [counter-increment:item] before:w-6 before:shrink-0 before:text-right before:content-[counter(item)_'.']">
         Современный внешний вид. Даже недорогие кухни эконом класса торговой
         марки VIVAT — это превосходный дизайн, современные тенденции в мебельной
         моде и отличное качество. В них нет ничего лишнего, каждая линия создает
         единый ансамбль, идеально вписывающийся в интерьер любой квартиры.
       </li>
-      <li>
+      <li class="flex gap-2 [counter-increment:item] before:w-6 before:shrink-0 before:text-right before:content-[counter(item)_'.']">
         Модульная конструкция. Один гарнитур можно поставить как в маленькую
         пятиметровую кухню в «хрущевке», так и в большую квартиру-студию, потому
         что кухни VIVAT состоят из модулей: шкафов, пеналов, тумб, полок самого

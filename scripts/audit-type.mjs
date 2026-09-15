@@ -36,6 +36,7 @@
 // 1px gap on the line box is reported but not counted as a mismatch — that is
 // hinting, not a defect. Font size is compared exactly.
 import { chromium } from "playwright";
+import { weightOf } from "./font-advances.mjs";
 import { execFileSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -146,6 +147,8 @@ const ctxOf = (r) => ({
     const t = overrides.get(path) ?? c.text;
     if (t && t.trim() && shown) {
       const dt = d?.derivedTextData;
+      const g0 = dt?.glyphs?.[0];
+      const glyphWeight = g0 ? weightOf(t.replace(/\s+/g, " ").trim()[g0.firstCharacter ?? 0], g0.advance) : null;
       const lines = dt?.baselines?.length || 1;
       const box = dt?.layoutSize?.y ?? d?.size?.y ?? c.font?.box ?? null;
       figText.push({
@@ -159,12 +162,16 @@ const ctxOf = (r) => ({
         lines: dt ? lines : null,
         boxW: dt?.layoutSize?.x ?? null,
         autoW: !!c.font?.autoW,
-        weight: c.font?.style ? (WEIGHT[c.font.style] ?? null) : null,
+        // Начертание: по ширине первого уложенного глифа (`advance`, доли
+        // кегля) против таблиц hmtx самих шрифтов — это твёрдо. Только когда
+        // глифов нет, остаётся `fontName` мастера, который протухает так же,
+        // как fontSize, и читается как мягкий сигнал.
+        weight: glyphWeight ?? (c.font?.style ? (WEIGHT[c.font.style] ?? null) : null),
+        adv: g0?.advance ?? null,
+        advIdx: g0?.firstCharacter ?? 0,
         // Метрика насчитана Figma для ЭТОГО экземпляра, а не взята с мастера.
         firm: !!dt || !inInstance,
-        // Начертание берётся из мастера: пер-экземплярного веса Figma в
-        // derivedSymbolData не хранит. Помечаем, чтобы не читалось как факт.
-        weightFromMaster: true,
+        weightFromMaster: glyphWeight == null,
         // У FRAME метрика с самого узла — она и есть отрисованная.
         frame: isFrame,
         // Цвет. Пер-символьные заливки (`styleOverrideTable`) тоже учитываем:
@@ -334,6 +341,14 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     // протухает ровно как `fontSize`: у крошек 1806:236770 в полях Medium и 16
     // при насчитанных 12 и Regular. Считать это дефектом — значит чинить по
     // протухшему полю, что я один раз уже сделал.
+    // Если текст макета — филлер мастера («Текст»), а пара найдена по
+    // порядку, ширина первого глифа всё равно насчитана для НАСТОЯЩЕГО текста
+    // (переопределение вложенного инстанса): читаем вес по первой букве нашей
+    // строки — она и есть та буква.
+    if (f.weightFromMaster && f.adv != null && d.text) {
+      const w = weightOf(d.text[f.advIdx] ?? d.text[0], f.adv);
+      if (w != null) { f.weight = w; f.weightFromMaster = false; }
+    }
     const wBad = f.weight != null && d.weight != null && f.weight !== d.weight;
     const lhBad = f.lh != null && d.lh != null && Math.abs(f.lh - d.lh) > 1;
     // Метрики шрифта — только у пар ПО ТЕКСТУ (одна и та же строка) с
@@ -359,6 +374,10 @@ for (const [f, d, how] of pairLeftovers(align(figText, domText))) {
     } else if (widthBad) {
       flag = "шр";
       soft++;
+    } else if (wBad && !f.weightFromMaster) {
+      // вес прочитан по ширине глифа — это расхождение, а не подозрение
+      flag = "✗в";
+      wrap++;
     } else if (wBad) {
       flag = "вес";
       soft++;
@@ -390,6 +409,8 @@ console.log(
     ` расхождений кегля ${bad}, переносов ${wrap}, мягких ${soft};` +
     ` сведено по порядку ${guessed}, без пары ${only}` +
     `\n  «✗» — разошёлся КЕГЛЬ. Это дефект.` +
+    `\n  «✗в» — разошёлся ВЕС, прочитанный по ширине глифа (advance против hmtx` +
+    `\n         шрифта): твёрдо, в отличие от «вес» с мастера.` +
     `\n  «✗п» — та же строка уложена в другое число строк: перенос. Метрики` +
     `\n         шрифта или ширина контейнера — блок на строку выше/ниже.` +
     `\n  «шр» — однострочный текст другой ширины (>4px и >3%): трекинг,` +
