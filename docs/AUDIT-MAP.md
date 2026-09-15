@@ -54,14 +54,14 @@
 
 | блок | селектор | 1440 | 768 | 360 | чем |
 |---|---|---|---|---|---|
-| СТРАНИЦА | — | 878:103527 | 2477:114191 | 1968:71496 | s #height=796 |
+| СТРАНИЦА | — | 878:103527 | 2477:114191 | 1968:71493 | s #height=796 |
 | шапка | `header` | 878:103528 | — | 1968:71494 | t b i |
 | герой | `[data-hero] > section` | 878:103530 | — | 1968:71495 | b |
 | плитки категорий | `[data-categories]` | 878:103532 | — | 1968:71497 | t b #depth=4 |
 | заголовок «Модульные» | `[data-section="modular"] section > div:first-child` | 878:103583 | — | — | t b |
 | заголовок «Популярные» | `[data-section="popular"] section > div:first-child` | 878:103586 | — | — | t b |
 | заголовок «Акции и скидки» | `[data-section="akcii"] section > div:first-child` | 878:103599 | — | — | t b |
-| карточка рельса | `[data-section="popular"] article` | 1968:151248 | — | — | t b |
+| карточка рельса | `[data-section="popular"] article` | 1968:151248 | — | 1968:238934 | t b |
 | рельс «Популярные» | `[data-section="popular"] section` | — | — | 1968:201441 | t b #depth=6 |
 | промо-плитка | `[data-promo-track] > *:nth-child(3)` | 878:103595 | — | 1968:71552 | t b |
 | карта салонов | `[data-stores-section]` | 878:103602 | — | 1968:71568 | t b |

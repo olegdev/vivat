@@ -163,13 +163,27 @@ export function initPriceMode(root = document) {
     trigger.setAttribute("aria-expanded", "true");
   };
 
+  // Подпись в одну строку. На 360 «Рекомендованная цена» рядом с тумблером
+  // не помещается — тогда хвостовое «цена» уходит, а как только ряд
+  // вмещает полную подпись (шире экран, другой режим), слово возвращается
+  // (решение клиента 15.09). Мерим по ряду: подпись не переносится, и
+  // переполнение видно как scrollWidth > clientWidth.
+  const fitLabels = () => {
+    const full = labelFor((applied ?? state).mode);
+    root.querySelectorAll("[data-price-trigger-label]").forEach((el) => {
+      el.textContent = full;
+      const row = el.closest("[data-price-trigger]")?.parentElement;
+      if (!row || !row.clientWidth || !/\sцена$/.test(full)) return;
+      if (row.scrollWidth > row.clientWidth + 0.5) el.textContent = full.replace(/\s+цена$/, "");
+    });
+  };
+  window.addEventListener("resize", () => fitLabels());
+
   const render = () => {
     lists.forEach((list) => list.replaceChildren(...priceModes.map((m) => buildRow(m, state))));
     // Подпись триггера показывает применённый режим, а не выбранную строку:
     // «Своя наценка» ещё ждёт «Применить», и до него цены прежние.
-    root.querySelectorAll("[data-price-trigger-label]").forEach((el) => {
-      el.textContent = labelFor((applied ?? state).mode);
-    });
+    fitLabels();
     root
       .querySelectorAll("[data-price-apply-row]")
       .forEach((el) => el.classList.toggle("hidden", state.mode !== "markup"));

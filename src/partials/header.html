@@ -43,14 +43,14 @@
            триггера в мобильной дилерской шапке (1739:219711) стоит
            `textDecoration: UNDERLINE / DOTTED`. -->
       <span
-        class="underline decoration-dotted decoration-1 underline-offset-4 transition-colors"
+        class="whitespace-nowrap underline decoration-dotted decoration-1 underline-offset-4 transition-colors"
         data-price-trigger-label
         >Оптовая цена</span
       >
       <img
         src="../../assets/header/chevron-down-light.svg"
         alt=""
-        class="size-6 transition-[rotate,opacity] group-aria-[expanded=true]/pt:rotate-180"
+        class="size-6 shrink-0 transition-[rotate,opacity] group-aria-[expanded=true]/pt:rotate-180"
       />
     </button>
     <button
@@ -178,8 +178,10 @@
 
         <!-- `dropdown-header` 607:26932. Открытое состояние — вариант
              condition=open 1299:49518: панель 328 под триггером, строки 320x44.
-             Строка списка клонируется из partials/price-mode.html. -->
-        <div class="relative shrink-0">
+             Строка списка клонируется из partials/price-mode.html.
+             На планшете (2490:151065) блок 244 и подпись прижата вправо
+             (триггер на 112) — тумблер не ездит при смене режима. -->
+        <div class="relative shrink-0 max-xl:flex max-xl:w-[244px] max-xl:justify-end">
           <button
             type="button"
             class="group/pt flex items-center gap-0.5 text-body-n text-text-inverse-primary"
