@@ -234,12 +234,19 @@ function align(a, b) {
 }
 
 // ---- report ------------------------------------------------------------------
+// Высота КОРНЯ — единственная пара, которая есть всегда, и расхождение в ней
+// значит, что блок в целом другой высоты. Раньше корни разной высоты просто
+// не спаривались и тонули в «м»/«с»; так панель настроек каталога на 360
+// (116 против 112 — верхнее поле 12 вместо 16) прошла три прогона незамеченной.
+const rootF = figBoxes[0], rootD = domBoxes[0];
+const rootBad = rootF && rootD && Math.abs(rootF.h - rootD.h) > 1;
 const fmt = (r) => (r ? `${r.w}×${r.h}` : "—");
 const nm = (r) => (r ? "  ".repeat(Math.min(r.depth, 6)) + r.name : "—");
 console.log(`\n  ══ ${page} @ ${WIDTH}  ←→  ${figmaId}   ${selector}`);
 console.log(`  ${"МАКЕТ".padEnd(40)} ${"".padStart(11)}   ${"СТРАНИЦА".padEnd(34)}`);
 console.log(`  ${"—".repeat(40)} ${"—".repeat(11)}   ${"—".repeat(34)}`);
 let only = 0;
+if (rootBad) console.log(`✗ корень: макет ${rootF.h}, страница ${rootD.h} — блок другой высоты (${rootD.h - rootF.h > 0 ? "+" : ""}${rootD.h - rootF.h})`);
 for (const [f, d] of align(figBoxes, domBoxes)) {
   const flag = f && d ? "  " : f ? "м " : "с ";
   if (!f || !d) only++;
@@ -408,4 +415,4 @@ console.log(
     `\n  Пары строятся по ВЫСОТЕ: совпавший прогон держит выравнивание,` +
     `\n  одиночная строка «м» рядом со строкой «с» — это и есть расхождение.\n`
 );
-process.exit(only ? 1 : 0);
+process.exit(only || rootBad ? 1 : 0);

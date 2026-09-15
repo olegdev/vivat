@@ -7,7 +7,10 @@
 
      Все элементы этой панели открывают или ведут один и тот же ящик фильтров
      и состояние URL; обвязка — в components/catalog-listing.js. -->
-<div data-catalog-settings class="page-x flex flex-col gap-3 py-6 max-md:py-3">
+<!-- Поля панели: 24 на 1440 и 768 (2483:206307 padV 24), на 360 — 12 сверху и
+     16 снизу (1806:237127: stackVerticalPadding 12, stackPaddingBottom 16) —
+     блок 116, не 112. -->
+<div data-catalog-settings class="page-x flex flex-col gap-3 py-6 max-md:pb-4 max-md:pt-3">
   <div class="flex items-center justify-between max-md:flex-wrap max-md:gap-2">
     <!-- filter openers. Ниже `xl` именованные пилюли схлопываются в одну
          воронку (Figma catalog-settings 1806:237128 на 360, 2483:206306 на
@@ -28,8 +31,13 @@
              руки. Активное состояние инвертирует тем же приёмом, что
              bottom-nav — `brightness(0) invert(1)`, а не currentColor:
              <img>-загруженный SVG не наследует цвет текста. -->
+        <!-- 1440 — `filter 24 Bold dark` (963:37179, две шкалы с ползунками),
+             360 — `filter 24 Thin dark` (2214:190873, воронка): разные
+             пиктограммы, не одна потолще. Оба файла выгружены из .fig
+             (scripts/fig-svg.mjs). -->
         <span class="filter-funnel__circle">
-          <img src="../../assets/header/icon-filter.svg" alt="" class="size-6" />
+          <img src="../../assets/header/icon-filter.svg" alt="" class="size-6 max-md:hidden" />
+          <img src="../../assets/header/icon-filter-thin.svg" alt="" class="hidden size-6 max-md:block" />
         </span>
         <span data-filter-badge class="badge-number badge-number--outline -ml-3 hidden self-start">0</span>
       </button>
@@ -99,7 +107,9 @@
           aria-expanded="false"
         >
           <span data-sort-label>Сначала популярные</span>
-          <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform" data-sort-chevron />
+          <!-- шеврон: 24 Bold на 1440 (978:49801), 24 Thin на 360 (2214:190639) -->
+          <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 transition-transform max-md:hidden" data-sort-chevron />
+          <img src="../../assets/header/chevron-down-thin.svg" alt="" class="hidden size-6 transition-transform max-md:block" data-sort-chevron />
         </button>
         <div
           data-sort-menu
@@ -129,9 +139,14 @@
        rather than wrapping (a dashed overflow marker, not a second row); the
        earlier "wraps on mobile" reading was off a screenshot, not the node
        itself. On mobile the shortcut list scrolls the same as desktop. -->
+  <!-- Ряд чипов ниже `xl` идёт до края ОКНА и режется им, а не полем блока:
+       в кадрах чипы 1092 (768, 2483:206319) и 958 (360, 1806:237139) стоят с
+       x = 24 / 16 и вылезают за фрейм — последний виден обрезанным. Поэтому
+       рельс вынесен на ширину полей отрицательными margin, поля вернулись
+       внутрь как padding: первый чип на своём месте, последний торчит. -->
   <div
     data-chips
-    class="flex flex-nowrap items-center gap-2 overflow-x-auto scroll-rail max-md:gap-1 [&>button]:shrink-0"
+    class="flex flex-nowrap items-center gap-2 overflow-x-auto scroll-rail max-xl:-mx-6 max-xl:px-6 max-md:-mx-4 max-md:gap-1 max-md:px-4 [&>button]:shrink-0"
   >
     <button type="button" class="catalog-chip" data-quickfilter="form=pryamaya">Прямые кухни<!--#include partials/chip-close.html --></button>
     <button type="button" class="catalog-chip" data-quickfilter="form=uglovaya">Угловые кухни<!--#include partials/chip-close.html --></button>
@@ -151,7 +166,9 @@
          макете обрезается, а не масштабируется под 16px слот — тот же
          приём, что у иконки отзывов (size-6 -m-1). Клик разворачивает ряд
          (data-chip-extra) на месте, а не открывает ящик фильтров. -->
-    <button type="button" data-chip-more class="catalog-chip">Больше <img src="../../assets/header/icon-dots.svg" alt="" class="size-6 -m-1" /></button>
+    <!-- `more 16 secondary` (979:49801) на обеих ширинах — выгружен из .fig
+         в 16, без окна 24. -->
+    <button type="button" data-chip-more class="catalog-chip">Больше <img src="../../assets/header/icon-more-16.svg" alt="" class="size-4" /></button>
     <!-- shown only while something is selected -->
     <button type="button" data-filter-clear data-chip-clear class="catalog-chip catalog-chip--dismiss hidden">Очистить все<!--#include partials/chip-close.html --></button>
   </div>

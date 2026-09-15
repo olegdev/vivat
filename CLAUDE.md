@@ -685,6 +685,7 @@ node scripts/fig.mjs tree <id> [depth]     # dump a subtree
 node scripts/fig.mjs node <id>             # parent, siblings, master component
 node scripts/fig.mjs raw  <id> [k1,k2]     # full node JSON, for fields the index drops
 node scripts/fig.mjs icons <id>            # every icon under a node, with its VARIANT
+node scripts/fig-svg.mjs <symbol-id>       # export an icon as SVG straight from the .fig
 ```
 
 ids take either form: `1968:71551` or the `1968-71551` in Figma URLs.

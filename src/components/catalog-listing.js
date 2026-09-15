@@ -459,13 +459,14 @@ export function initCatalogListing({ products, rub }) {
   const sortToggle = sortWrap.querySelector("[data-sort-toggle]");
   const sortMenu = sortWrap.querySelector("[data-sort-menu]");
   const sortLabel = sortWrap.querySelector("[data-sort-label]");
-  const sortChevron = sortWrap.querySelector("[data-sort-chevron]");
+  // два шеврона — Bold на 1440 и Thin на 360, показан один; крутим оба
+  const sortChevrons = sortWrap.querySelectorAll("[data-sort-chevron]");
 
   function toggleSortMenu(open) {
     const show = open ?? sortMenu.classList.contains("hidden");
     sortMenu.classList.toggle("hidden", !show);
     sortToggle.setAttribute("aria-expanded", String(show));
-    sortChevron.classList.toggle("rotate-180", show);
+    sortChevrons.forEach((c) => c.classList.toggle("rotate-180", show));
   }
   function syncSortLabel() {
     sortLabel.textContent = SORT_LABELS[currentSort];

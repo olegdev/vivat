@@ -111,13 +111,14 @@
 <!-- Tab chips over a rail (Популярные товары). Блок `segments` (644:44577 на
      1440, 2338:254339 на 360) это 16 + ряд 44 + 16 сверху вниз, на 360 — 8 + 44
      + 16; ряд едет краем в край, и отрицательные поля выпускают его за
-     отступы секции. The trailing "еще" chip is part of the
+     отступы секции — на планшете тоже (2483:202376: `container` 965 при
+     768, последний сегмент виден обрезанным краем окна). The trailing "еще" chip is part of the
      row, not a tab; the component inserts one [data-carousel-chip] per tab
      before it. -->
 <template data-carousel-chips>
   <div
     data-chips
-    class="scroll-rail flex items-center gap-2 overflow-x-auto pb-4 pt-4 max-md:-mx-4 max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:px-4 max-md:pb-4 max-md:pt-2 *:max-md:snap-start"
+    class="scroll-rail flex items-center gap-2 overflow-x-auto pb-4 pt-4 max-xl:-mx-6 max-xl:px-6 max-md:-mx-4 max-md:snap-x max-md:snap-proximity max-md:scroll-pl-4 max-md:px-4 max-md:pb-4 max-md:pt-2 *:max-md:snap-start"
   >
     <!-- «···» — реальная иконка (three-dot 632:31611, снята через MCP),
          не текстовые точки с tracking; вес Regular 400, не .chip's

@@ -34,13 +34,19 @@
         <div class="flex min-w-0 flex-1 flex-col gap-0.5 max-md:gap-0">
           <!-- price-container 632:25141: «от»↔цена — 4px, цена↔старая — 8px,
                два разных зазора, не один общий. -->
+          <!-- Три ступени, не две: карточка сетки на 768 — `cards-kitchen
+               device=desktop size=s` (2483:232023): «от» 14/18, цена 16/22,
+               старая цена 14/18, «+5» и счётчик отзывов 14/18; на 360
+               (`device=mobile size=m+` 1997:308271): «от» 11/14, цена 14/20,
+               старая 12/16, «+5» и счётчик 12/16. Раньше планшет получал
+               мобильные кегли через `max-xl:`. -->
           <div class="flex items-baseline gap-2 max-md:gap-1">
             <div class="flex items-baseline gap-1">
               <!-- у дилера цена идёт без «от» (Figma dealer/Catalog 953:121911) -->
-              <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-xl:text-m-body-n-accent">от</span>
-              <a href="#" data-card-price data-card-link class="text-body-xl text-text-primary max-xl:text-m-body-n-accent"></a>
+              <span class="text-body-n-accent text-text-primary group-data-[user=dealer]:hidden max-xl:text-body-s-accent max-md:text-m-body-xs max-md:font-medium">от</span>
+              <a href="#" data-card-price data-card-link class="text-body-xl text-text-primary max-xl:text-body-n-accent max-md:text-m-body-n-accent"></a>
             </div>
-            <span data-card-oldprice class="text-body-n text-text-secondary line-through max-xl:text-m-body-s-crossed max-xl:text-text-secondary empty:hidden"></span>
+            <span data-card-oldprice class="text-body-n text-text-secondary line-through max-xl:text-body-s max-md:text-m-body-s-crossed empty:hidden"></span>
           </div>
           <!-- На планшете карточка берёт мобильную типографику: во фрейме
                (2483:237851) строка цены 22 высотой при кегле 16 и «от» 14,
@@ -56,10 +62,10 @@
       <div class="flex items-center gap-4 py-1 max-md:gap-2">
         <div class="flex min-w-0 flex-1 items-center gap-2 max-md:gap-1">
           <div data-card-swatches class="flex items-center gap-2 max-md:gap-1"></div>
-          <span data-card-more class="text-body-s text-text-secondary empty:hidden max-xl:text-m-body-xs"></span>
+          <span data-card-more class="text-body-s text-text-secondary empty:hidden max-md:text-m-body-s"></span>
         </div>
         <a href="#reviews" class="flex items-center gap-1" data-card-reviews-link aria-label="Отзывы">
-          <span data-card-comments class="text-body-s text-text-secondary max-xl:text-m-body-xs"></span>
+          <span data-card-comments class="text-body-s text-text-secondary max-md:text-m-body-s"></span>
           <img src="../../assets/header/icon-comment.svg" alt="" class="size-6 -m-1" />
         </a>
       </div>

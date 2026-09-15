@@ -42,3 +42,8 @@ Bold при Thin в кадре (2029:156849/156850) — залитые круж�
 | `header/arrow-right-20.svg` | 2214:190549 | arrow-right 20 dark | пилюли плиток категорий 1003:157538, планшет 2477:166905 |
 | `header/icon-pagination-left.svg` | 966:37194 | arrow-left 24 Bold muted | пагинация, «В начало» 758:56943 |
 | `header/icon-pagination-right.svg` | 962:37191 | arrow-right 24 Bold dark | пагинация, «В конец» 758:56959 |
+| `header/icon-filter.svg` | 963:37179 | filter 24 Bold dark (две шкалы) | воронка каталога 1440 882:89607; выгружен fig-svg |
+| `header/icon-filter-thin.svg` | 2214:190873 | filter 24 Thin dark (воронка) | воронка каталога 360 1997:267660; fig-svg |
+| `header/chevron-down.svg` | 978:49801 | chevron-down 24 Bold secondary | сортировка 1440 |
+| `header/chevron-down-thin.svg` | 2214:190639 | chevron-down 24 Thin secondary | сортировка 360; fig-svg |
+| `header/icon-more-16.svg` | 979:49801 | more 16 secondary | чип «Больше» на всех ширинах; fig-svg |

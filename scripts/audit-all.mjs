@@ -98,6 +98,7 @@ for (const r of rows.filter(wanted)) {
         checks++;
         // все подсказки с их строками-примерами (они идут следом с отступом 6)
         const ls = out.split("\n");
+        for (const l of ls) if (/^✗ корень/.test(l)) { lines.push("   ящики " + l.trim()); hard++; }
         for (let i = 0; i < ls.length; i++) {
           if (!ls[i].includes("⚠")) continue;
           lines.push("   ящики " + ls[i].trim());
