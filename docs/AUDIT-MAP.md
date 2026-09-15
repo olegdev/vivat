@@ -46,17 +46,23 @@
 
 ## customer/main
 
+Все id — с канваса **Design** (878:103527 / 1968:71493); копия на канвасе
+`Notes` (2395:*) — наши аннотации, не макет (SOLUTIONS › «Канвас Notes»).
+
 | блок | селектор | 1440 | 768 | 360 | чем |
 |---|---|---|---|---|---|
-| СТРАНИЦА | — | 878:103527 | 2477:114191 | 2395:106120 | s |
-| шапка | `header` | 2395:105838 | — | — | t b |
-| герой | `[data-hero-section]` | 2395:105840 | — | — | b |
-| заголовок «Модульные» | `[data-section="modular"] section > div:first-child` | 2395:105893 | — | — | t b |
-| заголовок «Популярные» | `[data-section="popular"] section > div:first-child` | 2395:105896 | — | — | t b |
-| заголовок «Акции и скидки» | `[data-section="akcii"] section > div:first-child` | 2395:105923 | — | — | t b |
+| СТРАНИЦА | — | 878:103527 | 2477:114191 | 1968:71496 | s |
+| шапка | `header` | 878:103528 | — | 1968:71494 | t b i |
+| герой | `[data-hero] > section` | 878:103530 | — | 1968:71495 | b |
+| плитки категорий | `[data-categories]` | 878:103532 | — | 1968:71497 | t b #depth=4 |
+| заголовок «Модульные» | `[data-section="modular"] section > div:first-child` | 878:103583 | — | — | t b |
+| заголовок «Популярные» | `[data-section="popular"] section > div:first-child` | 878:103586 | — | — | t b |
+| заголовок «Акции и скидки» | `[data-section="akcii"] section > div:first-child` | 878:103599 | — | — | t b |
 | карточка рельса | `[data-section="popular"] article` | 1968:151248 | — | — | t b |
-| карта салонов | `[data-stores-section]` | 2395:105929 | — | — | t b |
-| подвал | `footer` | 2395:105938 | — | — | t b |
+| рельс «Популярные» | `[data-section="popular"] section` | — | — | 1968:201441 | t b #depth=6 |
+| промо-плитка | `[data-promo-track] > *:nth-child(3)` | 878:103595 | — | 1968:71552 | t b |
+| карта салонов | `[data-stores-section]` | 878:103602 | — | 1968:71568 | t b |
+| подвал | `footer` | 878:103621 | — | 1968:71579 | t b |
 
 ## customer/catalog
 

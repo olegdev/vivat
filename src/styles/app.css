@@ -345,6 +345,13 @@
   html {
     font-family: var(--font-sans);
   }
+  /* Зачёркнутая цена: в Figma STRIKETHROUGH — линия толщиной 1 (strokeWeight
+     у текста) и в 12 px тоже 1. У браузера толщина `auto` берётся из шрифта и
+     в 12/16 у Onest выходит ~0.75 px — на ретине это тонкая серая нитка,
+     на 1x — ничего. Фиксируем 1 px. */
+  .line-through {
+    text-decoration-thickness: 1px;
+  }
   body {
     background-color: var(--color-bg-page);
     color: var(--color-text-primary);

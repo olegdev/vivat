@@ -14,15 +14,17 @@
 <template data-promo-card>
   <div class="group flex flex-col gap-4 max-md:gap-3">
     <div data-promo-media class="relative aspect-square w-full overflow-hidden rounded-n bg-bg-subtle"></div>
-    <!-- Поля подписи 24 с обеих сторон (`text` 635:5429 padH 24; на 360 у
-         1821:326202 те же 24) — длинная подпись переносится раньше края плитки. -->
+    <!-- Поля подписи 24 с обеих сторон (`text` 635:5429 padH 24) — длинная
+         подпись переносится раньше края плитки. На 360 рамка подписи 325 при
+         плитке 320 (1821:326202 @-2.5): она вылезает на 2.5 с каждой стороны,
+         и текст живёт в 277, а не в 272 — отсюда 21.5. -->
     <!-- Подпись стоит в рамке 64 (stackPrimarySizing FIXED у 637:18206) — это
          резерв под две строки text-body-xl, а не высота по контенту: короткие
          подписи не должны сжимать плитку в ряду с длинными. min-h держит его
          и для однострочных заголовков. -->
     <p
       data-promo-caption
-      class="min-h-16 px-6 text-center text-body-xl text-text-primary transition-colors [@media(hover:hover)]:group-hover:text-text-secondary max-md:min-h-0 max-md:text-m-body-xl"
+      class="min-h-16 px-6 text-center text-body-xl max-md:px-[21.5px] text-text-primary transition-colors [@media(hover:hover)]:group-hover:text-text-secondary max-md:min-h-0 max-md:text-m-body-xl"
     ></p>
   </div>
 </template>

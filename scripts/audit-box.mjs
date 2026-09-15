@@ -189,7 +189,11 @@ const domBoxes = await p.evaluate(
     const walk = (el, d, pid) => {
       if (d > maxDepth) return;
       for (const c of el.children) {
-        if (!(c instanceof HTMLElement) || !seen(c)) continue;
+        if (!(c instanceof HTMLElement)) continue;
+        // `display: contents` — обёртки без коробки (ряды плиток ниже md):
+        // сквозь них идём к детям на той же глубине, иначе блок «пустой».
+        if (getComputedStyle(c).display === "contents") { walk(c, d, pid); continue; }
+        if (!seen(c)) continue;
         const r = c.getBoundingClientRect();
         const pr = el.getBoundingClientRect();
         const id = ++uid;
