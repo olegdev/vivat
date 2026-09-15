@@ -44,7 +44,7 @@
       <!-- ==================== HERO ====================================== -->
       <div data-hero></div>
 
-      <div class="h-10"></div>
+      <div class="h-10 max-md:hidden"></div>
 
       <!-- ==================== CATEGORIES ================================ -->
       <!--#include partials/categories.html -->
@@ -88,13 +88,16 @@
              `flex-col-reverse`. -->
         <div class="page-x flex justify-end max-md:order-last max-md:pt-4 md:-mt-11">
           <div class="flex items-center gap-2 max-md:w-full max-md:flex-col-reverse">
-            <a href="#" class="btn btn-m btn-primary max-md:w-full" data-news-subscribe data-modal-open="subscribe">
+            <!-- 360 (2432:144359): текст 14/20, стрелка 20 — светлая 2214:190546 и
+                 тёмная 2214:190549; на 1440 — 16/24 и 24 -->
+            <a href="#" class="btn btn-m btn-primary max-md:w-full max-md:text-m-button-m" data-news-subscribe data-modal-open="subscribe">
               <span>Подписаться на рассылку</span>
-              <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-6" />
+              <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-6 max-md:size-5" />
             </a>
-            <a href="news.html" class="btn btn-m btn-secondary max-md:w-full">
+            <a href="news.html" class="btn btn-m btn-secondary max-md:w-full max-md:text-m-button-m">
               <span>Все новости</span>
-              <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6" />
+              <img src="../../assets/header/arrow-right-24.svg" alt="" class="size-6 max-md:hidden" />
+              <img src="../../assets/header/arrow-right-20.svg" alt="" class="hidden size-5 max-md:block" />
             </a>
           </div>
         </div>
@@ -110,12 +113,14 @@
             data-news-track
           ></div>
         </div>
-        <div class="hidden max-md:block">
+        <!-- полосы прокрутки под новостями в кадре 360 нет (2432:143658:
+             заголовок 78, карточки 224, отбивка 16, кнопки 96) -->
+        <div class="hidden">
           <div class="scroll-progress" data-progress><span><i></i></span></div>
         </div>
       </section>
 
-      <div class="h-24 max-xl:h-16 max-md:h-10"></div>
+      <div class="h-24 max-xl:h-16 max-md:hidden"></div>
 
       <!-- ==================== Наши салоны + карта ======================= -->
       <div data-section="salony"><!--#include partials/stores.html --></div>

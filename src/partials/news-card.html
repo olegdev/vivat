@@ -1,9 +1,12 @@
 <!-- News card — Figma `news-item` 882:110636. Cloned per datum by
      components/news-card.js; the row sizes the cards, the unit has no width. -->
 <template data-news-card>
-  <article class="flex h-[263px] flex-col justify-between rounded-[var(--radius-l)] bg-bg-subtle p-6">
+  <!-- 263 на 1440 (882:110636), 224 на 360 (news-items 2432:143660) -->
+  <article class="flex h-[263px] flex-col justify-between rounded-[var(--radius-l)] bg-bg-subtle p-6 max-md:h-[224px]">
     <div class="flex flex-col gap-3">
-      <a href="#" class="text-body-n-accent text-text-primary" data-news-title></a>
+      <!-- заголовок на 1440 — 16/24 SemiBold (882:110643, вес по ширине глифа);
+           мобильный вариант пока не сверен твёрдо — см. отчёт 15.09 -->
+      <a href="#" class="text-body-n font-semibold text-text-primary max-md:text-body-n-accent max-md:font-medium" data-news-title></a>
       <p class="line-clamp-4 text-body-n text-text-primary" data-news-desc></p>
     </div>
     <time class="text-body-s text-text-secondary" data-news-date></time>

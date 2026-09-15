@@ -180,8 +180,10 @@ confirmation overlay live in the page. Below `md` the site header is replaced by
 a modal-style bar whose title names the step.
 
 `src/pages/dealer/main.html` — the dealer home page. Desktop (Figma dealer/Main
-882:107882) and mobile are both done, but the mobile half has **no frame of its
-own** — 882:107882 has no 360 counterpart. Where it came from matters:
+882:107882) and mobile are both done. The mobile half was built without a
+frame of its own; one has since appeared in the `dealer` section — `body`
+2432:126312 — and the audit registry checks 360 against it. Where the mobile
+build originally came from still matters:
 
 - **The chrome is designed, just filed elsewhere.** The dealer catalog's mobile
   frame (2225:160540) draws the whole dealer header — a 38px strip with «Москва»
