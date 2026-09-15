@@ -79,6 +79,7 @@ const sections = {
       // плюс полоса прокрутки 32, кнопка за кадром (1968:201441 у покупателя,
       // 2432:126371 у дилера). У «Модульных кухонь» и «Акций» она рисуется.
       mobileAction: false,
+      desktopAction: false, // как у покупателя: слот `buttons` в 1620:83159 пуст
       endpoint: "/catalog/popular",
       href: "catalog.html",
     },

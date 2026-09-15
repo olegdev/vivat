@@ -58,6 +58,9 @@ const sections = {
       // плюс полоса прокрутки 32, кнопка за кадром (1968:201441 у покупателя,
       // 2432:126371 у дилера). У «Модульных кухонь» и «Акций» она рисуется.
       mobileAction: false,
+      // И на 1440 её нет: `buttons` в заголовке 2395:105896 — пустой слот
+      // мастера (в derived только скрытые иконки), кнопка не рисуется.
+      desktopAction: false,
       endpoint: "/catalog/popular", // tab seam target (see carousel.js initTabs)
       href: "catalog.html",
     },
