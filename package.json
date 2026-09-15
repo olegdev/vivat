@@ -19,6 +19,7 @@
     "audit:fit": "node scripts/audit-fit.mjs",
     "audit:icons": "node scripts/audit-icons.mjs",
     "audit:ink": "node scripts/audit-ink.mjs",
+    "audit:flow": "node scripts/audit-flow.mjs",
     "audit:all": "node scripts/audit-all.mjs"
   },
   "devDependencies": {

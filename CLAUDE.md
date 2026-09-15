@@ -11,7 +11,8 @@ npm run shot      # screenshots of dist/ at 1440 and 390 → .shots/
 npm run crop      # one block of one page, with --click for open states
 npm run audit     # ordered text diff: a Figma instance vs the rendered page
 npm run audit:all # every audit on every block of docs/AUDIT-MAP.md (spacing, type,
-                  # box, icons per block; fit — overflow and covered controls — per page)
+                  # box, icons per block; fit — overflow and covered controls — per page;
+                  # flow — edges of the frame's top-level blocks vs the page, per СТРАНИЦА row)
 npm run schema    # микроразметка schema.org в dist/: состав и сверка крошек
 ```
 
@@ -63,8 +64,9 @@ catalog). Two things are specific to it, both read off the design: the rail's
 title-block has an empty `buttons` frame, so it takes `desktopAction: false`, and
 below `md` its cards are the 320px `cards-other` tile in one row rather than the
 152px two-row layout, so it takes `mobileCard: "l"`. The 360 frame (a partial
-copy — it is still named "catalog") has no socials block; below `md` that section
-follows the home page's mobile block instead, by decision, not from the frame.
+copy — it is still named "catalog") has no socials block, and neither does the
+page below `md` — it used to borrow the home page's mobile block, and the client
+had it removed (15.09).
 
 `src/pages/customer/pdp.html` — the product page. Desktop (Figma PDP
 914:101099) and mobile (Figma 1997:305719) are both done. Several more Figma

@@ -236,13 +236,15 @@
          «Очистить» — не текстовая ссылка, а пилюля #f3f3f3: подвал такого же
          цвета, поэтому в рендере она читается как текст. -->
     <!-- Одиночный фильтр (953:122134): подвал 92 с полями 24, одна кнопка во
-         всю ширину, и только когда в группе есть выбранное; «Очистить» там не
-         рисуется — JS ставит data-mode и data-empty на корень. -->
+         всю ширину, и только когда в группе есть выбранное. «Очистить» кадр там
+         не рисует, но она есть — решение клиента 15.09 (иначе выбранное не
+         снять), и сбрасывает только эту группу. JS ставит data-mode и
+         data-empty на корень. -->
     <div class="flex h-16 shrink-0 items-center gap-6 bg-surface-default px-10 max-md:gap-2 group-data-[mode=single]/fd:h-[92px] group-data-[mode=single]/fd:group-data-[empty=true]/fd:hidden">
       <button
         type="button"
         data-filter-clear
-        class="hidden btn btn-m flex-1 bg-components-subtle text-text-primary max-md:text-m-button-m hover:bg-components-subtle-hover group-data-[mode=single]/fd:hidden!"
+        class="hidden btn btn-m flex-1 bg-components-subtle text-text-primary max-md:text-m-button-m hover:bg-components-subtle-hover"
       >
         Очистить
         <img src="../../assets/header/icon-close-s.svg" alt="" class="size-5" />

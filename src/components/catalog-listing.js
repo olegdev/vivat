@@ -358,18 +358,40 @@ export function initCatalogListing({ products, rub }) {
     btn.addEventListener("click", (e) => {
       e.preventDefault();
       e.stopPropagation();
-      const group = btn.dataset.filterClearGroup;
-      form.querySelectorAll(`input[name="${group}[]"]`).forEach((i) => (i.checked = false));
+      clearGroup(btn.dataset.filterClearGroup);
       applyFilters();
+      syncSingleEmpty();
     })
   );
 
-  // Clear-all (drawer footer + empty-state button).
-  function clearAll() {
+  // Группа сбрасывается по своим полям: у галочных это `group[]`, у цены —
+  // радио `price` плюс два поля «от/до» (раньше «очистить» у цены искал
+  // `price[]` и не сбрасывал ничего).
+  function clearGroup(group) {
+    if (group === "price") {
+      const any = form.querySelector('input[name="price"][value="any"]');
+      if (any) any.checked = true;
+      form.querySelectorAll('input[name="price_min"], input[name="price_max"]').forEach((i) => (i.value = ""));
+    } else {
+      form.querySelectorAll(`input[name="${group}[]"]`).forEach((i) => (i.checked = false));
+    }
+  }
+
+  // Clear-all (drawer footer + empty-state button). В одиночном режиме ящика
+  // кнопка подвала сбрасывает только показанную группу — решение клиента
+  // 15.09: без неё выбранное в одиночном фильтре было не снять.
+  function clearAll(e) {
+    if (singleGroup && drawer.contains(e?.currentTarget)) {
+      clearGroup(singleGroup);
+      applyFilters();
+      syncSingleEmpty();
+      return;
+    }
     form.reset();
     currentSort = "popular";
     syncSortLabel();
     applyFilters();
+    syncSingleEmpty();
   }
   document.querySelectorAll("[data-filter-clear]").forEach((b) => b.addEventListener("click", clearAll));
 

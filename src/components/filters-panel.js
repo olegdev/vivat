@@ -221,7 +221,13 @@ export function initFiltersPanel({ groups, price = false } = {}) {
       e.preventDefault();
       e.stopPropagation();
       const g = btn.dataset.filterClearGroup;
-      form.querySelectorAll(`input[name="${g}[]"]`).forEach((i) => (i.checked = false));
+      if (g === "price") {
+        const any = form.querySelector('input[name="price"][value="any"]');
+        if (any) any.checked = true;
+        form.querySelectorAll('input[name="price_min"], input[name="price_max"]').forEach((i) => (i.value = ""));
+      } else {
+        form.querySelectorAll(`input[name="${g}[]"]`).forEach((i) => (i.checked = false));
+      }
       apply();
     });
   }

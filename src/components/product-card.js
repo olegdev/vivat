@@ -323,6 +323,11 @@ export function renderCarousel(el, items, opts = {}) {
   // which is a single-COLUMN grid (cards stacked vertically), not a row. Two
   // or fewer cards already fit one screen width without scrolling, so they
   // stay on the plain flex track instead of asking for a 2-row grid at all.
+  // Ряд 320-х плиток в кадре (`other-row size=L` 1968:150250, 444 = ряд 360 +
+  // скролл 32 + кнопка 52) обнимает САМУЮ высокую карточку — третью, 360, —
+  // поэтому под обычной 352 остаётся 8. У нас фикстуры ровные, ряд вышел бы
+  // 352 и отступ после «Столешницы 31» короче кадра.
+  el.classList.toggle("max-md:min-h-[360px]", opts.mobile === "l");
   if (items.length > 2 && opts.mobile !== "l" && !opts.variant && items.every((p) => p.category)) {
     el.classList.add("rail-2row");
     el.style.setProperty("--cols", String(Math.ceil(items.length / 2)));

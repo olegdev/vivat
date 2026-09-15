@@ -56,6 +56,19 @@ for (const r of rows.filter(wanted)) {
     if (!id || id === "—") continue;
     const lines = [];
 
+    if (r.name === "СТРАНИЦА") {
+      // поток: края блоков кадра против краёв блоков страницы. Печатается
+      // первый разошедшийся край — ниже всё обычно едет на ту же величину.
+      const sess = r.flags.session ? ["--session", r.flags.session] : [];
+      const fo = run("scripts/audit-flow.mjs", [r.page, id, "--width", w, ...sess]);
+      checks++;
+      const first = fo.split("\n").filter((l) => l.startsWith("✗"));
+      if (first.length) {
+        lines.push(`   поток ✗ ${first[0].slice(2).trim()}`);
+        lines.push(`         (краёв без пары ${first.length}; подробно: node scripts/audit-flow.mjs ${r.page} ${id} --width ${w})`);
+        hard++;
+      }
+    }
     if (r.name === "СТРАНИЦА" && r.how.includes("s")) {
       const a = ["scripts/audit-spacing.mjs", r.page, id];
       if (r.flags.flatten) a.push("--flatten", r.flags.flatten);
