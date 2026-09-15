@@ -621,8 +621,9 @@
      (`pb-px`) или 6 / 8 — оставлен центр. Сверено по 4x-экспорту дизайнера
      (docs/figma-exports/badge-s-discount-4x.png) маской белых пикселей, 15.09. */
   /* 1440: текст на 2px выше, чем было (поля 3/1 → 1/3) — по замечанию
-     клиента 15.09 «текст заметно сместился вниз» на карточках 882:107939 */
-  .badge-l { @apply h-8 pt-px pb-[3px] text-body-n-accent max-xl:h-6 max-xl:pt-0 max-xl:pb-px max-xl:text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
+     клиента 15.09 «текст заметно сместился вниз» на карточках 882:107939;
+     затем на 1px обратно вниз (поля 2/2) — замечание по 1686:63229 */
+  .badge-l { @apply h-8 pt-[2px] pb-[2px] text-body-n-accent max-xl:h-6 max-xl:pt-0 max-xl:pb-px max-xl:text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
   .badge-s { @apply h-6 pb-px text-body-s-accent max-md:h-5 max-md:text-m-body-xs; }
   .badge-new      { @apply bg-surface-accent-alt; }
   .badge-hit      { @apply bg-components-red; }

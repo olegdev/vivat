@@ -40,14 +40,17 @@
              одну строку рядом с кнопкой. Описание при этом остаётся в 783 —
              в макете оно живёт внутри `text-container`. -->
         <div class="flex min-w-0 flex-1 flex-col max-md:w-full">
-          <div class="flex min-h-11 items-center gap-3 max-md:min-h-6 max-md:gap-2">
+          <!-- Счётчик — не отдельный блок через зазор, а продолжение строки:
+               в кадре это один текст «Отзывы 4» (1686:63219, 142 при 30px) с
+               обычным пробелом ≈0.3em (9px на 1440). Стоял зазор 12. -->
+          <div class="flex min-h-11 items-center max-md:min-h-6">
             <!-- Заголовок хагом, а не в фиксированных 52: 52 — это две строки
                  Mobile/H2 у образца мастера, а инстанс с однострочным
                  заголовком даёт 26 (1968:71566 «Акции и скидки»: title 26,
                  весь блок 82 против 148). Резерв двигал вниз всё, что стоит
                  под однострочным заголовком, на лишние 26. -->
             <h2 data-cs-title class="text-h2 text-text-primary max-md:text-m-h2"></h2>
-            <span data-cs-count class="text-h2 text-text-secondary max-md:self-start max-md:text-m-h2"></span>
+            <span data-cs-count class="ms-[0.3em] text-h2 text-text-secondary max-md:self-start max-md:text-m-h2"></span>
           </div>
           <!-- Отбивка заголовок↔описание: 8 на 1440 (блок 178 против 148) и 4
                ниже `md` (`description` 1806:234567 = spacing 4 + текст 40). -->
