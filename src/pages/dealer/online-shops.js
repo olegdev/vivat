@@ -98,12 +98,14 @@ function applyFormat(id) {
 
   document.querySelector("[data-downloads]").replaceChildren(
     ...DOWNLOADS.map((label) => {
-      // Ссылкой не оформлены: инстансы 1167:74245/74246 переопределяют только
-      // заливку на #292929, стиль — Desktop/BodyN без подчёркивания. Раньше
-      // здесь стоял коралловый пунктир, которого в кадре нет.
+      // «Link M dotted» кораллом (1167:74245/74246): пунктир, не сплошная.
+      // В кадре первая строка окрашена наполовину — коралловый посимвольный
+      // стиль накрывает только «Скачать пример», — но это правка макета, а не
+      // наша (BACKLOG.md), поэтому обе строки целиком коралловые.
       const a = document.createElement("a");
       a.href = "#";
-      a.className = "w-fit text-body-n text-text-primary max-md:text-m-body-n";
+      a.className =
+        "link-dotted w-fit text-body-n text-text-link-highlighted max-md:text-m-body-n";
       a.textContent = label.replace("JSON", up);
       return a;
     })
