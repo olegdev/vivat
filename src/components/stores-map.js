@@ -698,8 +698,13 @@ export function renderStoresMap(anchor, opts) {
         card.scrollIntoView({ block: sheet && isMobileCity() ? "start" : "nearest", behavior: "smooth" });
       }
     }
+    // Подсвеченная метка с подсказкой — та, чью карточку смотрят: на шаге
+    // выбора (1440/768) это раскрытая карточка, а выбранный дилер отмечен
+    // рамкой и кнопкой; пока ничего не раскрыто — выбранный. На читающих
+    // страницах и на 360 раскрытие и выбор — одно и то же.
+    const litId = selectable && !isMobileCity() ? (expandedId ?? selectedId) : selectedId;
     for (const [id, entry] of marks) {
-      const on = id === selectedId;
+      const on = id === litId;
       entry.placemark.properties.set("selected", on);
       // Всплывашка живёт внутри слоя метки, а слои Яндекс раскладывает по
       // `zIndex` метки — без него подсказку выбранной точки перекрывали
