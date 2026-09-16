@@ -16,10 +16,22 @@
 //     The one place the order is sent. Today it reveals the confirmation
 //     overlay; in Blade its body becomes a POST and the overlay is shown on
 //     the response.
-export function initOrderForms(root, { delivery, money, onDelivery, onSubmit } = {}) {
+import { getCity } from "./city-select.js";
+
+export function initOrderForms(root, { delivery, pickupAddress, money, onDelivery, onSubmit } = {}) {
   const form = root.querySelector("[data-order-form]");
   const card = root.querySelector("[data-delivery]");
   if (!form || !card) return null;
+
+  // Адрес самовывоза — по городу из «Ваш регион» (тот же выбор города, что в
+  // шапке): подставляется сразу и при каждой смене города.
+  const address = card.querySelector("[data-pickup-address]");
+  const paintAddress = () => {
+    const a = pickupAddress?.[getCity()];
+    if (address && a) address.textContent = a;
+  };
+  paintAddress();
+  document.addEventListener("city:change", paintAddress);
 
   const distance = card.querySelector("[data-delivery-distance]");
   const floor = card.querySelector("[data-delivery-floor]");

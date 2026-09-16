@@ -12,7 +12,7 @@ import { initOrderForms } from "../../components/order-forms.js";
 import { ICON } from "../../data/asset-base.js";
 import { rub } from "../../data/catalog.js";
 import { dealerMenuSections } from "../../data/dealer-home.js";
-import { LINES, DELIVERY } from "../../data/dealer-order.js";
+import { LINES, DELIVERY, PICKUP_ADDRESS } from "../../data/dealer-order.js";
 import { initModals } from "../../components/modals.js";
 import { initPhoneMask } from "../../components/phone-mask.js";
 import { initConsentGate } from "../../components/consent-gate.js";
@@ -78,6 +78,7 @@ function submitOrder(payload) {
 
 const forms = initOrderForms(page, {
   delivery: DELIVERY,
+  pickupAddress: PICKUP_ADDRESS,
   money: rub,
   onDelivery: ({ label }) => {
     if (deliveryOut) deliveryOut.textContent = label;

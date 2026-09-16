@@ -24,10 +24,15 @@
          it sits above the button rather than below it;
        · 360 has no button at all (2225:202292 is the panel's `Top` half), so
          the dealer page's sticky bar is always on instead of scroll-revealed,
-         and «Очистить корзину» appears under the 1440 button. -->
+         and «Очистить корзину» appears under the 1440 button;
+       · no «Ваш заказ» title: both dealer frames open with `Top` (padV 16)
+         straight on the table, where the customer's carry `Title` 48 / 32;
+       · on 360 the rows are 40, not 32 (2029:158165 against the customer's
+         2029:158365), and the «Доставка» block is padV 4 → row 40 + notice 32
+         under its divider (2029:158182). -->
 
 <div class="rounded-[var(--radius-l)] bg-bg-subtle" data-order-summary>
-  <div class="px-6 pt-4 pb-2">
+  <div class="px-6 pt-4 pb-2 group-data-[user=dealer]:hidden">
     <h2 class="text-h5 text-text-primary max-md:text-m-h4">Ваш заказ</h2>
   </div>
 
@@ -42,22 +47,22 @@
        79 на 1440 (953:149258/149267) и 168 + 16 + 90 на 360
        (2029:158164/158173). Отсюда пара `group-data-[user=dealer]:w-…` на
        каждом `dt`. -->
-  <dl class="px-6">
-    <div class="flex h-10 items-center gap-4 max-md:h-8">
+  <dl class="px-6 group-data-[user=dealer]:pt-4">
+    <div class="flex h-10 items-center gap-4 max-md:h-8 max-md:group-data-[user=dealer]:h-10">
       <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n group-data-[user=dealer]:w-[179px] max-md:group-data-[user=dealer]:w-[168px]">В заказе</dt>
       <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-count></dd>
     </div>
-    <div class="flex h-10 items-center gap-4 max-md:h-8">
+    <div class="flex h-10 items-center gap-4 max-md:h-8 max-md:group-data-[user=dealer]:h-10">
       <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n group-data-[user=dealer]:w-[179px] max-md:group-data-[user=dealer]:w-[168px]">Сумма заказа</dt>
       <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-subtotal></dd>
     </div>
-    <div class="flex h-10 items-center gap-4 max-md:h-8">
+    <div class="flex h-10 items-center gap-4 max-md:h-8 max-md:group-data-[user=dealer]:h-10">
       <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n group-data-[user=dealer]:w-[179px] max-md:group-data-[user=dealer]:w-[168px]">Скидка</dt>
       <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-discount></dd>
     </div>
     <!-- dealer only (953:149344): the payment method, which for the customer
          is not part of this panel at all -->
-    <div class="hidden h-10 items-center gap-4 max-md:h-8 group-data-[user=dealer]:flex">
+    <div class="hidden h-10 items-center gap-4 max-md:h-8 max-md:group-data-[user=dealer]:h-10 group-data-[user=dealer]:flex">
       <dt class="w-[134px] shrink-0 text-body-n text-text-primary max-md:w-[150px] max-md:text-m-body-n group-data-[user=dealer]:w-[179px] max-md:group-data-[user=dealer]:w-[168px]">Способ оплаты</dt>
       <!-- the value is a dotted link at both widths (953:149347 carries the
            «Desktop/Link M dotted» text style; the 360 panel draws the same) -->
@@ -74,7 +79,8 @@
            её кегль, пока строка не влезет в ячейку (решение клиента 15.09) -->
       <dd class="flex min-w-0 flex-1 items-baseline gap-2 overflow-hidden" data-fit-row>
         <span class="shrink-0 text-body-n text-text-primary max-md:text-m-body-n group-data-[user=dealer]:hidden">от</span>
-        <span class="whitespace-nowrap text-h3 leading-7 text-text-primary" data-summary-total data-fit-text></span>
+        <!-- на 360 — Mobile/H2 22/26 (2029:158389, у дилера 2238:157072) -->
+        <span class="whitespace-nowrap text-h3 leading-7 text-text-primary max-md:text-m-h2 max-md:leading-6.5" data-summary-total data-fit-text></span>
       </dd>
     </div>
   </dl>
@@ -82,7 +88,9 @@
   <!-- dealer only (953:149377): the delivery mode, split off the table above
        by its own divider and fed by the «Доставка» card's segment control -->
   <div class="hidden px-6 pt-2 group-data-[user=dealer]:block">
-    <div class="flex h-10 items-center justify-between gap-4 border-t border-divider-light pt-2 max-md:h-8">
+    <!-- 1440: строка 32 под линией с полем 8; 360 (2029:158182): поле 4 и
+         строка 40, заметка сразу под ней. -->
+    <div class="flex h-10 items-center justify-between gap-4 border-t border-divider-light pt-2 max-md:h-11 max-md:pt-1">
       <span class="text-body-n text-text-primary max-md:text-m-body-n">Доставка</span>
       <span class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-delivery>Самовывоз</span>
     </div>
@@ -92,7 +100,7 @@
        straight under the «Доставка» row (953:149377 puts the two in one 80px
        frame with no gap) and 16 above the button. Hence `pt-1` where the
        customer panel opens a full 24 before its button. -->
-  <div class="flex flex-col gap-4 px-6 pb-6 pt-4 max-md:gap-3 max-md:pb-4 max-md:pt-3 group-data-[user=dealer]:pt-1 max-md:group-data-[user=dealer]:pt-1">
+  <div class="flex flex-col gap-4 px-6 pb-6 pt-4 max-md:gap-3 max-md:pb-4 max-md:pt-3 group-data-[user=dealer]:pt-1 max-md:group-data-[user=dealer]:pt-0">
     <!-- Кнопка есть у обоих и на всех ширинах. Дилерский инстанс на 360
          (2225:202292) рисует только половину `Top`, без неё, и бар снизу был
          поэтому всегда включён; клиент 16.09 попросил, чтобы бар откреплялся
