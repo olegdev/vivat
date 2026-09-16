@@ -190,12 +190,19 @@ function enterContactPageMode(anchor, detail) {
     ?.querySelector("[data-brand-only]")
     ?.closest("div.flex.items-center")
     ?.classList.add("hidden");
-  swap(q("[data-panel-head]"), ["pl-10", "pr-6", "pt-6", "pb-4"], ["px-6", "py-6"]);
+  // Шапка `header` 2225:105841: поля 24, снизу 16 (stackPaddingBottom), линия
+  // под ней. На 360 (2225:107435) — 16/16 по вертикали, слева 24, справа 16,
+  // и линии нет: у шапки независимые толщины обводки, и все они нулевые.
+  swap(q("[data-panel-head]"), ["pl-10", "pr-6"], ["px-6", "max-md:border-0", "max-md:py-4", "max-md:pr-4"]);
 
   q("[data-store-list]")?.classList.add("hidden");
-  swap(q("[data-store-detail]"), ["hidden"], ["flex"]);
-  // Слот сегментов под шапкой панели — он существует только на 360.
-  q("[data-store-audience]")?.classList.remove("hidden");
+  // Карточка адреса на 360 — dealer-card 2225:107632: обводки не крашены,
+  // так что и над ней линии нет, а её padV 12 вместе с padV 12 внутреннего
+  // контейнера дают 24 до названия.
+  swap(q("[data-store-detail]"), ["hidden"], ["flex", "max-md:pt-3"]);
+  // Слот сегментов под шапкой панели — он существует только на 360. В кадре
+  // (2225:107318) ряд ровно 44: без своих вертикальных полей и без линий.
+  swap(q("[data-store-audience]"), ["hidden", "py-2"], []);
 
   // На 360 (вариант 2225:106894, 360×902) блок перестаёт быть «панель слева,
   // карта справа»: полотно 360 сверху, панель во всю ширину под ним, и панель
@@ -445,6 +452,9 @@ export function renderStoresMap(anchor, opts) {
       head?.classList.toggle("max-md:flex-row", on);
       head?.classList.toggle("max-md:items-center", on);
       head?.classList.toggle("max-md:gap-1", on);
+      // Шапка `shop-step-2` (1859:336659) отделена от карточки чертой 1px
+      // `#e7e7e7` снизу — как и в списке городов; у списка магазинов черты нет.
+      head?.classList.toggle("max-md:border-0", !on);
       detailOpen = on;
       if (!snap) return;
       if (on) sheetApi?.peak?.(0.058);
