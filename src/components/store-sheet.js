@@ -26,7 +26,13 @@ export function initStoreSheet({
   let handle = null;
 
   const trackH = () => track.getBoundingClientRect().height;
-  const heightFor = (i) => Math.round(trackH() * (1 - SNAPS[i]));
+  // Поднятый лист не должен наезжать на крестик над картой (`close-panel`
+  // 360×40, кнопка 28 на 8 от верха): доли считаны от кадра 800, а на низком
+  // экране те же 5,8 % — меньше самой кнопки. Полоса карты не уже 42 —
+  // столько оставляет кадр карточки магазина (2397:152957).
+  const MIN_MAP = 42;
+  const clamp = (h) => Math.min(h, Math.round(trackH()) - MIN_MAP);
+  const heightFor = (i) => clamp(Math.round(trackH() * (1 - SNAPS[i])));
 
   const closeBand = raiseClose ? track.querySelector("[data-map-close]") : null;
   const setBand = (on) => {
@@ -94,7 +100,7 @@ export function initStoreSheet({
 
   function peak(fraction) {
     sheet.style.transition = "height 220ms cubic-bezier(0.22, 0.61, 0.36, 1)";
-    const h = Math.round(trackH() * (1 - fraction));
+    const h = clamp(Math.round(trackH() * (1 - fraction)));
     sheet.style.height = `${h}px`;
     sheet.dataset.snap = "expanded";
     setBand(true);
