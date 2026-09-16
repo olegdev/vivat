@@ -17,22 +17,33 @@
      вместе с самим меню, потому что это и есть меню на 360. У Контактов меню
      нет, значит нет и шторки: страница подключает только эту шапку. -->
 <!-- Ниже `xl`, а не только `md`: на планшете колонка меню 298 съедает
-     половину ширины, поэтому там работает та же замена — «Для бизнеса» с
-     пилюлей текущей страницы, открывающая раздел листом. -->
-<div class="group/fbh flex flex-col gap-1.5 xl:hidden" data-for-business-header>
-  <div class="px-4 pb-2 pt-3">
+     половину ширины, поэтому там работает та же замена — пилюля текущей
+     страницы, открывающая раздел листом. Заголовок же на планшете остаётся
+     десктопный (`title-block` 2507:181828 в 768-кадре — тот же H1 с полями
+     24), так что своя строка «Для бизнеса» здесь живёт только ниже `md`; без
+     этого на 768 заголовок печатался дважды. Блок, у которого кроме заголовка
+     ничего нет (Контакты), на планшете не показывается вовсе. Ряд пилюли на
+     768 — `Contents` 2507:181787: поля 24, сверху 16, снизу 12, подпись
+     16/24. Имени страницы отдельной строкой в 768-кадре нет — его несёт
+     пилюля, поэтому H2 правой колонки на страницах скрыт ниже `xl`, а не
+     только ниже `md`. -->
+<div
+  class="group/fbh flex flex-col gap-1.5 xl:hidden md:data-[fbh=title-only]:hidden"
+  data-for-business-header
+>
+  <div class="px-4 pb-2 pt-3 md:hidden">
     <p class="text-m-h2 text-text-primary" data-fbh-title>Для бизнеса</p>
   </div>
 
   <!-- Селектор есть только там, где есть меню: на Контактах он скрыт. -->
-  <div class="px-4 py-1 group-data-[fbh=title-only]/fbh:hidden" data-fbh-select>
+  <div class="px-4 py-1 group-data-[fbh=title-only]/fbh:hidden md:px-6 md:pb-3 md:pt-4" data-fbh-select>
     <button
       type="button"
       class="flex h-11 w-full items-center gap-1 rounded-pill bg-components-subtle px-4"
       data-menu-sheet-open
       aria-haspopup="dialog"
     >
-      <span class="flex-1 text-left text-m-body-n text-text-primary" data-fbh-current></span>
+      <span class="flex-1 text-left text-m-body-n text-text-primary md:text-body-n" data-fbh-current></span>
       <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 shrink-0" />
     </button>
   </div>

@@ -115,7 +115,14 @@
           </div>
         </div>
         <div class="relative px-10 pt-6 max-md:px-4 max-md:pt-3">
-          <div class="overflow-hidden" data-viewport>
+          <!-- Ниже md рельс листается пальцем, как общие рельсы
+               (partials/carousel-section.html): -mx-4/px-4 снимает обрезку по
+               полю страницы, и сосед выглядывает справа на 16 (2225:126361:
+               снимки 320 с зазором 8 в 360 при поле 16). -->
+          <div
+            class="overflow-hidden max-md:-mx-4 max-md:scroll-rail max-md:snap-x max-md:snap-mandatory max-md:overflow-x-auto max-md:scroll-px-4 max-md:px-4"
+            data-viewport
+          >
             <div class="flex gap-6 transition-transform duration-300 max-md:gap-2" data-track></div>
           </div>
           <!-- carousel-controls 48×48 сидят ВЕРХОМ на краях кадра, а не внутри
@@ -160,8 +167,11 @@
          Один <template> на два места: на 1440 блок стоит над картой (фрейм
          `city` 1462:56195), на 360 — внутри панели карты под «Москвой».
          В Blade это тот же @include, вставленный дважды. -->
+    <!-- В рознице под сегментами на 360 идёт список магазинов со своей
+         верхней линией — от кнопок её отбивают 16 (по указанию клиента 16.09;
+         в опте карточка адреса линии не несёт, и отбивки нет). -->
     <template data-audience-segments>
-      <div class="flex gap-2">
+      <div class="flex gap-2 group-data-[audience=retail]/page:max-md:pb-4">
         <button
           type="button"
           class="h-11 w-[157px] rounded-pill bg-components-subtle text-button-m text-text-primary transition-colors group-data-[audience=opt]/page:bg-components-active-muted group-data-[audience=opt]/page:text-text-inverse-primary max-md:w-40 max-md:text-m-button-m"
@@ -195,10 +205,11 @@
       </div>
     </template>
 
-    <!-- один снимок склада (future @foreach($photos as $p)) -->
+    <!-- один снимок склада (future @foreach($photos as $p)). Без скругления:
+         ни у 752:69939 (438×327), ни у 1806:238750 (320×238) радиуса нет. -->
     <template data-warehouse-photo>
       <img
-        class="h-[327px] w-[438px] shrink-0 rounded-[var(--radius-l)] object-cover max-md:h-[238px] max-md:w-[320px]"
+        class="h-[327px] w-[438px] shrink-0 snap-start object-cover max-md:h-[238px] max-md:w-[320px]"
         alt=""
         data-photo
       />

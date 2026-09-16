@@ -48,6 +48,51 @@ export function fillCityRows(box, root = document) {
   );
 }
 
+// Тот же лист — для чужого списка. Контакты ниже `md` выбирают область и
+// город розницы (или город опта) не выпадашкой у подписи, а этим оверлеем —
+// так решил клиент 16.09 (кадр 2082:144136 — лист `type=city` над картой).
+// Строки — тот же <template>, но без `data-city-pick`: выбор здесь не трогает
+// город сайта, а уходит в `onPick` вызывающей страницы. Подпись в шапке листа
+// на время показа — текущее значение селектора, после закрытия возвращается
+// город сайта.
+export function openPickSheet({ label, options, current, onPick }, root = document) {
+  const sheet = root.querySelector("[data-city-sheet]");
+  const list = root.querySelector("[data-city-sheet-list]");
+  const tpl = root.querySelector("[data-city-row]");
+  if (!sheet || !list || !tpl) return false;
+  const title = sheet.querySelector("[data-city-label]");
+  if (title) title.textContent = label;
+  list.replaceChildren(
+    ...options
+      .filter((o) => o !== current)
+      .map((o) => {
+        const row = tpl.content.firstElementChild.cloneNode(true);
+        row.textContent = o;
+        delete row.dataset.cityPick;
+        row.dataset.pickOption = o;
+        return row;
+      })
+  );
+  const done = () => {
+    sheet.classList.remove("is-open");
+    setScrollLock("city-select", false);
+    paint(getCity());
+    list.removeEventListener("click", onRow);
+  };
+  const onRow = (e) => {
+    const row = e.target.closest("[data-pick-option]");
+    if (!row) return;
+    done();
+    onPick(row.dataset.pickOption);
+  };
+  list.addEventListener("click", onRow);
+  // Закрытие мимо строки (подложка, стрелка) обрабатывает initCitySelect —
+  // ему достаточно снять `.is-open`; подпись вернёт следующий paint().
+  sheet.classList.add("is-open");
+  setScrollLock("city-select", true);
+  return true;
+}
+
 export function initCitySelect(root = document) {
   const sheet = root.querySelector("[data-city-sheet]");
   const sheetList = root.querySelector("[data-city-sheet-list]");
@@ -72,13 +117,18 @@ export function initCitySelect(root = document) {
     );
   };
 
-  const closeAll = () => {
-    sheet?.classList.remove("is-open");
-    setScrollLock("city-select", false);
+  const closeMenus = () => {
     root.querySelectorAll("[data-city-menu]").forEach((m) => m.classList.add("hidden"));
     root
       .querySelectorAll("[data-city-open][aria-expanded='true']")
       .forEach((t) => t.setAttribute("aria-expanded", "false"));
+  };
+  const closeAll = () => {
+    sheet?.classList.remove("is-open");
+    setScrollLock("city-select", false);
+    // после чужого списка (openPickSheet) в шапке листа могла остаться его подпись
+    paint(getCity());
+    closeMenus();
   };
 
   // Ручка листа должна тянуться, иначе она врёт: у листа нет второй высоты —
@@ -158,8 +208,10 @@ export function initCitySelect(root = document) {
       open(trigger);
       return;
     }
-    // Клик мимо закрывает выпадашку; лист закрывается по своей подложке.
-    if (!e.target.closest("[data-city-menu]")) closeAll();
+    // Клик мимо закрывает выпадашку; лист закрывается по своей подложке — и
+    // только по ней: этот же клик мог его только что открыть (селектор города
+    // на Контактах через openPickSheet), и закрывать его здесь нельзя.
+    if (!e.target.closest("[data-city-menu]")) closeMenus();
   });
 
   // Клик мимо списка закрывает лист; стрелка назад во фрейме есть, и здесь ей

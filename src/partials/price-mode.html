@@ -51,8 +51,12 @@
      `is-open`. -->
 <div data-price-sheet class="modal-scrim md:hidden">
   <div class="absolute inset-0" data-price-close></div>
+  <!-- Лист фиксированной высоты — половина экрана (left-side 2225:164071 и
+       2225:165270: 400 из 800, stackPrimarySizing FIXED в обоих состояниях),
+       а не по содержимому: в первом состоянии под списком остаётся белое поле,
+       во втором список тянется, а «Применить» прижата к низу. -->
   <div
-    class="modal-panel relative flex flex-col"
+    class="modal-panel relative flex h-[50dvh] flex-col"
     role="dialog"
     aria-modal="true"
     aria-label="Наценка"
@@ -68,7 +72,7 @@
         <img src="../../assets/header/icon-close-s.svg" alt="" class="size-6" />
       </button>
     </div>
-    <div class="flex min-h-0 flex-col gap-1.5 overflow-y-auto px-4 py-4" data-price-list></div>
+    <div class="flex min-h-0 flex-1 flex-col gap-1.5 overflow-y-auto px-4 py-4" data-price-list></div>
     <!-- modal-button-container 2225:165727 -->
     <div class="hidden shrink-0 px-4 py-2" data-price-apply-row>
       <button type="button" class="btn btn-m btn-primary w-full" data-price-apply>

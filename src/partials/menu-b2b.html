@@ -49,14 +49,15 @@
      2209:212698 — 20 против 22 и 24 у мастеров), не 16/22 и 16/24, как на 1440.
 
      Шапка шторки (`header` 2209:212434, 128) — ручка 20, зазор 4, строка
-     заголовка 48 (4 + 40 + 4), зазор 4, поле 44, снизу 8 и линия 1px #e7e7e7
-     внутренней обводкой; список начинается сразу под ней, без отбивки. -->
+     заголовка 48 (4 + 40 + 4), зазор 4, поле 44, снизу 8, из которых последний
+     пиксель — линия #e7e7e7 внутренней обводкой (отсюда `pb-[7px]` + `border-b`);
+     список начинается сразу под ней, без отбивки. -->
 <div class="modal-scrim xl:hidden" data-menu-sheet>
   <div class="modal-panel max-h-[calc(100%-2.5rem)]" data-menu-sheet-panel role="dialog" aria-label="Разделы для дилеров">
     <!-- Ручка и строка заголовка — зона перетаскивания: потянуть вниз и
          отпустить закрывает шторку (menu-b2b.js). Список ниже прокручивается
          сам и жест не перехватывает. -->
-    <div class="border-b border-components-light pb-2">
+    <div class="border-b border-components-light pb-[7px]">
     <div class="touch-none select-none" data-menu-sheet-grab>
     <div class="flex h-5 cursor-grab items-center justify-center pt-2">
       <span class="h-1 w-8 rounded-pill bg-surface-raised"></span>

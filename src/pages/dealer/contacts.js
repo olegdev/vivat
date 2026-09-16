@@ -8,7 +8,7 @@ import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initModals } from "../../components/modals.js";
 import { initPhoneMask } from "../../components/phone-mask.js";
 import { initConsentGate } from "../../components/consent-gate.js";
-import { initCitySelect } from "../../components/city-select.js";
+import { initCitySelect, isMobileCity, openPickSheet } from "../../components/city-select.js";
 import { renderStoresMap, setBases } from "../../components/stores-map.js";
 import { initCarousel } from "../../components/carousel.js";
 import { HOME, ICON } from "../../data/asset-base.js";
@@ -115,6 +115,10 @@ function closeMenu() {
 }
 
 function openMenu(options, current, onPick) {
+  // Ниже `md` выпадашке у подписи не место — там список открывается тем же
+  // полноэкранным листом, что и «Москва» в шапке (решение клиента 16.09,
+  // кадр 2082:144136); подпись листа — текущее значение селектора.
+  if (isMobileCity() && openPickSheet({ label: current, options, current, onPick })) return;
   menu.replaceChildren(
     ...options.map((label) => {
       const item = optionTpl.content.firstElementChild.cloneNode(true);
