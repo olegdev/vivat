@@ -54,5 +54,6 @@ Bold при Thin в кадре (2029:156849/156850) — залитые круж�
 | `header/arrow-right-bold-dark.svg` | 962:37191 | arrow-right 24 Bold dark | кнопки btn-m secondary: «В раздел» 2432:126398, «Все акции» 2432:126380, заголовки 1440 |
 | `header/arrow-right-bold-light.svg` | 585:22188 | arrow-right 24 Bold light | кнопки btn-m primary: «Личный кабинет» 1440, «Оформить заказ» 953:59156 |
 | `header/arrow-right-thin-light.svg` | 2214:190534 | arrow-right 24 Thin light | кнопка героя на 360 2432:126315 |
+| `header/chevron-down-light.svg` | 51:778 | chevron-down 24 Bold light | прайс-лист в дилерской полоске 1440 и 360 |
 | `header/chevron-down-thin.svg` | 2214:190639 | chevron-down 24 Thin secondary | сортировка 360; fig-svg |
 | `header/icon-more-16.svg` | 979:49801 | more 16 secondary | чип «Больше» на всех ширинах; fig-svg |

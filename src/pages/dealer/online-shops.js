@@ -98,11 +98,12 @@ function applyFormat(id) {
 
   document.querySelector("[data-downloads]").replaceChildren(
     ...DOWNLOADS.map((label) => {
-      // «Link M dotted» кораллом (1167:74245/74246): пунктир, не сплошная.
+      // Ссылкой не оформлены: инстансы 1167:74245/74246 переопределяют только
+      // заливку на #292929, стиль — Desktop/BodyN без подчёркивания. Раньше
+      // здесь стоял коралловый пунктир, которого в кадре нет.
       const a = document.createElement("a");
       a.href = "#";
-      a.className =
-        "link-dotted w-fit text-body-n text-text-link-highlighted max-md:text-m-body-n";
+      a.className = "w-fit text-body-n text-text-primary max-md:text-m-body-n";
       a.textContent = label.replace("JSON", up);
       return a;
     })
