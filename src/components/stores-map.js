@@ -344,6 +344,9 @@ export function renderStoresMap(anchor, opts) {
     description,
     selectable = false,
     onSelect,
+    // Ниже `md` на шаге выбора: открыли карточку магазина (store) / вернулись
+    // к списку (null). Выбором это не считается — выбор делает кнопка бара.
+    onView,
     contactPage = false,
     detail,
     center = [55.7558, 37.6173], // 2.1 takes [lat, lon]
@@ -485,11 +488,19 @@ export function renderStoresMap(anchor, opts) {
       else sheetApi?.expand?.();
     };
 
-    backBtn?.addEventListener("click", () => show(false));
+    // Та же стрелка возвращает и из списка городов — там лист трогать нельзя.
+    backBtn?.addEventListener("click", () => {
+      if (!detailOpen) return;
+      show(false);
+      onView?.(null);
+    });
     // Крестик над картой сворачивает лист целиком — и карточку магазина вместе
     // с ним, иначе она осталась бы «открытой» под свёрнутой панелью.
     sheetApi?.closeBtn?.addEventListener("click", () => {
-      if (detailOpen) show(false, null, { snap: false });
+      if (detailOpen) {
+        show(false, null, { snap: false });
+        onView?.(null);
+      }
       sheetApi.collapse?.();
     });
     return show;
@@ -620,6 +631,11 @@ export function renderStoresMap(anchor, opts) {
       // The sheet's card is the radio-and-ring variant; the desktop step-1 list
       // reuses the plain reading card, so both only differ below `md`.
       node.querySelector("[data-store-radio]")?.classList.add("max-md:flex");
+      // Карточка листа — `device=mobile, type=order` (1859:333354): 102 —
+      // поля 12, шапка 32, зазор 6, адрес в две строки 40; метро в ней нет
+      // (у читающей `type=ordinary` 1859:333343 — есть, и зазор 4).
+      node.querySelector("[data-store-metro]")?.classList.add("max-md:hidden");
+      node.querySelector("[data-store-name]")?.parentElement?.parentElement?.classList.add("max-md:gap-1.5");
       // Ниже `md` шеврон не прячется, а поворачивается вправо и становится
       // входом в карточку магазина — отдельный шаг визарда (2397:152957).
       // На 1440 и 768 он раскрывает карточку, как на читающих страницах
@@ -674,10 +690,15 @@ export function renderStoresMap(anchor, opts) {
       const expanded = selectable ? card.dataset.store === expandedId && !mobileSelect : picked;
       card.setAttribute("aria-expanded", String(expanded));
       card.querySelector("[data-details]").hidden = !expanded;
+      // radiobutton 759:79319: обычная — круг #f3f3f3 в обводке #e7e7e7,
+      // нажатая (759:79329) — белый круг в обводке #cbcbcb с точкой 11 #292929.
       const dot = card.querySelector("[data-store-radio] > span");
       if (dot) {
-        dot.classList.toggle("border-components-strong", picked);
-        dot.classList.toggle("border-8", picked);
+        dot.classList.toggle("border-components-light", !picked);
+        dot.classList.toggle("bg-components-subtle", !picked);
+        dot.classList.toggle("border-border-default", picked);
+        dot.classList.toggle("bg-surface-inverted", picked);
+        dot.firstElementChild?.classList.toggle("hidden", !picked);
       }
       // Кнопка карточки меняет и подпись, и цвет (946:134818 → 953:55451).
       const pick = card.querySelector("[data-store-pick]");
@@ -913,6 +934,7 @@ export function renderStoresMap(anchor, opts) {
     closeSubPanel() {
       if (detailOpen) {
         showDetailStep?.(false);
+        onView?.(null);
         return true;
       }
       if (cityOpen) {
@@ -952,10 +974,10 @@ export function renderStoresMap(anchor, opts) {
           e.stopPropagation();
           const card = chev.closest("[data-store]");
           const item = items.find((x) => x.id === card?.dataset.store) || items[0];
-          // Открытая карточка — это уже выбранный магазин: в 2397:152957 кнопка
-          // «Выберите дилера» активна, а в списке (2059:169141) — disabled.
-          // Карта под листом остаётся на месте, лететь к метке незачем.
-          select(item.id);
+          // Открытая карточка — ещё не выбор: радио в списке не меняется, а
+          // кнопка бара («Выберите дилера», в 2397:152957 активная) выбирает
+          // именно этот магазин — страница делает это через onView.
+          onView?.(item);
           fillDetail(anchor, {
             // имя печатается в шапке листа, в теле его гасим пустой строкой
             name: "",

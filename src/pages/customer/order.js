@@ -147,6 +147,7 @@ page.querySelectorAll("[data-order-submit]").forEach((b) =>
 
 // ---- шаг 1: pick a dealer ---------------------------------------------------
 let picked = null;
+let viewing = null; // магазин, чья карточка открыта в листе (360)
 const pickDone = page.querySelector("[data-pick-done]");
 const pickedLabel = page.querySelector("[data-picked-store]");
 
@@ -161,13 +162,20 @@ const map = renderStoresMap(page.querySelector("[data-step-section='1']"), {
     "Пожалуйста, выберите магазин нашего партнера, в который вам удобнее сделать заказ. " +
     "Менеджер партнера свяжется с вами для подтверждения заказа, консультации или корректировки.",
   selectable: true,
+  // Ниже `md` кнопка бара активна и у выбранного магазина, и пока открыта
+  // карточка (2397:152957): нажатие выбирает показанный магазин и идёт дальше.
+  // Само открытие карточки выбором не считается — радио в списке не меняется.
+  onView(store) {
+    viewing = store;
+    if (pickDone) pickDone.disabled = !(picked || viewing);
+  },
   onSelect(store) {
     picked = store;
     if (pickDone) {
       // Подпись не меняется: и у пустого выбора (2059:169141), и у выбранного
       // магазина (2397:152957) кнопка читается «Выберите дилера» — меняется
       // только её состояние.
-      pickDone.disabled = !store;
+      pickDone.disabled = !(store || viewing);
     }
     if (pickedLabel && store) pickedLabel.textContent = `${store.name} ${store.address}`;
     // Desktop has no "далее" control — the pick itself opens шаг 2, which is
@@ -189,7 +197,10 @@ const sheet = initStoreSheet({
 // отдельный шаг визарда (2397:152957).
 map.attachSheet(sheet);
 
-pickDone?.addEventListener("click", () => picked && setStep(2));
+pickDone?.addEventListener("click", () => {
+  if (viewing && viewing !== picked) map.select(viewing.id);
+  if (picked) setStep(2);
+});
 page.querySelector("[data-change-store]")?.addEventListener("click", () => setStep(1));
 
 // ---- шаг 2 → «Ваш заказ отправлен» ------------------------------------------

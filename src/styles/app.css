@@ -636,8 +636,10 @@
   /* Все три состояния ordinary-карточки (default/hover/pressed 641:19003,
      641:19005, 641:35996) залиты одинаковым #ffffff — подсветки фоном нет
      ни на ховере, ни на раскрытой. */
+  /* Ниже `md` поля 12/12 у обоих мобильных вариантов (general-container
+     1859:333344 / 1859:333355), на 1440 и 768 — 16 сверху, 12 снизу. */
   .store-card {
-    @apply flex w-full flex-col border-b border-divider-light px-6 pb-3 pt-4 max-xl:px-4 max-md:px-4;
+    @apply flex w-full flex-col border-b border-divider-light px-6 pb-3 pt-4 max-xl:px-4 max-md:px-4 max-md:pt-3;
     @apply text-left transition-colors;
   }
 

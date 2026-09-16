@@ -94,9 +94,11 @@
           <!-- Ряд 40: текст 24 с полями 8 (title 288×24 @40,8 в header 40).
                Двухстрочное имя растит ряд, поля остаются — min-h + py, не h. -->
           <span class="hidden min-h-10 flex-1 items-center py-2 text-h3 text-text-primary max-md:text-m-h3" data-panel-title></span>
+          <!-- Ниже `md` город в шапке листа — просто H3 без подчёркивания
+               (text-action в 2082:144136 и 2059:169143 — Mobile/H3). -->
           <button type="button" class="flex h-8 items-center gap-1" data-city-toggle>
             <span
-              class="text-h3 text-text-primary underline decoration-dotted decoration-1 underline-offset-4 max-md:text-m-h3"
+              class="text-h3 text-text-primary underline decoration-dotted decoration-1 underline-offset-4 max-md:text-m-h3 max-md:no-underline"
               data-panel-city
               >Москва</span
             >
@@ -306,17 +308,25 @@
   <template data-store-card>
     <button type="button" data-store aria-expanded="false" class="group store-card">
       <div class="flex w-full flex-col gap-1">
-        <div class="flex w-full items-start justify-between gap-2">
+        <!-- Ниже `md` шапка карточки — ряд 32: радио и шеврон на 4, заголовок
+             20 по центру (header 1859:333357 / 1859:333346). -->
+        <div class="flex w-full items-start justify-between gap-2 max-md:items-center max-md:py-1">
           <!-- The sheet's cards carry a radio (2059:169141); the reading list
                and the desktop step-1 list do not — select mode un-hides it. -->
-          <span data-store-radio class="mr-2 hidden size-6 shrink-0 items-center justify-center">
-            <span class="size-6 rounded-full border border-border-default bg-surface-inverted"></span>
+          <!-- radiobutton 759:79319 / нажатая 759:79329; до заголовка 12
+               (header 1859:333357 gap=12), состояние красит applySelection. -->
+          <span data-store-radio class="mr-1 hidden size-6 shrink-0 items-center justify-center">
+            <span class="flex size-6 items-center justify-center rounded-full border border-components-light bg-components-subtle">
+              <span class="hidden size-[11px] rounded-full bg-components-strong"></span>
+            </span>
           </span>
-          <p data-store-name class="flex-1 pr-6 text-h5 text-text-primary max-md:text-m-h4"></p>
+          <!-- Ниже `md` заголовок Mobile/H5 14/20 и адрес Mobile/BodyN 14/20 у
+               обоих мобильных вариантов карточки (1859:333347 / 1859:333358). -->
+          <p data-store-name class="flex-1 pr-6 text-h5 text-text-primary max-md:pr-1 max-md:text-m-h5"></p>
           <img src="../../assets/header/chevron-down-dark.svg" alt="" data-chevron class="size-6 shrink-0" />
         </div>
         <div class="flex flex-col gap-1.5">
-          <p data-store-address class="text-body-n text-text-primary"></p>
+          <p data-store-address class="text-body-n text-text-primary max-md:text-m-body-n"></p>
           <div data-store-metro class="flex flex-wrap gap-2 empty:hidden"></div>
         </div>
       </div>
@@ -403,7 +413,8 @@
   <template data-metro-chip>
     <span class="flex items-center gap-0.5">
       <img src="../../assets/home/icon-metro.svg" alt="" class="size-4 shrink-0" />
-      <span data-metro-name class="text-body-s text-text-secondary"></span>
+      <!-- на 360 — metro 1859:333705: строка 16, Mobile/BodyS -->
+      <span data-metro-name class="text-body-s text-text-secondary max-md:text-m-body-s"></span>
     </span>
   </template>
 
