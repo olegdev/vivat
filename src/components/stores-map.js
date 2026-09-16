@@ -663,7 +663,14 @@ export function renderStoresMap(anchor, opts) {
       }
     }
     for (const [id, entry] of marks) {
-      entry.placemark.properties.set("selected", id === selectedId);
+      const on = id === selectedId;
+      entry.placemark.properties.set("selected", on);
+      // Всплывашка живёт внутри слоя метки, а слои Яндекс раскладывает по
+      // `zIndex` метки — без него подсказку выбранной точки перекрывали
+      // соседние булавки, лежащие в DOM позже. Выбранная метка поднимается
+      // над всеми, снятая возвращает значение по умолчанию.
+      if (on) entry.placemark.options.set("zIndex", 1000);
+      else entry.placemark.options.unset("zIndex");
     }
   }
 
@@ -892,6 +899,10 @@ export function renderStoresMap(anchor, opts) {
           e.stopPropagation();
           const card = chev.closest("[data-store]");
           const item = items.find((x) => x.id === card?.dataset.store) || items[0];
+          // Открытая карточка — это уже выбранный магазин: в 2397:152957 кнопка
+          // «Выберите дилера» активна, а в списке (2059:169141) — disabled.
+          // Карта под листом остаётся на месте, лететь к метке незачем.
+          select(item.id);
           fillDetail(anchor, {
             // имя печатается в шапке листа, в теле его гасим пустой строкой
             name: "",
