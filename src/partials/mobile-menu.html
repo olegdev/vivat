@@ -4,7 +4,7 @@
      behaviour live in src/components/mobile-menu.js. Below md only. -->
 <div data-mm-overlay class="fixed inset-0 z-50 hidden xl:hidden">
   <div data-mm-scrim class="absolute inset-0 bg-overlay-strong"></div>
-  <div data-mm-panel class="absolute inset-0 flex flex-col bg-bg-page" role="dialog" aria-modal="true" aria-label="Меню">
+  <div data-mm-panel tabindex="-1" class="absolute inset-0 flex flex-col bg-bg-page" role="dialog" aria-modal="true" aria-label="Меню">
     <div class="flex h-12 shrink-0 flex-col justify-center border-b border-divider-light bg-surface-inverted px-4 pt-1 md:h-16 md:pt-0">
       <div class="flex h-10 items-center">
         <button type="button" data-mm-back class="hidden size-10 shrink-0 items-center" aria-label="Назад">

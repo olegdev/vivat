@@ -88,7 +88,10 @@ export function initModals() {
     opener = outer ?? null;
     panel.classList.add("is-open");
     setScrollLock("modal", true);
-    panel.querySelector("input, textarea, button")?.focus();
+    // Фокус — на карточку (tabindex=-1), а не на первое поле или кнопку:
+    // элемент, сфокусированный скриптом, в Safari и Firefox носит кольцо
+    // браузера, а на 360 фокус в поле ещё и поднимает клавиатуру.
+    panel.querySelector("[data-modal-panel]")?.focus();
   }
 
   document.addEventListener("click", (e) => {

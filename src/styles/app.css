@@ -370,6 +370,25 @@
     color: var(--color-text-primary);
     -webkit-font-smoothing: antialiased;
   }
+  /* Фокусное кольцо — одно на весь сайт, дизайновый `focus-ring` (1209:89930:
+     1px #141414 на 3px от коробки), а не синее кольцо браузера. Рисуется
+     только на `:focus-visible`, то есть с клавиатуры; фокус, поставленный
+     тапом или скриптом, кольца не даёт. Раньше кольцо в бургер-меню гасили
+     через `outline-color: transparent` — Safari и Firefox цвет у
+     `outline-style: auto` игнорируют и рисовали системное синее на «×»
+     (жалоба тестировщика 16.09). Контейнеры с `tabindex="-1"` (панель меню,
+     карточки окон) получают фокус только от скрипта — им кольцо не нужно.
+     `.btn` и поля формы задают своё в слое components и перекрывают это. */
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+  :focus-visible {
+    outline: 1px solid var(--color-border-ring);
+    outline-offset: 3px;
+  }
+  [tabindex="-1"]:focus-visible {
+    outline: none;
+  }
   /* `type="search"` is the right semantics for the header and overlay fields,
      but WebKit draws its own clear glyph inside them — next to the designed one
      (Figma `clear` 585:54730) that was a second, blue ×. Drop the UA control;
@@ -1130,15 +1149,6 @@
   button.mobile-menu-item:hover {
     @apply bg-components-subtle-hover;
   }
-  /* No visible focus ring inside the menu, by design: opening the panel moves
-     focus programmatically, and the browser default drew a stray blue box on
-     the close button. The outline is kept but transparent, so focus order and
-     the trap are untouched — only the paint is gone. */
-  [data-mm-panel] :focus,
-  [data-mm-panel] :focus-visible {
-    outline-color: transparent;
-  }
-
   /* ==========================================================================
      Mobile (≤ md). The 360px frames (customer › body 1968:71493) reuse the
      desktop components at a smaller scale, so most of the mobile design is

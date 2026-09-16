@@ -131,7 +131,7 @@ export function initMobileMenu(anchor, { toggle, catalogToggle, rootSections = d
     listEl.replaceChildren(...view.items.map(buildRow));
     body.scrollTop = 0;
     // the row that triggered the drill-down is gone — keep focus inside
-    if (isOpen() && !panel.contains(document.activeElement)) focusables()[0]?.focus();
+    if (isOpen() && !panel.contains(document.activeElement)) panel.focus();
   }
 
   listEl.addEventListener("click", (e) => {
@@ -174,7 +174,11 @@ export function initMobileMenu(anchor, { toggle, catalogToggle, rootSections = d
     toggles.forEach((t) => t.setAttribute("aria-expanded", String(open)));
     catalogToggle?.setAttribute("aria-expanded", String(open));
     setScrollLock("mobile-menu", open);
-    if (open) focusables()[0]?.focus();
+    // Focus lands on the panel itself (tabindex=-1), not on the first control:
+    // a button focused by script wears the browser's focus ring in Safari and
+    // Firefox — the tester's blue box on «×». Tab from here reaches «Назад» / «×»
+    // in DOM order, and the trap below keeps it inside.
+    if (open) panel.focus();
     else lastFocused?.focus?.();
   }
 
