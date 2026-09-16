@@ -75,6 +75,12 @@ const FULLMAP_SNAPS = [0.495, 0.0985];
 // z-50, а не z-40 как у шага 1 заказа: во фреймах `ordinary-*` тапбара нет
 // вовсе — лист доходит до нижнего края экрана (402 + 410 = 812), — а тапбар
 // живёт на z-40, поэтому карта должна лечь поверх него.
+// Шапка листа (`header` 1821:331970, одна на все состояния набора): ручка 20,
+// зазор 4, город (text-action 32) и строка тумблера вплотную (gap 0), потом
+// content-поле 6 + зазор 4 до поиска, под ним 16 — те два последних несёт
+// само поле (`data-sheet-search`), шапка снизу без поля.
+const SHEET_HEAD = ["max-md:border-0", "max-md:px-4", "max-md:pb-0", "max-md:pt-1", "max-md:gap-0"];
+
 const FULLMAP = [
   // Заливку не трогаем вовсе: ниже `md` секция и так белая своим
   // `max-md:bg-bg-page` из разметки. Раньше этот класс стоял в списке
@@ -89,7 +95,7 @@ const FULLMAP = [
   ["[data-store-panel]", ["max-md:hidden"], ["max-md:absolute", "max-md:inset-x-0", "max-md:bottom-0", "max-md:z-20", "max-md:w-full", "max-md:rounded-t-xl", "max-md:shadow-dropdown"]],
   ["[data-sheet-grip]", [], ["max-md:flex"]],
   ["[data-sheet-search]", [], ["max-md:flex"]],
-  ["[data-panel-head]", [], ["max-md:border-0", "max-md:px-4", "max-md:pb-2", "max-md:pt-2"]],
+  ["[data-panel-head]", [], SHEET_HEAD],
 ];
 
 function setFullMap(anchor, on) {
@@ -163,7 +169,7 @@ function enterSelectMode(anchor) {
   q("[data-sheet-search]")?.classList.add("max-md:flex");
   // the city + toggle block keeps its content at both widths, only the desktop
   // panel's generous gutters shrink to the sheet's 16
-  swap(q("[data-panel-head]"), [], ["max-md:border-0", "max-md:px-4", "max-md:pb-2", "max-md:pt-2"]);
+  swap(q("[data-panel-head]"), [], SHEET_HEAD);
 }
 
 // Вариант `type=contact page` (1456:56787) — четвёртый режим того же блока.
@@ -200,6 +206,16 @@ function enterContactPageMode(anchor, detail) {
   // так что и над ней линии нет; её padV 12 вместе с padV 12 внутреннего
   // контейнера дают 24 до названия, а снизу 16 + 12 = 28 под кнопкой.
   swap(q("[data-store-detail]"), ["hidden"], ["flex", "max-md:pt-3", "max-md:pb-7"]);
+  // Кегли карточки на 360 — по её собственному кадру (description
+  // 2225:107635), а не по десктопному мастеру: название 22/26, адрес 14/20,
+  // метро 12/16. Только здесь: тот же блок на шаге выбора магазина в заказе
+  // печатает имя в шапке листа, а адрес — как в 2225:106827.
+  swap(q("[data-detail-name]"), ["max-md:text-h5"], ["max-md:text-m-h2"]);
+  swap(q("[data-detail-address]"), ["max-md:text-m-body-l"], ["max-md:text-m-body-n"]);
+  q("[data-detail-metro-name]")?.classList.add("max-md:text-m-body-s");
+  // и зазоры того же `description`: название → адрес 8 (не 16 колонки),
+  // адрес → метро 8 (не 6, как на 1440)
+  swap(q("[data-detail-address]")?.parentElement, ["max-md:gap-1.5"], ["max-md:-mt-2", "max-md:gap-2"]);
   // Слот сегментов под шапкой панели — он существует только на 360. В кадре
   // (2225:107318) ряд ровно 44: без своих вертикальных полей и без линий.
   swap(q("[data-store-audience]"), ["hidden", "py-2"], []);
@@ -290,10 +306,11 @@ function fillDetail(anchor, d) {
       return el;
     };
     labels.replaceChildren(
-      ...(d.hours?.rows || []).map(([l]) => span("text-body-n text-text-secondary max-md:text-body-s", l))
+      // строки графика на 360 — 14/20 (2225:107652), не 14/18, как телефоны
+      ...(d.hours?.rows || []).map(([l]) => span("text-body-n text-text-secondary max-md:text-m-body-n", l))
     );
     values.replaceChildren(
-      ...(d.hours?.rows || []).map(([, v]) => span("text-body-n text-text-primary max-md:text-body-s", v))
+      ...(d.hours?.rows || []).map(([, v]) => span("text-body-n text-text-primary max-md:text-m-body-n", v))
     );
   }
 }
