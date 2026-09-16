@@ -414,6 +414,9 @@ export function renderStoresMap(anchor, opts) {
       head?.classList.toggle("max-md:items-center", on);
       head?.classList.toggle("max-md:justify-between", on);
       head?.classList.toggle("max-md:border-0", !on);
+      // В списке городов (2082:144136) город в шапке — заголовок экрана, а не
+      // селектор: без пунктира. В списке магазинов (2032:158435) он селектор.
+      cityBtn.querySelector("[data-panel-city]")?.classList.toggle("underline", !on);
     };
 
     cityBtn.setAttribute("data-city-open", "");
