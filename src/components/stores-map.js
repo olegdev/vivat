@@ -197,9 +197,9 @@ function enterContactPageMode(anchor, detail) {
 
   q("[data-store-list]")?.classList.add("hidden");
   // Карточка адреса на 360 — dealer-card 2225:107632: обводки не крашены,
-  // так что и над ней линии нет, а её padV 12 вместе с padV 12 внутреннего
-  // контейнера дают 24 до названия.
-  swap(q("[data-store-detail]"), ["hidden"], ["flex", "max-md:pt-3"]);
+  // так что и над ней линии нет; её padV 12 вместе с padV 12 внутреннего
+  // контейнера дают 24 до названия, а снизу 16 + 12 = 28 под кнопкой.
+  swap(q("[data-store-detail]"), ["hidden"], ["flex", "max-md:pt-3", "max-md:pb-7"]);
   // Слот сегментов под шапкой панели — он существует только на 360. В кадре
   // (2225:107318) ряд ровно 44: без своих вертикальных полей и без линий.
   swap(q("[data-store-audience]"), ["hidden", "py-2"], []);
@@ -598,9 +598,11 @@ export function renderStoresMap(anchor, opts) {
       node.querySelector("[data-store-radio]")?.classList.add("max-md:flex");
       // Ниже `md` шеврон не прячется, а поворачивается вправо и становится
       // входом в карточку магазина — отдельный шаг визарда (2397:152957).
+      // На 1440 и 768 он раскрывает карточку, как на читающих страницах
+      // (service-icons в шапке 946:121407 и 2477:169218).
       const chev = node.querySelector("[data-chevron]");
       if (chev) {
-        chev.classList.add("max-xl:hidden", "max-md:block", "max-md:-rotate-90");
+        chev.classList.add("max-md:-rotate-90");
         chev.dataset.storeOpen = "";
       }
       // «Выбрать магазин» — только на 1440: в мобильной карточке её нет.

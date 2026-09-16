@@ -298,7 +298,7 @@
 
   <!-- one dealer card (future @foreach($stores as $store)) -->
   <template data-store-card>
-    <button type="button" data-store aria-expanded="false" class="store-card">
+    <button type="button" data-store aria-expanded="false" class="group store-card">
       <div class="flex w-full flex-col gap-1">
         <div class="flex w-full items-start justify-between gap-2">
           <!-- The sheet's cards carry a radio (2059:169141); the reading list
@@ -318,10 +318,13 @@
            946:134818) и «Магазин выбран» с галочкой на #414141 (953:55451) у
            выбранной. Ниже `md` её нет — там карточку выбирает радиокнопка.
            Это `span`, а не кнопка: карточка сама и есть кнопка, вложить в неё
-           вторую нельзя. -->
+           вторую нельзя. Отбивки: в свёрнутой карточке контейнер кнопки 44 —
+           поля 4 сверху и 8 снизу после зазора 6 (946:134818), в раскрытой —
+           32 без полей после зазора 16 (953:55372); на планшете те же
+           (2477:169230 / 169357). -->
       <span
         data-store-pick
-        class="mt-1.5 hidden h-8 items-center gap-1.5 self-end rounded-pill bg-components-subtle px-3 text-button-s text-text-primary"
+        class="mb-2 mt-2.5 hidden h-8 items-center gap-1.5 self-end rounded-pill bg-components-subtle px-3 text-button-s text-text-primary group-aria-expanded:mb-1 group-aria-expanded:mt-4"
       >
         <span data-store-pick-label>Выбрать магазин</span>
         <img src="../../assets/header/icon-check-white.svg" alt="" class="hidden size-4" data-store-pick-icon />
@@ -369,7 +372,10 @@
           <span data-store-email class="w-fit text-body-n text-text-primary underline max-md:text-m-body-n"></span>
           <span data-store-website class="w-fit text-body-n text-text-primary underline max-md:text-m-body-n"></span>
         </div>
-        <span class="flex items-center gap-1 self-end text-body-s text-text-primary max-md:text-m-body-s">
+        <!-- text-action 32 в button-container 36 с полем 4 только сверху
+             (946:125346, 2477:169343); на мобиле контейнер 32 без полей
+             (1859:333472). -->
+        <span class="mt-1 flex h-8 items-center gap-1 self-end text-body-s text-text-primary max-md:mt-0 max-md:text-m-body-s">
           <span class="link-dotted">Проложить маршрут</span>
           <img src="../../assets/header/icon-pin.svg" alt="" class="size-6 -m-1" />
         </span>
