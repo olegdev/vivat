@@ -102,8 +102,14 @@
             <img src="../../assets/header/icon-search.svg" alt="" class="size-6 shrink-0" />
           </form>
 
-          <!-- documents-content 1463:60818 — padV 24, зазор между группами 8 -->
-          <div class="flex flex-col gap-2 py-6 max-md:py-4" data-doc-tree></div>
+          <!-- documents-content 1463:60750 / 2241:163680 — padV 24 (16 на 360),
+               зазор между группами 8. Корневые ветки этой страницы в обоих
+               свёрнутых кадрах — 64, а не 52: у `lvl1` там padV 12 и сверху, и
+               снизу (1463:60751, 2241:163681), тогда как у «Сертификатов» и
+               «Технической информации» строка 40 + 12 снизу. Отсюда `pt-3`
+               только у корневых секций и только здесь; развёрнутый кадр
+               (1463:63557) рисует их снова по 52 — расхождение в BACKLOG. -->
+          <div class="flex flex-col gap-2 py-6 max-md:py-4 [&>section]:pt-3" data-doc-tree></div>
         </div>
       </div>
 

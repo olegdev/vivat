@@ -148,11 +148,13 @@
       </div>
 
       <!-- Dealer strip — `header-dealer` 586:57343 variant2, instanced at
-           877:93261: fixed 1013x44, flush to the canvas edge. На планшете
-           полоса уже — 501 (2477:181001) — и так же прижата к правому краю,
-           радиус слева тот же 32. -->
+           877:93261: fixed 1013x44, flush to the canvas edge. Поля не
+           симметричные: слева 12, справа 40 — то есть ровно вылет полосы за
+           колонку, и «Выход» встаёт на правую границу контента (1400), а не в
+           поле страницы. На планшете полоса уже — 501 (2477:181001), поля там
+           24/24 — и так же прижата к правому краю, радиус слева тот же 32. -->
       <div
-        class="-mr-10 hidden h-11 w-[1013px] shrink-0 items-center gap-6 rounded-l-[32px] bg-components-strong px-6 group-data-[user=dealer]:flex max-xl:-mr-6 max-xl:w-[501px] max-xl:gap-6 max-xl:px-6"
+        class="-mr-10 hidden h-11 w-[1013px] shrink-0 items-center gap-6 rounded-l-[32px] bg-components-strong pl-3 pr-10 group-data-[user=dealer]:flex max-xl:-mr-6 max-xl:w-[501px] max-xl:gap-6 max-xl:px-6"
       >
         <button
           type="button"

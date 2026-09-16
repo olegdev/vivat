@@ -9,7 +9,12 @@
      Копия взята с МОБИЛЬНОГО кадра: на 1440 дизайнер оставил текст соседнего
      окна («Ваш заказ отправлен!»), не переписав его под заявку. Подпись кнопки
      разная и переписана в обоих: «Продолжить покупки» на 1440, «Продолжить» на
-     360. «её» — исправленная опечатка макета (там «ее»), см. BACKLOG. -->
+     360. «её» — исправленная опечатка макета (там «ее»), см. BACKLOG.
+
+     Окно общее на заявку и письмо директору, поэтому заголовок и описание —
+     хуки `data-success-title` / `data-success-desc`: modals.js подставляет
+     копию по форме, которая его открыла (в Blade — параметры @include). В
+     разметке стоит заявочный текст, как в макете. -->
 <div class="modal-scrim" data-modal="dealer-success">
   <div class="modal-panel" data-modal-panel>
     <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
@@ -27,8 +32,8 @@
 
       <!-- обе строки по центру (textAlignHorizontal=CENTER) -->
       <div class="flex flex-col gap-4 text-center">
-        <p class="text-h2 text-text-primary max-md:text-m-h2">Ваша заявка отправлена!</p>
-        <p class="text-body-l text-text-primary max-md:text-m-body-l">
+        <p class="text-h2 text-text-primary max-md:text-m-h2" data-success-title>Ваша заявка отправлена!</p>
+        <p class="text-body-l text-text-primary max-md:text-m-body-l" data-success-desc>
           В ближайшее время мы обработаем её и свяжемся с вами
         </p>
       </div>

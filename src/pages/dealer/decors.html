@@ -107,7 +107,9 @@
               <label class="group/sw ml-auto flex shrink-0 cursor-pointer items-center gap-3">
                 <span class="text-body-n-accent text-text-primary max-md:text-m-body-n-accent">Товары в этом цвете</span>
                 <input type="checkbox" class="peer sr-only" data-decor-color-only />
-                <span class="relative block h-6 w-10 shrink-0 rounded-full bg-components-disabled transition-colors peer-checked:bg-components-red">
+                <!-- toggle design=dark (604:24616): выкл #e7e7e7, вкл #292929 (604:24624),
+                     ручка белая в обоих; ховер выкл #d9d9d9, вкл #414141 -->
+                <span class="relative block h-6 w-10 shrink-0 rounded-full bg-components-disabled transition-colors group-hover/sw:bg-components-light-hover peer-checked:bg-components-strong peer-checked:group-hover/sw:bg-components-active-muted">
                   <span class="absolute left-0.5 top-0.5 size-5 rounded-full bg-surface-inverted transition-transform peer-checked:translate-x-4"></span>
                 </span>
               </label>
