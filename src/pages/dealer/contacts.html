@@ -81,13 +81,19 @@
 
       <!-- ==================== НАШИ СОТРУДНИКИ ==========================
            1462:56243 — 442: заголовочный блок 178 (отбивка 80, заголовок 44,
-           зазор 6, описание 24, отбивка 24) и сетка 264. -->
+           зазор 8, описание 22, отбивка 24) и сетка 264.
+
+           Заголовочный блок — тот же `title-block`, что у рельсов, поэтому и
+           набран он так же (partials/carousel-section.html): строка заголовка
+           хагом, а не в фиксированных 44 (на 360 она 26 — title 1806:234565),
+           описание — BodyN-accent 16/22 на 1440 и Mobile/BodyN-accent 14/20
+           на 360 (1806:234569, две строки в 40), отбивка под заголовком 8/4. -->
       <section class="px-10 max-md:px-4" data-employees-section>
         <div class="pt-20 max-md:pt-10">
-          <div class="flex h-11 items-center">
+          <div class="flex min-h-11 items-center max-md:min-h-6">
             <h2 class="text-h2 text-text-primary max-md:text-m-h2">Наши сотрудники</h2>
           </div>
-          <p class="pt-1.5 text-body-n text-text-primary max-md:text-m-body-n">
+          <p class="pt-2 text-body-n-accent text-text-primary max-md:pt-1 max-md:text-m-body-n-accent">
             Свяжитесь с профильным специалистом и мы поможем подобрать решение.
           </p>
         </div>
@@ -99,21 +105,29 @@
 
       <!-- ==================== НАШ СКЛАД =================================
            1463:56244 — 475: заголовочный блок 148 (без описания — в этом
-           инстансе оно скрыто) и рельс 327 из трёх снимков 438×327. -->
+           инстансе оно скрыто) и рельс 327 из трёх снимков 438×327.
+           360 (2225:126359 — 316): блок 78 = 40 + заголовок 26 + 12, и рельс
+           238 из снимков 320×238 с зазором 8. -->
       <section class="max-md:overflow-hidden" data-gallery-section>
         <div class="px-10 pt-20 max-md:px-4 max-md:pt-10">
-          <div class="flex h-11 items-center">
+          <div class="flex min-h-11 items-center max-md:min-h-6">
             <h2 class="text-h2 text-text-primary max-md:text-m-h2">Наш склад</h2>
           </div>
         </div>
-        <div class="relative px-10 pt-6 max-md:px-4">
+        <div class="relative px-10 pt-6 max-md:px-4 max-md:pt-3">
           <div class="overflow-hidden" data-viewport>
             <div class="flex gap-6 transition-transform duration-300 max-md:gap-2" data-track></div>
           </div>
-          <!-- carousel-controls 48×48 по краям кадра (1463:56697 / 1463:56698) -->
+          <!-- carousel-controls 48×48 сидят ВЕРХОМ на краях кадра, а не внутри
+               него: 1463:56698 занимает 16…64, 1463:56697 — 1376…1424, то есть
+               центр каждой стоит ровно на границе 1360-й колонки (40 и 1400).
+               Отсюда left-4/right-4 — те же, что у общего рельса
+               (partials/carousel-section.html), а не left-16.
+               По вертикали 139 от верха ряда снимков; у обёртки сверху свои
+               24 (pt-6), поэтому 163. -->
           <button
             type="button"
-            class="carousel-arrow absolute left-16 top-1/2 z-10 -translate-y-1/2 max-md:hidden"
+            class="carousel-arrow absolute left-4 top-[163px] z-10 max-md:hidden"
             data-prev
             aria-label="Назад"
           >
@@ -121,7 +135,7 @@
           </button>
           <button
             type="button"
-            class="carousel-arrow absolute right-16 top-1/2 z-10 -translate-y-1/2 max-md:hidden"
+            class="carousel-arrow absolute right-4 top-[163px] z-10 max-md:hidden"
             data-next
             aria-label="Вперёд"
           >
@@ -184,7 +198,7 @@
     <!-- один снимок склада (future @foreach($photos as $p)) -->
     <template data-warehouse-photo>
       <img
-        class="h-[327px] w-[438px] shrink-0 rounded-[var(--radius-l)] object-cover max-md:h-[238px] max-md:w-[280px]"
+        class="h-[327px] w-[438px] shrink-0 rounded-[var(--radius-l)] object-cover max-md:h-[238px] max-md:w-[320px]"
         alt=""
         data-photo
       />

@@ -172,8 +172,14 @@
              1440: general-container 440×442, padH=24, зазор 24.
              360:  dealer-card 360×442, padH=16, зазор 16. -->
         <div class="hidden flex-col gap-6 px-6 max-md:gap-4 max-md:px-4" data-store-detail>
-          <!-- top-container 392×56: отбивка 32 и название 24 -->
-          <p class="pt-8 text-h5 text-text-primary max-md:pt-3" data-detail-name></p>
+          <!-- top-container 392×56: отбивка 32 и название 24 (1456:60599 →
+               759:59362 — глифы уложены в 20, интерлиньяж 24, т.е. H4, а не
+               H5: поле `fontSize` у узла протухло вместе с fontName).
+               Ниже `md` кегль остаётся 16/24 — мобильный вариант карточки
+               (2225:106827) это нетронутая копия десктопного мастера, своего
+               набора у него нет, а этот же заголовок несёт карточка магазина
+               на шаге выбора в заказе. -->
+          <p class="pt-8 text-h4 text-text-primary max-md:pt-3 max-md:text-h5" data-detail-name></p>
 
           <!-- adress: описание 48 (адрес 24 + метро 18, зазор 6) -->
           <div class="flex flex-col gap-1.5">
@@ -201,13 +207,14 @@
               <img src="../../assets/contacts/icon-route.svg" alt="" class="size-6 shrink-0 max-md:size-5" />
             </a>
 
-            <!-- consult 392×108: заголовок 24, зазор 8, столбец 76 -->
+            <!-- consult 392×120: заголовок 24, зазор 8, столбец 88 (три
+                 строки 16/24 с зазором 8) -->
             <div class="flex flex-col gap-2 max-md:gap-1">
               <p class="text-h5 text-text-primary max-md:text-m-h4" data-detail-dept-title></p>
               <div class="flex flex-col gap-2" data-detail-dept-rows></div>
             </div>
 
-            <!-- wh 392×102: заголовок 24, зазор 8, колонки 52 и 91.
+            <!-- wh 392×120: заголовок 24, зазор 8, колонки 52 и 104.
                  На 360 колонки равные по 160 (row 328 = 160 + 8 + 160). -->
             <div class="flex flex-col gap-2 max-md:gap-1">
               <p class="text-h5 text-text-primary max-md:text-m-h4" data-detail-hours-title></p>

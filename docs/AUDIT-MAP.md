@@ -199,6 +199,20 @@
 | карта салонов | `[data-stores-section]` | 882:107971 | — | 2432:126399 | t b #depth=2 |
 | подвал | `footer` | 1058:177159 | — | 2432:126412 | t b #depth=2 |
 
+Окна секции `B2b additional` лежат на каждой странице, поэтому проверяются один
+раз — здесь. До 16.09.2026 их не было в реестре ни одной строкой, и это стоило
+клиенту ручной вычитки: у письма директору заголовок и строка согласия ехали
+на своих кеглях, у «Поделиться» заголовок стоял вплотную к крестику. Размеров у
+окон ДВА набора: широкие (заявка, письмо директору) идут с полями 40/16,
+узкие (вход, подписка) — 96/40.
+
+| окно «Стать дилером» | `[data-modal="dealer-request"] .modal-panel #open=[data-modal="dealer-request"]` | 1003:166072 | — | 2209:214643 | t b #depth=3 |
+| окно «Войти в режим дилера» | `[data-modal="dealer-login"] .modal-panel #open=[data-modal="dealer-login"]` | 1003:166682 | — | 2209:216417 | t b #depth=3 |
+| окно «Подписаться на новости» | `[data-modal="subscribe"] .modal-panel #open=[data-modal="subscribe"]` | 1003:169310 | — | 2225:96982 | t b #depth=3 |
+| окно «Сообщение директору» | `[data-modal="director"] .modal-panel #open=[data-modal="director"]` | 1534:70720 | — | 2225:97793 | t b #depth=3 |
+| окно «Поделиться» | `[data-modal="share"] .modal-panel #open=[data-modal="share"]` | 2462:221328 | — | 2462:221798 | t b #depth=3 |
+| окно «Заявка отправлена» | `[data-modal="dealer-success"] .modal-panel #open=[data-modal="dealer-success"]` | 2462:216798 | — | 2462:213534 | t b #depth=3 |
+
 ## dealer/catalog
 
 | блок | селектор | 1440 | 768 | 360 | чем |
@@ -250,6 +264,10 @@
 | шапка | `header #session=dealer` | 1415:68378 | — | 2225:104775 | t b i |
 | подвал | `footer #session=dealer` | 1415:68419 | — | 2225:126410 | t b #depth=2 |
 | заголовок | `h1` | 1415:68380 | — | 2225:125969 | t |
+| карта + карточка адреса | `[data-section="map"]` | 1456:54411 | — | 2225:107956 | t b |
+| сотрудники | `[data-employees-section]` | 1462:56243 | — | — | t b |
+| сотрудники: сетка | `[data-employees]` | 1461:61333 | — | 2225:125970 | t b |
+| склад | `[data-gallery-section]` | 1463:56244 | — | 2225:126359 | t b |
 
 ## dealer/online-shops
 

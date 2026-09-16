@@ -176,7 +176,12 @@ function enterContactPageMode(anchor, detail) {
     ? anchor
     : anchor.querySelector("[data-stores-section]");
 
-  swap(section, ["bg-surface-accent", "pb-16", "max-md:bg-bg-page", "max-md:pb-10"], ["bg-bg-page"]);
+  // Нижняя отбивка блока — зелёной плашки главной, а не Контактов: тут карта
+  // 1440×680 стоит вплотную к «Нашим сотрудникам» (map 1456:54411 кончается на
+  // 952, employees 1462:56243 там же и начинается — свои 80 он приносит сам).
+  // Класс в партиале однажды сменился с `pb-16` на `pb-[72px]`, а этот список
+  // остался прежним, и 72 жили под картой как лишний воздух.
+  swap(section, ["bg-surface-accent", "pb-[72px]", "max-xl:pb-0", "max-md:bg-bg-page", "max-md:pb-10"], ["bg-bg-page"]);
   q("[data-stores-head]")?.classList.add("hidden");
 
   // Шапка панели здесь — только «Москва» с пином: тумблер «Только фирменные
@@ -217,6 +222,13 @@ function enterContactPageMode(anchor, detail) {
 // Тело карточки адреса. Листовые строки (телефоны, почта, часы) создаются
 // здесь, а не шаблонами: это отдельные текстовые узлы, а не единицы вёрстки, —
 // тот же приём, что у ссылки внутри ответа в components/accordion.js.
+//
+// Кегль строк — 16/24, а не 14/18: в мастере они набраны BodyS, но экземпляр
+// `type=contact page` (1456:54411) переопределяет им СТИЛЬ на 44:85 — тот же
+// Desktop/BodyN, что у адреса. Видно только по symbolOverrides и по ширине
+// уложенной строки (телефон 145 против 127 у мастера). Ниже `md` остаётся
+// 14/18: мобильный вариант карточки — нетронутая копия мастера, без
+// собственного набора.
 function fillDetail(anchor, d) {
   if (!d) return;
   const q = (sel) => anchor.querySelector(sel);
@@ -247,7 +259,7 @@ function fillDetail(anchor, d) {
       return el;
     };
     const nodes = (d.dept?.phones || []).map((p) => {
-      const a = line("text-body-s text-text-primary", "a");
+      const a = line("text-body-n text-text-primary max-md:text-body-s", "a");
       a.href = `tel:${p.replace(/[^\d+]/g, "")}`;
       a.textContent = p;
       return a;
@@ -271,10 +283,10 @@ function fillDetail(anchor, d) {
       return el;
     };
     labels.replaceChildren(
-      ...(d.hours?.rows || []).map(([l]) => span("text-body-s text-text-secondary", l))
+      ...(d.hours?.rows || []).map(([l]) => span("text-body-n text-text-secondary max-md:text-body-s", l))
     );
     values.replaceChildren(
-      ...(d.hours?.rows || []).map(([, v]) => span("text-body-s text-text-primary", v))
+      ...(d.hours?.rows || []).map(([, v]) => span("text-body-n text-text-primary max-md:text-body-s", v))
     );
   }
 }
