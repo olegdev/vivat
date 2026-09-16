@@ -184,13 +184,14 @@
            16×48 с padV=4, то есть глиф 16 занимает 4…20 при строке 24 — центры
            совпадают. `-mx-1` снимает поля коробки 24 вокруг глифа 16 по
            горизонтали, сверху их быть не должно (было `mt-1`, и иконка съезжала
-           на 4 вниз).
+           на 4 вниз). На 360 строка 20 — коробка на 2 выше, чтобы глиф остался
+           по центру первой строки.
            Переноса внутри строки нет: и на 1440, и на 360 текст — один прогон
            без разрыва (2238:157315 на 360 даёт 240×60, три строки подряд).
            Раньше здесь стоял жёсткий \n после «рублей.» — это было прочтение
            высоты коробки, а не разрыв в тексте. -->
       <div class="flex gap-2 rounded-n bg-surface-accent-subtle px-4 py-2">
-        <img src="../../assets/order/icon-info-dark.svg" alt="" class="-mx-1 size-6 shrink-0 self-start" />
+        <img src="../../assets/order/icon-info-dark.svg" alt="" class="-mx-1 size-6 shrink-0 self-start max-md:-mt-0.5" />
         <p class="text-body-n text-text-primary max-md:text-m-body-n" data-delivery-cost></p>
       </div>
     </div>

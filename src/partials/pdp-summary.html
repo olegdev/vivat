@@ -103,10 +103,11 @@
          вариант сводки (953:142727) её не несёт, как и «от» выше: там цена одна
          строкой, поэтому панель на 49px ниже покупательской. -->
     <p class="flex gap-2 text-body-s text-text-secondary group-data-[user=dealer]:hidden max-xl:min-h-8 max-xl:pt-3 max-xl:shadow-[inset_0_1px_0_var(--color-divider-soft)] max-md:text-m-body-s">
-      <!-- icon-container 943:108531: поле 2 сверху — иконка на 2 ниже верха
-           текста (и на 360, 2084:148153). Пока здесь стоял файл 24 как
-           size-6 -m-1, его глиф сам садился ниже; у символа 16 сдвиг — полем. -->
-      <img src="../../assets/pdp/icon-info-16-secondary.svg" alt="" class="mt-0.5 size-4 shrink-0" />
+      <!-- Значок по центру ПЕРВОЙ строки: 1 при строке 18, 0 при строке 16.
+           Кадр (icon-container 943:108531, на 360 2084:148153) ставит его на 2
+           от верха, но при одной строке это читается как съехавший значок —
+           решение клиента 16.09, то же, что в order-summary. -->
+      <img src="../../assets/pdp/icon-info-16-secondary.svg" alt="" class="mt-px size-4 shrink-0 max-md:mt-0" />
       <span>Дилерская наценка может отличаться в зависимости от региона!</span>
     </p>
     </div>
