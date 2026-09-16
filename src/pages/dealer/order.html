@@ -114,9 +114,11 @@
             <!-- panel header 1209:95224 — select-all + delete, print + share.
                  The dealer instance overrides neither control, so «Удалить»
                  renders the master's filler in the frame; it is the same
-                 control the customer frame names «Удалить» (see BACKLOG). As
-                 there, the 360 frame paints no delete (2029:156847 visible
-                 false в 2225:167287). Иконки: 1440 — Bold secondary, 360 — Thin. -->
+                 control the customer frame names «Удалить» (see BACKLOG). На
+                 360 «Удалить» есть: text-action Mobile/ButtonM + close-s 24 в
+                 слоте 20 (2225:202958; кадр 2225:167287 его прячет — клиент
+                 выбрал показывать, 16.09). Иконки: 1440 — Bold secondary,
+                 360 — Thin. -->
             <div class="flex items-center justify-between border-b border-divider-light px-6 py-1 max-md:px-4 max-md:py-1.5">
               <div class="flex items-center gap-6">
                 <label class="flex items-center gap-3 py-2.5 max-md:gap-2">
@@ -125,7 +127,7 @@
                 </label>
                 <button
                   type="button"
-                  class="flex items-center gap-1 text-body-n font-medium text-text-secondary transition-colors hover:text-text-primary max-md:hidden"
+                  class="flex items-center gap-1 text-body-n font-medium text-text-secondary transition-colors hover:text-text-primary max-md:text-m-button-m"
                   data-delete-selected
                 >
                   <span>Удалить</span>

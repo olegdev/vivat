@@ -107,9 +107,11 @@
         <div class="min-w-0 flex-1">
           <div class="overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-md:rounded-none max-md:border-x-0 max-md:border-t-0">
             <!-- panel header 953:151121 — select-all + delete, print + share.
-                 На 360 «Удалить» нет: text-action 2029:156847 скрыт (visible
-                 false), select-delete 116 — только флажок. Иконки на 1440 —
-                 Bold secondary (981:49799 / 981:49790), на 360 — Thin. -->
+                 На 360 «Удалить» есть — как в дилерском 2225:202958
+                 (text-action Mobile/ButtonM + close-s 24 в слоте 20); свой
+                 кадр 360 его прячет (2029:156847 visible false), клиент выбрал
+                 показывать (16.09). Иконки на 1440 — Bold secondary
+                 (981:49799 / 981:49790), на 360 — Thin. -->
             <div class="flex items-center justify-between border-b border-divider-light px-6 py-1 max-md:px-4 max-md:py-1.5">
               <div class="flex items-center gap-6">
                 <label class="flex items-center gap-3 py-2.5 max-md:gap-2">
@@ -118,7 +120,7 @@
                 </label>
                 <button
                   type="button"
-                  class="flex items-center gap-1 text-body-n font-medium text-text-secondary transition-colors hover:text-text-primary max-md:hidden"
+                  class="flex items-center gap-1 text-body-n font-medium text-text-secondary transition-colors hover:text-text-primary max-md:text-m-button-m"
                   data-delete-selected
                 >
                   <span>Удалить</span>
