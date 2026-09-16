@@ -297,9 +297,18 @@ page's parts under dealer branches:
   `partials/order-modules.html`, which also owns the 360 bottom sheet the same
   list opens in (2225:201034);
 - **the summary is the same partial**: `Способ оплаты` instead of «Итого» on
-  1440 (the 360 frame keeps «Итого»), a «Доставка» row, a different notice, no
-  button below `md` — which is why this page's sticky bar is always on rather
-  than revealed by scroll — and «Очистить корзину» under the 1440 button;
+  1440 (the 360 frame keeps «Итого»), a «Доставка» row, a different notice,
+  «Очистить корзину» under the 1440 button, and a wider label column — values
+  start at 195 on 1440 and 184 on 360, not at the customer's 150/166. Below
+  `xl` the panel moves BETWEEN the cart and the form, which is the order the
+  360 frame draws (2225:167283). Its button is on at every width and the
+  sticky bar hands over to it on scroll, like the customer's — the 360 frame
+  draws the panel without a button, and that is a deliberate divergence
+  (client, 16.09.2026; see `BACKLOG.md`);
+- **правка комплектации меняет цену**: цена кухни — сумма её модулей, а кухня,
+  из которой убрали все модули, уходит из заказа. В кадрах эти числа не
+  сходятся (43 661₽ у Флэт-03 против 59 850₽ её модулями), и считать по
+  строкам — решение клиента, записанное в `BACKLOG.md`;
 - **the confirmation overlay is now `partials/order-done.html`**, shared with
   the customer page. The dealer section has no frame of its own for it; the
   designer's are 2241:158412 / 2241:158297.
@@ -452,7 +461,7 @@ token). The frame is sized by whichever of width/height the 16∶9 box hits
 first, not `aspect-video` inside independent max-w/max-h — those two clamped
 separately can leave the box narrower than the height allows.
 
-Four things about them are easy to get wrong:
+Five things about them are easy to get wrong:
 
 - **The panel's header carries no title** — `modal-header/desktop` (1003:166613)
   is one 24px close glyph at the right edge. Every title is the first block of
@@ -463,11 +472,23 @@ Four things about them are easy to get wrong:
   does not return it in the layout. Its colour is not uniform either: заявка and
   директор are coral, вход and подписка dark.
 - **The consent line is not one size.** Заявка and подписка draw it 12/16 in a
-  44px box, директор 14/18 in a 76px one — two variants of `control+text`. The
-  link inside it is «Link … dotted», i.e. `link-dotted`.
-- **Nothing is drawn for "sent".** All four forms just close; the login also
-  navigates to the dealer home, which is our decision, not the design's. Both
-  are in `BACKLOG.md`.
+  44px box, директор 14/18 in a 76px one — two variants of `control+text`, and
+  the mobile instances keep that split (2225:98173 takes the `device=desktop,
+  size=s` master). The link inside it is «Link … dotted», i.e. `link-dotted`.
+- **Ни один размер в этих окнах не общий — их ДВА набора, и мобильный
+  заголовок свой у каждого окна.** Широкие (заявка, письмо директору) идут с
+  полями 40 на 1440 и 16 на 360; узкие (вход, подписка) — 96 и 40, и шторка у
+  них фиксированной высоты 400 из 800, то есть под кнопкой остаётся воздух.
+  Заголовок на 360: заявка — Mobile/H4 16/22 (1806:234757), письмо директору,
+  вход и подписка — Mobile/H2 22/26 (2225:97795, 2225:96574, 2225:96984).
+  Ниже `md` шторка всегда начинается на 40 от верха экрана, а не от края.
+  Всё это стояло одним общим набором, пока клиент не вычитал окна руками
+  (16.09.2026); теперь шесть окон — строки в `docs/AUDIT-MAP.md`, и кегли с
+  ящиками сверяет `npm run audit:all dealer/main`.
+- **Экран «отправлено» один на секцию** (`success` 2462:214093 / 2462:213129):
+  его открывают заявка и — по решению клиента — письмо директору; подписка,
+  вход и сообщение об ошибке просто закрываются. Вход дополнительно уводит на
+  дилерскую главную, что наше решение, а не макета. Всё в `BACKLOG.md`.
 
 `partials/modals.html` is a hub of four `#include`s rather than a container —
 the include plugin recurses, so a page mounts everything with one line while

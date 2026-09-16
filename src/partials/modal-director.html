@@ -17,13 +17,22 @@
     </div>
 
     <form class="px-10 pb-6 max-md:px-4" data-modal-form>
-      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h3">
+      <!-- 1440 — Desktop/H4 20/24, 360 — Mobile/H2 22/26 (2225:97795, коробка
+           328×52 = две строки по 26). Широкие окна берут 22/26, узкие (вход,
+           подписка) — тоже; 18/24 здесь не было ни в одном кадре. -->
+      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h2">
         Заполните форму и отправьте сообщение директору
       </h2>
 
-      <!-- alert 1534:70725 — в этом инстансе без крестика -->
-      <div class="mt-6 flex gap-2 rounded-n bg-surface-accent-subtle px-4 py-2.5">
-        <img src="../../assets/order/icon-info-dark.svg" alt="" class="mt-0.5 size-6 -m-1 shrink-0" />
+      <!-- alert 1534:70725 (1440) / 2225:98168 (360) — в этом инстансе без
+           крестика. Поля по вертикали 8, не 10 (`container` padV=8 в обоих
+           мастерах). Глиф 16 стоит по ЦЕНТРУ ПЕРВОЙ строки: на 1440 это
+           icon-container padV=4 при строке 18, на 360 — padV=2 при строке 20.
+           Файл — квадрат 24 с полями 4, поэтому `-m-1` снимает их, а верх
+           доводится до нужных 4 и 2. Раньше стоял общий `mt-0.5`, и значок
+           сидел на 2 (1440) и 4 (360) ниже, чем в кадре. -->
+      <div class="mt-6 flex gap-2 rounded-n bg-surface-accent-subtle px-4 py-2">
+        <img src="../../assets/order/icon-info-dark.svg" alt="" class="-m-1 mt-0 size-6 shrink-0 max-md:-mt-0.5" />
         <p class="text-body-s text-text-primary max-md:text-m-body-s">
           Фабрика мебели VIVAT не ведёт розничные продажи. Все вопросы по заказу и обслуживанию
           направляйте дилеру, у которого была совершена покупка
@@ -54,9 +63,13 @@
         </label>
       </div>
 
+      <!-- строка согласия здесь 14/18 на ОБЕИХ ширинах: мобильный инстанс
+           2225:98173 берёт мастер `device=desktop, size=s, Type=Type4`
+           (953:114774), то есть Desktop/BodyS. В заявке и подписке та же
+           строка 12/16 — это разные варианты компонента, не одна копия. -->
       <label class="mt-4 flex items-start gap-3 py-2.5">
         <input type="checkbox" name="consent" required class="filter-check" />
-        <span class="text-body-s text-text-primary max-md:text-m-body-s">
+        <span class="text-body-s text-text-primary">
           Нажимая кнопку «Отправить», я даю своё согласие на обработку персональной информации в
           соответствии с
           <a href="#" class="link-dotted text-text-link-highlighted">Политикой конфиденциальности</a>

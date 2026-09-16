@@ -36,24 +36,29 @@
        `left-side` 134 + зазор 16 + `right-side` 124 на 1440 (946:41421/41434) и
        150 + 16 + 114 на 360 (2029:158364/158373), причём ячейки внутри правой
        колонки стоят в её начале. Значения выстраиваются по одному x, а не по
-       правому краю панели. -->
+       правому краю панели.
+
+       У ДИЛЕРА левая колонка шире, и значения стоят заметно правее: 179 + 16 +
+       79 на 1440 (953:149258/149267) и 168 + 16 + 90 на 360
+       (2029:158164/158173). Отсюда пара `group-data-[user=dealer]:w-…` на
+       каждом `dt`. -->
   <dl class="px-6">
     <div class="flex h-10 items-center gap-4 max-md:h-8">
-      <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n">В заказе</dt>
+      <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n group-data-[user=dealer]:w-[179px] max-md:group-data-[user=dealer]:w-[168px]">В заказе</dt>
       <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-count></dd>
     </div>
     <div class="flex h-10 items-center gap-4 max-md:h-8">
-      <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n">Сумма заказа</dt>
+      <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n group-data-[user=dealer]:w-[179px] max-md:group-data-[user=dealer]:w-[168px]">Сумма заказа</dt>
       <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-subtotal></dd>
     </div>
     <div class="flex h-10 items-center gap-4 max-md:h-8">
-      <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n">Скидка</dt>
+      <dt class="w-[134px] shrink-0 text-body-n text-text-secondary max-md:w-[150px] max-md:text-m-body-n group-data-[user=dealer]:w-[179px] max-md:group-data-[user=dealer]:w-[168px]">Скидка</dt>
       <dd class="text-body-n text-text-primary max-md:text-m-body-n" data-summary-discount></dd>
     </div>
     <!-- dealer only (953:149344): the payment method, which for the customer
          is not part of this panel at all -->
     <div class="hidden h-10 items-center gap-4 max-md:h-8 group-data-[user=dealer]:flex">
-      <dt class="w-[134px] shrink-0 text-body-n text-text-primary max-md:w-[150px] max-md:text-m-body-n">Способ оплаты</dt>
+      <dt class="w-[134px] shrink-0 text-body-n text-text-primary max-md:w-[150px] max-md:text-m-body-n group-data-[user=dealer]:w-[179px] max-md:group-data-[user=dealer]:w-[168px]">Способ оплаты</dt>
       <!-- the value is a dotted link at both widths (953:149347 carries the
            «Desktop/Link M dotted» text style; the 360 panel draws the same) -->
       <dd class="link-dotted text-body-n text-text-primary max-md:text-m-body-n" data-summary-payment>
@@ -64,7 +69,7 @@
          360 one, but the dealer's 1440 panel (953:149252) simply has no such
          row — that is the frame, not an omission on our side. -->
     <div class="flex h-10 items-center gap-4 max-md:h-8 md:group-data-[user=dealer]:hidden">
-      <dt class="w-[134px] shrink-0 text-body-n text-text-primary max-md:w-[150px] max-md:text-m-body-n">Итого</dt>
+      <dt class="w-[134px] shrink-0 text-body-n text-text-primary max-md:w-[150px] max-md:text-m-body-n group-data-[user=dealer]:w-[179px] max-md:group-data-[user=dealer]:w-[168px]">Итого</dt>
       <!-- большая сумма не переносится и не вылезает: order-cart.js уменьшает
            её кегль, пока строка не влезет в ячейку (решение клиента 15.09) -->
       <dd class="flex min-w-0 flex-1 items-baseline gap-2 overflow-hidden" data-fit-row>
@@ -88,12 +93,14 @@
        frame with no gap) and 16 above the button. Hence `pt-1` where the
        customer panel opens a full 24 before its button. -->
   <div class="flex flex-col gap-4 px-6 pb-6 pt-4 max-md:gap-3 max-md:pb-4 max-md:pt-3 group-data-[user=dealer]:pt-1 max-md:group-data-[user=dealer]:pt-1">
-    <!-- the dealer's 360 panel carries no button at all (2225:202292 is the
-         `Top` half only) — its CTA is the sticky bar, which is therefore
-         always on rather than revealed by scroll like the customer's -->
+    <!-- Кнопка есть у обоих и на всех ширинах. Дилерский инстанс на 360
+         (2225:202292) рисует только половину `Top`, без неё, и бар снизу был
+         поэтому всегда включён; клиент 16.09 попросил, чтобы бар откреплялся
+         на сводке, как у покупателя, — а откреплять его не на что, если кнопки
+         в панели нет. Расхождение записано в BACKLOG. -->
     <button
       type="button"
-      class="btn btn-m btn-accent max-xl:w-full max-xl:group-data-[user=dealer]:hidden"
+      class="btn btn-m btn-accent max-xl:w-full"
       data-order-submit
     >
       Сформировать заказ

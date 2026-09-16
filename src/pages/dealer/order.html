@@ -61,14 +61,19 @@
            uses, titled «Оформление заказа». One title, because this page has
            no steps to name. -->
       <header class="sticky top-0 z-50 hidden border-b border-divider-light bg-surface-inverted px-4 py-1 max-md:block">
+        <!-- Глифы прижаты к краям своих коробок 40×40, а не стоят в них по
+             центру: в 2225:202955 шеврон лежит на x=0 коробки, а крестик —
+             на x=16 (`align=MAX`). Так они попадают ровно над галочкой
+             «Выбрать все» и над «поделиться» в шапке корзины ниже, которые в
+             кадре стоят на 16 и на 320 (2225:202958). -->
         <div class="flex items-center gap-0">
-          <a href="catalog.html" class="flex size-10 shrink-0 items-center justify-center" aria-label="Назад">
+          <a href="catalog.html" class="flex size-10 shrink-0 items-center justify-start" aria-label="Назад">
             <img src="../../assets/header/chevron-left.svg" alt="" class="size-6" />
           </a>
           <div class="flex min-w-0 flex-1 flex-col justify-center py-2">
             <p class="truncate text-m-h3 text-text-primary">Оформление заказа</p>
           </div>
-          <a href="main.html" class="flex size-10 shrink-0 items-center justify-center" aria-label="Закрыть">
+          <a href="main.html" class="flex size-10 shrink-0 items-center justify-end" aria-label="Закрыть">
             <img src="../../assets/header/icon-close-s.svg" alt="" class="size-6" />
           </a>
         </div>
@@ -97,8 +102,12 @@
            клиента (не из макета), которое заменило собой более раннее «до
            низа карточки корзины». -->
       <section class="page-x flex gap-[47px] max-xl:flex-col max-xl:gap-0 max-xl:px-0">
-        <div class="min-w-0 flex-1">
-          <div class="overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-md:rounded-none max-md:border-x-0 max-md:border-t-0">
+        <!-- Ниже `xl` колонка распадается, и порядок в кадре 2225:167283 —
+             корзина, СВОДКА, потом «Внесите ваши данные» с формами. Левая
+             колонка уходит в `contents`, и три блока встают в ряд сами:
+             тот же приём, что у настроек дилерского каталога. -->
+        <div class="min-w-0 flex-1 max-xl:contents">
+          <div class="overflow-hidden rounded-[var(--radius-l)] border border-divider-light max-xl:order-1 max-md:rounded-none max-md:border-x-0 max-md:border-t-0">
             <!-- panel header 1209:95224 — select-all + delete, print + share.
                  The dealer instance overrides neither control, so «Удалить»
                  renders the master's filler in the frame; it is the same
@@ -144,11 +153,16 @@
             </p>
           </div>
 
-          <div class="h-16 max-md:h-6"></div>
+          <div class="max-xl:order-3">
+          <div class="h-16 max-md:h-10"></div>
 
           <!-- ==================== ВНЕСИТЕ ВАШИ ДАННЫЕ ==================
-               Steps-order 1209:95232 / 2238:157273 — the form's title block. -->
-          <div class="pb-6 max-xl:px-6 max-md:px-4 max-md:pb-4">
+               Steps-order 1209:95232 / 2238:157273 — the form's title block.
+               На 360 это 40 сверху, 26 заголовок, 8, описание и 40 снизу, потом
+               ещё 24 до первой карточки (2238:157274/157280) — то есть 64 под
+               описанием. Сверху 40 даёт распорка над блоком, а ещё 16 — нижнее
+               поле рамки сводки. -->
+          <div class="pb-6 max-xl:px-6 max-md:px-4 max-md:pb-16">
             <h2 class="text-h2 text-text-primary max-md:text-m-h2">Внесите ваши данные</h2>
             <div class="h-2"></div>
             <p class="text-body-n text-text-primary max-md:text-m-body-n">
@@ -158,11 +172,12 @@
 
           <!-- ==================== ФОРМА ============================== -->
           <!--#include partials/order-forms.html -->
+          </div>
         </div>
 
         <!-- Итоговая панель плавает вдоль всей левой колонки — выше `md` она
              `sticky` в 24px от верха. -->
-        <aside class="w-[322px] shrink-0 self-start xl:sticky xl:top-6 max-xl:w-full max-xl:px-6 max-xl:pt-4 max-md:px-4">
+        <aside class="w-[322px] shrink-0 self-start xl:sticky xl:top-6 max-xl:order-2 max-xl:w-full max-xl:px-6 max-xl:pb-4 max-xl:pt-4 max-md:px-4">
           <!--#include partials/order-summary.html -->
         </aside>
       </section>
@@ -173,16 +188,20 @@
       <!--#include partials/order-done.html -->
 
       <!-- ==================== MOBILE CTA BAR ==========================
-           modal-button-container 2225:167295, stacked on the bottom nav.
-           Unlike the customer's, this bar is ALWAYS on: the dealer's mobile
-           summary has no button of its own (2225:202292), so there is nothing
-           for a scroll to hand over from. Same component as the PDP's.
+           modal-button-container 2225:167295, stacked on the bottom nav. Same
+           component as the PDP's, но здесь он ОТКРЕПЛЯЕТСЯ, дойдя до сводки, —
+           как на покупательском заказе (просьба клиента 16.09). Раньше он был
+           включён всегда, потому что дилерский инстанс сводки на 360
+           (2225:202292) рисует только половину `Top`, без кнопки; теперь
+           кнопка в панели есть, и бару есть на что передать очередь.
            The frame's label reads «• от 43 335₽»; dealer prices go without
            «от» by the client's decision — see BACKLOG. -->
       <div
-        class="fixed inset-x-0 bottom-[72px] z-[41] flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 shadow-navbar xl:hidden"
+        class="fixed inset-x-0 bottom-[72px] z-[41] flex h-[60px] items-center justify-center gap-2 bg-surface-inverted px-4 opacity-0 shadow-navbar transition-opacity duration-200 xl:hidden"
+        data-order-bar
+        hidden
       >
-        <button type="submit" form="dealer-order-form" class="btn btn-m btn-accent w-full text-m-button-m">
+        <button type="submit" form="dealer-order-form" data-order-submit class="btn btn-m btn-accent w-full text-m-button-m">
           <!-- сумме зарезервировано место под «999 999₽», выключка влево: при
                пересчёте «Сформировать заказ» не ездит (решение клиента 15.09) -->
           <span>Сформировать заказ&nbsp;• <span class="inline-block min-w-[4.6em] text-left" data-summary-total></span></span>

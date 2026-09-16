@@ -37,12 +37,16 @@
 
       <!-- transparent stepper: no pill on either width here (953:152844 /
            2225:202146), only the number's box comes back below `md`.
-           Цвета: число тёмное (953:152667, #292929), а «−» и «+» серые
-           (2214:13482, #808080) — в карточке заказа было наоборот.
+           Число тёмное на обеих ширинах (953:152667 / 2029:129548, #292929).
+           Глифы — РАЗНЫЕ наборы, и это тот же набор, что у карточки заказа:
+           1440 — «+» и «−» Bold secondary (953:152907 весь список так), 360 —
+           Thin, причём «+» ТЁМНЫЙ, а мусорка/минус серые (2029:129546, тот же
+           мастер стоит в мобильной карточке 2084:145513 и в строках шторки
+           2225:202061/202062).
            152 = 4 + 40 + 4 + 56 + 4 + 40 + 4; ниже `md` число 48 (2029:129548) -->
       <div class="group/mstep flex w-[152px] shrink-0 items-center justify-between px-1" data-module-stepper data-count="many">
         <!-- Левая кнопка — мусорка при count=1 и минус при 2 и больше, как в
-             карточке заказа. Оба глифа лежат в разметке, выбирает CSS по
+             карточке заказа. Все четыре глифа лежат в разметке, выбирает CSS по
              `data-count`, который пишет скрипт: подмена `src` из JS не пережила
              бы смену ширины. -->
         <button
@@ -54,12 +58,22 @@
           <img
             src="../../assets/order/icon-trash-muted.svg"
             alt=""
-            class="hidden size-6 group-data-[count=one]/mstep:block"
+            class="hidden size-6 group-data-[count=one]/mstep:block max-md:group-data-[count=one]/mstep:hidden"
+          />
+          <img
+            src="../../assets/order/icon-trash-thin.svg"
+            alt=""
+            class="hidden size-6 max-md:group-data-[count=one]/mstep:block"
           />
           <img
             src="../../assets/order/icon-minus-muted.svg"
             alt=""
-            class="block size-6 group-data-[count=one]/mstep:hidden"
+            class="block size-6 group-data-[count=one]/mstep:hidden max-md:hidden"
+          />
+          <img
+            src="../../assets/order/icon-minus-thin.svg"
+            alt=""
+            class="hidden size-6 max-md:block max-md:group-data-[count=one]/mstep:hidden"
           />
         </button>
         <span
@@ -72,7 +86,8 @@
           data-module-up
           aria-label="Увеличить количество"
         >
-          <img src="../../assets/order/icon-plus-muted.svg" alt="" class="size-6" />
+          <img src="../../assets/order/icon-plus-muted.svg" alt="" class="size-6 max-md:hidden" />
+          <img src="../../assets/order/icon-plus-thin.svg" alt="" class="hidden size-6 max-md:block" />
         </button>
       </div>
     </div>
@@ -87,8 +102,10 @@
      тёмная кнопка во всю ширину в баре 60, том же, что у страницы. Перетягивания
      нет — кадр рисует одну высоту и ни одного жеста, в отличие от шторки
      салонов. -->
-<!-- 72 под тапбар: в кадре 2225:201034 панель кончается на 728 из 800 -->
-<div class="modal-scrim pb-[72px] md:hidden" data-modules-sheet>
+<!-- До самого низа экрана: в кадре 2225:201034 панель `left-side` 360×404
+     стоит на y=396 и кончается на 800, то есть накрывает и тапбар. Резерв в 72
+     здесь был ошибкой чтения. -->
+<div class="modal-scrim md:hidden" data-modules-sheet>
   <div class="absolute inset-0" data-modules-close></div>
 
   <div class="modal-panel relative flex max-h-[85vh] flex-col">

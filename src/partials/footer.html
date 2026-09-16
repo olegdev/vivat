@@ -21,18 +21,21 @@
       <a href="https://rutube.ru/channel/25863947/" target="_blank" rel="noopener" aria-label="Rutube" class="social-icon size-10"><span class="size-8 social-rt"></span></a>
       <a href="#" aria-label="MAX" class="social-icon size-10"><span class="size-8 social-max"></span></a>
     </div>
-    <!-- только у дилера — `buttons` 752:51003; 360-фрейма дилерского подвала
-         нет, ветка повторяет десктопную -->
-    <a
-      href="#"
-      class="btn btn-m btn-primary hidden w-full gap-2 text-m-button-m group-data-[user=dealer]:flex"
-      data-dealer-cabinet
-    >
-      <!-- 360/планшет (2432:126412, 2483:200905): текст 14/20, стрелка 20 light -->
-      <span>Личный кабинет</span>
-      <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-5" />
-    </a>
   </div>
+
+  <!-- только у дилера — `buttons` 1821:328161. В мобильном дилерском подвале
+       (1821:328073) кнопка лежит в `center`, то есть ПОД линией под соцсетями,
+       а не в `top` над ней: 16 от линии, дальше 8 + padV 8 центра до колонок —
+       те же 16, что у покупателя идут от линии прямо к колонкам. -->
+  <a
+    href="#"
+    class="btn btn-m btn-primary mt-4 hidden w-full gap-2 text-m-button-m group-data-[user=dealer]:flex"
+    data-dealer-cabinet
+  >
+    <!-- 360/планшет (2432:126412, 2483:200905): текст 14/20, стрелка 20 light -->
+    <span>Личный кабинет</span>
+    <img src="../../assets/header/icon-arrow-right-light.svg" alt="" class="size-5" />
+  </a>
 
   <div class="mt-4 flex flex-col gap-4 text-text-primary">
     <div class="flex flex-col justify-center gap-2 py-2">

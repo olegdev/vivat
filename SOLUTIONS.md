@@ -378,6 +378,19 @@ the call site** because it genuinely differs per host. Hiding is a plain
 `hidden`: the utilities layer beats the components layer, so the control
 collapses back to its bare width — the 52 → 44 delta the mock encodes.
 
+**Хвост, вылезший на дилерском заказе (16.09.2026): у шапки этот компонент
+стоит в рамке фиксированной ширины, и в потоке ему там не место.** «Кнопка
+корзины гуляет» — потому что ряд шапки прижат вправо (`justify-between`), и
+бейдж в потоке двигает кружок каждый раз, когда счётчик меняет разрядность.
+Смотреть надо было не только на компонент, но и на его МЕСТО в кадре:
+`order` — рамка ровно 44×44 (882:105098 @1356 на 942:110180), а инстанс внутри
+неё 52. То есть кадр сам выпускает бейдж за рамку вправо и кружок не двигает.
+Поэтому в шапке `relative w-11` на ссылке и `absolute left-8 top-0` на бейдже:
+кружок стоит там же, где на страницах без счётчика, а бейдж занимает те же
+1388…1408, что и в макете. Правило от этого не меняется — **читай раскладку
+родителя**, — но родителей два: сам компонент и рамка страницы, в которую он
+поставлен.
+
 Same lesson, smaller: don't hand-draw an icon that exists in the file. The
 funnel glyph was redrawn from memory as two strokes + circles and came out
 mirrored (knobs on the wrong rows) at the wrong weight. `download_assets` with

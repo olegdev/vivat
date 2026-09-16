@@ -34,7 +34,7 @@
 <template data-menu-b2b-item>
   <a
     href="#"
-    class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover aria-[current=page]:bg-components-subtle-hover aria-[current=page]:font-medium max-md:h-11"
+    class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover aria-[current=page]:bg-components-subtle-hover aria-[current=page]:font-medium max-md:h-11 max-md:text-m-body-n"
     data-menu-b2b-link
   ></a>
 </template>
@@ -45,18 +45,24 @@
      Строки в шторке 44, а не 40: блоки 220 / 396 / 176 делятся на 44 ровно.
      Панель не доходит до верха экрана: left-side 2209:213655 стоит на 40 от
      верха при высоте 760 из 800 — над ней остаётся полоса оверлея. Заголовки
-     блоков здесь 14/20 Medium (глифы 2209:212697), а не 16/22, как на 1440. -->
+     блоков здесь 14/20 Medium, а пункты 14/20 Regular (derived у 2209:212697 и
+     2209:212698 — 20 против 22 и 24 у мастеров), не 16/22 и 16/24, как на 1440.
+
+     Шапка шторки (`header` 2209:212434, 128) — ручка 20, зазор 4, строка
+     заголовка 48 (4 + 40 + 4), зазор 4, поле 44, снизу 8 и линия 1px #e7e7e7
+     внутренней обводкой; список начинается сразу под ней, без отбивки. -->
 <div class="modal-scrim xl:hidden" data-menu-sheet>
   <div class="modal-panel max-h-[calc(100%-2.5rem)]" data-menu-sheet-panel role="dialog" aria-label="Разделы для дилеров">
     <!-- Ручка и строка заголовка — зона перетаскивания: потянуть вниз и
          отпустить закрывает шторку (menu-b2b.js). Список ниже прокручивается
          сам и жест не перехватывает. -->
+    <div class="border-b border-components-light pb-2">
     <div class="touch-none select-none" data-menu-sheet-grab>
     <div class="flex h-5 cursor-grab items-center justify-center pt-2">
       <span class="h-1 w-8 rounded-pill bg-surface-raised"></span>
     </div>
 
-    <div class="flex h-10 items-center justify-between px-4">
+    <div class="mt-1 flex h-12 items-center justify-between px-4">
       <p class="text-m-h2 text-text-primary">Для бизнеса</p>
       <button type="button" class="flex size-6 items-center justify-center" data-menu-sheet-close>
         <!-- close-s (963:37212), не close-l: глиф 11.9, как у шторки «Наценка» -->
@@ -87,7 +93,9 @@
       </form>
     </div>
 
+    </div>
+
     <!-- filters 352 из 360: 8 справа зарезервированы под полосу прокрутки -->
-    <div class="pr-2 pt-4" data-menu-b2b-sheet></div>
+    <div class="pr-2" data-menu-b2b-sheet></div>
   </div>
 </div>

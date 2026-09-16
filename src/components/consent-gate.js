@@ -11,14 +11,14 @@
 //
 // В Blade это тот же скрипт: разметке достаточно имени поля. Валидацию на
 // сервере он, разумеется, не заменяет — `required` на поле остаётся.
+import { setDisabled } from "./disabled.js";
+
 const submitsOf = (form) =>
   [...document.querySelectorAll('[type="submit"]')].filter((b) => b.form === form);
 
 function sync(input) {
   if (!input.form) return;
-  submitsOf(input.form).forEach((b) => {
-    b.disabled = !input.checked;
-  });
+  submitsOf(input.form).forEach((b) => setDisabled(b, "consent", !input.checked));
 }
 
 export function initConsentGate(root = document) {

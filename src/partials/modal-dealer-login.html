@@ -1,13 +1,19 @@
 <!-- ==================== ВОЙТИ В РЕЖИМ ДИЛЕРА =========================
-     Figma form 1003:166682 (1440, 485×323) / 2209:216011 (360). Узкое окно:
-     тело с боковыми отступами 96 вместо 40.
+     Figma form 1003:166682 (1440, 485×323) / 2209:216011 (360). Узкое окно, и
+     размеры у него свои — те же, что у подписки, и не те, что у заявки: поля
+     96 на 1440 и 40 на 360 (`main-container` 2209:216419 padH=40), заголовок
+     Mobile/H2 22/26 по центру (2225:96574).
+
+     Высота шторки задана кадром — 400 из 800 при содержимом 348
+     (2209:216416 / 2209:216417): под последней строкой остаётся воздух,
+     отсюда `min-h`.
 
      Одно поле без подписи, чекбокса нет, кнопка ТЁМНАЯ — в отличие от заявки
      и письма директору, где она коралловая. Под кнопкой две строки, и во
      второй «стать дилером?» — коралловая ссылка, открывающая соседнее окно:
      единственное место, где одна модалка передаёт управление другой. -->
 <div class="modal-scrim" data-modal="dealer-login">
-  <div class="modal-panel" data-modal-panel>
+  <div class="modal-panel max-md:min-h-[400px]" data-modal-panel>
     <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
       <button type="button" class="flex size-6 items-center justify-center" data-modal-close aria-label="Закрыть">
         <!-- 1440 — close-l (963:37209), 360 — close-s (963:37212) -->
@@ -16,8 +22,8 @@
       </button>
     </div>
 
-    <form class="px-24 pb-6 max-md:px-4" data-modal-form>
-      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h3">Войти в режим дилера</h2>
+    <form class="px-24 pb-6 max-md:px-10" data-modal-form>
+      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h2">Войти в режим дилера</h2>
 
       <input type="password" name="password" required placeholder="Введите пароль" class="order-input mt-6" />
 

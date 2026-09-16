@@ -77,8 +77,15 @@ function applyFormat(id) {
       const row = document.createElement("div");
       row.className =
         "flex min-h-11 items-center gap-4 max-md:min-h-10 max-md:flex-row-reverse";
+      // Выносок стоит на 28 от ВЕРХА строки (underline 766:14629: коробка 44,
+      // padding-bottom 16), а ссылка центрируется в тех же 44, как и город
+      // напротив. Поэтому левая группа тянется на всю высоту строки:
+      // `items-baseline` по коробке высотой в саму ссылку поднимала ссылку
+      // на 2.5px над городом, а `margin-top` выноска отсчитывался от неё же и
+      // уезжал на 35 вместо 28.
       const left = document.createElement("span");
-      left.className = "flex w-[351px] items-baseline gap-3 max-md:w-[206px] max-md:flex-none";
+      left.className =
+        "flex w-[351px] items-center gap-3 self-stretch max-md:w-[206px] max-md:flex-none";
       const a = document.createElement("a");
       a.href = e.url.replace("/json/", `/${fmt.id}/`);
       a.className =
@@ -97,17 +104,20 @@ function applyFormat(id) {
   );
 
   document.querySelector("[data-downloads]").replaceChildren(
-    ...DOWNLOADS.map((label) => {
-      // «Link M dotted» кораллом (1167:74245/74246): пунктир, не сплошная.
-      // В кадре первая строка окрашена наполовину — коралловый посимвольный
-      // стиль накрывает только «Скачать пример», — но это правка макета, а не
-      // наша (BACKLOG.md), поэтому обе строки целиком коралловые.
+    ...DOWNLOADS.map(({ link, tail }) => {
+      // «Link M dotted» кораллом (1167:74245/74246, на 360 — 2209:104275/104276):
+      // пунктир, не сплошная. Ссылкой набрана не вся строка — посимвольный
+      // стиль в кадре накрывает у первой только «Скачать пример», остаток идёт
+      // обычным #292929. У второй строки ссылка занимает её целиком.
+      const p = document.createElement("p");
+      p.className = "text-body-n text-text-primary max-md:text-m-body-n";
       const a = document.createElement("a");
       a.href = "#";
-      a.className =
-        "link-dotted w-fit text-body-n text-text-link-highlighted max-md:text-m-body-n";
-      a.textContent = label.replace("JSON", up);
-      return a;
+      a.className = "link-dotted text-text-link-highlighted";
+      a.textContent = link;
+      p.append(a);
+      if (tail) p.append(tail.replace("JSON", up));
+      return p;
     })
   );
 }

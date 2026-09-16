@@ -18,6 +18,7 @@
 //     });
 //     paint((await res.json()).lines);   // server owns quantities and totals
 import { setCartCount } from "./cart.js";
+import { setDisabled } from "./disabled.js";
 
 const clone = (sel) => document.querySelector(sel).content.cloneNode(true);
 
@@ -32,13 +33,38 @@ function plural(n, one, few, many) {
   return `${n} ${many}`;
 }
 
+// Кухня стоит столько, сколько её модули: цена строки — сумма `цена × кол-во`
+// по комплектации. В макете эти два числа не сходятся (Флэт-03 нарисована за
+// 43 661₽ при модулях на 59 850₽), и считать по строкам — то же решение, что
+// на PDP; выбор клиента от 16.09, расхождение записано в BACKLOG. Скидка при
+// этом остаётся авторской: она хранится разницей, а не второй ценой, поэтому
+// «Скидка» в сводке не уезжает вслед за пересчётом.
+const modulesTotal = (line) =>
+  line.modules ? line.modules.reduce((s, m) => s + m.price * m.qty, 0) : null;
+
+function reprice(line) {
+  const sum = modulesTotal(line);
+  if (sum === null) return;
+  line.price = sum;
+  line.oldPrice = sum + line.discount;
+}
+
 export function initOrderCart(root, { lines } = {}) {
   if (!root) return null;
 
   const listEl = root.querySelector("[data-cart-list]");
   const emptyEl = root.querySelector("[data-cart-empty]");
   const selectAll = root.querySelector("[data-select-all]");
-  const state = lines.map((l) => ({ ...l, qty: l.qty ?? 1, selected: l.selected !== false }));
+  const state = lines.map((l) => {
+    const line = {
+      ...l,
+      qty: l.qty ?? 1,
+      selected: l.selected !== false,
+      discount: (l.oldPrice ?? l.price) - l.price,
+    };
+    reprice(line);
+    return line;
+  });
 
   // ---- summary ------------------------------------------------------------
   // The design's placeholder figures don't reconcile (50 795 − 1 095 ≠ 43 335),
@@ -62,8 +88,9 @@ export function initOrderCart(root, { lines } = {}) {
     put("total", money(total));
     fitTotals();
 
-    const submit = root.querySelectorAll("[data-order-submit]");
-    submit.forEach((b) => (b.disabled = count === 0));
+    root
+      .querySelectorAll("[data-order-submit]")
+      .forEach((b) => setDisabled(b, "empty", count === 0));
   }
 
   // «Итого» с большой суммой: кегль уменьшается, пока строка не влезет в свою
@@ -194,8 +221,24 @@ export function initOrderCart(root, { lines } = {}) {
 
   root.querySelector("[data-order-print]")?.addEventListener("click", () => window.print());
 
+  // Правка комплектации: цена строки пересчитывается из модулей, а строка без
+  // модулей уходит из заказа целиком (просьба клиента 16.09).
+  function repriceLine(id) {
+    const line = state.find((l) => l.id === id);
+    if (!line) return false;
+    if (line.modules && line.modules.length === 0) {
+      drop(id);
+      return true;
+    }
+    reprice(line);
+    const node = listEl.querySelector(`[data-cart-line][data-line-id="${id}"]`);
+    if (node) paintLine(node, line);
+    commit();
+    return false;
+  }
+
   render();
-  return { state, commit, render };
+  return { state, commit, render, repriceLine };
 }
 
 // The mobile CTA bar is revealed by scroll, not always on: the frame showing

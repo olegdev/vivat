@@ -1,9 +1,16 @@
 <!-- ==================== ПОДПИСАТЬСЯ НА НОВОСТИ =======================
      Figma form 1003:169310 (1440, 485×343) / 2225:96576 (360, шторка 400).
-     Узкое окно, отступы 96. Поле без подписи, согласие тем же текстом, что в
-     заявке, кнопка ТЁМНАЯ. -->
+     Узкое окно, и размеры у него СВОИ, не такие, как у заявки и письма
+     директору: поля 96 на 1440 и 40 на 360 (`main-container` 2225:96985
+     padH=40), заголовок — Mobile/H2 22/26 по центру во всю ширину
+     (2225:96984), а не 18/24.
+
+     Высота шторки в кадре задана — 400 из 800, при содержимом 365
+     (2225:96981 / 2225:96982), то есть под кнопкой остаётся воздух. Отсюда
+     `min-h`: без него панель обнимала содержимое и кнопка вставала вплотную к
+     нижнему краю (замечание клиента 16.09). -->
 <div class="modal-scrim" data-modal="subscribe">
-  <div class="modal-panel" data-modal-panel>
+  <div class="modal-panel max-md:min-h-[400px]" data-modal-panel>
     <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
       <button type="button" class="flex size-6 items-center justify-center" data-modal-close aria-label="Закрыть">
         <!-- 1440 — close-l (963:37209), 360 — close-s (963:37212) -->
@@ -12,8 +19,8 @@
       </button>
     </div>
 
-    <form class="px-24 pb-12 max-md:px-4 max-md:pb-6" data-modal-form>
-      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h3">Подписаться на новости</h2>
+    <form class="px-24 pb-12 max-md:px-10 max-md:pb-6" data-modal-form>
+      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h2">Подписаться на новости</h2>
 
       <input type="email" name="email" required placeholder="Введите e-mail" class="order-input mt-6" />
 

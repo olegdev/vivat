@@ -5,7 +5,7 @@ import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initSession } from "../../components/session.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
-import { initOrderCart } from "../../components/order-cart.js";
+import { initOrderCart, initOrderBar } from "../../components/order-cart.js";
 import { initOrderModules } from "../../components/order-modules.js";
 import { initOrderForms } from "../../components/order-forms.js";
 import { ICON } from "../../data/asset-base.js";
@@ -45,11 +45,22 @@ document.querySelector("[data-nav-cart]")?.setAttribute("aria-current", "page");
 const page = document.querySelector("[data-order]");
 
 // ---- корзина ----------------------------------------------------------------
-initOrderCart(page, { lines: LINES });
+const cart = initOrderCart(page, { lines: LINES });
 
 // ---- модули строки ----------------------------------------------------------
-const modules = initOrderModules(page, { lines: LINES, money: rub });
+// Правка комплектации меняет цену кухни, а кухня без модулей уходит из заказа
+// (решение клиента 16.09). `state` корзины держит те же массивы `modules`, что
+// и фикстура, поэтому шторке и раскрытой карточке достаточно сказать, какую
+// строку пересчитать.
+const modules = initOrderModules(page, {
+  lines: LINES,
+  money: rub,
+  onChange: (line) => cart?.repriceLine(line.id),
+});
 modules?.expand("shale"); // the frame draws «Шале» open (953:152360)
+
+// Мобильный бар отдаёт очередь кнопке сводки, как только до неё доскроллили.
+initOrderBar(page);
 
 // ---- форма ------------------------------------------------------------------
 // THE SEAM: submitOrder() is the one place the order is sent. Today it reveals
@@ -72,17 +83,16 @@ const forms = initOrderForms(page, {
   onSubmit: (values) => submitOrder({ ...values, lines: LINES.map(({ id }) => id) }),
 });
 
-// The summary's own button sits outside the form (the 322 panel is a sibling
-// of it), so it submits by hand; the mobile bar's button uses `form=`.
-// Native validation focuses the first invalid field, but doesn't reliably
-// scroll it into view when the button that triggered submit lives outside
-// the form (Safari especially) — so do that ourselves before handing off.
-page.querySelector("[data-order-summary] [data-order-submit]")?.addEventListener("click", () => {
-  if (forms && !forms.form.checkValidity()) {
-    forms.form.querySelector(":invalid")?.scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-  forms?.form.requestSubmit();
-});
+// Кнопка сводки стоит вне формы (панель 322 — её сосед), поэтому связываем её
+// атрибутом, как уже связан мобильный бар. Тогда это настоящий submit: браузер
+// сам покажет незаполненное поле, а галочку согласия сторожит одно правило на
+// обе кнопки (components/consent-gate.js), а не отдельная ветка на десктоп.
+// В Blade это атрибут в разметке — `form="dealer-order-form"` на кнопке сводки.
+const summarySubmit = page.querySelector("[data-order-summary] [data-order-submit]");
+if (summarySubmit && forms) {
+  summarySubmit.setAttribute("form", forms.form.id);
+  summarySubmit.setAttribute("type", "submit");
+}
 
 initModals();
 initPhoneMask();

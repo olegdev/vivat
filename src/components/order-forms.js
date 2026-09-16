@@ -44,6 +44,15 @@ export function initOrderForms(root, { delivery, money, onDelivery, onSubmit } =
     });
   }
 
+  // ИНН — только цифры (просьба клиента 16.09). Поле типа `text`, поэтому
+  // ограничение живёт здесь: `type="number"` дал бы стрелки, экспоненту и
+  // потерю ведущих нулей.
+  const inn = form.elements.inn;
+  inn?.addEventListener("input", () => {
+    const digits = inn.value.replace(/\D/g, "");
+    if (digits !== inn.value) inn.value = digits;
+  });
+
   card.querySelectorAll("[data-delivery-mode]").forEach((btn) =>
     btn.addEventListener("click", () => applyDelivery({ mode: btn.dataset.deliveryMode }))
   );

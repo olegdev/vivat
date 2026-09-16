@@ -99,14 +99,23 @@ export function initOrderModules(root, { lines, money, onChange } = {}) {
     if (!btn) return;
     const node = btn.closest("[data-module-line]");
     const line = openLine ?? byId.get(node.closest("[data-cart-line]")?.dataset.lineId);
-    const mod = line?.modules.find((m) => m.id === node.dataset.moduleId);
-    if (!mod) return;
+    const i = line ? line.modules.findIndex((m) => m.id === node.dataset.moduleId) : -1;
+    if (i < 0) return;
+    const mod = line.modules[i];
 
-    if (btn.hasAttribute("data-module-up")) mod.qty += 1;
-    else if (mod.qty > 1) mod.qty -= 1;
-    else return;
+    if (btn.hasAttribute("data-module-up")) {
+      mod.qty += 1;
+      paint(node, mod);
+    } else if (mod.qty > 1) {
+      mod.qty -= 1;
+      paint(node, mod);
+    } else {
+      // count=1 — левая кнопка мусорка, и она убирает модуль из комплектации,
+      // как мусорка карточки убирает строку заказа.
+      line.modules.splice(i, 1);
+      node.remove();
+    }
 
-    paint(node, mod);
     commit(line);
   });
 
@@ -116,6 +125,7 @@ export function initOrderModules(root, { lines, money, onChange } = {}) {
 
   // THE SEAM — see the note at the top of the file.
   function commit(line) {
+    if (openLine === line && !line.modules.length) closeSheet();
     onChange?.(line);
   }
 

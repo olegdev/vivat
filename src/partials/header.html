@@ -337,15 +337,19 @@
         </form>
       </div>
       <!-- order icon — count badge driven by components/cart.js. `icon-button`
-           (450:13425) is a row [circle 44][badge 20] at gap -12, so the badge is
-           an in-flow sibling and the control grows to 52 when it shows; the
-           variant here is `design=dark`. See SOLUTIONS.md › "Badges are layout,
-           not overlay". -->
-      <a href="../customer/order.html" data-half class="flex h-11 shrink-0 items-center" data-cart aria-label="Корзина">
+           (450:13425) is a row [circle 44][badge 20] at gap -12: внутри
+           компонента бейдж — сосед в потоке, и контрол растёт с 44 до 52.
+           НО в кадре страницы контрол стоит в рамке `order` фиксированных 44
+           (882:105098 @1356 на покупательском заказе 942:110180), а инстанс
+           внутри неё — 52: бейдж ВЫХОДИТ за рамку вправо и кружок не двигается.
+           Поэтому здесь кружок держит свои 44, а бейдж снят с потока — иначе
+           он ездит от каждой цифры (счётчик 9 → 10) и тащит кнопку за собой.
+           См. SOLUTIONS.md › "Badges are layout, not overlay". -->
+      <a href="../customer/order.html" data-half class="relative flex h-11 w-11 shrink-0 items-center" data-cart aria-label="Корзина">
         <span class="icon-btn">
           <img src="../../assets/header/icon-order-dark.svg" alt="" class="size-6" />
         </span>
-        <span data-cart-count class="badge-number badge-number--dark -ml-3 hidden self-start">0</span>
+        <span data-cart-count class="badge-number badge-number--dark absolute left-8 top-0 hidden">0</span>
       </a>
     </div>
   </div>

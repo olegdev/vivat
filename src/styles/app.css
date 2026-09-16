@@ -822,9 +822,14 @@
   .modal-scrim.is-open { @apply flex; }
   .modal-panel {
     /* Панель никогда не выходит за экран: `max-h-full` считается от
-       содержимого скрима, то есть уже с учётом его полей. */
+       содержимого скрима, то есть уже с учётом его полей.
+
+       Ниже `md` сверху всегда остаётся полоса скрима в 40: во всех кадрах окон
+       шторка стоит на y=40 из 800 (2209:213755, 2209:216011, 2225:96576,
+       2225:97387). Раньше высота была ограничена только экраном, и на коротком
+       экране окно упиралось в верхний край. */
     @apply max-h-full w-[485px] overflow-y-auto rounded-[var(--radius-l)] bg-surface-inverted;
-    @apply max-md:w-full max-md:rounded-b-none;
+    @apply max-md:max-h-[calc(100%-40px)] max-md:w-full max-md:rounded-b-none;
   }
 
   /* ---- Catalog filter drawer: slide-in ----------------------------------

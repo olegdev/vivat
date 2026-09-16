@@ -34,6 +34,11 @@ const defaultRootSections = [
   { label: "Полезная информация", href: "#" },
   { label: "Для бизнеса", href: "../dealer/howto.html" },
   { label: "Стать дилером", href: "#", modal: "dealer-request" },
+  // «Войти в режим дилера» бургер-меню не рисует ни в одном кадре, но окно
+  // входа СВОЙ мобильный кадр имеет (2209:216011) — значит, доступ с телефона
+  // предполагался; на 1440 вход живёт в служебной строке шапки, которой ниже
+  // `md` нет. Ряд наш, вопрос дизайнеру записан в BACKLOG (клиент, 16.09).
+  { label: "Войти в режим дилера", href: "#", modal: "dealer-login" },
 ];
 
 // A category becomes drillable only when the shared catalog tree actually has
