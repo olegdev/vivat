@@ -42,7 +42,10 @@
          тапбар и подвал — общие партиалы, поэтому произвольным вариантом отсюда. -->
     <div class="w-full max-xl:pb-[132px] max-md:[&[data-step='1']_nav[aria-label='Основная_навигация']]:hidden max-md:[&[data-step='2']_nav[aria-label='Основная_навигация']]:hidden max-md:[&[data-step='2']_footer]:hidden max-md:[&[data-step='2']]:pb-[60px]" data-order data-step="0">
       <!-- ==================== SITE HEADER (desktop only) =============== -->
-      <div class="max-md:hidden">
+      <!-- Прячется сама шапка, а не весь партиал: за `</header>` в нём лежит
+           лист выбора города, и ниже `md` он нужен — «Ваш регион» в
+           дилерской «Доставке» открывает именно его. -->
+      <div class="max-md:[&>header]:hidden">
         <!--#include partials/header.html -->
       </div>
 

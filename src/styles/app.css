@@ -825,9 +825,11 @@
      пилюля, как стояло. Шеврон рисует место вызова. Нативный <select>, чтобы
      в Blade варианты стали @foreach; сегодня в нём только плейсхолдер, и он
      серый — `value` 1271:51395 набран #808080. */
+  /* Значение — BodyS-accent 14/18 Medium (Dropdown Trigger 1415:67646,
+     value 1271:51395), на 360 — Mobile/BodyS-accent 12/16 (клиент, 16.09). */
   .order-select {
     @apply h-11 w-full appearance-none rounded-n bg-components-subtle pl-4 pr-11;
-    @apply text-body-n text-text-secondary outline-none transition-colors;
+    @apply text-body-s-accent text-text-secondary outline-none transition-colors max-md:text-m-body-s-accent;
     @apply focus-visible:outline-1 focus-visible:outline-offset-[3px] focus-visible:outline-border-ring;
   }
 

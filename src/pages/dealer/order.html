@@ -37,7 +37,10 @@
          (выбор магазина) и шага 2 (контакты). -->
     <div class="w-full max-xl:pb-[132px]" data-order>
       <!-- ==================== SITE HEADER (desktop only) =============== -->
-      <div class="max-md:hidden">
+      <!-- Прячется сама шапка, а не весь партиал: за `</header>` в нём лежит
+           лист выбора города, и ниже `md` он нужен — «Ваш регион» в
+           дилерской «Доставке» открывает именно его. -->
+      <div class="max-md:[&>header]:hidden">
         <!--#include partials/header.html -->
       </div>
 
