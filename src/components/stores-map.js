@@ -468,7 +468,14 @@ export function renderStoresMap(anchor, opts) {
       }
       head?.classList.toggle("max-md:flex-row", on);
       head?.classList.toggle("max-md:items-center", on);
-      head?.classList.toggle("max-md:gap-1", on);
+      // Ряд «стрелка + имя» 40 идёт сразу за ручкой (header 1859:336834
+      // @20), без зазора 4, который есть у списка перед городом (`max-md:pt-1`
+      // из SHEET_HEAD; один `pt-0` его не перебил бы — в CSS он раньше).
+      head?.classList.toggle("max-md:pt-1", !on);
+      head?.classList.toggle("max-md:pt-0", on);
+      // …а снизу у неё 4 до линии (header 360×64 = 20 + 40 + 4); у списка
+      // нижнее поле несёт поле поиска, поэтому там `pb-0`.
+      head?.classList.toggle("max-md:pb-1", on);
       // Шапка `shop-step-2` (1859:336659) отделена от карточки чертой 1px
       // `#e7e7e7` снизу — как и в списке городов; у списка магазинов черты нет.
       head?.classList.toggle("max-md:border-0", !on);

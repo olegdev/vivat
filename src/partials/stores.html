@@ -76,12 +76,13 @@
                выбирают город (в опте) или город области (в рознице). На
                остальных страницах это просто подпись, меню там никто не
                наполняет и кнопка ведёт себя как текст. -->
-          <!-- Стрелка назад — только в состоянии «список городов»
-               (`type=city` 1859:335134: icon-container 40 слева от города).
-               Возвращает панель к списку салонов. -->
+          <!-- Стрелка назад — в состояниях «список городов» (`type=city`
+               1859:335134) и «карточка магазина» (`shop-step-2` 1859:336658):
+               icon-container 40 с глифом 24 у ЛЕВОГО края, текст сразу за
+               ним (gap 0) — 16 / стрелка / 16 / текст. -->
           <button
             type="button"
-            class="hidden size-10 shrink-0 items-center justify-center self-start"
+            class="hidden size-10 shrink-0 items-center justify-start self-start"
             data-panel-back
             aria-label="Назад к списку салонов"
           >
@@ -90,7 +91,9 @@
           <!-- Имя магазина в шапке — состояние «карточка магазина» на шаге
                выбора дилера (2397:152957): слева стрелка назад, рядом имя, а
                город и тумблер на это время уходят. -->
-          <span class="hidden h-8 items-center text-h3 text-text-primary max-md:text-m-h3" data-panel-title></span>
+          <!-- Ряд 40: текст 24 с полями 8 (title 288×24 @40,8 в header 40).
+               Двухстрочное имя растит ряд, поля остаются — min-h + py, не h. -->
+          <span class="hidden min-h-10 flex-1 items-center py-2 text-h3 text-text-primary max-md:text-m-h3" data-panel-title></span>
           <button type="button" class="flex h-8 items-center gap-1" data-city-toggle>
             <span
               class="text-h3 text-text-primary underline decoration-dotted decoration-1 underline-offset-4 max-md:text-m-h3"
