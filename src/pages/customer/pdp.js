@@ -9,6 +9,7 @@ import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initSession } from "../../components/session.js";
+import { initNoteIcons } from "../../components/note-icon.js";
 import { stores } from "../../data/stores.js";
 import { HOME, ICON } from "../../data/asset-base.js";
 import { product, modules, addToCart, reviews, collection } from "../../data/pdp.js";
@@ -29,6 +30,7 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
 initSearch();
 initCart();
 initSession();
+initNoteIcons();
 
 initSummary(product);
 initStickyPrice(product);

@@ -4,6 +4,7 @@ import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initSession } from "../../components/session.js";
+import { initNoteIcons } from "../../components/note-icon.js";
 import { initDealerPriceControls } from "../../components/price-mode.js";
 import { initOrderCart, initOrderBar } from "../../components/order-cart.js";
 import { initOrderModules } from "../../components/order-modules.js";
@@ -37,6 +38,7 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
 initSearch();
 initCart();
 initSession();
+initNoteIcons();
 
 // The order screens are the only ones in the design with an active bottom-nav
 // item, and it is always «Корзина» (2225:167296, 2225:201809, 2238:157471).

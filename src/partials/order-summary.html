@@ -108,17 +108,15 @@
 
     <!-- one notice, two texts: the customer panel warns about the dealer's
          markup (943:108533), the dealer panel about delivery (953:149401) -->
-    <div class="flex gap-2 max-md:order-first group-data-[user=dealer]:order-first">
-      <!-- info 16 secondary — по центру ПЕРВОЙ строки на любой ширине: 1 при
-           строке 18, 0 при строке 16. Кадр (icon-container 943:108531) ставит
-           значок на 2 от верха, но строка на разных экранах то одна, то две,
-           и «на 2 ниже» при одной строке читается как съехавший значок
-           (решение клиента 15.09 для планшета, 16.09 — для всех ширин). -->
-      <img src="../../assets/pdp/icon-info-16-secondary.svg" alt="" class="mt-px size-4 shrink-0 max-md:mt-0" />
-      <p class="text-body-s text-text-secondary max-md:text-m-body-s group-data-[user=dealer]:hidden">
+    <div class="flex gap-2 max-md:order-first group-data-[user=dealer]:order-first" data-note>
+      <!-- info 16 secondary: в две строки — на 2 ниже верха текста, как
+           icon-container 943:108531; в одну — по центру строки. Строки
+           считает components/note-icon.js, здесь только стартовые 2. -->
+      <img src="../../assets/pdp/icon-info-16-secondary.svg" alt="" class="mt-0.5 size-4 shrink-0" data-note-icon />
+      <p class="text-body-s text-text-secondary max-md:text-m-body-s group-data-[user=dealer]:hidden" data-note-text>
         Дилерская наценка может отличаться в зависимости от региона!
       </p>
-      <p class="hidden text-body-s text-text-secondary max-md:text-m-body-s group-data-[user=dealer]:block">
+      <p class="hidden text-body-s text-text-secondary max-md:text-m-body-s group-data-[user=dealer]:block" data-note-text>
         Доставка оплачивается отдельно и доступна только в Москве
       </p>
     </div>

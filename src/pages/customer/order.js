@@ -4,6 +4,7 @@ import { initMobileMenu } from "../../components/mobile-menu.js";
 import { initSearch } from "../../components/search.js";
 import { initCart } from "../../components/cart.js";
 import { initSession } from "../../components/session.js";
+import { initNoteIcons } from "../../components/note-icon.js";
 import { initOrderCart, initOrderBar } from "../../components/order-cart.js";
 import { renderStoresMap, setBases as setStoresBases } from "../../components/stores-map.js";
 import { initStoreSheet } from "../../components/store-sheet.js";
@@ -28,6 +29,7 @@ initMobileMenu(document.querySelector("[data-mobile-menu-root]"), {
 initSearch();
 initCart();
 initSession();
+initNoteIcons();
 
 const page = document.querySelector("[data-order]");
 initOrderCart(page, { lines: LINES });
