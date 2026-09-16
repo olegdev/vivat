@@ -25,6 +25,7 @@ export function initStoreSheet({
   let startH = 0;
   let handle = null;
 
+  const mq = window.matchMedia("(max-width: 47.99rem)");
   const trackH = () => track.getBoundingClientRect().height;
   // Поднятый лист не должен наезжать на крестик над картой (`close-panel`
   // 360×40, кнопка 28 на 8 от верха): доли считаны от кадра 800, а на низком
@@ -42,6 +43,10 @@ export function initStoreSheet({
 
   function apply(i, { animate = true } = {}) {
     index = Math.min(SNAPS.length - 1, Math.max(0, i));
+    // Лист — только ниже `md`; выше панель стоит в потоке, и высота из
+    // расчёта листа ей ни к чему. Сюда доходят и общие обработчики (тап по
+    // карте сворачивает лист) — на 1440 они резали панель до 301.
+    if (!mq.matches) return;
     sheet.style.transition = animate ? "height 220ms cubic-bezier(0.22, 0.61, 0.36, 1)" : "";
     sheet.style.height = `${heightFor(index)}px`;
     sheet.dataset.snap = index === 0 ? "collapsed" : "expanded";
@@ -92,13 +97,13 @@ export function initStoreSheet({
     el.addEventListener("pointercancel", onUp);
   }
 
-  const mq = window.matchMedia("(max-width: 47.99rem)");
   const sync = () => (mq.matches ? apply(index, { animate: false }) : (sheet.style.height = ""));
   mq.addEventListener("change", sync);
   window.addEventListener("resize", sync);
   sync();
 
   function peak(fraction) {
+    if (!mq.matches) return;
     sheet.style.transition = "height 220ms cubic-bezier(0.22, 0.61, 0.36, 1)";
     const h = clamp(Math.round(trackH() * (1 - fraction)));
     sheet.style.height = `${h}px`;

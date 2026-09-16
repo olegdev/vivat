@@ -735,9 +735,14 @@ export function renderStoresMap(anchor, opts) {
   }
 
   // Десктоп, режим выбора: раскрытие — свой клик, не проходит через select().
-  function toggleExpand(id) {
+  function toggleExpand(id, { scroll = false } = {}) {
     expandedId = expandedId === id ? null : id;
     applySelection({ scroll: false });
+    if (scroll && expandedId) {
+      listEl
+        .querySelector(`[data-store="${expandedId}"]`)
+        ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
   }
 
   listEl.addEventListener("click", (e) => {
@@ -841,7 +846,14 @@ export function renderStoresMap(anchor, opts) {
         hideIconOnBalloonOpen: false,
       }
     );
-    placemark.events.add("click", () => select(store.id, { scroll: true }));
+    // На шаге выбора дилера (1440/768) метка — то же, что клик по карточке:
+    // раскрывает её и подкручивает список, а выбор остаётся за «Выбрать
+    // магазин» — иначе тап по метке сразу открывал шаг 2.
+    placemark.events.add("click", () =>
+      selectable && !isMobileCity()
+        ? toggleExpand(store.id, { scroll: true })
+        : select(store.id, { scroll: true })
+    );
     marks.set(store.id, { placemark, attached: true });
     map.geoObjects.add(placemark);
   }
