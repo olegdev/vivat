@@ -675,6 +675,15 @@
   }
   .stores-scroll::-webkit-scrollbar-track { background-color: var(--color-divider-light); }
   .stores-scroll::-webkit-scrollbar-thumb { background-color: var(--color-text-secondary); }
+  /* В листе на 360 колонка прокрутки 8, а не 24 (`scroll` в 2059:167059:
+     8×580, дорожка 2 у правого края), карточки 352 — шеврон на 24 от края
+     экрана. Считается только в браузерах с классической полосой; накладная
+     полоса телефона места не занимает, и карточка там во всю ширину. */
+  @media (max-width: 47.99rem) {
+    .stores-scroll::-webkit-scrollbar { width: 8px; }
+    .stores-scroll::-webkit-scrollbar-track,
+    .stores-scroll::-webkit-scrollbar-thumb { border-width: 0 0 0 6px; }
+  }
 
   /* ---- Stores map: marker ------------------------------------------------
      Blue Yandex-style "9" pin traced from the Figma mock (pin-store.svg): thin
