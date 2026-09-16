@@ -367,7 +367,7 @@ and **`B2b additional` is now built out**: the four modals plus Доставка
 Контакты, Для интернет-магазинов, Как с нами работать, Сертификаты, Схемы
 сборки, Техническая информация, Каталог декоров, Новости and Каталог
 3D-моделей. What is left is what the design does not draw — «Методические
-пособия» and four other menu entries have no frames. See `BACKLOG.md`.
+пособия» and three other menu entries have no frames. See `BACKLOG.md`.
 
 `src/pages/dealer/learning.html` — «Обучающие материалы», двенадцатая страница
 секции. Построена сразу в трёх ширинах: Figma `Learning` 2507:138626 (1440),
