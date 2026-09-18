@@ -1,0 +1,39 @@
+<!-- ==================== ДОСТУП К ОПТОВЫМ ЦЕНАМ =======================
+     Открывается ссылкой «Получить оптовую цену» на странице модуля. Своего
+     фрейма у окна нет: по просьбе клиента (18.09.2026) это «Войти в режим
+     дилера» (modal-dealer-login.html) один в один — те же размеры, поле
+     пароля, тёмная кнопка и две строки под ней, — только заголовок другой.
+     Отправка ведёт себя так же, как вход: открывает дилерский сеанс. -->
+<div class="modal-scrim" data-modal="wholesale-access">
+  <div class="modal-panel max-md:min-h-[400px]" data-modal-panel tabindex="-1">
+    <div class="flex h-[59px] items-center justify-end px-4 max-md:h-14">
+      <button type="button" class="flex size-6 items-center justify-center" data-modal-close aria-label="Закрыть">
+        <!-- 1440 — close-l (963:37209), 360 — close-s (963:37212) -->
+        <img src="../../assets/header/icon-close-dark.svg" alt="" class="size-6 max-md:hidden" />
+        <img src="../../assets/header/icon-close-s.svg" alt="" class="hidden size-6 max-md:block" />
+      </button>
+    </div>
+
+    <form class="px-24 pb-6 max-md:px-10" data-modal-form>
+      <h2 class="text-center text-h4 text-text-primary max-md:text-m-h2">Доступ к оптовым ценам</h2>
+
+      <input type="password" name="password" required placeholder="Введите пароль" class="order-input mt-6" />
+
+      <button type="submit" class="btn btn-m btn-primary mt-6 w-full max-md:text-m-button-m">
+        Войти
+      </button>
+
+      <p class="pt-6 text-center text-body-xs text-text-primary max-md:text-m-body-s">
+        Чтобы получить пароль, обратитесь к своему персональному менеджеру.
+      </p>
+      <p class="pt-2 text-center text-body-xs text-text-primary max-md:text-m-body-s">
+        Хотите
+        <!-- стиль текста у этого куска — «Desktop/Link XS dotted» (587:21781),
+             то есть ссылка с пунктирным подчёркиванием, а не просто цвет -->
+        <button type="button" class="link-dotted text-text-link-highlighted" data-modal-open="dealer-request">
+          стать дилером?
+        </button>
+      </p>
+    </form>
+  </div>
+</div>

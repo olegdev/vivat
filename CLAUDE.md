@@ -613,6 +613,8 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `order-summary`, `order-forms`, `order-modules`, `order-done`,
 `search-overlay`, `price-mode`, `modals` (хаб) and the four it pulls in —
 `modal-dealer-request`, `modal-dealer-success`, `modal-dealer-login`,
+`modal-wholesale-access` (окно входа под заголовком «Доступ к оптовым ценам»
+для ссылки «Получить оптовую цену» на странице модуля),
 `modal-subscribe`,
 `modal-director`, `modal-about`, `modal-bug-report`, and the content-page trio `menu-b2b`, `for-business-header`
 (which also carries the section-menu sheet) and `accordion`, plus

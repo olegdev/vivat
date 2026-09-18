@@ -21,12 +21,12 @@ export function initModuleSummary(product) {
   root.querySelector("[data-module-packaging-label]").textContent = product.packagingLabel;
   root.querySelector("[data-module-size]").textContent = product.size;
   root.querySelector("[data-module-order]").textContent = product.cta;
-  // «Получить оптовую цену» — не страница, а заявка: открывает готовую модалку
-  // «Стать дилером». Прототипа на ссылке в макете нет, решение записано в
-  // docs/LINK-MAP.md §4.17.
+  // «Получить оптовую цену» — не страница: открывает окно «Доступ к оптовым
+  // ценам» (вход дилера под своим заголовком, клиент 18.09). Прототипа на
+  // ссылке в макете нет, решение записано в docs/LINK-MAP.md §4.17.
   for (const notice of root.querySelectorAll("[data-module-notice], [data-module-notice-inline]")) {
     (notice.querySelector("[data-module-notice-inline-text]") ?? notice).textContent = product.notice;
-    notice.dataset.modalOpen = "dealer-request";
+    notice.dataset.modalOpen = "wholesale-access";
   }
   // Цена — добавка клиента поверх макета; поля необязательные, поэтому пустые
   // значения просто не печатаются (у `empty:hidden` в разметке).

@@ -50,6 +50,9 @@ const SEAMS = {
     signIn();
     window.location.href = "../dealer/main.html";
   },
+  // «Доступ к оптовым ценам» — окно входа под другим заголовком, и отправка
+  // у него та же.
+  "wholesale-access": (values) => SEAMS["dealer-login"](values),
   subscribe: (values) => void values,
   director: (values) => void values,
   "bug-report": (values) => void values,
