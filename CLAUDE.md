@@ -490,10 +490,10 @@ Five things about them are easy to get wrong:
   вход и сообщение об ошибке просто закрываются. Вход дополнительно уводит на
   дилерскую главную, что наше решение, а не макета. Всё в `BACKLOG.md`.
 
-`partials/modals.html` is a hub of four `#include`s rather than a container —
+`partials/modals.html` is a hub of nine `#include`s rather than a container —
 the include plugin recurses, so a page mounts everything with one line while
-`dist-php/` still gets four separate `@include('partials.modal-…')`.
-`components/modals.js` drives all of them and holds the four seams; what is
+`dist-php/` still gets nine separate `@include('partials.modal-…')`.
+`components/modals.js` drives all of them and holds the six form seams; what is
 open is read off the DOM (`[data-modal].is-open`) rather than kept in a
 variable, so a panel shown by other means still closes on Esc, the × and a
 click outside.
@@ -611,12 +611,12 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `product-card`, `promo-card`, `review-card`, `pdp-summary`, `pdp-specs`,
 `pdp-photo-overlay`, `sticky-price`, `seo-kitchens`, `cart-card`,
 `order-summary`, `order-forms`, `order-modules`, `order-done`,
-`search-overlay`, `price-mode`, `modals` (хаб) and the four it pulls in —
+`search-overlay`, `price-mode`, `modals` (хаб) and the nine it pulls in —
 `modal-dealer-request`, `modal-dealer-success`, `modal-dealer-login`,
 `modal-wholesale-access` (окно входа под заголовком «Доступ к оптовым ценам»
 для ссылки «Получить оптовую цену» на странице модуля),
 `modal-subscribe`,
-`modal-director`, `modal-about`, `modal-bug-report`, and the content-page trio `menu-b2b`, `for-business-header`
+`modal-director`, `modal-about`, `modal-share`, `modal-bug-report`, and the content-page trio `menu-b2b`, `for-business-header`
 (which also carries the section-menu sheet) and `accordion`, plus
 `benefit-tile`, `session`, `schema-org` and `fonts` — the `@font-face` block
 for Onest, which is self-hosted from `public/assets/fonts/` (the same variable

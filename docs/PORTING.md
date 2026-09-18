@@ -231,7 +231,7 @@ HTML внутри JS не нужно: его там нет.
 | количество в заказе | `components/order-cart.js` → `commit()` | пересчитывает итог на клиенте | `PATCH /cart` со всеми строками, сервер возвращает количества и итог |
 | комплектация строки заказа | `components/order-modules.js` → `commit(line)` | пересчитывает цену кухни как сумму модулей | `PATCH /cart/{line}/modules` |
 | поиск | `components/search.js` → `searchSuggest()` | ищет по локальному массиву; сабмит формы перехвачен, потому что страницы `/search` нет | `GET /search/suggest?q=…`; обработчик сабмита удалить, форма уйдёт обычным GET |
-| формы модальных окон | `components/modals.js` → `SEAMS` | пять функций-заглушек по имени окна | `POST` с `FormData(form)` и CSRF-токеном |
+| формы модальных окон | `components/modals.js` → `SEAMS` | шесть функций-заглушек по имени окна; «Доступ к оптовым ценам» зовёт шов входа — это то же окно под другим заголовком | `POST` с `FormData(form)` и CSRF-токеном |
 | прайс-лист дилера | `components/price-mode.js` → `applyPriceMode()` | localStorage + пересчёт `[data-price-base]` на клиенте | смена прайс-листа на сервере, цены приходят готовыми |
 | город | `components/city-select.js` → `setCity()` | localStorage, правит все `[data-city-label]` | запрос; список салонов приходит уже отфильтрованным |
 
@@ -383,7 +383,10 @@ npx @tailwindcss/cli -i resources/css/app.css -o public/css/app.css --watch
 **Organization** — `partials/schema-org.html`, одинаковый на всех страницах,
 подключается обычным `@include('partials.schema-org')`. Внутри четыре поля
 (`name`, `url`, `logo`, `telephone`) — состав задан SEO-специалистом
-заказчика. `https://mebel.com` в `url` и `logo` заменяется на `url()`.
+заказчика. `https://mebel.com` в `url` заменяется на `url()`. `logo` уже
+указывает на файл живого сайта (`/img/logo.svg`, тот же, что стоит в шапке и
+подвале с 18.09) — в Blade это `asset('img/logo.svg')`, если файл переедет,
+а в прототипе он лежит как `assets/header/logo.svg`.
 
 **BreadcrumbList** — свой блок в каждой странице, кроме главной (у покупателя и
 у дилера главная одна и та же). Партиалом он не сделан намеренно: содержимое у
