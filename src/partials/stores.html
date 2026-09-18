@@ -96,7 +96,7 @@
           <span class="hidden min-h-10 flex-1 items-center py-2 text-h3 text-text-primary max-md:text-m-h3" data-panel-title></span>
           <button type="button" class="group/city flex h-8 items-center gap-1" data-city-toggle>
             <span
-              class="text-h3 text-text-primary underline decoration-dotted decoration-1 underline-offset-4 transition-colors group-hover/city:text-text-link-highlighted max-md:text-m-h3"
+              class="text-h3 text-text-primary underline decoration-dotted decoration-1 underline-offset-4 max-md:text-m-h3"
               data-panel-city
               >Москва</span
             >
@@ -104,9 +104,9 @@
             <img src="../../assets/header/icon-pin-accent.svg" alt="" class="hidden size-6 group-hover/city:block" />
           </button>
           <!-- Область — вторая строка селектора, её показывает только розница -->
-          <button type="button" class="group/city hidden h-6 items-center gap-1" data-region-toggle>
+          <button type="button" class="hidden h-6 items-center gap-1" data-region-toggle>
             <span
-              class="text-body-n text-text-secondary underline decoration-dotted decoration-1 underline-offset-4 transition-colors group-hover/city:text-text-link-highlighted"
+              class="text-body-n text-text-secondary underline decoration-dotted decoration-1 underline-offset-4"
               data-panel-region
             ></span>
             <img src="../../assets/header/chevron-down.svg" alt="" class="size-4 opacity-60" />
@@ -404,7 +404,7 @@
   <template data-place-option>
     <button
       type="button"
-      class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle aria-[current=true]:bg-components-subtle"
+      class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:text-text-link-highlighted aria-[current=true]:bg-components-subtle"
     ></button>
   </template>
 

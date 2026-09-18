@@ -65,14 +65,14 @@
 
 <!-- одна строка города (future @foreach($cities as $city)) -->
 <template data-city-row>
-  <button type="button" class="mobile-menu-item text-body-n text-text-primary" data-city-pick></button>
+  <button type="button" class="mobile-menu-item text-body-n text-text-primary transition-colors hover:text-text-link-highlighted" data-city-pick></button>
 </template>
 
 <!-- одна строка выпадашки на десктопе -->
 <template data-city-option>
   <button
     type="button"
-    class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle"
+    class="flex w-full items-center px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:text-text-link-highlighted"
     data-city-pick
   ></button>
 </template>
