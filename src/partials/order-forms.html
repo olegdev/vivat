@@ -120,12 +120,13 @@
         <span class="relative inline-flex">
           <button
             type="button"
-            class="inline-flex items-center gap-1 text-button-s text-text-primary"
+            class="group/city inline-flex items-center gap-1 text-button-s text-text-primary"
             data-city-open
             aria-expanded="false"
           >
-            <span data-city-label>Москва</span>
-            <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-4" />
+            <span class="transition-colors group-hover/city:text-text-link-highlighted" data-city-label>Москва</span>
+            <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-4 group-hover/city:hidden" />
+            <img src="../../assets/header/icon-pin-20-accent.svg" alt="" class="hidden size-4 group-hover/city:block" />
           </button>
           <span
             class="absolute left-0 top-7 z-50 hidden max-h-80 w-[280px] overflow-y-auto rounded-[var(--radius-l)] bg-surface-inverted py-2 shadow-dropdown"

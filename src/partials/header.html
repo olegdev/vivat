@@ -3,13 +3,14 @@
      subtle fill, then burger / centred logo / profile. -->
 <header class="md:hidden">
   <div class="flex h-[38px] items-center justify-between bg-surface-subtle px-4">
-    <button type="button" class="flex items-center gap-1" data-city-open aria-expanded="false">
+    <button type="button" class="group/city flex items-center gap-1" data-city-open aria-expanded="false">
       <span
-        class="text-m-body-n text-text-primary link-dotted"
+        class="text-m-body-n text-text-primary link-dotted transition-colors group-hover/city:text-text-link-highlighted"
         data-city-label
         >Москва</span
       >
-      <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5" />
+      <img src="../../assets/header/icon-pin-20.svg" alt="" class="size-5 group-hover/city:hidden" />
+      <img src="../../assets/header/icon-pin-20-accent.svg" alt="" class="hidden size-5 group-hover/city:block" />
     </button>
     <a
       class="text-m-body-n text-text-primary underline decoration-from-font underline-offset-2 group-data-[user=dealer]:hidden"
@@ -119,13 +120,14 @@
              потому что позиционируется от триггера — тем же приёмом, что
              дилерская панель прайс-листа. -->
         <div class="relative">
-          <button type="button" class="flex items-center gap-1" data-city-open aria-expanded="false">
+          <button type="button" class="group/city flex items-center gap-1" data-city-open aria-expanded="false">
             <span
-              class="text-body-s text-text-primary link-dotted"
+              class="text-body-s text-text-primary link-dotted transition-colors group-hover/city:text-text-link-highlighted"
               data-city-label
               >Москва</span
             >
-            <img src="../../assets/header/icon-pin.svg" alt="" class="size-6 -m-1" />
+            <img src="../../assets/header/icon-pin.svg" alt="" class="size-6 -m-1 group-hover/city:hidden" />
+            <img src="../../assets/header/icon-pin-accent.svg" alt="" class="hidden size-6 -m-1 group-hover/city:block" />
           </button>
           <div
             class="absolute left-0 top-8 z-50 hidden max-h-80 w-[280px] overflow-y-auto rounded-[var(--radius-l)] bg-surface-inverted py-2 shadow-dropdown"
