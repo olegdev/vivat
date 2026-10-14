@@ -105,9 +105,12 @@
 <!-- ==================== FOOTER (desktop) ========================= -->
 <!-- Подвал — полоса `#f8f8f8` (Frame 2087325236 752:51481) во всю ширину
      окна; содержимое, как у всех полос, упирается в 1900. Был белым: заливка
-     стояла только у мобильного подвала. -->
+     стояла только у мобильного подвала.
+     Поля — 40, как у всех полос (`page-x`): контейнер 1360 на x 40 во всех
+     вариантах `footer` (380:33528 / 380:49273, экспорт 14.10). Раньше стояло
+     34, и содержимое выходило за край соседних блоков на 6 с каждой стороны. -->
 <footer class="w-full bg-bg-subtle max-md:hidden">
-  <div class="page-max px-[34px] max-xl:px-6 py-10">
+  <div class="page-x py-10">
   <div class="flex items-center justify-between">
     <div class="flex h-12 w-[169px] items-center justify-center">
       <img src="../../assets/header/logo.svg" alt="VIVAT — фабрика мебели" class="h-[55.63px] w-[153px] max-w-none" />
