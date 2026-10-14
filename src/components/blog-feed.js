@@ -79,6 +79,13 @@ function renderGrid(el, items) {
 }
 
 export function initBlogFeed({ rubrics, periods, latest, articles }) {
+  // Счётчик есть у каждой рубрики (решение клиента 14.10): число из данных,
+  // а где его нет — сколько статей рубрики в ленте, хоть 0.
+  const all = [...latest, ...articles];
+  rubrics = rubrics.map((r) => ({
+    ...r,
+    count: r.count ?? all.filter((a) => a.rubric === r.label).length,
+  }));
   const latestEl = document.querySelector("[data-blog-latest]");
   const heading = document.querySelector("[data-blog-heading]");
   const grid = document.querySelector("[data-blog-grid]");
@@ -92,8 +99,7 @@ export function initBlogFeed({ rubrics, periods, latest, articles }) {
     const pill = clone("[data-blog-pill]");
     pill.querySelector("[data-rubric-label]").textContent = r.label;
     const count = pill.querySelector("[data-rubric-count]");
-    // Пустой слот остаётся: он держит ширину 10, как в мастере.
-    if (r.count != null) count.textContent = r.count;
+    count.textContent = r.count;
     pill.addEventListener("click", () => select(i));
     return pill;
   });
