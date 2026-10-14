@@ -31,6 +31,8 @@ const VISIBLE = new Set([
   "dealer/catalog",
   "dealer/pdp",
   "dealer/models",
+  "dealer/blog",
+  "dealer/blog-article",
 ]);
 
 if (!existsSync(DIST)) {
@@ -43,7 +45,9 @@ const fail = (page, msg) => problems.push(`${page}: ${msg}`);
 
 // Видимые крошки страницы: тексты звеньев в порядке отрисовки.
 function visibleCrumbs(html) {
-  const nav = html.match(/<nav class="[^"]*items-center gap-2 py-4[^"]*">([\s\S]*?)<\/nav>/);
+  // Крошки узнаются по набору классов, а не по их подстроке: у 3D-моделей
+  // между ними стоит своё поле `px-10`, и точная подстрока их теряла.
+  const nav = html.match(/<nav class="(?=[^"]*\bitems-center\b)(?=[^"]*\bgap-2\b)(?=[^"]*\bpy-4\b)[^"]*">([\s\S]*?)<\/nav>/);
   if (!nav) return null;
   const out = [];
   const re = /<a [^>]*>([^<]+)<\/a>|<span class="text-text-primary">([^<]+)<\/span>/g;

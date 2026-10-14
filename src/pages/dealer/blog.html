@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Блог</title>
+    <!--#include partials/schema-org.html -->
+    <!-- Хлебные крошки для поиска (schema.org/BreadcrumbList) — повторяют
+         видимый <nav> ниже слово в слово; npm run schema сверяет. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://mebel.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Блог" }
+        ]
+      }
+    </script>
+    <!--#include partials/fonts.html -->
+    <script type="module" src="./blog.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary">
+    <!--#include partials/session.html -->
+    <!-- «Блог» — лента статей. 1440 — Figma Blog-general 3060:145720,
+         360 — 3072:149955. Страница общая, как остальные страницы раздела:
+         шапку и подвал выбирает сеанс. В отличие от них у блога есть крошки и
+         нет меню раздела — это страница сайта, а не кабинета. -->
+    <div class="w-full max-xl:pb-[72px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/product-card.html -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- <template>ы, которые клонируются ниже -->
+      <!--#include partials/article-card.html -->
+
+      <!-- ==================== BREADCRUMBS ============================== -->
+      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent md:leading-6 text-text-secondary max-md:h-10 max-md:text-m-body-s">
+        <a href="../customer/main.html" data-half class="transition-colors hover:text-text-primary">Главная</a>
+        <span aria-hidden="true" class="relative top-px mr-px w-1.5 max-md:top-0 max-md:-ml-1.5 max-md:-mr-2 max-md:text-[11px] max-md:leading-[14px]">•</span>
+        <span class="text-text-primary">Блог</span>
+      </nav>
+
+      <!-- ==================== TITLE BLOCK ==============================
+           title-block 3060:145723 (type=H1) — 24 сверху, H1 40, лид 16/22
+           Medium в две строки под отбивкой 8; нижняя распорка скрыта, отбивку
+           до пилюль даёт сама панель. На 360 (3072:150223) — 12 сверху,
+           24/30 и 14/20. -->
+      <div class="page-x pt-6 max-md:pt-3">
+        <h1 class="text-h1 text-text-primary max-md:text-m-h1">Блог</h1>
+        <p class="max-w-[783px] pt-2 text-body-n-accent text-text-primary max-md:text-m-body-n-accent">
+          Практические советы, идеи для планировки и материалы, которые помогут собрать кухню под ваш образ жизни.
+        </p>
+      </div>
+
+      <!-- ==================== РУБРИКИ + ПЕРИОД =========================
+           catalog-settings 3070:147869 — тот же компонент, что в каталоге, но
+           без воронки и без ряда чипов: пилюли рубрик слева, «За все время»
+           справа (162, по содержимому). Поля 24/24, блок 92.
+           Ниже md (3074:151052) пилюли сворачиваются в выпадающий список
+           «Все статьи 40», рядом такой же «За все время»: две пилюли по 160 с
+           зазором 8, поля 12/16, блок 72. Планшетного кадра нет: пять пилюль и
+           «За все время» в 720 не помещаются, поэтому, как в каталоге, пилюли
+           сворачиваются уже ниже xl — в тот же список, но в размере 1440. Подписи 14/20 Regular — `audit:type`
+           по метрикам; fontName снимка («Medium») протух. -->
+      <div class="page-x flex items-center justify-between py-6 max-md:gap-2 max-md:pb-4 max-md:pt-3">
+        <div class="flex items-center gap-2 max-xl:hidden" data-blog-rubrics></div>
+
+        <div class="relative hidden max-xl:block" data-dropdown="rubric">
+          <button
+            type="button"
+            data-dropdown-toggle
+            aria-expanded="false"
+            class="flex h-11 items-center justify-between gap-1 rounded-pill bg-components-subtle px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:w-[160px] max-md:gap-0 max-md:text-m-body-n"
+          >
+            <span class="flex min-w-0 gap-2">
+              <span class="truncate" data-dropdown-label></span>
+              <span class="text-text-muted" data-dropdown-count></span>
+            </span>
+            <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 shrink-0 transition-transform max-md:hidden" data-dropdown-chevron />
+            <img src="../../assets/header/chevron-down-thin.svg" alt="" class="hidden size-6 shrink-0 transition-transform max-md:block" data-dropdown-chevron />
+          </button>
+          <div
+            data-dropdown-menu
+            class="absolute left-0 top-[calc(100%+8px)] z-30 hidden w-max min-w-full overflow-hidden rounded-[var(--radius-l)] bg-surface-inverted py-2 shadow-dropdown"
+          ></div>
+        </div>
+
+        <div class="relative" data-dropdown="period">
+          <!-- Шеврон: 24 Bold на 1440 (978:49801), 24 Thin на 360 (2214:190639). -->
+          <button
+            type="button"
+            data-dropdown-toggle
+            aria-expanded="false"
+            class="flex h-11 items-center gap-1 rounded-pill bg-components-subtle px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:w-[160px] max-md:justify-between max-md:text-m-body-n"
+          >
+            <span class="truncate" data-dropdown-label></span>
+            <img src="../../assets/header/chevron-down.svg" alt="" class="size-6 shrink-0 transition-transform max-md:hidden" data-dropdown-chevron />
+            <img src="../../assets/header/chevron-down-thin.svg" alt="" class="hidden size-6 shrink-0 transition-transform max-md:block" data-dropdown-chevron />
+          </button>
+          <div
+            data-dropdown-menu
+            class="absolute right-0 top-[calc(100%+8px)] z-30 hidden w-max min-w-full overflow-hidden rounded-[var(--radius-l)] bg-surface-inverted py-2 shadow-dropdown"
+          ></div>
+        </div>
+      </div>
+
+      <!-- ==================== ПОСЛЕДНИЕ СТАТЬИ ==========================
+           Article 3070:147975 — две карточки L по 668 с зазором 24; ниже md
+           (3072:150226) одна под другой, тот же зазор. Только у «Все статьи»:
+           при выбранной рубрике ряда нет (ответ дизайнера). -->
+      <div class="page-x grid grid-cols-2 gap-x-6 max-md:grid-cols-1 max-md:gap-y-6" data-blog-latest></div>
+
+      <!-- ==================== ЗАГОЛОВОК ПЛИТКИ ==========================
+           title-block 3072:148022 (type=H2) — 80 сверху, строка 44, 24 снизу;
+           лид в инстансе скрыт. На 360 (3072:150230) — 40, 26, 12. Подпись —
+           «Все статьи» или имя выбранной рубрики. -->
+      <div class="page-x pb-6 pt-20 max-md:pb-3 max-md:pt-10">
+        <h2 class="flex h-11 items-center text-h2 text-text-primary max-md:h-[26px] max-md:text-m-h2" data-blog-heading>Все статьи</h2>
+      </div>
+
+      <div class="page-x" data-blog-grid></div>
+
+      <!-- ==================== PAGINATION ============================== -->
+      <!--#include partials/pagination.html -->
+
+      <!-- ==================== ПОДПИСКА ================================
+           subscription 3072:150219 — сразу за постраничкой; на 360
+           (3072:149961) 80 + 16 сверху и 32 снизу, подвал вплотную. -->
+      <div class="page-x max-md:pb-8 max-md:pt-24">
+        <!--#include partials/subscribe-band.html -->
+      </div>
+
+      <div class="h-24 max-md:h-0"></div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- одна пилюля рубрики (future @foreach($rubrics as $r)) — `filters`
+         752:63422, как в каталоге; счётчик серым, у части рубрик его нет. -->
+    <template data-blog-pill>
+      <button
+        type="button"
+        class="filter-pill btn btn-m border border-border-default bg-surface-inverted text-body-n text-text-primary hover:border-border-default-hover"
+        aria-pressed="false"
+      >
+        <span data-rubric-label></span><span class="text-text-muted" data-rubric-count></span>
+      </button>
+    </template>
+
+    <!-- пункт выпадающего списка — меню сортировки каталога -->
+    <template data-blog-option>
+      <button
+        type="button"
+        class="flex w-full items-center gap-2 whitespace-nowrap px-4 py-2.5 text-left text-body-n text-text-primary transition-colors hover:bg-components-subtle max-md:text-m-body-n"
+      >
+        <span data-option-label></span><span class="text-text-muted" data-option-count></span>
+      </button>
+    </template>
+
+    <!-- ряд плитки — четыре карточки: 4×322 на 1440, 2×2 ниже xl -->
+    <template data-blog-row>
+      <div class="grid grid-cols-4 gap-x-6 max-xl:grid-cols-2 max-md:gap-x-4 max-md:gap-y-4"></div>
+    </template>
+
+    <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
+    <!--#include partials/modals.html -->
+  </body>
+</html>

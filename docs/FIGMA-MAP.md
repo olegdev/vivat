@@ -106,16 +106,17 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 | 31163 | **Новости** ✅ | [1463:67081](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1463-67081) | [2241:188212](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2241-188212) |
 | 33889 | **Каталог 3D-моделей** ✅ (в имени «Каталог (вариант)») | [2338:254259](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2338-254259) | [2338:254303](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2338-254303) |
 | 36393 | **Обучающие материалы** ✅ — ещё и 768: [2507:179457](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2507-179457) | [2507:138626](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2507-138626) | [2507:178465](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2507-178465) |
-| 39764 | **Блог: лента** — не свёрстано | [3060:145720](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3060-145720) | [3072:149955](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3072-149955) |
-| 41821 | **Блог: статья** — не свёрстано | [3077:184668](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3077-184668) | [3077:187161](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3077-187161) |
+| 39764 | **Блог: лента** ✅ | [3060:145720](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3060-145720) | [3072:149955](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3072-149955) |
+| 41821 | **Блог: статья** ✅ | [3077:184668](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3077-184668) | [3077:187161](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3077-187161) |
 
-Свёрстано всё, кроме блога. Пункты меню без фрейма — Поставщикам,
+Свёрстана вся секция. Пункты меню без фрейма — Поставщикам,
 Прайс-листы, Каталог мебели, Методические пособия — так и стоят заглушками,
 см. `BACKLOG.md`.
 
-**Блог (экспорт 14.10, ещё не свёрстан).** Две страницы, обе под дилерской
-шапкой `type=b2b`, но устроены не как остальные страницы раздела: у них есть
-крошки, а шаблона `general-container` с `menu-b2b` нет.
+**Блог (экспорт 14.10).** Две страницы — `dealer/blog.html` и
+`dealer/blog-article.html`. Кадры рисуют дилерскую шапку `type=b2b`, но
+страница общая, как остальные страницы раздела (шапку выбирает сеанс). Устроены
+не как они: у блога есть крошки, а шаблона `general-container` с `menu-b2b` нет.
 
 - **Лента** 3060:145720 — крошки «Главная / Блог», `title-block` «Блог» с
   подзаголовком, `catalog-settings` (сортировка «За все время» и чипы рубрик
@@ -135,7 +136,7 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
   мастере 1058:178109.
 - **В подвал добавлен «Блог»** — колонка «Компания», между «Наш адрес и
   телефоны» и «Новости», во всех шести вариантах `footer` (desktop / tablet /
-  mobile × Default / Dealer). В `partials/footer.html` его пока нет.
+  mobile × Default / Dealer); в `partials/footer.html` он есть.
 
 Все контентные страницы устроены одинаково: `site-header` → `title-block`
 (`type=H1`) → `general-container` → отбивка 96 → подвал. То есть это один
@@ -263,11 +264,8 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 Новое с экспортом 14.10 — блог:
 
-10. **Куда ведёт «Блог» и кто его видит.** Обе страницы нарисованы под
-    дилерской шапкой, а пункт «Блог» добавлен в подвал и покупателя, и
-    дилера. То есть это общая страница вроде остальных одиннадцати
-    (`data-user` из сеанса) или только дилерская? Других входов — шапка,
-    `menu-b2b`, бургер — макет не рисует.
-11. **Рубрики ленты.** Чипы — Все статьи 40, Материалы 4, Техника, Уход 32,
-    Планировка; у «Техники» и «Планировки» счётчика нет, и сумма с «Все
-    статьи» не сходится. Это филлер или так задумано?
+10. ~~**Куда ведёт «Блог» и кто его видит.**~~ — закрыт клиентом 14.10:
+    страница общая (`data-user` из сеанса, как у остальных одиннадцати), пункт
+    «Блог» в подвале покупателя и дилера законен.
+11. ~~**Рубрики ленты**~~ (Все статьи 40, Планировка, Материалы 4, Техника,
+    Уход 32) — закрыт клиентом 14.10: филлер, числа с бэка.

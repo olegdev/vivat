@@ -56,6 +56,8 @@ npx serve .
 | Новости | `news.html` | 1463:67081 |
 | Каталог 3D-моделей | `models.html` | 2338:254259 |
 | Обучающие материалы | `learning.html` | Learning 2507:138626 |
+| Блог: лента | `blog.html` | Blog-general 3060:145720 |
+| Блог: статья | `blog-article.html` | Blog-article 3077:184668 |
 
 Каждая страница — один адаптивный DOM. Мобильная версия выражена утилитами
 `max-md:` (и планшетная — `max-xl:`) прямо в разметке, отдельных мобильных
@@ -157,6 +159,7 @@ HTML внутри JS не нужно: его там нет.
 | промо-плитка | `partials/promo-card.html` | `components/promo-card.js` | `@foreach ($promos as $promo)` |
 | карточка отзыва | `partials/review-card.html` | `components/review-card.js` | `@foreach ($reviews as $r)` |
 | карточка новости | `partials/news-card.html` | `components/news-card.js` | `@foreach ($news as $n)` |
+| карточка статьи блога | `partials/article-card.html` | `components/article-card.js`, `blog-feed.js` | `@foreach ($articles as $a)`; лента — рядами по четыре |
 | слайд героя | `partials/hero.html` | `components/hero-slider.js` | `@foreach ($slides as $slide)` |
 | строка мега-меню | `partials/catalog-menu.html` | `components/catalog-menu.js` | вложенный `@foreach` |
 | строка бургер-меню | `partials/mobile-menu.html` | `components/mobile-menu.js` | вложенный `@foreach` |
@@ -281,6 +284,7 @@ BACKLOG). Каждая цена в разметке несёт `data-price-raw` 
 | `data/certificates.js`, `data/schemes.js`, `data/tech-info.js` | деревья документов (глубина 1 / 4 / 3) |
 | `data/decors.js`, `data/models.js` | карточки декоров и 3D-моделей |
 | `data/learning.js` | восемь видеокарточек |
+| `data/blog.js` | рубрики с числами (филлер дизайнера), пункты периода (заглушки клиента), две последние статьи, плитка и «Читайте также» |
 | `data/constructor.js` | адрес встроенного приложения o3d.ru — в Blade собирается сервером вместе с сеансом |
 
 В шапке каждого файла написано, во что он превращается на сервере и какие поля

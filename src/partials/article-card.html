@@ -1,0 +1,54 @@
+<!-- ==================== КАРТОЧКА СТАТЬИ ==============================
+     Figma `article-card` (3072:148061) — четыре варианта: desktop L 668
+     (3071:148002), desktop S 332 (3072:148062), mobile L 360 (3072:149915),
+     mobile S 156 (3072:149945). Размер карточки задаёт `data-size`, а её
+     ширину — контейнер: плитка ленты делит 1360 на четыре (322), рельс
+     «Читайте также» ставит по 348, ниже md — по 320.
+
+     Снимок, подпись рубрики, текст. Картинка выше рамки и прижата к её верху:
+     прямоугольник `image 142` фиксированной высоты (485 / 442 / 253 / 208)
+     внутри рамки 364 / 332 / 190 / 156, низ обрезан. Дата есть в мастере, но
+     скрыта во всех инстансах. Хвост снизу — часть карточки: 16 у L, 40 у S на
+     1440 (ряды ленты стоят вплотную, 542 и 518), 16 ниже md.
+
+     Ссылка на статью растянута на всю карточку через `after:`, а рубрика —
+     своя ссылка поверх неё: вложенных <a> не бывает. Будущий
+     @foreach($articles as $a); клонирует components/article-card.js. -->
+<template data-article-card>
+  <article
+    class="group/card relative flex flex-col gap-3 pb-10 data-[size=l]:pb-4 max-md:gap-2 max-md:pb-4 max-md:data-[size=l]:gap-2.5"
+    data-size="s"
+  >
+    <div
+      class="overflow-hidden rounded-n h-[332px] group-data-[size=l]/card:h-[364px] max-md:h-[156px] max-md:group-data-[size=l]/card:h-[190px]"
+    >
+      <img
+        src=""
+        alt=""
+        class="block h-[442.37px] w-full object-cover group-data-[size=l]/card:h-[485.01px] max-md:h-[207.86px] max-md:group-data-[size=l]/card:h-[253.16px]"
+        data-article-image
+      />
+    </div>
+    <!-- «Link S underline» 14/18 на 1440, на 360 — «Link S» 12/16 у L и
+         «Link XS» 11/14 у S; все Regular, цвет #808080. -->
+    <a
+      href="#"
+      class="relative z-10 w-fit text-body-s text-text-secondary underline max-md:text-m-body-xs max-md:group-data-[size=l]/card:text-m-body-s"
+      data-article-rubric
+    ></a>
+    <div class="flex flex-col gap-2 max-md:gap-1.5">
+      <!-- Заголовок: L — Body XL 24/32, S — H4 20/24; на 360 — Mobile/Body XL
+           18/26 и Mobile/H5 14/20. Лид — BodyN 16/24, на 360 Body N 14/20 у L
+           и BodyS 12/16 у S. -->
+      <h3
+        class="line-clamp-2 text-h4 text-text-primary group-data-[size=l]/card:text-body-xl max-md:line-clamp-4 max-md:text-m-h5 max-md:group-data-[size=l]/card:line-clamp-2 max-md:group-data-[size=l]/card:text-m-body-xl"
+      >
+        <a href="#" class="after:absolute after:inset-0" data-article-link></a>
+      </h3>
+      <p
+        class="line-clamp-2 text-body-n text-text-primary max-md:line-clamp-3 max-md:text-m-body-s max-md:group-data-[size=l]/card:line-clamp-2 max-md:group-data-[size=l]/card:text-m-body-n"
+        data-article-lead
+      ></p>
+    </div>
+  </article>
+</template>

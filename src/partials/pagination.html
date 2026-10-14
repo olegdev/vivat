@@ -7,9 +7,13 @@
      В макете там везде «товаров» (мастер `pagination` не переопределён ни в
      одном инстансе), но на странице новостей это ошибка копии — см. BACKLOG.
 
+     Число в подписи — тоже слот: у блога «Показать еще 12 статей из 40»
+     (3072:149838), шаг страницы там 12, а не 40.
+
      Страниц в макете семь везде, кроме «Каталога декоров» (1488:127364), где
-     инстанс оставляет три. Число объявляет страница — `data-pages="3"` на
-     секции, — а разметка гасит лишние кнопки вариантом при нём. -->
+     инстанс оставляет три, и блога, где их две (1 и 2). Число объявляет
+     страница — `data-pages="3"` на секции, — а разметка гасит лишние кнопки
+     вариантом при нём. -->
 <section
   class="page-x group/pag flex flex-col items-center gap-10 pt-16 pb-10 max-xl:pt-10 max-xl:pb-10 max-md:gap-6 max-md:pb-4"
   data-pagination
@@ -19,7 +23,7 @@
        а пробелы между ними — зазорами `gap-2` по 8 вместо пробела в 4:
        «расколбас с пробелами». -->
   <button type="button" class="btn btn-m btn-primary max-md:w-full max-md:text-m-button-m">
-    <span>Показать еще 40 <span data-grid-noun>товаров</span> из <span data-grid-total>123</span></span>
+    <span>Показать еще <span data-grid-step>40</span> <span data-grid-noun>товаров</span> из <span data-grid-total>123</span></span>
   </button>
   <!-- 758:57039: gap между «В начало»/цифрами/«В конец» — 32px (gap-8), не
        24; между цифрами — 8px (gap-2), не 4; текст всего блока Medium 500,
@@ -43,12 +47,12 @@
     <div class="flex items-center gap-2 max-md:gap-3">
       <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n bg-components-light-hover text-text-primary" aria-current="page">1</button>
       <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle">2</button>
-      <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle">3</button>
-      <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden">4</button>
-      <span class="hidden size-11 items-center justify-center text-text-secondary max-md:flex max-md:size-8 max-md:text-m-body-n group-data-[pages=3]/pag:max-md:hidden">…</span>
-      <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden max-md:hidden">5</button>
-      <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden max-md:hidden">6</button>
-      <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden">7</button>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=2]/pag:hidden">3</button>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden group-data-[pages=2]/pag:hidden">4</button>
+      <span class="hidden size-11 items-center justify-center text-text-secondary max-md:flex max-md:size-8 max-md:text-m-body-n group-data-[pages=3]/pag:max-md:hidden group-data-[pages=2]/pag:max-md:hidden">…</span>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden group-data-[pages=2]/pag:hidden max-md:hidden">5</button>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden group-data-[pages=2]/pag:hidden max-md:hidden">6</button>
+      <button type="button" class="flex size-11 items-center justify-center rounded-full max-md:size-8 max-md:text-m-body-n text-text-primary transition-colors hover:bg-components-subtle group-data-[pages=3]/pag:hidden group-data-[pages=2]/pag:hidden">7</button>
     </div>
     <a href="#" class="flex items-center gap-2 px-4 text-text-primary max-md:hidden">
       В конец

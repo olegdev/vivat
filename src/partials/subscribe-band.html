@@ -1,0 +1,24 @@
+<!-- ==================== ПОЛОСА ПОДПИСКИ =================================
+     Figma `social` — «Подпишитесь на рассылку» на #a4cebf: «Новости»
+     (1463:70256, 862 в колонке раздела) и обе страницы блога (3072:150199 /
+     3077:184700, 1360 во всю ширину). Ширину и отбивки задаёт место вставки.
+
+     1440: поля 40/32, заголовок 24/28 SemiBold, строка 20/32 Regular, кнопка
+     большая (56). Ниже md (3072:149965): колонка по центру, поля 16, кнопка 44
+     во всю ширину, подпись 16/22 (`buttons device=mobile, size=l` 1739:221005). Кнопка открывает общее окно подписки. -->
+<div
+  data-subscribe-band
+  class="flex items-center justify-between gap-4 rounded-[var(--radius-l)] bg-surface-accent-alt-subtle px-10 py-8 max-md:flex-col max-md:items-center max-md:gap-4 max-md:px-4 max-md:py-4"
+>
+  <div class="max-md:text-center">
+    <p class="text-h3 text-text-primary max-md:text-m-h3">Подпишитесь на рассылку</p>
+    <p class="text-body-l text-text-primary max-md:text-m-body-l">чтобы быть всегда в курсе!</p>
+  </div>
+  <button
+    type="button"
+    class="btn btn-l btn-primary shrink-0 max-md:h-11 max-md:w-full max-md:text-m-button-l"
+    data-modal-open="subscribe"
+  >
+    Подписаться
+  </button>
+</div>

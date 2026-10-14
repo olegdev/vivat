@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ru" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VIVAT — Как спланировать кухню: 7 решений, о которых легко забыть</title>
+    <!--#include partials/schema-org.html -->
+    <!-- Хлебные крошки для поиска (schema.org/BreadcrumbList) — повторяют
+         видимый <nav> ниже слово в слово; npm run schema сверяет. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Главная", "item": "https://mebel.com/" },
+          { "@type": "ListItem", "position": 2, "name": "Блог", "item": "https://mebel.com/blog.html" },
+          { "@type": "ListItem", "position": 3, "name": "Планировка" }
+        ]
+      }
+    </script>
+    <!--#include partials/fonts.html -->
+    <script type="module" src="./blog-article.js"></script>
+  </head>
+  <body class="group bg-bg-page text-text-primary">
+    <!--#include partials/session.html -->
+    <!-- Статья блога. 1440 — Figma Blog-article 3077:184668, 360 — 3077:187161.
+         Крошки, заголовок с лидом, обложка, затем оглавление `menu-blog` слева
+         (298) и текст справа (899), рельс «Читайте также», подписка. Ниже md
+         оглавление встаёт над текстом. -->
+    <div class="w-full max-xl:pb-[72px]">
+      <!-- ==================== SITE HEADER ============================== -->
+      <!--#include partials/header.html -->
+
+      <!-- ==================== CATALOG MEGA-MENU ======================== -->
+      <div data-catalog><!--#include partials/catalog-menu.html --></div>
+
+      <!-- ==================== MOBILE BURGER MENU ======================= -->
+      <div data-mobile-menu-root><!--#include partials/mobile-menu.html --></div>
+
+      <!-- ==================== SEARCH OVERLAY ============================ -->
+      <!--#include partials/product-card.html -->
+      <!--#include partials/search-overlay.html -->
+
+      <!-- ==================== ПРАЙС-ЛИСТ ДИЛЕРА ========================= -->
+      <!--#include partials/price-mode.html -->
+
+      <!-- <template>ы, которые клонируются ниже -->
+      <!--#include partials/article-card.html -->
+      <!--#include partials/carousel-section.html -->
+
+      <!-- ==================== BREADCRUMBS ============================== -->
+      <nav class="page-x flex items-center gap-2 py-4 text-body-n-accent md:leading-6 text-text-secondary max-md:h-10 max-md:text-m-body-s">
+        <a href="../customer/main.html" data-half class="transition-colors hover:text-text-primary">Главная</a>
+        <span aria-hidden="true" class="relative top-px mr-px w-1.5 max-md:top-0 max-md:-ml-1.5 max-md:-mr-2 max-md:text-[11px] max-md:leading-[14px]">•</span>
+        <a href="blog.html" class="transition-colors hover:text-text-primary">Блог</a>
+        <span aria-hidden="true" class="relative top-px mr-px w-1.5 max-md:top-0 max-md:-ml-1.5 max-md:-mr-2 max-md:text-[11px] max-md:leading-[14px]">•</span>
+        <span class="text-text-primary">Планировка</span>
+      </nav>
+
+      <!-- ==================== TITLE BLOCK ==============================
+           title-block 3077:184673 (type=H1) — 24 + H1 40 + лид 8/44 + 24.
+           На 360 (3077:187604) — 12, заголовок в три строки 24/30, лид 14/20,
+           16 снизу. -->
+      <div class="page-x py-6 max-md:pb-4 max-md:pt-3">
+        <h1 class="text-h1 text-text-primary max-md:text-m-h1">Как спланировать кухню: 7 решений, о которых легко забыть</h1>
+        <p class="max-w-[783px] pt-2 text-body-n-accent text-text-primary max-md:text-m-body-n-accent">
+          Разбираем рабочий треугольник, хранение, свет, розетки и другие решения, которые влияют на удобство кухни каждый день.
+        </p>
+      </div>
+
+      <!-- ==================== ОБЛОЖКА ==================================
+           Article 3077:184676 — рамка 1360×765.51, радиус 8; снимок 1360×1020
+           прижат к верху, низ обрезан. На 360 (3077:187654) рамка 346.76×191 с
+           полями 6.62, радиус 4 — так в кадре (см. BACKLOG). -->
+      <div class="page-x max-md:px-[6.62px]">
+        <div class="h-[765.51px] overflow-hidden rounded-l max-md:h-[191px] max-md:rounded-n">
+          <img
+            src="../../assets/blog/cover-planning.jpg"
+            alt="Как спланировать кухню: 7 решений, о которых легко забыть"
+            class="block h-[1020px] w-full object-cover max-md:h-[254.5px]"
+          />
+        </div>
+      </div>
+
+      <!-- ==================== ОГЛАВЛЕНИЕ + ТЕКСТ =======================
+           general-content-frame 3077:185242 — 40 + меню 298 + 48 + текст
+           (колонка 1054, блоки в ней 899) + 40. Меню стоит на 80 ниже начала
+           колонки, как у текста первая отбивка H2. -->
+      <div class="page-x flex gap-12 max-xl:flex-col max-xl:gap-0 max-md:px-0">
+        <!-- menu-blog 3077:188460 — те же строки, что у `menu-b2b`: подпись
+             BodyN-accent #acacac, пункты BodyN по 40, шевронов нет (свойство
+             `icon` выключено в каждой строке). #f8f8f8, поля 8/16.
+             На 360 (3077:188462) — без заливки, поля 16/24, строки 44, обе
+             надписи Mobile/BodyN-accent 14/20. Пункт ведёт к заголовку
+             раздела по порядку: 01 → H2, 02…04 → три H3. -->
+        <aside class="w-[298px] shrink-0 self-start pt-20 max-xl:w-full max-md:px-4 max-md:pt-6">
+          <nav class="flex flex-col bg-bg-subtle px-2 py-4 max-md:bg-transparent max-md:px-0 max-md:py-2" aria-label="В этой статье">
+            <p class="flex h-10 items-center px-4 text-body-n-accent text-text-muted max-md:h-11 max-md:text-m-body-n-accent">В этой статье</p>
+            <a href="#planning" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">01&nbsp; Планировка</a>
+            <a href="#work-zone" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">02&nbsp; Рабочая зона</a>
+            <a href="#storage" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">03&nbsp; Хранение</a>
+            <a href="#lighting" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">04&nbsp; Освещение</a>
+          </nav>
+        </aside>
+
+        <!-- content 3077:185320 — блоки `title-text-page`: H2 (80 + 36), Body-n
+             (16 + текст), H3 (32 + 28); на 360 — 40, 12 и 24. -->
+        <article class="min-w-0 flex-1 max-md:px-4">
+          <div class="max-w-[899px]">
+            <h2 id="planning" class="scroll-mt-4 pt-20 text-h2 text-text-primary max-md:pt-10 max-md:text-m-h2">
+              Хорошая кухня начинается не с цвета фасадов
+            </h2>
+            <p class="pt-4 text-body-n text-text-primary max-md:pt-3 max-md:text-m-body-n">
+              Сначала стоит понять сценарии: кто готовит, сколько людей одновременно находится на кухне, какая техника используется каждый день и что должно быть под рукой. Это помогает не перегружать пространство и заранее определить приоритеты.
+            </p>
+
+            <h3 id="work-zone" class="scroll-mt-4 pt-8 text-h3 text-text-primary max-md:pt-6 max-md:text-m-h3">
+              1. Начните с маршрутов, а не с модулей
+            </h3>
+            <p class="pt-4 text-body-n text-text-primary max-md:pt-3 max-md:text-m-body-n">
+              Холодильник, мойка и варочная поверхность формируют основную рабочую последовательность. Между ними важно оставить достаточно свободной столешницы и не заставлять пользователя пересекать кухню лишний раз.
+            </p>
+
+            <!-- Image-container 3077:185238 — 40 сверху и снизу, снимок
+                 899×538 радиус 8; на 360 (3077:188646) — 24 и квадрат 328. -->
+            <figure class="py-10 max-md:py-6">
+              <img
+                src="../../assets/blog/article-photo.jpg"
+                alt=""
+                class="block h-[538px] w-full rounded-l object-cover max-md:h-auto max-md:aspect-square"
+              />
+            </figure>
+
+            <h3 id="storage" class="scroll-mt-4 pt-8 text-h3 text-text-primary max-md:pt-6 max-md:text-m-h3">
+              2. Продумайте хранение по частоте использования
+            </h3>
+            <!-- Этот абзац — с нижней распоркой 16 (1003:166309 включена): он
+                 стоит перед плашкой. -->
+            <p class="pb-4 pt-4 text-body-n text-text-primary max-md:pt-3 max-md:text-m-body-n">
+              Ежедневные предметы размещайте в самой доступной зоне. Редко используемую посуду и запасы можно перенести выше или дальше от основной рабочей поверхности.
+            </p>
+
+            <!-- alert 3077:187128 — `size=l, accent=yes, layout=left`, тот же,
+                 что на PDP (.pdp-alert), но в три строки: поля 12, иконка info
+                 16 с отбивкой 4, текст 704. Первая строка — стиль Desktop/H5
+                 16/24 SemiBold (кусок строки, `styleOverrideTable`), остальное
+                 — BodyN. Крестика нет. На 360 (3077:188653) текст тот же, 16/24: блок
+                 144 = 12 + пять строк по 24 + 12. -->
+            <div class="flex gap-2 rounded-n bg-surface-accent-subtle px-4 py-3">
+              <img src="../../assets/pdp/icon-info-16-dark.svg" alt="" class="mt-1 size-4 shrink-0" />
+              <p class="max-w-[704px] text-body-n text-text-primary">
+                <span class="block text-h5">Совет дизайнера!</span>
+                Если приходится выбирать между лишним шкафом и свободной рабочей поверхностью, чаще выигрывает столешница.
+              </p>
+            </div>
+
+            <h3 id="lighting" class="scroll-mt-4 pt-8 text-h3 text-text-primary max-md:pt-6 max-md:text-m-h3">
+              3. Проверьте свет и розетки до заказа кухни
+            </h3>
+            <p class="pt-4 text-body-n text-text-primary max-md:pt-3 max-md:text-m-body-n">
+              Подсветка рабочей зоны и расположение розеток должны быть привязаны к реальным сценариям использования техники, а не распределены равномерно по стене.
+            </p>
+          </div>
+        </article>
+      </div>
+
+      <!-- ==================== ЧИТАЙТЕ ТАКЖЕ ============================
+           title-block 3077:185344 (H2, без лида и без кнопок) + blog-row
+           3077:187048: карточки S по 348 с шагом 372 и стрелками по краям; на
+           360 (3077:188740) — по 320 с зазором 8 и полосой прокрутки. -->
+      <!-- Ширину карточкам в дорожке даёт место вставки: 348 на 1440, 320 ниже md. -->
+      <div
+        class="[&_[data-track]>*]:w-[348px] [&_[data-track]>*]:shrink-0 max-md:[&_[data-track]>*]:w-[320px] max-md:[&_[data-track]>*]:snap-start"
+        data-section="related"
+      ></div>
+
+      <!-- ==================== ПОДПИСКА ================================
+           subscription 3077:184700 — сразу за рельсом; на 360 (3077:187195)
+           16 сверху и 32 снизу, подвал вплотную. -->
+      <div class="page-x max-md:pb-8 max-md:pt-4">
+        <!--#include partials/subscribe-band.html -->
+      </div>
+
+      <div class="h-24 max-md:h-0"></div>
+
+      <!-- ==================== BOTTOM NAV (mobile) ===================== -->
+      <!--#include partials/bottom-nav.html -->
+
+      <!-- ==================== FOOTER ================================== -->
+      <!--#include partials/footer.html -->
+    </div>
+
+    <!-- ==================== МОДАЛЬНЫЕ ОКНА ============================= -->
+    <!--#include partials/modals.html -->
+  </body>
+</html>

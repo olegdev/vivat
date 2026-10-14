@@ -378,6 +378,19 @@ and **`B2b additional` is now built out**: the four modals plus Доставка
 2×156 на 360. Превью выгружены из макета; порядок выгрузки не совпал с
 порядком карточек, пары восстановлены по надписям на самих превью.
 
+`src/pages/dealer/blog.html` и `blog-article.html` — блог, лента и статья.
+Figma Blog-general 3060:145720 / 3072:149955 и Blog-article 3077:184668 /
+3077:187161 (экспорт 14.10). Страницы общие, как остальные страницы раздела
+(шапку выбирает сеанс), но устроены как страницы сайта: крошки, H1 с лидом, без
+`menu-b2b`. У ленты два состояния, второе — со слов дизайнера, без кадра:
+«Все статьи» ставит две последние статьи размером L над плиткой S, выбранная
+рубрика убирает ряд L и называет плитку своим именем. Плитка идёт рядами по
+четыре (на 360 — квадратами 2×2 без зазора между ними), так нарисовано.
+Карточка — `partials/article-card.html`, один шаблон на L и S, ширину даёт
+контейнер; рельс «Читайте также» — `mountCarousel` с `render`, как отзывы на
+PDP. Полоса «Подпишитесь на рассылку» вынесена в `partials/subscribe-band.html`
+— её же берут «Новости». Решения и заглушки — в `BACKLOG.md` › «Блог».
+
 `src/pages/dealer/constructor.html` — «Конструктор мебели». **Единственная
 страница проекта без единого фрейма**: пункт «Конструктор» дилерская шапка
 (menu-items 607:27488) несла с самого начала и никуда не вела, страницу под
@@ -608,7 +621,7 @@ partials: `header`, `bottom-nav`, `footer`, `catalog-menu`, `mobile-menu`,
 `catalog-filters` (её же берут «3D-модели»), `catalog-settings`,
 `catalog-grid`, `decor-filters`, `pagination`,
 `chip-close`, `stores`, `hero`, `carousel-section`,
-`product-card`, `promo-card`, `review-card`, `pdp-summary`, `pdp-specs`,
+`product-card`, `promo-card`, `review-card`, `article-card`, `subscribe-band`, `pdp-summary`, `pdp-specs`,
 `pdp-photo-overlay`, `sticky-price`, `seo-kitchens`, `cart-card`,
 `order-summary`, `order-forms`, `order-modules`, `order-done`,
 `search-overlay`, `price-mode`, `modals` (хаб) and the nine it pulls in —
