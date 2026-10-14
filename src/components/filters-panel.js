@@ -115,8 +115,9 @@ export function initFiltersPanel({ groups, price = false } = {}) {
       const n = groupCount(state, pill.dataset.filterPill);
       const el = pill.querySelector("[data-pill-count]");
       pill.classList.toggle("is-active", n > 0);
+      // Пустой слот не прячется: в мастере пилюли он держит ширину 10
+      // (см. `.filter-pill` в app.css).
       el.textContent = n > 0 ? String(n) : "";
-      el.classList.toggle("hidden", n === 0);
     }
     // Кнопка «очистить» в <summary> показывается только у группы со
     // значением, а не постоянно/никогда.

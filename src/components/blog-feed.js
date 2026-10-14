@@ -92,8 +92,8 @@ export function initBlogFeed({ rubrics, periods, latest, articles }) {
     const pill = clone("[data-blog-pill]");
     pill.querySelector("[data-rubric-label]").textContent = r.label;
     const count = pill.querySelector("[data-rubric-count]");
+    // Пустой слот остаётся: он держит ширину 10, как в мастере.
     if (r.count != null) count.textContent = r.count;
-    else count.remove();
     pill.addEventListener("click", () => select(i));
     return pill;
   });

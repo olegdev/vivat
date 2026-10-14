@@ -484,8 +484,9 @@ export function initCatalogListing({ products, rub }) {
       const n = groupCount(state, group);
       const countEl = pill.querySelector("[data-pill-count]");
       pill.classList.toggle("is-active", n > 0);
+      // Пустой слот не прячется: в мастере пилюли он держит ширину 10
+      // (см. `.filter-pill` в app.css).
       countEl.textContent = n > 0 ? String(n) : "";
-      countEl.classList.toggle("hidden", n === 0);
     });
     // Per-group "Очистить" inside the drawer's <summary> — shown only when
     // that group itself has a selection, not whenever the drawer is open.

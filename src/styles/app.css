@@ -957,6 +957,18 @@
      the border stays default-grey). */
   .filter-pill.is-active { @apply border-border-active!; }
 
+  /* Подпись и счётчик в мастере `filters` 752:63422: зазор 4, у активной
+     (752:63467) — 8. Рамка счётчика (3072:148166, появилась в экспорте 14.10)
+     шириной 10 стоит и у пилюли без числа — число скрыто, рамка нет, — так что
+     справа от подписи там 4 + 10 + 16 = 30, а не 16. Поэтому пустой слот не
+     прячется, а держит `min-w-2.5`.
+     Поле 15, а не 16: обводка в Figma внутренняя, а CSS-`border` ложится
+     поверх поля и добавлял по пикселю с каждой стороны (SOLUTIONS › «CSS
+     `border` расширяет коробку»). */
+  .filter-pill { @apply gap-1 px-[15px]; }
+  .filter-pill.is-active { @apply gap-2; }
+  .filter-pill [data-pill-count] { @apply inline-block min-w-2.5; }
+
   /* `icon-button` 881:51240 is a horizontal auto-layout row [circle 44][badge
      20] at gap -12 — the badge is a SIBLING that occupies width, not an overlay
      on the circle. Hence the flex row + `-ml-3` + `self-start` below: hiding the
