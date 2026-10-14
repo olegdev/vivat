@@ -523,7 +523,13 @@
   .carousel-arrow {
     @apply flex size-12 items-center justify-center rounded-full transition-colors;
     @apply border border-border-default bg-components-subtle;
-    @apply hover:border-border-subtle-hover hover:bg-components-subtle-hover;
+    /* hover (614:22714) меняет только заливку — #eeeeee, обводка остаётся
+       #cbcbcb; pressed (614:22734) рисуется как default, #f3f3f3. Тёмная
+       обводка под курсором была нашей. */
+    @apply hover:bg-components-subtle-hover active:bg-components-subtle;
+    /* Дошли до края, а курсор остался на стрелке — она не должна висеть в
+       цвете наведения, будто её ещё можно нажать. */
+    @apply disabled:bg-components-subtle disabled:hover:bg-components-subtle;
     /* У набора `carousel-controls` три состояния — default / hover / pressed,
        выключенного нет, и кадры рисуют обе стрелки в начале рельса в полный
        цвет (766:30341/30342). Приглушение до 40% было нашим — снято; стрелка у
