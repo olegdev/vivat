@@ -92,14 +92,14 @@
              `icon` выключено в каждой строке). #f8f8f8, поля 8/16.
              На 360 (3077:188462) — без заливки, поля 16/24, строки 44, обе
              надписи Mobile/BodyN-accent 14/20. Пункт ведёт к заголовку
-             раздела по порядку: 01 → H2, 02…04 → три H3. -->
+             раздела по порядку: 01…04 → четыре H3 текста. -->
         <aside class="w-[298px] shrink-0 self-start pt-20 max-xl:w-full max-md:px-4 max-md:pt-6">
           <nav class="flex flex-col bg-bg-subtle px-2 py-4 max-md:bg-transparent max-md:px-0 max-md:py-2" aria-label="В этой статье">
             <p class="flex h-10 items-center px-4 text-body-n-accent text-text-muted max-md:h-11 max-md:text-m-body-n-accent">В этой статье</p>
-            <a href="#planning" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">01&nbsp; Планировка</a>
-            <a href="#work-zone" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">02&nbsp; Рабочая зона</a>
-            <a href="#storage" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">03&nbsp; Хранение</a>
-            <a href="#lighting" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">04&nbsp; Освещение</a>
+            <a href="#section-1" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">01&nbsp; Планировка</a>
+            <a href="#section-2" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">02&nbsp; Рабочая зона</a>
+            <a href="#section-3" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">03&nbsp; Хранение</a>
+            <a href="#section-4" class="flex h-10 items-center px-4 text-body-n text-text-primary transition-colors hover:bg-components-subtle-hover max-md:h-11 max-md:text-m-body-n-accent">04&nbsp; Освещение</a>
           </nav>
         </aside>
 
@@ -107,14 +107,14 @@
              (16 + текст), H3 (32 + 28); на 360 — 40, 12 и 24. -->
         <article class="min-w-0 flex-1 max-md:px-4">
           <div class="max-w-[899px]">
-            <h2 id="planning" class="scroll-mt-4 pt-20 text-h2 text-text-primary max-md:pt-10 max-md:text-m-h2">
+            <h2 class="pt-20 text-h2 text-text-primary max-md:pt-10 max-md:text-m-h2">
               Хорошая кухня начинается не с цвета фасадов
             </h2>
             <p class="pt-4 text-body-n text-text-primary max-md:pt-3 max-md:text-m-body-n">
               Сначала стоит понять сценарии: кто готовит, сколько людей одновременно находится на кухне, какая техника используется каждый день и что должно быть под рукой. Это помогает не перегружать пространство и заранее определить приоритеты.
             </p>
 
-            <h3 id="work-zone" class="scroll-mt-4 pt-8 text-h3 text-text-primary max-md:pt-6 max-md:text-m-h3">
+            <h3 id="section-1" class="scroll-mt-4 pt-8 text-h3 text-text-primary max-md:pt-6 max-md:text-m-h3">
               1. Начните с маршрутов, а не с модулей
             </h3>
             <p class="pt-4 text-body-n text-text-primary max-md:pt-3 max-md:text-m-body-n">
@@ -131,7 +131,7 @@
               />
             </figure>
 
-            <h3 id="storage" class="scroll-mt-4 pt-8 text-h3 text-text-primary max-md:pt-6 max-md:text-m-h3">
+            <h3 id="section-2" class="scroll-mt-4 pt-8 text-h3 text-text-primary max-md:pt-6 max-md:text-m-h3">
               2. Продумайте хранение по частоте использования
             </h3>
             <!-- Этот абзац — с нижней распоркой 16 (1003:166309 включена): он
@@ -154,11 +154,21 @@
               </p>
             </div>
 
-            <h3 id="lighting" class="scroll-mt-4 pt-8 text-h3 text-text-primary max-md:pt-6 max-md:text-m-h3">
+            <h3 id="section-3" class="scroll-mt-4 pt-8 text-h3 text-text-primary max-md:pt-6 max-md:text-m-h3">
               3. Проверьте свет и розетки до заказа кухни
             </h3>
             <p class="pt-4 text-body-n text-text-primary max-md:pt-3 max-md:text-m-body-n">
               Подсветка рабочей зоны и расположение розеток должны быть привязаны к реальным сценариям использования техники, а не распределены равномерно по стене.
+            </p>
+
+            <!-- Четвёртый раздел — заглушка: в кадре H3 три, а пунктов
+                 оглавления четыре. Добавлен по просьбе клиента, чтобы у
+                 каждого пункта был свой заголовок (см. BACKLOG). -->
+            <h3 id="section-4" class="scroll-mt-4 pt-8 text-h3 text-text-primary max-md:pt-6 max-md:text-m-h3">
+              4. Заголовок раздела
+            </h3>
+            <p class="pt-4 text-body-n text-text-primary max-md:pt-3 max-md:text-m-body-n">
+              Текст раздела статьи: практический совет, идея или разбор.
             </p>
           </div>
         </article>
