@@ -342,11 +342,11 @@ and only on order screens — customer and dealer alike; the catalog, PDP, home
 and search frames carry no active item. Pages set `aria-current="page"`;
 `.nav-item[aria-current]` in `app.css` does the rest.
 
-**Who is reading a page is a session, not markup.** The eleven content pages
+**Who is reading a page is a session, not markup.** The thirteen content pages
 of `B2b additional` are shared: the client's own words are «страницы шарятся —
 плашка меняется в зависимости от логина дилера». So only the dealer's own
 screens — main, catalog, PDP, order, constructor — hardcode
-`data-user="dealer"`; the eleven read it from `localStorage` via
+`data-user="dealer"`; the thirteen read it from `localStorage` via
 `partials/session.html`, an inline synchronous script right after `<body>` (a
 deferred module would let the customer's header paint first and flash).
 `components/session.js` owns the flag: the `dealer-login` modal opens it,
@@ -573,9 +573,9 @@ Their own parts are `partials/benefit-tile.html` (the Figma component is called
 greys to `#808080`). Everything else is reuse.
 
 **Микроразметка schema.org — на всех страницах, и её сверяет команда.**
-`partials/schema-org.html` — Organization, один и тот же на всех 22 страницах.
+`partials/schema-org.html` — Organization, один и тот же на всех 24 страницах.
 BreadcrumbList партиалом не выражен намеренно: содержимое у каждой страницы
-своё, поэтому блок JSON-LD написан в `<head>` каждой из 20 страниц (главную не
+своё, поэтому блок JSON-LD написан в `<head>` каждой из 22 страниц (главную не
 считаем — у покупателя и дилера она одна). Там, где крошки видны, разметка
 повторяет `<nav>` слово в слово; `npm run schema` падает, если они разошлись.
 Тексты для страниц без крошек взяты из их `<h1>` (или `<h2>` у страниц раздела
