@@ -9,13 +9,18 @@
 тратит время на то, чтобы понять, какой фрейм чему соответствует и где вообще
 мобильная версия. Здесь это уже разобрано.
 
-**Когда обновлять.** Снапшот `VIVAT_SOURCES/canvas.fig` от **2026-08-17**. Если
-дизайнер добавил фреймы позже — переэкспортировать, `node scripts/fig.mjs index
---rebuild`, и обновить таблицы ниже. Живая Figma всегда важнее снапшота.
+**Когда обновлять.** Сверено со снапшотом `VIVAT_SOURCES/canvas.fig` от **2026-10-14**.
+Если дизайнер добавил фреймы позже — переэкспортировать, `node scripts/fig.mjs
+index --rebuild`, и обновить таблицы ниже. Живая Figma всегда важнее снапшота.
 
-**Ссылки** ведут в канонический файл `locvXJpmVZqIMVwPoumae3` (см. CLAUDE.md).
-Node-id не меняются между копиями, поэтому те же id открываются и в копии
-`odPx3t2xUNTnIx09J9DpIS`, по которой ходит заказчик.
+**Ссылки** ведут в канонический файл `nFfeXrx9LR1B5kEY4nXKGI` (см. CLAUDE.md).
+Node-id не меняются между копиями, поэтому те же id открываются и в старых
+копиях, если клиент прислал ссылку на одну из них.
+
+**X в таблицах** — координата фрейма внутри его секции. Дизайнер двигает
+фреймы: к экспорту 14.10 вся секция `dealer` уехала вправо и в начало встали
+мобильная главная и бургер, так что X годится для того, чтобы найти пару, но
+не как адрес. Адрес — node-id.
 
 ---
 
@@ -45,7 +50,7 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 ---
 
-## Секция `dealer` — [882:90262](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=882-90262)
+## Секция `dealer` — [882:90262](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=882-90262)
 
 Полноценный параллельный b2b-сайт: те же страницы, что у покупателя, но со
 своей шапкой, подвалом и ценами.
@@ -54,29 +59,32 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 | X | Экран | 1440 | 360 |
 |---|---|---|---|
-| 360 | **Главная** ✅ | [882:107882](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=882-107882) | — |
-| 1918 | Мега-меню каталога, 1 колонка | [953:121639](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-121639) | — |
-| 3446 | Мега-меню каталога, 3 колонки | [953:121756](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-121756) | — |
-| 5053 | **Каталог** ✅ | [953:121911](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-121911) | [2225:160540](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-160540) — **и дилерская шапка с нижней навигацией** |
-| 6935 | **Шторка «Наценка»**, выбрана «Оптовая цена» | — | [2225:163666](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-163666) |
-| 7328 | **Шторка «Наценка»**, выбрана «Своя наценка» | — | [2225:164865](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-164865) |
-| 7889 | Каталог: все фильтры | [953:121956](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-121956) | — |
-| 9462 | Каталог: один фильтр | [953:122063](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-122063) | — |
-| 10997 | Каталог: выбранные параметры | [953:122135](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-122135) | — |
-| 12484 | **PDP** ✅ | [953:122180](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=953-122180) | — |
-| 13989 | PDP: панель «Модули» ✅ | [1686:59341](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1686-59341) | — |
-| 15521 | PDP: панель «Документы» ✅ | [1686:59383](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1686-59383) | — |
-| 17239 | **Заказ** ✅ | [1209:95219](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1209-95219) | [2225:202954](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-202954) |
-| 18771 | **Заказ: b2b-доставка** ✅ | [1415:67609](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1415-67609) | [2225:167283](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-167283) |
-| 20695 | Заказ: шторка «Модули» (моб.) ✅ | — | [2225:201034](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-201034) |
-| 21597 | Заказ: подтверждение (моб.) ✅ | — | [2238:157458](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2238-157458) |
+| 1152 | **Главная** ✅ | [882:107882](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=882-107882) | [2432:126312](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2432-126312) (`body`) |
+| 3503 | **Бургер-меню** ✅ — секция [2462:216835](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2462-216835): `Menu step 2`, `step 3`, `Menu catalog` и полоса `button+tab bar` | — | [2483:200831](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2483-200831), [2483:200912](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2483-200912), [2483:200987](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2483-200987), [2483:200985](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2483-200985) |
+| 5979 | Мега-меню каталога, 1 колонка | [953:121639](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=953-121639) | — |
+| 7507 | Мега-меню каталога, 3 колонки | [953:121756](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=953-121756) | — |
+| 9114 | **Каталог** ✅ | [953:121911](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=953-121911) | [2225:160540](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-160540) — **и дилерская шапка с нижней навигацией** |
+| 10996 | **Шторка «Наценка»**, выбрана «Оптовая цена» | — | [2225:163666](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-163666) |
+| 11389 | **Шторка «Наценка»**, выбрана «Своя наценка» | — | [2225:164865](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-164865) |
+| 11950 | Каталог: все фильтры | [953:121956](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=953-121956) | — |
+| 13523 | Каталог: один фильтр | [953:122063](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=953-122063) | — |
+| 15058 | Каталог: выбранные параметры | [953:122135](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=953-122135) | — |
+| 16545 | **PDP** ✅ | [953:122180](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=953-122180) | — |
+| 18050 | PDP: панель «Модули» ✅ | [1686:59341](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1686-59341) | — |
+| 19582 | PDP: панель «Документы» ✅ | [1686:59383](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1686-59383) | — |
+| 21300 | **Заказ** ✅ | [1209:95219](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1209-95219) | [2225:202954](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-202954) |
+| 22832 | **Заказ: b2b-доставка** ✅ | [1415:67609](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1415-67609) | [2225:167283](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-167283) |
+| 24756 | Заказ: шторка «Модули» (моб.) ✅ | — | [2225:201034](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-201034) |
+| 25658 | Заказ: подтверждение (моб.) ✅ | — | [2238:157458](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2238-157458) |
 
-Мобильных фреймов **нет** у: главной, мега-меню на 1440, трёх состояний
-фильтров каталога, PDP и обеих его панелей.
+Мобильных фреймов **нет** у мега-меню на 1440, трёх состояний фильтров
+каталога, PDP и обеих его панелей. У главной 360-фрейм появился позже
+остальных — `body` 2432:126312; страница была собрана до него, теперь
+реестр аудита сверяет 360 с ним.
 
 ---
 
-## Секция `B2b additional` — [1334:57242](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1334-57242)
+## Секция `B2b additional` — [1334:57242](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1334-57242)
 
 Контентные страницы дилерского раздела — то, куда ведут ссылки из дилерского
 подвала («Полезная информация», «Для бизнеса», «Компания»).
@@ -85,23 +93,49 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 | X | Страница | 1440 | 360 |
 |---|---|---|---|
-| 2617 | **Контакты** ✅ | [1415:68377](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1415-68377) | [2225:104774](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-104774) |
-| 4704 | **Доставка** ✅ | [1167:79692](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-79692) | [2225:132262](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-132262) |
-| 7023 | **Для интернет-магазинов** ✅ | [1167:74233](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-74233) | [2209:104247](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-104247) + меню [2209:213627](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-213627) |
-| 9808 | **Как с нами работать** ✅ | [1167:98333](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1167-98333) | [2241:161193](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-161193) |
-| 12242 | **Схемы сборки** ✅ (свёрнуто) | [1463:60735](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60735) | [2241:163440](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-163440) |
-| 14199 | **Схемы сборки** ✅ (развёрнуто) | [1463:63542](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-63542) | [2241:164062](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-164062) |
-| 16219 | **Сертификаты** ✅ | [1463:60803](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60803) | [2241:164857](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-164857) |
-| 18390 | **Техническая информация** ✅ | [1463:60856](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-60856) | **—** |
-| 19894 | **Каталог декоров** ✅ (имя фрейма врёт) | [1488:127306](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-127306) | [2241:186252](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-186252) |
-| 22091 | **Каталог декоров** ✅, второе состояние | [1488:69674](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1488-69674) | [2241:187453](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-187453) |
-| 24484 | **Новости** ✅ | [1463:67081](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1463-67081) | [2241:188212](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2241-188212) |
-| 27210 | **Каталог 3D-моделей** ✅ (в имени «Каталог (вариант)») | [2338:254259](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2338-254259) | [2338:254303](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2338-254303) |
+| 9296 | **Контакты** ✅ | [1415:68377](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1415-68377) | [2225:104774](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-104774) |
+| 11383 | **Доставка** ✅ | [1167:79692](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1167-79692) | [2225:132262](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-132262) |
+| 13702 | **Для интернет-магазинов** ✅ | [1167:74233](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1167-74233) | [2209:104247](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2209-104247) + меню [2209:213627](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2209-213627) |
+| 16487 | **Как с нами работать** ✅ | [1167:98333](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1167-98333) | [2241:161193](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2241-161193) |
+| 18921 | **Схемы сборки** ✅ (свёрнуто) | [1463:60735](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1463-60735) | [2241:163440](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2241-163440) |
+| 20878 | **Схемы сборки** ✅ (развёрнуто) | [1463:63542](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1463-63542) | [2241:164062](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2241-164062) |
+| 22898 | **Сертификаты** ✅ | [1463:60803](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1463-60803) | [2241:164857](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2241-164857) |
+| 25069 | **Техническая информация** ✅ | [1463:60856](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1463-60856) | **—** |
+| 26573 | **Каталог декоров** ✅ (имя фрейма врёт) | [1488:127306](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1488-127306) | [2241:186252](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2241-186252) |
+| 28770 | **Каталог декоров** ✅, второе состояние | [1488:69674](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1488-69674) | [2241:187453](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2241-187453) |
+| 31163 | **Новости** ✅ | [1463:67081](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1463-67081) | [2241:188212](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2241-188212) |
+| 33889 | **Каталог 3D-моделей** ✅ (в имени «Каталог (вариант)») | [2338:254259](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2338-254259) | [2338:254303](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2338-254303) |
+| 36393 | **Обучающие материалы** ✅ — ещё и 768: [2507:179457](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2507-179457) | [2507:138626](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2507-138626) | [2507:178465](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2507-178465) |
+| 39764 | **Блог: лента** — не свёрстано | [3060:145720](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3060-145720) | [3072:149955](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3072-149955) |
+| 41821 | **Блог: статья** — не свёрстано | [3077:184668](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3077-184668) | [3077:187161](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=3077-187161) |
 
-**Секция свёрстана целиком.** Единственный пункт меню без страницы —
-«Методические пособия»: фрейма у него нет. Остальные заглушки меню
-(Поставщикам, Прайс-листы, Каталог мебели, Обучающие материалы) тоже без
-фреймов, см. `BACKLOG.md`.
+Свёрстано всё, кроме блога. Пункты меню без фрейма — Поставщикам,
+Прайс-листы, Каталог мебели, Методические пособия — так и стоят заглушками,
+см. `BACKLOG.md`.
+
+**Блог (экспорт 14.10, ещё не свёрстан).** Две страницы, обе под дилерской
+шапкой `type=b2b`, но устроены не как остальные страницы раздела: у них есть
+крошки, а шаблона `general-container` с `menu-b2b` нет.
+
+- **Лента** 3060:145720 — крошки «Главная / Блог», `title-block` «Блог» с
+  подзаголовком, `catalog-settings` (сортировка «За все время» и чипы рубрик
+  со счётчиками: Все статьи 40, Материалы 4, Техника, Уход 32, Планировка),
+  первая статья крупно (`Article` 542), посередине `title-block` «Все статьи»,
+  дальше ряды `Article` по 518, пагинация, полоса `subscription` и подвал.
+- **Статья** 3077:184668 — крошки «Главная / Блог / Планировка», заголовок
+  статьи с лидом, обложка (`Article` 765), затем `general-content-frame`:
+  слева 298 — **`menu-blog`** (оглавление «В этой статье»: 01 Планировка,
+  02 Рабочая зона, …), справа колонка текста 1054; ниже «Читайте также» —
+  рельс `blog-row` со стрелками, `subscription`, подвал. На 360 оглавление
+  стоит над текстом, а не сбоку.
+- Новые компоненты: `article-card` (3072:148061), `article-row` (3077:187047),
+  `menu-blog` (3077:188460, разложенный — 3077:188461). На служебном холсте
+  лежат ещё `menu-b2b/device2` 3077:187874 и `menu-b2b/menu` 3077:188347 —
+  ни одна страница на них не ссылается: все `menu-b2b` по-прежнему стоят на
+  мастере 1058:178109.
+- **В подвал добавлен «Блог»** — колонка «Компания», между «Наш адрес и
+  телефоны» и «Новости», во всех шести вариантах `footer` (desktop / tablet /
+  mobile × Default / Dealer). В `partials/footer.html` его пока нет.
 
 Все контентные страницы устроены одинаково: `site-header` → `title-block`
 (`type=H1`) → `general-container` → отбивка 96 → подвал. То есть это один
@@ -120,23 +154,27 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
   названы `metodicheskie-posobiya`, а их заголовок — «Каталог декоров»; у
   «Методических пособий» фрейма нет вовсе.
 
-Левое меню `menu-b2b` (298) есть у восьми страниц из девяти; единственная без
-него — Контакты, они идут во всю ширину. Ниже `md` меню заменяется компонентом
+Левое меню `menu-b2b` (298) есть у всех страниц раздела, кроме Контактов
+(они идут во всю ширину) и блога (у статьи на его месте оглавление
+`menu-blog`). Ниже `md` меню заменяется компонентом
 `for-business-header` и шторкой 2209:213627.
 
-### Модальные окна (левая колонка, X = 134)
+### Модальные окна (левый край секции, X = 134…4717)
 
-Все четыре нарисованы поверх каталога и в дереве выглядят одинаково
+Первые четыре нарисованы поверх каталога, «Заявка отправлена» и «Поделиться» —
+поверх главной; в дереве все выглядят одинаково и в дереве выглядят одинаково
 (`modal-window` = страница + затемнение `#141414/0.9`). Панели в экспорте
 **есть** — это `form` внутри `modal-window`, id в последней колонке; ранняя
 заметка «панель в снапшоте отсутствует» была неверной.
 
 | Окно | 1440 | 360 | Панель 1440 |
 |---|---|---|---|
-| «Стать дилером» — форма заявки ✅ | [1003:160435](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1003-160435) | [2209:213755](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-213755) | `1003:166072`, 485×701 |
-| «Войти в режим дилера» — вход по паролю ✅ | [1003:166631](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1003-166631) | [2209:216011](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2209-216011) | `1003:166682`, 485×323 |
-| «Подписаться на новости» ✅ | [1003:169259](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1003-169259) | [2225:96576](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-96576) | `1003:169310`, 485×343 |
-| `mail` — «Сообщение директору» ✅ | [1534:65836](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=1534-65836) | [2225:97387](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-97387), [2225:98292](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=2225-98292) | `1534:70720`, 485×811 |
+| «Стать дилером» — форма заявки ✅ | [1003:160435](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1003-160435) | [2209:213755](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2209-213755) | `1003:166072`, 485×701 |
+| «Войти в режим дилера» — вход по паролю ✅ | [1003:166631](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1003-166631) | [2209:216011](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2209-216011) | `1003:166682`, 485×323 |
+| «Подписаться на новости» ✅ | [1003:169259](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1003-169259) | [2225:96576](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-96576) | `1003:169310`, 485×343 |
+| `mail` — «Сообщение директору» ✅ | [1534:65836](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=1534-65836) | [2225:97387](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-97387), [2225:98292](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2225-98292) | `1534:70720`, 485×811 |
+| «Заявка отправлена» (`success`) ✅ | [2462:214093](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2462-214093) | [2462:213129](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2462-213129) | `2462:216798`, 485×725 |
+| «Поделиться» (`share`) ✅ | [2462:221277](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2462-221277) | [2462:221392](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=2462-221392) | `2462:221328`, 485×400 |
 
 Кнопка в каждом окне одна: серая «Отмена» лежит в мастере
 `modal-button-container`, но инстансы её не рисуют — читать через
@@ -146,7 +184,7 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 ## Дилерская главная: разбор по блокам
 
-[882:107882](https://www.figma.com/design/locvXJpmVZqIMVwPoumae3/VIVAT?node-id=882-107882), 1440×7496. Сверху вниз, с реальными текстами (из `raw`) и с тем,
+[882:107882](https://www.figma.com/design/nFfeXrx9LR1B5kEY4nXKGI/VIVAT?node-id=882-107882), 1440×7424. Сверху вниз, с реальными текстами (из `raw`) и с тем,
 что из этого уже есть в проекте.
 
 | Y | Блок | Node | Что переиспользуем |
@@ -157,13 +195,13 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 | 836 | `categor` — 7 плиток | 1968:246031 | разметка плиток из `customer/main.html` **как есть** |
 | 1634 | H2 «Модульные кухни. Хиты продаж» | 882:107937 | `carousel-section` + `product-card` |
 | 2262 | H2 «Популярные товары для кухни» + `segments` | 1620:83158 | `carousel-section` + **новый** сегмент-контрол |
-| 2993 | «А как вам вот такое» / «Все акции» | 882:107944 | `partials/promo-card.html` |
-| 3658 | `CN-container` — соцсети | 1463:67034 | блок соцсетей с главной |
-| 3974 | H2 «Акции и скидки» / «В каталог» | 882:107967 | `carousel-section` |
-| 4615 | H2 «Новости» / «Все новости» | 882:109467 | **новая** карточка `news-item` 436×263 |
-| 5122 | `map-general` «Наши салоны» | 882:107971 | `partials/stores.html` + **новый** фон `surface-accent` `#f8bb92` |
-| 6074 | `group` — «Производство» | 882:107975 | разметка с главной **как есть** |
-| 6916 | подвал, `user=Dealer` | 1058:177159 | `partials/footer.html` + **новый** набор колонок |
+| 2957 | «А как вам вот такое» / «Все акции» | 882:107944 | `partials/promo-card.html` |
+| 3622 | `CN-container` — соцсети | 1463:67034 | блок соцсетей с главной |
+| 3938 | H2 «Акции и скидки» / «В каталог» | 882:107967 | `carousel-section` |
+| 4543 | H2 «Новости» / «Все новости» | 882:109467 | **новая** карточка `news-item` 436×263 |
+| 5050 | `map-general` «Наши салоны» | 882:107971 | `partials/stores.html` + **новый** фон `surface-accent` `#f8bb92` |
+| 6002 | `group` — «Производство» | 882:107975 | разметка с главной **как есть** |
+| 6844 | подвал, `user=Dealer` | 1058:177159 | `partials/footer.html` + **новый** набор колонок |
 
 **Мега-меню — это уже свёрстанный компонент.** Два фрейма `menu` (953:121639 и
 953:121756) — не два экрана, а два состояния одного меню: открыта одна колонка
@@ -182,8 +220,9 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 
 ## Вопросы к дизайнеру
 
-1. **Мобильной дилерской главной нет.** 360-фрейма для 882:107882 в макете не
-   существует. Страница на 360 всё же собрана: шапка, нижняя навигация и выбор
+1. ~~**Мобильной дилерской главной нет.**~~ — закрыт: фрейм появился
+   (`body` 2432:126312), аудит сверяет 360 с ним. Исходно 360-фрейма не
+   было. Страница на 360 всё же собрана: шапка, нижняя навигация и выбор
    прайс-листа взяты из 2225:160540, остальное — из покупательской главной.
    Без фрейма выведены новости, бургер-меню и дилерские ветки подвала (см.
    `BACKLOG.md`) — их надо показать дизайнеру.
@@ -199,10 +238,10 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 4. ~~**Тумблер «Показывать цену»**~~ — закрыт заказчиком 12.08.2026: тумблер
    только переключает своё состояние, цены не скрывает. Что он должен делать
    на самом деле — открытый пункт в `BACKLOG.md`.
-5. **Десктопные панели четырёх модальных окон** не читаются из экспорта —
-   подтвердить, что они есть в живом файле.
-6. **Два фрейма «Методические пособия»** (1488:127306 и 1488:69674) — это два
-   состояния одной страницы или две разные?
+5. ~~**Десктопные панели четырёх модальных окон**~~ — закрыт: панели в
+   экспорте есть (`form` внутри `modal-window`, см. таблицу окон).
+6. ~~**Два фрейма «Методические пособия»**~~ (1488:127306 и 1488:69674) —
+   закрыт: это два состояния «Каталога декоров», свёрстаны одной страницей.
 
 Всплыло уже при вёрстке главной — три подписи, которые в экспорте остались
 дефолтом компонента, то есть дизайнер их не переопределял:
@@ -210,10 +249,9 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
 7. **Правый край тёмной полосы в шапке** — там `text-action` шириной 63px
    (607:27603) с подписью-филлером «56 моделей». Что это за элемент? Пока не
    верстаем: выдумывать подпись не стали.
-8. **Кнопка справа вверху в дилерском подвале** (`buttons` 752:51003, 191×44,
-   тёмная, с конвертом). Подпись тоже филлер. Поставили «Подписаться на
-   новости» — вывели из иконки и из того, что такая модалка есть (1003:169259).
-   Подтвердить или поправить.
+8. ~~**Кнопка справа вверху в дилерском подвале**~~ (`buttons` 752:51003) —
+   закрыт: это «Личный кабинет» со стрелкой, а не «Подписаться на новости»
+   (догадка с конвертом была ошибкой, см. CLAUDE.md › Rules).
 9. ~~**Выпадающий список прайс-листов**~~ (607:26932) — закрыт. У компонента
    четыре варианта, а не один: `desktop/default` (606:25482), `desktop/pressed`
    (607:26640), **`desktop/open` (1299:49518)** и `mobile/default`
@@ -222,3 +260,14 @@ node scripts/fig.mjs raw  <id>                # symbolOverrides — реальн
    мобильной шторки и читаются `fig.mjs inst` — **«Оптовая цена» /
    «Рекомендованая цена» / «Своя наценка»** — вторая с опечаткой в макете, в
    вёрстке пишем «Рекомендованная».
+
+Новое с экспортом 14.10 — блог:
+
+10. **Куда ведёт «Блог» и кто его видит.** Обе страницы нарисованы под
+    дилерской шапкой, а пункт «Блог» добавлен в подвал и покупателя, и
+    дилера. То есть это общая страница вроде остальных одиннадцати
+    (`data-user` из сеанса) или только дилерская? Других входов — шапка,
+    `menu-b2b`, бургер — макет не рисует.
+11. **Рубрики ленты.** Чипы — Все статьи 40, Материалы 4, Техника, Уход 32,
+    Планировка; у «Техники» и «Планировки» счётчика нет, и сумма с «Все
+    статьи» не сходится. Это филлер или так задумано?
